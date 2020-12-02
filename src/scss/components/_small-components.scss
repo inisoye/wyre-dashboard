@@ -1,0 +1,87 @@
+/*--------------------------------------------------------------
+# Small Components: Date Time Picker
+--------------------------------------------------------------*/
+
+:root {
+  --antd-wave-shadow-color: $purple;
+}
+
+.date-range-picker {
+  border-radius: 8px;
+  height: 40px;
+
+  * {
+    font-size: 1.2rem !important;
+  }
+}
+
+.ant-picker-focused,
+.ant-picker:hover {
+  border-bottom-color: $purple;
+  border-color: $purple;
+}
+
+.ant-picker-focused {
+  // Use lightened purple
+  box-shadow: scale-color($purple, $lightness: 90%) 0px 0px 0px 2px;
+}
+
+.ant-picker-range .ant-picker-active-bar {
+  background-color: $purple;
+}
+
+.ant-picker-dropdown {
+  * {
+    font-size: 1.2rem !important;
+  }
+
+  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+  .ant-btn-primary {
+    background-color: $purple;
+    color: $white;
+  }
+
+  .ant-btn-primary {
+    border-radius: 8px;
+    border: 0;
+  }
+
+  .ant-picker-cell .ant-picker-cell-inner {
+    border-color: $purple;
+  }
+
+  .ant-picker-cell-inner::before {
+    border-color: $purple !important;
+  }
+
+  .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
+    background-color: scale-color($purple, $lightness: 90%);
+  }
+
+  .ant-picker-time-panel-column
+    > li.ant-picker-time-panel-cell-selected
+    .ant-picker-time-panel-cell-inner {
+    background-color: scale-color($purple, $lightness: 90%);
+  }
+}
+
+/*--------------------------------------------------------------
+# Small Components: Buttons
+--------------------------------------------------------------*/
+.short-button {
+  padding: 9.8px 22px;
+  border-radius: 8px;
+  border: 0;
+  font-weight: $bold;
+  font-size: 1.2rem;
+}
+
+.short-button--purple {
+  background-color: $purple;
+  color: $white;
+}

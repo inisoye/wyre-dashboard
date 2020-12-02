@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+  padding-top: 16px;
+  box-shadow: $grey-box-shadow;
+}
+
+.header-group-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-logo {
+  line-height: 1;
+}
+
+.header-logo__image {
+  height: 40px;
+}
+
+.headerMenu-button {
+  border: 0;
+  padding: 4px 10px;
+}
+
+.dotmenu-button {
+  padding: 4px 20px 4px 0px;
+}
+
+.hamburger-button {
+  padding: 4px 0px 4px 20px;
+}
+
+.headerMenu-button__image {
+  height: 24px;
+  stroke: $dark;
+}

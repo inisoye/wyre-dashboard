@@ -1,0 +1,13 @@
+.top-bar {
+  box-shadow: $grey-box-shadow;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px 0;
+}
+
+.top-bar-short-button {
+  display: inline-block;
+  margin-top: 20px;
+}
