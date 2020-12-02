@@ -1,61 +1,61 @@
 import {
+  sumArrayofArrays,
   sumValuesUp,
   getMinDemandObject,
   getMaxDemandObject,
   getAvgDemandObject,
 } from './genericHelpers';
 
-// Collate data for each branch
 // Process(es) explained in SidebarBranch component
-const getEachBranchDailyDataArray = (data) => {
-  return (
-    data.branches &&
-    data.branches.map((eachBranch) => {
-      return eachBranch.daily_kwh.map((eachDay) => {
-        const { date, ...rest } = eachDay;
-
-        const allDevicesDailyData = Object.values(rest);
-        const branchDailyData = allDevicesDailyData.reduce(
-          (acc, curr) => acc + curr,
-          0
-        );
-
-        return {
-          date: date,
-          [eachBranch.name]: branchDailyData,
-        };
-      });
-    })
-  );
-};
-
 // /*----------------
 //    Obtain daily data for organization
 //   ----------------*/
-const getOrganizationDailyData = (data) => {
-  const eachBranchDailyDataArray = getEachBranchDailyDataArray(data);
+const getOrganizationDailyKwh = (data) => {
+  let organizationDailyKwh = {};
 
-  const organizationDailyData = eachBranchDailyDataArray.reduce((acc, curr) => {
-    curr.forEach((dayObject, index) => {
-      const dayObjectKeys = Object.keys(dayObject);
-      // remove "date" string
-      const branchName = dayObjectKeys.filter(
-        (eachItem) => eachItem !== 'date'
-      )[0];
-
-      acc[index].date = dayObject.date;
-      acc[index][branchName] = dayObject[branchName];
+  // Add data for each branch
+  data.branches &&
+    data.branches.forEach((eachBranch) => {
+      const { dates, ...rest } = eachBranch.daily_kwh;
+      const allDevicesDailyKwh = Object.values(rest);
+      const branchDailyKwh = sumArrayofArrays(allDevicesDailyKwh);
+      organizationDailyKwh.dates = dates;
+      organizationDailyKwh[eachBranch.name] = branchDailyKwh;
     });
 
-    return acc;
-  });
+  // Add total
+  const { dates, ...rest } = organizationDailyKwh;
+  const allBranchesDailyKwh = Object.values(rest);
+  const totalOrganizationDailyKwh = sumArrayofArrays(allBranchesDailyKwh);
+  organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
 
-  return organizationDailyData;
+  return organizationDailyKwh;
 };
+
 /*----------------
-   Obtain daily data for organization ends
+   Obtain monthly usage data for organization
   ----------------*/
 
+const getOrganizationMonthlyUsage = (data) => {
+  let organizationMonthlyUsage = { devices: [], hours: [] };
+
+  // Add data for each branch
+  data.branches &&
+    data.branches.forEach((eachBranch) => {
+      const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+      organizationMonthlyUsage.devices.push(eachBranch.name);
+      organizationMonthlyUsage.hours.push(branchMonthlyUsage);
+    });
+
+  return organizationMonthlyUsage;
+};
+
+/*----------------
+   Collate energy data for each branch
+  ----------------*/
 const getBranchEnergyDataArray = (data) => {
   return (
     data.branches &&
@@ -121,13 +121,14 @@ const getOrganizationEnergyData = (data) => {
   ----------------*/
 const getRefinedOrganizationData = (data) => {
   const organizationEnergyData = getOrganizationEnergyData(data);
-  const organizationDailyData = getOrganizationDailyData(data);
+  const organizationDailyKwh = getOrganizationDailyKwh(data);
+  const organizationMonthlyUsage = getOrganizationMonthlyUsage(data);
 
-  // Note: returned daily data is a sum from all branches
   return {
     name: data.name,
     ...organizationEnergyData,
-    daily_data: organizationDailyData,
+    daily_kwh: organizationDailyKwh,
+    usage_hours: organizationMonthlyUsage,
   };
 };
 

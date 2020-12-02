@@ -19,10 +19,6 @@
               "unit": "kw",
               "value": 300
             },
-            "monthly_hours": {
-              "unit": "hrs",
-              "value": 300
-            },
             "avg_demand": {
               "unit": "kw",
               "value": 150
@@ -57,10 +53,6 @@
             },
             "max_demand": {
               "unit": "kw",
-              "value": 300
-            },
-            "monthly_hours": {
-              "unit": "hrs",
               "value": 300
             },
             "avg_demand": {
@@ -99,10 +91,6 @@
               "unit": "kw",
               "value": 300
             },
-            "monthly_hours": {
-              "unit": "hrs",
-              "value": 300
-            },
             "avg_demand": {
               "unit": "kw",
               "value": 150
@@ -126,62 +114,26 @@
             "id": 3
           }
         ],
-        "daily_kwh": [
-          {
-            "date": "jan 1",
-            "Utility": 12,
-            "Gen1": 12,
-            "Gen2": 12
-          },
-          {
-            "date": "jan 2",
-            "Utility": 34,
-            "Gen1": 34,
-            "Gen2": 34
-          },
-          {
-            "date": "jan 3",
-            "Utility": 45,
-            "Gen1": 45,
-            "Gen2": 45
-          },
-          {
-            "date": "jan 4",
-            "Utility": 45,
-            "Gen1": 45,
-            "Gen2": 45
-          },
-          {
-            "date": "jan 5",
-            "Utility": 23,
-            "Gen1": 23,
-            "Gen2": 23
-          },
-          {
-            "date": "jan 6",
-            "Utility": 456,
-            "Gen1": 456,
-            "Gen2": 456
-          },
-          {
-            "date": "jan 7",
-            "Utility": 56,
-            "Gen1": 56,
-            "Gen2": 56
-          },
-          {
-            "date": "jan 8",
-            "Utility": 567,
-            "Gen1": 567,
-            "Gen2": 567
-          },
-          {
-            "date": "jan 9",
-            "Utility": 67,
-            "Gen1": 67,
-            "Gen2": 67
-          }
-        ],
+        "daily_kwh": {
+          "dates": [
+            "jan 1",
+            "jan 2",
+            "jan 3",
+            "jan 4",
+            "jan 5",
+            "jan 6",
+            "jan 7",
+            "jan 8",
+            "jan 9"
+          ],
+          "Utility": [12, 34, 45, 45, 23, 456, 56, 567, 67],
+          "Gen1": [12, 34, 45, 45, 23, 456, 56, 567, 67],
+          "Gen2": [12, 34, 45, 45, 23, 456, 56, 567, 67]
+        },
+        "usage_hours": {
+          "devices": ["Utility", "Gen1", "Gen2"],
+          "hours": [23, 10, 94]
+        },
         "id": 1
       },
       {
@@ -201,10 +153,6 @@
               "unit": "kw",
               "value": 300
             },
-            "monthly_hours": {
-              "unit": "hrs",
-              "value": 300
-            },
             "avg_demand": {
               "unit": "kw",
               "value": 150
@@ -239,10 +187,6 @@
             },
             "max_demand": {
               "unit": "kw",
-              "value": 300
-            },
-            "monthly_hours": {
-              "unit": "hrs",
               "value": 300
             },
             "avg_demand": {
@@ -281,10 +225,6 @@
               "unit": "kw",
               "value": 300
             },
-            "monthly_hours": {
-              "unit": "hrs",
-              "value": 300
-            },
             "avg_demand": {
               "unit": "kw",
               "value": 150
@@ -308,62 +248,26 @@
             "id": 3
           }
         ],
-        "daily_kwh": [
-          {
-            "date": "jan 1",
-            "Utility": 12,
-            "Gen1": 12,
-            "Gen2": 12
-          },
-          {
-            "date": "jan 2",
-            "Utility": 34,
-            "Gen1": 34,
-            "Gen2": 34
-          },
-          {
-            "date": "jan 3",
-            "Utility": 45,
-            "Gen1": 45,
-            "Gen2": 45
-          },
-          {
-            "date": "jan 4",
-            "Utility": 45,
-            "Gen1": 45,
-            "Gen2": 45
-          },
-          {
-            "date": "jan 5",
-            "Utility": 23,
-            "Gen1": 23,
-            "Gen2": 23
-          },
-          {
-            "date": "jan 6",
-            "Utility": 456,
-            "Gen1": 456,
-            "Gen2": 456
-          },
-          {
-            "date": "jan 7",
-            "Utility": 56,
-            "Gen1": 56,
-            "Gen2": 56
-          },
-          {
-            "date": "jan 8",
-            "Utility": 567,
-            "Gen1": 567,
-            "Gen2": 567
-          },
-          {
-            "date": "jan 9",
-            "Utility": 67,
-            "Gen1": 67,
-            "Gen2": 67
-          }
-        ],
+        "daily_kwh": {
+          "dates": [
+            "jan 1",
+            "jan 2",
+            "jan 3",
+            "jan 4",
+            "jan 5",
+            "jan 6",
+            "jan 7",
+            "jan 8",
+            "jan 9"
+          ],
+          "Utility": [12, 34, 45, 45, 23, 456, 56, 567, 67],
+          "Gen1": [12, 34, 45, 45, 23, 456, 56, 567, 67],
+          "Gen2": [12, 34, 45, 45, 23, 456, 56, 567, 67]
+        },
+        "usage_hours": {
+          "devices": ["Utility", "Gen1", "Gen2"],
+          "hours": [23, 10, 94]
+        },
         "id": 2
       }
     ],

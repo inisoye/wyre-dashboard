@@ -1,33 +1,34 @@
 import React from 'react';
+import { Bar } from 'react-chartjs-2';
 
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+const options = {
+  scales: {
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+    xAxes: [
+      {
+        stacked: true,
+      },
+    ],
+  },
+};
 
-function StackedBarChart({ data }) {
-  console.log(data);
-  const dataKeysArray = data && Object.keys(data[0]);
-  const [xAxis, ...bars] = dataKeysArray || [];
+const StackedBarChart = ({ data, organization }) => {
+  // ensure total(organization data) is removed from initial render
+  if (data) {
+    delete data[organization];
+  }
 
-  const label = data && data.map((eachDay) => eachDay.date);
-
-  const labellessData =
-    data &&
-    data.map((eachDay) => {
-      const { date, ...data } = eachDay;
-      return data;
-    });
-
-  console.log(labellessData);
-
+  // Destructure data conditionally
+  const { dates, ...values } = data ? data : { dates: [] };
+  const dataNames = Object.keys(values);
+  const dataValues = Object.values(values);
   const colorsArray = [
     '#6C00FA',
     '#00C7E6',
@@ -40,36 +41,24 @@ function StackedBarChart({ data }) {
     '#757575',
     '#FFE11A',
   ];
+  const plottedDataSet = dataNames.map((eachName, index) => {
+    return {
+      label: dataNames[index],
+      data: dataValues[index],
+      backgroundColor: colorsArray[index],
+    };
+  });
 
-  const barComponents = bars.map((eachBar, index) => (
-    <Bar
-      dataKey={eachBar}
-      key={eachBar}
-      stackId='a'
-      fill={colorsArray[index]}
-    />
-  ));
+  const plottedData = {
+    labels: dates,
+    datasets: plottedDataSet,
+  };
 
   return (
-    <ResponsiveContainer width='100%' height={320}>
-      <BarChart
-        data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey={xAxis} />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {barComponents}
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      <Bar data={plottedData} options={options} />
+    </>
   );
-}
+};
 
 export default StackedBarChart;

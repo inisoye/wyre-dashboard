@@ -7,30 +7,35 @@ import {
 
 // Collate data for each Item
 // Process(es) explained in SidebarBranch component
-const getSelectionDailyData = (selectedItemsArray) => {
-  const selectionDailyDataArray =
-    selectedItemsArray.length &&
-    selectedItemsArray.map((eachSelectedItem) => {
-      return eachSelectedItem.daily_data;
+const getSelectionDailyKwh = (selectedItemsArray) => {
+  let selectionDailyKwh = {};
+
+  // const selectionDailyKwhArray =
+  selectedItemsArray.length &&
+    selectedItemsArray.forEach((eachSelectedItem) => {
+      selectionDailyKwh.dates = eachSelectedItem.daily_kwh.dates;
+
+      selectionDailyKwh[eachSelectedItem.name] =
+        eachSelectedItem.daily_kwh[eachSelectedItem.name];
     });
 
-  const selectionDailyData = selectionDailyDataArray.reduce((acc, curr) => {
-    curr.forEach((dayObject, index) => {
-      const dayObjectKeys = Object.keys(dayObject);
+  return selectionDailyKwh;
+};
 
-      // remove "date" string
-      const deviceNames = dayObjectKeys.filter(
-        (eachItem) => eachItem !== 'date'
-      );
+const getSelectionMonthlyUsage = (data) => {
+  let SelectionMonthlyUsage = { devices: [], hours: [] };
 
-      acc[index].date = dayObject.date;
-      acc[index][deviceNames] = dayObject[deviceNames];
-    });
-
-    return acc;
+  // Add data for each branch
+  data.forEach((eachBranch) => {
+    const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+      (acc, curr) => acc + curr,
+      0
+    );
+    SelectionMonthlyUsage.devices.push(eachBranch.name);
+    SelectionMonthlyUsage.hours.push(branchMonthlyUsage);
   });
 
-  return selectionDailyData;
+  return SelectionMonthlyUsage;
 };
 
 const getRefinedEnergyData = (data) => {
@@ -62,12 +67,13 @@ const getRefinedEnergyData = (data) => {
 
 const getRenderedData = (data) => {
   const refinedEnergyData = getRefinedEnergyData(data);
-  const refinedDailyData = getSelectionDailyData(data);
+  const refinedDailyKwh = getSelectionDailyKwh(data);
+  const refinedMonthlyUsage = getSelectionMonthlyUsage(data);
 
-  // Note: returned daily data is a sum from all selected items
   return {
     ...refinedEnergyData,
-    daily_data: refinedDailyData,
+    daily_kwh: refinedDailyKwh,
+    usage_hours: refinedMonthlyUsage,
   };
 };
 

@@ -4,7 +4,7 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 import StackedBarChart from '../components/StackedBarChart';
-import PieChartEmpty from '../components/PieChartEmpty';
+import DoughnutChartEmpty from '../components/DoughnutChartEmpty';
 
 import DashboardSmallBannerSection from '../smallComponents/DashboardSmallBannerSection';
 import PrintButtons from '../smallComponents/PrintButtons';
@@ -20,20 +20,18 @@ function Dashboard() {
   let { refinedRenderedData } = useContext(CompleteDataContext);
 
   const {
-    // name,
+    name,
     total_kwh,
     min_demand,
     max_demand,
-    // monthly_hours,
+    usage_hours,
     avg_demand,
     carbon_emissions,
     cost_of_energy,
     today,
     yesterday,
-    daily_data,
+    daily_kwh,
   } = refinedRenderedData;
-
-  // console.log(refinedRenderedData);
 
   return (
     <>
@@ -84,12 +82,12 @@ function Dashboard() {
       </div>
 
       <article className='dashboard-row-2'>
-        <StackedBarChart data={daily_data} />
+        <StackedBarChart data={daily_kwh} organization={name} />
       </article>
 
       <div className='dashboard-row-3'>
         <article>
-          <PieChartEmpty />
+          <DoughnutChartEmpty data={usage_hours} />
         </article>
 
         <article>

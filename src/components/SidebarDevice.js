@@ -8,7 +8,13 @@ import {
   cloneObject,
 } from '../helpers/genericHelpers';
 
-function SidebarDevice({ parentBranchName, deviceData, deviceDailyData }) {
+function SidebarDevice({
+  parentBranchName,
+  modifiedDeviceName,
+  deviceData,
+  deviceDailyKwh,
+  deviceMonthlyUsage,
+}) {
   const [isChecked, setIsChecked] = useState(false);
 
   const {
@@ -17,9 +23,6 @@ function SidebarDevice({ parentBranchName, deviceData, deviceDailyData }) {
     checkedItems,
     setCheckedItems,
   } = useContext(CompleteDataContext);
-
-  // Add parent branch name to make each device name unique
-  const modifiedDeviceName = parentBranchName + ' ' + deviceData.name;
 
   const checkBoxName = toCamelCase(modifiedDeviceName);
   const checkboxId = toKebabCase(modifiedDeviceName) + '-checkbox';
@@ -50,7 +53,8 @@ function SidebarDevice({ parentBranchName, deviceData, deviceDailyData }) {
       cost_of_energy,
       today,
       yesterday,
-      daily_data: deviceDailyData,
+      daily_kwh: deviceDailyKwh,
+      usage_hours: deviceMonthlyUsage,
     },
   };
 

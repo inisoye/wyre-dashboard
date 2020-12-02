@@ -6,6 +6,10 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { CompleteDataProvider } from './Context';
 
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Chart from 'chart.js';
+Chart.plugins.unregister(ChartDataLabels);
+
 ReactDOM.render(
   <React.StrictMode>
     <CompleteDataProvider>

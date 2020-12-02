@@ -15,6 +15,7 @@ import {
   getMaxDemandObject,
   getAvgDemandObject,
   cloneObject,
+  sumArrayofArrays,
 } from '../helpers/genericHelpers';
 
 function SidebarBranch({ branchData }) {
@@ -39,20 +40,32 @@ function SidebarBranch({ branchData }) {
   const deviceComponents =
     branchData.devices && isOpen
       ? branchData.devices.map((eachDevice) => {
-          const deviceDailyData = branchData.daily_kwh.map((eachDay) => {
-            // Add parent branch name to make each device name unique
-            const modifiedDeviceName = branchData.name + ' ' + eachDevice.name;
-            return {
-              date: eachDay.date,
-              [modifiedDeviceName]: eachDay[eachDevice.name],
-            };
-          });
+          // Add parent branch name to make each device name unique
+          const modifiedDeviceName = branchData.name + ' ' + eachDevice.name;
+          const deviceDailyKwh = {
+            dates: branchData.daily_kwh.dates,
+            [modifiedDeviceName]: branchData.daily_kwh[eachDevice.name],
+          };
+
+          const branchMonthlyUsage = branchData.usage_hours;
+          const deviceIndex = branchMonthlyUsage.devices.indexOf(
+            eachDevice.name
+          );
+          const deviceMonthlyUsage = {
+            // Use modified device name
+            devices: [
+              branchData.name + ' ' + branchMonthlyUsage.devices[deviceIndex],
+            ],
+            hours: [branchMonthlyUsage.hours[deviceIndex]],
+          };
 
           return (
             <SidebarDevice
               parentBranchName={branchData.name}
+              modifiedDeviceName={modifiedDeviceName}
               deviceData={eachDevice}
-              deviceDailyData={deviceDailyData}
+              deviceDailyKwh={deviceDailyKwh}
+              deviceMonthlyUsage={deviceMonthlyUsage}
               key={eachDevice.id}
             />
           );
@@ -60,24 +73,24 @@ function SidebarBranch({ branchData }) {
       : '';
 
   /*-----------------
-   Obtain daily data for branch
+   Obtain daily energy data for branch
   ----------------*/
-  const branchDailyData = branchData.daily_kwh.map((eachDay) => {
-    const { date, ...rest } = eachDay;
-
-    const allDevicesDailyData = Object.values(rest);
-    const devicesDailyDataSum = allDevicesDailyData.reduce(
-      (acc, curr) => acc + curr,
-      0
-    );
-
-    return {
-      date: date,
-      [branchData.name]: devicesDailyDataSum,
-    };
-  });
+  let branchDailyKwh = branchData.daily_kwh;
+  // Add total
+  const { dates, ...rest } = branchDailyKwh;
+  const allDevicesDailyKwh = Object.values(rest);
+  const totalBranchDailyKwh = sumArrayofArrays(allDevicesDailyKwh);
+  branchDailyKwh[branchData.name] = totalBranchDailyKwh;
   /*-----------------
-   Obtain daily data for branch ends
+   Obtain daily energy data for branch ends
+  ----------------*/
+
+  /*-----------------
+   Obtain monthly usage data for branch
+  ----------------*/
+  const { usage_hours } = branchData;
+  /*-----------------
+   Obtain monthly usage data for branch ends
   ----------------*/
 
   /*-----------------
@@ -113,7 +126,8 @@ function SidebarBranch({ branchData }) {
     [branchData.name]: {
       name: branchData.name,
       ...branchEnergyData,
-      daily_data: branchDailyData,
+      usage_hours: usage_hours,
+      daily_kwh: branchDailyKwh,
     },
   };
 
