@@ -35,7 +35,7 @@ function Dashboard() {
 
   return (
     <>
-      <div>
+      <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
@@ -100,7 +100,7 @@ function Dashboard() {
           </section>
           <section className='yesterday-usage'>
             <h3 className='yesterday-usage__heading'>
-              Yesterday's Energy (KWh)
+              Yesterday's Usage (KWh)
             </h3>
             <div className='usage-value-and-arrow'>
               <p className='yesterday-usage__value'>

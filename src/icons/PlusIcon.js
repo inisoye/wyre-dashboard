@@ -10,10 +10,15 @@ function PlusIcon() {
       viewBox='0 0 25 25'
     >
       <g filter='url(#filter0_d)'>
-        <path fill='#5616F5' d='M4 4H21V21H4z'></path>
+        <path
+          fill='#6c00fa'
+          className='h-white-fill-medium-up'
+          d='M4 4H21V21H4z'
+        ></path>
       </g>
       <path
         stroke='#fff'
+        className='h-purple-stroke-medium-up'
         strokeLinecap='round'
         strokeLinejoin='round'
         strokeWidth='2'

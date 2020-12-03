@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 
@@ -29,64 +29,74 @@ function Header() {
 
   return (
     <header className='header'>
-      <div className='header-group-1'>
-        <button
-          className='headerMenu-button dotmenu-button h-hidden-medium-up'
-          onClick={toggleSidebar}
-        >
-          <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
-        </button>
+      <div className='header-group-1-and-nav'>
+        <div className='header-group-1'>
+          <button
+            className='headerMenu-button dotmenu-button h-hidden-medium-up'
+            onClick={toggleSidebar}
+          >
+            <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
+          </button>
 
-        <Link className='header-logo' to='/'>
-          <Logo className='header-logo__image' />
-        </Link>
+          <Link className='header-logo' to='/'>
+            <Logo className='header-logo__image' />
+          </Link>
 
-        <button
-          className='headerMenu-button hamburger-button h-hidden-medium-up'
-          onClick={toggleNav}
+          <button
+            className='headerMenu-button hamburger-button h-hidden-1296-up'
+            onClick={toggleNav}
+          >
+            <Hamburger className='headerMenu-button__image hamburger-button__image' />
+          </button>
+        </div>
+
+        <nav
+          className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
-          <Hamburger className='headerMenu-button__image hamburger-button__image' />
-        </button>
+          <ul className='header-nav-list'>
+            <HeaderLink url='/' linkText='Dashboard' />
+            <HeaderLink url='/score-card' linkText='Score Card' />
+            <HeaderLink url='/parameters' linkText='Parameters' />
+            <HeaderLink url='/report' linkText='Report' />
+            <HeaderLink url='/cost-tracker' linkText='Cost Tracker' />
+            <HeaderLink url='/billing' linkText='Billing' />
+            <HeaderLink url='/messages' linkText='Messages' />
+
+            <li className='header-nav-list__item h-hidden-1296-up'>
+              <HeaderIcon count={4} countClassName='header-icon__count'>
+                <MessageIcon className='header-icon__image' />
+              </HeaderIcon>
+            </li>
+
+            <li className='header-nav-list__item h-hidden-1296-up'>
+              <HeaderIcon count={2} countClassName='header-icon__count'>
+                <NotificationIcon className='header-icon__image' />
+              </HeaderIcon>
+            </li>
+
+            <li className='header-nav-list__item header-avater-container h-hidden-1296-up'>
+              <button className='header-avatar'>
+                <img src={avatar} alt='' />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
 
-      <nav
-        className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-medium-down'}
-      >
-        <ul className='header-nav-list'>
-          <HeaderLink url='/' linkText='Dashboard' />
-          <HeaderLink url='/score-card' linkText='Score Card' />
-          <HeaderLink url='/parameters' linkText='Parameters' />
-          <HeaderLink url='/report' linkText='Report' />
-          <HeaderLink url='/cost-tracker' linkText='Cost Tracker' />
-          <HeaderLink url='/billing' linkText='Billing' />
-          <HeaderLink url='/messages' linkText='Messages' />
-
-          <li className='header-nav-list__item h-hidden-medium-up'>
-            <HeaderIcon count={4} countClassName='header-icon__count'>
-              <MessageIcon className='header-icon__image' />
-            </HeaderIcon>
-          </li>
-
-          <li className='header-nav-list__item h-hidden-medium-up'>
-            <HeaderIcon count={2} countClassName='header-icon__count'>
-              <NotificationIcon className='header-icon__image' />
-            </HeaderIcon>
-          </li>
-
-          <li className='header-nav-list__item header-avater-container h-hidden-medium-up'>
-            <button className='header-avatar'>
-              <img src={avatar} alt='' />
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-      <div className='h-hidden-medium-down'>
-        <HeaderIcon count={4} countClassName='header-icon__count'>
+      <div className='all-header-icons h-hidden-1296-down'>
+        <HeaderIcon
+          count={4}
+          iconClassName='message-icon'
+          countClassName='header-icon__count'
+        >
           <MessageIcon className='header-icon__image' />
         </HeaderIcon>
 
-        <HeaderIcon count={2} countClassName='header-icon__count'>
+        <HeaderIcon
+          count={2}
+          iconClassName='notification-icon'
+          countClassName='header-icon__count'
+        >
           <NotificationIcon className='header-icon__image' />
         </HeaderIcon>
 

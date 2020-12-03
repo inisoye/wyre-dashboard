@@ -5,23 +5,24 @@ import CompleteDataContext from '../Context';
 import { getLastArrayItems } from '../helpers/genericHelpers';
 
 const StackedBarChart = ({ data, organization }) => {
-  const { isMediumScreen } = useContext(CompleteDataContext);
+  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
     layout: {
       padding: {
-        left: 5,
-        right: 20,
-        top: 20,
-        bottom: 10,
+        left: isMediumScreen ? 5 : 25,
+        right: isMediumScreen ? 20 : 50,
+        top: isMediumScreen ? 20 : 25,
+        bottom: isMediumScreen ? 10 : 25,
       },
     },
     legend: {
       display: true,
       labels: {
-        boxWidth: 13,
+        boxWidth: isMediumScreen ? 13 : 16,
         fontSize: isMediumScreen ? 14 : 16,
         fontColor: 'black',
+        padding: isMediumScreen ? 10 : 25,
       },
     },
     maintainAspectRatio: false,
@@ -45,7 +46,7 @@ const StackedBarChart = ({ data, organization }) => {
           scaleLabel: {
             display: true,
             labelString: 'Energy - Kilowatt (kW)/Hour',
-            padding: 10,
+            padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
           },
@@ -53,7 +54,6 @@ const StackedBarChart = ({ data, organization }) => {
       ],
       xAxes: [
         {
-          maxBarThickness: 50,
           ticks: {
             fontFamily: 'Roboto',
             padding: 10,
@@ -67,7 +67,7 @@ const StackedBarChart = ({ data, organization }) => {
           scaleLabel: {
             display: true,
             labelString: 'Days of the month',
-            padding: 10,
+            padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
           },
@@ -100,6 +100,7 @@ const StackedBarChart = ({ data, organization }) => {
 
   const plottedDataSet = dataNames.map((eachName, index) => {
     return {
+      maxBarThickness: 50,
       label: dataNames[index],
       // Pick data for last week if screen is a medium screen or less
       data: isMediumScreen
@@ -110,7 +111,11 @@ const StackedBarChart = ({ data, organization }) => {
   });
 
   const plottedData = {
-    labels: isMediumScreen ? getLastArrayItems(dates, 7) : dates,
+    labels: isMediumScreen
+      ? getLastArrayItems(dates, 7)
+      : isLessThan1296
+      ? getLastArrayItems(dates, 14)
+      : dates,
     datasets: plottedDataSet,
   };
 

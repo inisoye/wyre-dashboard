@@ -70,6 +70,12 @@
   }
 }
 
+.h-hidden-1296-up {
+  @include media('>=desktop-header-break') {
+    display: none;
+  }
+}
+
 .h-hidden-small-down {
   @include media('<small') {
     display: none;
@@ -82,10 +88,28 @@
   }
 }
 
+.h-hidden-1296-down {
+  @include media('<desktop-header-break') {
+    display: none;
+  }
+}
+
 .h-mr-16 {
   margin-right: 16px;
 }
 
 .h-no-margin {
   margin: 0;
+}
+
+.h-white-fill-medium-up {
+  @include media('>=medium') {
+    fill: $white;
+  }
+}
+
+.h-purple-stroke-medium-up {
+  @include media('>=medium') {
+    stroke: $purple;
+  }
 }

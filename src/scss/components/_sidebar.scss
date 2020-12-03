@@ -1,8 +1,29 @@
+.sidebar-and-content {
+  width: 100%;
+
+  @include media('>=medium') {
+    display: flex;
+  }
+}
+
 .sidebar {
-  @extend %gutters;
-  text-align: center;
-  padding-top: 10px;
   color: $purple;
+  padding-top: 10px;
+  text-align: center;
+  @extend %gutters;
+
+  @include media('>=medium') {
+    min-width: 300.45px;
+    padding-right: 24px;
+    padding-top: 50px;
+    color: $white;
+    background-color: $purple;
+    border-top: $border-grey1 solid 1px;
+    align-self: flex-start;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
 }
 
 .sidebar-org-container {
@@ -10,18 +31,26 @@
 }
 
 .sidebar-org__details {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  display: flex;
   font-weight: $semi-bold;
+  justify-content: space-between;
+
+  label {
+    white-space: nowrap;
+  }
 }
 
 .sidebar-org__button,
 .sidebar-branch__button {
-  display: flex;
   align-items: center;
-  padding: 8px 0 8px 24px;
   border: 0;
+  display: flex;
+  padding: 8px 0 8px 24px;
+
+  @include media('>=medium') {
+    padding: 8px 0 8px 8px;
+  }
 }
 
 .sidebar-branch,
@@ -30,11 +59,12 @@
 }
 
 .sidebar-branch__details {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 30px 0 0;
+  display: flex;
   font-weight: $medium;
+  justify-content: space-between;
+  padding-top: 10px;
+  font-size: 1.4rem;
 }
 
 .sidebar-branch__button {
@@ -43,13 +73,15 @@
 
 .sidebar-branch__checkbox,
 .sidebar-device__checkbox {
+  border-radius: 2px;
   margin-right: 15px;
   transform: scale(1.4);
-  border-radius: 2px;
 }
 
 .sidebar-device__details {
-  width: 100%;
-  padding: 12px 0;
+  padding-bottom: 12px;
+  padding-top: 12px;
   text-align: left;
+  width: 100%;
+  font-size: 1.4rem;
 }

@@ -8,12 +8,20 @@
 
 .date-range-picker-containers {
   width: 100%;
+
+  @include media('>=medium') {
+    max-width: 285px;
+  }
 }
 
 .date-range-picker {
   border-radius: 8px;
   height: 40px;
   width: 100%;
+
+  @include media('>=medium') {
+    max-width: 285px;
+  }
 
   * {
     font-size: 1.2rem !important;

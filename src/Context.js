@@ -23,6 +23,7 @@ const CompleteDataProvider = (props) => {
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
   const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
+  const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
 
   useEffect(() => {
     const getData = () => {
@@ -63,14 +64,17 @@ const CompleteDataProvider = (props) => {
         setRenderedDataObjects: setRenderedDataObjects,
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
+
         isNavOpen: isNavOpen,
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+
         isSmallScreen: isSmallScreen,
         isMediumScreen: isMediumScreen,
         isLargeScreen: isLargeScreen,
         isXLargeScreen: isXLargeScreen,
+        isLessThan1296: isLessThan1296,
       }}
     >
       {props.children}

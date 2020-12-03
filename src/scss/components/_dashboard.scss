@@ -1,10 +1,45 @@
+.breadcrumb-and-print-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.print-buttons {
+  display: flex;
+}
+
+.print-button-container {
+  margin-right: 20px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.print-button {
+  border: 0;
+}
+
 .dashboard-row-1 {
   width: 100%;
+
+  @include media('>=1200px') {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .dashboard__banner--small {
   width: 100%;
   height: 174px;
+
+  @include media('>=medium') {
+    height: 200px;
+  }
+
+  @include media('>=1200px') {
+    max-width: 31.5%;
+  }
 }
 
 .dashboard__total-energy {
@@ -35,11 +70,19 @@
   align-items: center;
   background-color: $white;
   margin-top: 30px;
+
+  @include media('>=1200px') {
+    margin-top: 0;
+  }
 }
 
 /*--------------------------------------------------------------
 # Small Component: Dashboard Small Banner Section
 --------------------------------------------------------------*/
+
+.small-banner-section {
+  padding: 0 5px;
+}
 
 .small-banner-section__heading {
   font-size: 1.3rem;
@@ -74,9 +117,40 @@
   margin-top: 30px;
 }
 
+.dashboard-bar-container {
+  @include media('>=medium') {
+    height: 500px;
+  }
+}
+
+.dashboard-row-3 {
+  @include media('>=1200px') {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.dashboard-pie-container,
+.dashboard-today-and-yesterday {
+  @include media('>=1200px') {
+    min-height: 386px;
+  }
+}
+
+.dashboard-pie-container {
+  @include media('>=1200px') {
+    width: 57.25%;
+  }
+}
+
 .dashboard-today-and-yesterday {
   background-color: $white;
   margin-top: 30px;
+
+  @include media('>=1200px') {
+    width: 40%;
+  }
 }
 
 .today-usage,
@@ -110,4 +184,8 @@
   font-size: 4rem;
   margin: 17px;
   font-weight: 300;
+
+  @include media('>=1200px') {
+    font-size: 5.4rem;
+  }
 }

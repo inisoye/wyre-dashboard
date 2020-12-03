@@ -20,26 +20,29 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <Sidebar />
 
-      <main>
-        <TopBar />
+      <div className='sidebar-and-content'>
+        <Sidebar />
 
-        <ScrollToTop>
-          <div className='page-content'>
-            <Switch>
-              <Route exact path='/' component={Dashboard} />
-              <Route path='/billing' component={Billing} />
-              <Route path='/cost-tracker' component={CostTracker} />
-              <Route path='/messages' component={Messages} />
-              <Route path='/parameters' component={Parameters} />
-              <Route path='/report' component={Report} />
-              <Route path='/score-card' component={ScoreCard} />
-              <Route component={Error} />
-            </Switch>
-          </div>
-        </ScrollToTop>
-      </main>
+        <main className='main-container'>
+          <TopBar />
+
+          <ScrollToTop>
+            <div className='page-content'>
+              <Switch>
+                <Route exact path='/' component={Dashboard} />
+                <Route path='/billing' component={Billing} />
+                <Route path='/cost-tracker' component={CostTracker} />
+                <Route path='/messages' component={Messages} />
+                <Route path='/parameters' component={Parameters} />
+                <Route path='/report' component={Report} />
+                <Route path='/score-card' component={ScoreCard} />
+                <Route component={Error} />
+              </Switch>
+            </div>
+          </ScrollToTop>
+        </main>
+      </div>
     </div>
   );
 }

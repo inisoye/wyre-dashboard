@@ -1,8 +1,8 @@
 .top-bar {
   align-items: center;
   box-shadow: $grey-box-shadow;
-  padding-top: 30px;
-  padding-bottom: 35px;
+  padding-top: 10px;
+  padding-bottom: 40px;
   width: 100%;
   @extend %gutters;
 
@@ -11,9 +11,25 @@
       display: none;
     }
   }
+
+  @include media('>=medium') {
+    box-shadow: $grey-box-shadow;
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
 }
 
 .top-bar-short-button {
-  display: inline-block;
+  display: block;
+  width: 100%;
   margin-top: 20px;
+  height: 40px;
+
+  @include media('>=medium') {
+    margin-top: 0;
+    margin-left: 20px;
+    height: 40px;
+    width: auto;
+  }
 }

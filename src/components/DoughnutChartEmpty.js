@@ -51,7 +51,7 @@ const DoughnutChart = (data) => {
         left: 20,
         right: 20,
         top: 10,
-        bottom: 20,
+        bottom: 40,
       },
     },
     legend: {
@@ -60,7 +60,7 @@ const DoughnutChart = (data) => {
         boxWidth: 13,
         fontSize: isMediumScreen ? 14 : 16,
         fontColor: 'black',
-        padding: isMediumScreen ? 10 : 40,
+        padding: 10,
       },
       position: 'right',
     },

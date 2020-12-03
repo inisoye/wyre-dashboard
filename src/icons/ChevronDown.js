@@ -10,7 +10,8 @@ function Icon() {
       viewBox='0 0 24 24'
     >
       <path
-        fill='#5616F5'
+        fill='#6c00fa'
+        className='h-white-fill-medium-up'
         fillRule='evenodd'
         d='M7 10l5 5 5-5H7z'
         clipRule='evenodd'
