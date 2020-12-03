@@ -6,9 +6,14 @@
   --antd-wave-shadow-color: $purple;
 }
 
+.date-range-picker-containers {
+  width: 100%;
+}
+
 .date-range-picker {
   border-radius: 8px;
   height: 40px;
+  width: 100%;
 
   * {
     font-size: 1.2rem !important;

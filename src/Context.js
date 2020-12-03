@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 import dataHttpServices from './services/data';
 
@@ -12,14 +13,16 @@ const CompleteDataContext = React.createContext();
 const CompleteDataProvider = (props) => {
   const [organization, setOrganization] = useState([]);
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
+  // Note: the rendered data objects state exludes data for the whole organisation
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Note: the rendered data objects state exludes data for the whole organisation
-
-  // console.log(renderedDataObjects);
-  // console.log(refinedRenderedData);
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
+  const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
+  const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
 
   useEffect(() => {
     const getData = () => {
@@ -60,8 +63,14 @@ const CompleteDataProvider = (props) => {
         setRenderedDataObjects: setRenderedDataObjects,
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
+        isNavOpen: isNavOpen,
+        setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+        isSmallScreen: isSmallScreen,
+        isMediumScreen: isMediumScreen,
+        isLargeScreen: isLargeScreen,
+        isXLargeScreen: isXLargeScreen,
       }}
     >
       {props.children}

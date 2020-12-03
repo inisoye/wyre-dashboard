@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import CompleteDataContext from '../Context';
 
 const DoughnutChart = (data) => {
+  const { isMediumScreen } = useContext(CompleteDataContext);
+
   const { devices, hours } = data.data
     ? data.data
     : { devices: ['Empty'], hours: ['Empty'] };
@@ -26,16 +29,16 @@ const DoughnutChart = (data) => {
           '#FFE11A',
         ],
         borderColor: [
-          '#6C00FA',
-          '#00C7E6',
-          '#FF3DA1',
-          '#82ca9d',
-          '#ff9b3d',
-          '#360259',
-          '#0371b5',
-          '#D90000',
-          '#757575',
-          '#FFE11A',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
+          '#FFFFFF',
         ],
         borderWidth: 1,
       },
@@ -43,19 +46,25 @@ const DoughnutChart = (data) => {
   };
 
   const options = {
-    tooltips: {
-      enabled: true,
-      mode: 'index',
-      callbacks: {
-        title: function (tooltipItem, data) {
-          console.log(data);
-          return data['labels'][tooltipItem[0]['index']];
-        },
-        label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
-        },
+    layout: {
+      padding: {
+        left: 20,
+        right: 20,
+        top: 10,
+        bottom: 20,
       },
     },
+    legend: {
+      display: true,
+      labels: {
+        boxWidth: 13,
+        fontSize: isMediumScreen ? 14 : 16,
+        fontColor: 'black',
+        padding: isMediumScreen ? 10 : 40,
+      },
+      position: 'right',
+    },
+    maintainAspectRatio: false,
     plugins: {
       datalabels: {
         formatter: (value, context) => {
@@ -68,6 +77,30 @@ const DoughnutChart = (data) => {
           return percentage;
         },
         color: 'black',
+        font: {
+          size: isMediumScreen ? 14 : 16,
+          weight: '500',
+        },
+      },
+    },
+    title: {
+      display: true,
+      text: 'Power Usage (Hours/Month)',
+      fontSize: 18,
+      fontStyle: 'normal',
+      fontColor: 'black',
+      padding: 20,
+    },
+    tooltips: {
+      enabled: true,
+      mode: 'index',
+      callbacks: {
+        title: function (tooltipItem, data) {
+          return data['labels'][tooltipItem[0]['index']];
+        },
+        label: function (tooltipItem, data) {
+          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
+        },
       },
     },
   };

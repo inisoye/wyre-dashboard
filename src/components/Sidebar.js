@@ -13,7 +13,7 @@ function Sidebar() {
 
   return (
     <div className={isSidebarOpen ? 'sidebar' : 'sidebar h-hidden-medium-down'}>
-      {<ul>{organizationComponent}</ul>}
+      {<ul className='sidebar-org-container'>{organizationComponent}</ul>}
     </div>
   );
 }

@@ -163,23 +163,28 @@ function SidebarBranch({ branchData }) {
   };
 
   return (
-    <li>
-      <div>
-        <input
-          type='checkbox'
-          name={checkBoxName}
-          id={checkboxId}
-          onChange={handleCheck}
-        />
-        <label htmlFor={checkboxId}>{branchData.name}</label>
+    <li className='sidebar-branch'>
+      <div className='sidebar-branch__details'>
+        <div>
+          <input
+            className='sidebar-branch__checkbox'
+            type='checkbox'
+            name={checkBoxName}
+            id={checkboxId}
+            onChange={handleCheck}
+          />
+          <label htmlFor={checkboxId}>{branchData.name}</label>
+        </div>
         {branchData.devices ? (
-          <button onClick={handleToggle}>{Icon}</button>
+          <button className='sidebar-branch__button' onClick={handleToggle}>
+            {Icon}
+          </button>
         ) : (
           ''
         )}
       </div>
 
-      <ul>{deviceComponents}</ul>
+      <ul className='sidebar-branch__devices'>{deviceComponents}</ul>
     </li>
   );
 }

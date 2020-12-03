@@ -76,6 +76,9 @@ const getAvgDemandObject = (array) => {
 
 const cloneObject = (object) => Object.assign({}, object);
 
+const getLastArrayItems = (array, numberOfItems) =>
+  array.slice(Math.max(array.length - numberOfItems, 0));
+
 export {
   toCamelCase,
   toKebabCase,
@@ -85,4 +88,5 @@ export {
   getMaxDemandObject,
   getAvgDemandObject,
   cloneObject,
+  getLastArrayItems,
 };

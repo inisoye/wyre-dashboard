@@ -14,7 +14,6 @@ function Icon() {
         fillRule='evenodd'
         d='M17 14l-5-5-5 5h10z'
         clipRule='evenodd'
-        opacity='0.54'
       ></path>
     </svg>
   );

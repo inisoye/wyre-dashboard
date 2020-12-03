@@ -1,0 +1,113 @@
+.dashboard-row-1 {
+  width: 100%;
+}
+
+.dashboard__banner--small {
+  width: 100%;
+  height: 174px;
+}
+
+.dashboard__total-energy {
+  background-color: $purple;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.total-energy__heading {
+  color: $white;
+  font-size: 3rem;
+}
+
+.total-energy_value {
+  font-size: 2.5rem;
+  font-weight: $medium;
+  margin-top: 15px;
+}
+
+.dashboard__demand-banner,
+.dashboard__cost-emissions-banner {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+  background-color: $white;
+  margin-top: 30px;
+}
+
+/*--------------------------------------------------------------
+# Small Component: Dashboard Small Banner Section
+--------------------------------------------------------------*/
+
+.small-banner-section__heading {
+  font-size: 1.3rem;
+  font-weight: $regular;
+}
+
+.small-banner-section__subheading {
+  display: block;
+  margin-top: 9px;
+  color: $grey1;
+}
+
+.small-banner-section__value {
+  margin-top: 23px;
+  .value {
+    font-size: 2rem;
+    font-weight: $medium;
+  }
+  .unit {
+    display: block;
+    margin-top: 16px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Small Component: Dashboard Small Banner Section ends
+--------------------------------------------------------------*/
+.dashboard-bar-container,
+.dashboard-pie-container {
+  height: 340px;
+  background-color: $white;
+  margin-top: 30px;
+}
+
+.dashboard-today-and-yesterday {
+  background-color: $white;
+  margin-top: 30px;
+}
+
+.today-usage,
+.yesterday-usage {
+  text-align: center;
+  padding: 33px 0;
+}
+
+.today-usage {
+  padding-bottom: 25px;
+}
+
+.yesterday-usage {
+  padding-top: 25px;
+}
+
+.usage-value-and-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.today-usage__heading,
+.yesterday-usage__heading {
+  font-weight: normal;
+  font-size: 1.8rem;
+}
+
+.today-usage__value,
+.yesterday-usage__value {
+  font-size: 4rem;
+  margin: 17px;
+  font-weight: 300;
+}

@@ -41,7 +41,7 @@ function Dashboard() {
       </div>
 
       <div className='dashboard-row-1'>
-        <article className='total-energy dashboard__banner--small'>
+        <article className='dashboard__total-energy dashboard__banner--small'>
           <h2 className='total-energy__heading'>Total Energy</h2>
           <p className='total-energy_value'>
             <span>{total_kwh && total_kwh.value}</span>
@@ -49,7 +49,7 @@ function Dashboard() {
           </p>
         </article>
 
-        <article className='dashboard__banner--small'>
+        <article className='dashboard__demand-banner dashboard__banner--small'>
           <DashboardSmallBannerSection
             name='Max. Demand'
             value={max_demand && max_demand.value}
@@ -67,7 +67,7 @@ function Dashboard() {
           />
         </article>
 
-        <article className='dashboard__banner--small'>
+        <article className='dashboard__cost-emissions-banner dashboard__banner--small'>
           <DashboardSmallBannerSection
             name='Carbon Emission'
             value={carbon_emissions && carbon_emissions.value}
@@ -81,29 +81,33 @@ function Dashboard() {
         </article>
       </div>
 
-      <article className='dashboard-row-2'>
-        <StackedBarChart data={daily_kwh} organization={name} />
+      <article className='dashboard-row-2 dashboard-bar-container'>
+        <StackedBarChart className='' data={daily_kwh} organization={name} />
       </article>
 
       <div className='dashboard-row-3'>
-        <article>
+        <article className='dashboard-pie-container'>
           <DoughnutChartEmpty data={usage_hours} />
         </article>
 
-        <article>
+        <article className='dashboard-today-and-yesterday'>
           <section className='today-usage'>
             <h3 className='today-usage__heading'>Today's Usage (KWh)</h3>
-            <p className='today-usage__value'>{today && today.value}</p>
-            <UpAndDownArrows />
+            <div className='usage-value-and-arrow'>
+              <p className='today-usage__value'>{today && today.value}</p>
+              <UpAndDownArrows />
+            </div>
           </section>
           <section className='yesterday-usage'>
             <h3 className='yesterday-usage__heading'>
               Yesterday's Energy (KWh)
             </h3>
-            <p className='yesterday-usage__value'>
-              {yesterday && yesterday.value}
-            </p>
-            <UpAndDownArrows />
+            <div className='usage-value-and-arrow'>
+              <p className='yesterday-usage__value'>
+                {yesterday && yesterday.value}
+              </p>
+              <UpAndDownArrows />
+            </div>
           </section>
         </article>
       </div>

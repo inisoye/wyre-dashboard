@@ -14,16 +14,17 @@ import NotificationIcon from '../icons/NotificationIcon';
 import avatar from '../images/avatar.png';
 
 function Header() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
-
+  const { isNavOpen, setIsNavOpen } = useContext(CompleteDataContext);
   const { isSidebarOpen, setIsSidebarOpen } = useContext(CompleteDataContext);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
+    setIsSidebarOpen(false);
   };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+    setIsNavOpen(false);
   };
 
   return (
@@ -60,27 +61,19 @@ function Header() {
           <HeaderLink url='/billing' linkText='Billing' />
           <HeaderLink url='/messages' linkText='Messages' />
 
-          <li className='h-hidden-medium-up'>
-            <HeaderIcon
-              className='header-icon'
-              count={4}
-              countClassName='header-icon__count'
-            >
+          <li className='header-nav-list__item h-hidden-medium-up'>
+            <HeaderIcon count={4} countClassName='header-icon__count'>
               <MessageIcon className='header-icon__image' />
             </HeaderIcon>
           </li>
 
-          <li className='h-hidden-medium-up'>
-            <HeaderIcon
-              className='header-icon'
-              count={2}
-              countClassName='header-icon__count'
-            >
+          <li className='header-nav-list__item h-hidden-medium-up'>
+            <HeaderIcon count={2} countClassName='header-icon__count'>
               <NotificationIcon className='header-icon__image' />
             </HeaderIcon>
           </li>
 
-          <li className='h-hidden-medium-up'>
+          <li className='header-nav-list__item header-avater-container h-hidden-medium-up'>
             <button className='header-avatar'>
               <img src={avatar} alt='' />
             </button>
@@ -89,19 +82,11 @@ function Header() {
       </nav>
 
       <div className='h-hidden-medium-down'>
-        <HeaderIcon
-          className='header-icon'
-          count={4}
-          countClassName='header-icon__count'
-        >
+        <HeaderIcon count={4} countClassName='header-icon__count'>
           <MessageIcon className='header-icon__image' />
         </HeaderIcon>
 
-        <HeaderIcon
-          className='header-icon'
-          count={2}
-          countClassName='header-icon__count'
-        >
+        <HeaderIcon count={2} countClassName='header-icon__count'>
           <NotificationIcon className='header-icon__image' />
         </HeaderIcon>
 

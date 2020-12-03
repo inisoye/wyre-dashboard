@@ -91,9 +91,10 @@ function SidebarDevice({
   };
 
   return (
-    <li>
-      <div>
+    <li className='sidebar-device'>
+      <div className='sidebar-device__details'>
         <input
+          className='sidebar-device__checkbox'
           type='checkbox'
           name={checkBoxName}
           id={checkboxId}

@@ -3,13 +3,16 @@
   flex-direction: column;
   padding-bottom: 16px;
   padding-top: 16px;
-  box-shadow: $grey-box-shadow;
+
+  @include media('>=medium') {
+    box-shadow: $grey-box-shadow;
+  }
 }
 
 .header-group-1 {
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .header-logo {
@@ -36,4 +39,48 @@
 .headerMenu-button__image {
   height: 24px;
   stroke: $dark;
+}
+
+.header-nav {
+  padding: 20px 0;
+}
+
+.header-nav-list__item {
+  border-top: $border-grey2 1px solid;
+  font-size: 1.4rem;
+  padding: 15px 0;
+  padding-left: 7px;
+}
+
+.header-icon {
+  position: relative;
+}
+
+.header-icon__count {
+  align-items: center;
+  background: $red;
+  border-radius: 50%;
+  color: $border-grey1;
+  display: flex;
+  font-size: 10px;
+  font-weight: $medium;
+  height: 15px;
+  justify-content: center;
+  left: 13px;
+  padding: 1px;
+  position: absolute;
+  top: -13px;
+  width: 15px;
+}
+
+.header-avater-container.h-hidden-medium-up {
+  border-bottom: $border-grey2 1px solid;
+}
+
+.header-avatar {
+  border-radius: 50%;
+  padding: 4px;
+  height: 44px;
+  width: 44px;
+  border: 1px solid $border-grey1;
 }

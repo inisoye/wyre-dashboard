@@ -22,13 +22,19 @@ function SidebarOrganization({ orgData }) {
       : '';
 
   return (
-    <li>
-      <div>
+    <li className='sidebar-org'>
+      <div className='sidebar-org__details'>
         <span>{orgData.name}</span>
-        {orgData.branches ? <button onClick={handleToggle}>{Icon}</button> : ''}
+        {orgData.branches ? (
+          <button className='sidebar-org__button' onClick={handleToggle}>
+            {Icon}
+          </button>
+        ) : (
+          ''
+        )}
       </div>
 
-      <ul>{branchComponents}</ul>
+      <ul className='sidebar-org__branches'>{branchComponents}</ul>
     </li>
   );
 }

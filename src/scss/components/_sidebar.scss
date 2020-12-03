@@ -1,0 +1,55 @@
+.sidebar {
+  @extend %gutters;
+  text-align: center;
+  padding-top: 10px;
+  color: $purple;
+}
+
+.sidebar-org-container {
+  width: 100%;
+}
+
+.sidebar-org__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: $semi-bold;
+}
+
+.sidebar-org__button,
+.sidebar-branch__button {
+  display: flex;
+  align-items: center;
+  padding: 8px 0 8px 24px;
+  border: 0;
+}
+
+.sidebar-branch,
+.sidebar-device {
+  padding-left: 4%;
+}
+
+.sidebar-branch__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 0 0;
+  font-weight: $medium;
+}
+
+.sidebar-branch__button {
+  opacity: 0.75;
+}
+
+.sidebar-branch__checkbox,
+.sidebar-device__checkbox {
+  margin-right: 15px;
+  transform: scale(1.4);
+  border-radius: 2px;
+}
+
+.sidebar-device__details {
+  width: 100%;
+  padding: 12px 0;
+  text-align: left;
+}
