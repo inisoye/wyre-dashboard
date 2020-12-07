@@ -19,17 +19,3 @@
     padding-bottom: 12px;
   }
 }
-
-.top-bar-short-button {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  height: 40px;
-
-  @include media('>=medium') {
-    margin-top: 0;
-    margin-left: 20px;
-    height: 40px;
-    width: auto;
-  }
-}
