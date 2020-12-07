@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-import StackedBarChart from '../components/StackedBarChart';
-import DoughnutChartEmpty from '../components/DoughnutChartEmpty';
+import DashboardStackedBarChart from '../components/barCharts/DashboardStackedBarChart';
+import DashboardDoughnutChart from '../components/pieCharts/DashboardDoughnutChart';
 
 import DashboardSmallBannerSection from '../smallComponents/DashboardSmallBannerSection';
 import PrintButtons from '../smallComponents/PrintButtons';
@@ -26,7 +26,7 @@ function Dashboard() {
     max_demand,
     usage_hours,
     avg_demand,
-    carbon_emissions,
+    dashboard_carbon_emissions,
     cost_of_energy,
     today,
     yesterday,
@@ -69,9 +69,11 @@ function Dashboard() {
 
         <article className='dashboard__cost-emissions-banner dashboard__banner--small'>
           <DashboardSmallBannerSection
-            name='Carbon Emission'
-            value={carbon_emissions && carbon_emissions.value}
-            unit={carbon_emissions && carbon_emissions.unit}
+            name='Carbon Emissions'
+            value={
+              dashboard_carbon_emissions && dashboard_carbon_emissions.value
+            }
+            unit={dashboard_carbon_emissions && dashboard_carbon_emissions.unit}
           />
           <DashboardSmallBannerSection
             name='Cost of Energy'
@@ -82,12 +84,16 @@ function Dashboard() {
       </div>
 
       <article className='dashboard-row-2 dashboard-bar-container'>
-        <StackedBarChart className='' data={daily_kwh} organization={name} />
+        <DashboardStackedBarChart
+          className=''
+          data={daily_kwh}
+          organization={name}
+        />
       </article>
 
       <div className='dashboard-row-3'>
         <article className='dashboard-pie-container'>
-          <DoughnutChartEmpty data={usage_hours} />
+          <DashboardDoughnutChart data={usage_hours} />
         </article>
 
         <article className='dashboard-today-and-yesterday'>

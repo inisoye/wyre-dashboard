@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import CompleteDataContext from '../Context';
+import CompleteDataContext from '../../Context';
 
-const DoughnutChart = (data) => {
+const DashboardDoughnutChart = (data) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
 
   const { devices, hours } = data.data
@@ -116,4 +116,4 @@ const DoughnutChart = (data) => {
   );
 };
 
-export default DoughnutChart;
+export default DashboardDoughnutChart;

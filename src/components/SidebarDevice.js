@@ -9,8 +9,8 @@ import {
 } from '../helpers/genericHelpers';
 
 function SidebarDevice({
-  parentBranchName,
   modifiedDeviceName,
+  originalDeviceName,
   deviceData,
   deviceDailyKwh,
   deviceMonthlyUsage,
@@ -27,18 +27,37 @@ function SidebarDevice({
   const checkBoxName = toCamelCase(modifiedDeviceName);
   const checkboxId = toKebabCase(modifiedDeviceName) + '-checkbox';
 
-  // Destructure data for device
+  // Destructure dashboard data for device
   const {
     total_kwh,
     min_demand,
     max_demand,
-    monthly_hours,
     avg_demand,
-    carbon_emissions,
+    dashboard_carbon_emissions,
     cost_of_energy,
     today,
     yesterday,
-  } = deviceData;
+  } = deviceData.dashboard;
+
+  // Destructure score card data for device
+  const {
+    is_generator,
+    baseline_energy,
+    peak_to_avg_power_ratio,
+    score_card_carbon_emissions,
+    generator_size_efficiency,
+    change_over_lags,
+    operating_time,
+    fuel_consumption,
+  } = deviceData.score_card;
+
+  // Add name to generator size efficiency data
+  if (generator_size_efficiency)
+    generator_size_efficiency.name = modifiedDeviceName;
+
+  // console.log(generator_size_efficiency);
+
+  if (fuel_consumption) fuel_consumption.name = modifiedDeviceName;
 
   // Place all data for device in new object
   const refinedDeviceData = {
@@ -47,14 +66,21 @@ function SidebarDevice({
       total_kwh,
       min_demand,
       max_demand,
-      monthly_hours,
       avg_demand,
-      carbon_emissions,
+      dashboard_carbon_emissions,
       cost_of_energy,
       today,
       yesterday,
       daily_kwh: deviceDailyKwh,
       usage_hours: deviceMonthlyUsage,
+      is_generator,
+      baseline_energy,
+      peak_to_avg_power_ratio,
+      score_card_carbon_emissions,
+      generator_size_efficiency: [generator_size_efficiency],
+      change_over_lags,
+      operating_time,
+      fuel_consumption: [fuel_consumption],
     },
   };
 
@@ -100,7 +126,7 @@ function SidebarDevice({
           id={checkboxId}
           onChange={handleCheck}
         />
-        <label htmlFor={checkboxId}>{deviceData.name}</label>
+        <label htmlFor={checkboxId}>{originalDeviceName}</label>
       </div>
     </li>
   );

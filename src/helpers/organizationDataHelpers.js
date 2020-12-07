@@ -1,15 +1,28 @@
 import {
-  sumArrayofArrays,
-  sumValuesUp,
+  sumArrayOfArrays,
+  getAllOrganizationDevices,
+  sumObjectValuesUp,
+  sumNestedObjectValuesUp,
   getMinDemandObject,
   getMaxDemandObject,
   getAvgDemandObject,
+  getNestedMinDemandObject,
+  getNestedMaxDemandObject,
+  getNestedAvgDemandObject,
+  sumBaselineEnergies,
+  sumPeakToAveragePowerRatios,
+  sumScoreCardCarbonEmissions,
+  joinChangeOverLagsValues,
+  sumOperatingTimeValues,
 } from './genericHelpers';
 
-// Process(es) explained in SidebarBranch component
-// /*----------------
-//    Obtain daily data for organization
-//   ----------------*/
+/* -------------------------------------------------------------------
+/* Org Dashboard Calculations Begin ----------------------------------
+--------------------------------------------------------------------*/
+
+/*----------------
+   Obtain dashboard daily data for organization
+  ----------------*/
 const getOrganizationDailyKwh = (data) => {
   let organizationDailyKwh = {};
 
@@ -18,7 +31,7 @@ const getOrganizationDailyKwh = (data) => {
     data.branches.forEach((eachBranch) => {
       const { dates, ...rest } = eachBranch.daily_kwh;
       const allDevicesDailyKwh = Object.values(rest);
-      const branchDailyKwh = sumArrayofArrays(allDevicesDailyKwh);
+      const branchDailyKwh = sumArrayOfArrays(allDevicesDailyKwh);
       organizationDailyKwh.dates = dates;
       organizationDailyKwh[eachBranch.name] = branchDailyKwh;
     });
@@ -26,14 +39,14 @@ const getOrganizationDailyKwh = (data) => {
   // Add total
   const { dates, ...rest } = organizationDailyKwh;
   const allBranchesDailyKwh = Object.values(rest);
-  const totalOrganizationDailyKwh = sumArrayofArrays(allBranchesDailyKwh);
+  const totalOrganizationDailyKwh = sumArrayOfArrays(allBranchesDailyKwh);
   organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
 
   return organizationDailyKwh;
 };
 
 /*----------------
-   Obtain monthly usage data for organization
+   Obtain dashboard monthly usage data for organization
   ----------------*/
 
 const getOrganizationMonthlyUsage = (data) => {
@@ -54,13 +67,15 @@ const getOrganizationMonthlyUsage = (data) => {
 };
 
 /*----------------
-   Collate energy data for each branch
+   Collate dashboard energy data for each branch
   ----------------*/
 const getBranchEnergyDataArray = (data) => {
   return (
     data.branches &&
     data.branches.map((eachBranch) => {
-      const energySumValueNames = Object.keys(eachBranch.devices[0]).filter(
+      const energySumValueNames = Object.keys(
+        eachBranch.devices[0].dashboard
+      ).filter(
         (eachName) =>
           !['name', 'id', 'avg_demand', 'min_demand', 'max_demand'].includes(
             eachName
@@ -70,14 +85,24 @@ const getBranchEnergyDataArray = (data) => {
       let branchEnergyData = {};
 
       energySumValueNames.forEach((eachName) => {
-        return (branchEnergyData[eachName] = sumValuesUp(
+        return (branchEnergyData[eachName] = sumNestedObjectValuesUp(
           eachBranch.devices,
+          'dashboard',
           eachName
         ));
       });
-      branchEnergyData.min_demand = getMinDemandObject(eachBranch.devices);
-      branchEnergyData.max_demand = getMaxDemandObject(eachBranch.devices);
-      branchEnergyData.avg_demand = getAvgDemandObject(eachBranch.devices);
+      branchEnergyData.min_demand = getNestedMinDemandObject(
+        eachBranch.devices,
+        'dashboard'
+      );
+      branchEnergyData.max_demand = getNestedMaxDemandObject(
+        eachBranch.devices,
+        'dashboard'
+      );
+      branchEnergyData.avg_demand = getNestedAvgDemandObject(
+        eachBranch.devices,
+        'dashboard'
+      );
 
       return branchEnergyData;
     })
@@ -85,7 +110,7 @@ const getBranchEnergyDataArray = (data) => {
 };
 
 /*----------------
-   Obtain energy data for organization
+   Obtain dashboard energy data for organization
   ----------------*/
 const getOrganizationEnergyData = (data) => {
   const eachBranchEnergyDataArray = getBranchEnergyDataArray(data);
@@ -97,7 +122,7 @@ const getOrganizationEnergyData = (data) => {
 
   energyValueNames &&
     energyValueNames.forEach((eachName) => {
-      return (organizationEnergyData[eachName] = sumValuesUp(
+      return (organizationEnergyData[eachName] = sumObjectValuesUp(
         eachBranchEnergyDataArray,
         eachName
       ));
@@ -115,21 +140,191 @@ const getOrganizationEnergyData = (data) => {
 
   return organizationEnergyData;
 };
-
 /*----------------
-   Obtain energy data for organization ends
+   Obtain dashboard energy data for organization ends
   ----------------*/
-const getRefinedOrganizationData = (data) => {
-  const organizationEnergyData = getOrganizationEnergyData(data);
-  const organizationDailyKwh = getOrganizationDailyKwh(data);
-  const organizationMonthlyUsage = getOrganizationMonthlyUsage(data);
+/* -------------------------------------------------------------------
+/* Org Dashboard Calculations End ------------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Org Score Card Calculations Begin ---------------------------------
+--------------------------------------------------------------------*/
+// Baseline Energies
+const getOrganizationBaselineEnergy = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const baselineEnergiesArray = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.score_card.baseline_energy
+  );
+
+  return sumBaselineEnergies(baselineEnergiesArray);
+};
+
+// Peak to Average Power Ratios
+const getOrganizationPeakToAveragePowerRatio = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const peakToAveragePowerRatioArray = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.score_card.peak_to_avg_power_ratio
+  );
+
+  return sumPeakToAveragePowerRatios(peakToAveragePowerRatioArray);
+};
+
+// Score Card Carbon Emissions
+const getOrganizationScoreCardCarbonEmissions = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const scoreCardCarbonEmissionsArray = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.score_card.score_card_carbon_emissions
+  );
+
+  return sumScoreCardCarbonEmissions(scoreCardCarbonEmissionsArray);
+};
+
+// Generator Size Efficiency
+const getOrgGeneratorSizeEfficiencyArray = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) =>
+    eachDevice.score_card.generator_size_efficiency
+      ? {
+          name: eachDevice.name,
+          ...eachDevice.score_card.generator_size_efficiency,
+        }
+      : false
+  );
+};
+
+// Change Over Lags
+const getOrganizationChangeOverLags = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  // Pick out dates for first device that is not false(a utility)
+  const organizationLagsDates = allOrganizationDevices
+    .map(
+      (eachDevice) =>
+        eachDevice.score_card.change_over_lags &&
+        eachDevice.score_card.change_over_lags.dates.values
+    )
+    .filter(Boolean)[0];
+
+  const dieselUnitLitrePrice = allOrganizationDevices
+    .map(
+      (eachDevice) =>
+        eachDevice.score_card.change_over_lags &&
+        eachDevice.score_card.change_over_lags.diesel_cost.diesel_litre_price
+    )
+    .filter(Boolean)[0];
+
+  const allDevicesLagValues = joinChangeOverLagsValues(
+    allOrganizationDevices,
+    'lags'
+  );
+  const organizationLagValues = {
+    values: sumArrayOfArrays(allDevicesLagValues),
+    unit: 'minutes',
+  };
+
+  const allDevicesDieselCostValues = joinChangeOverLagsValues(
+    allOrganizationDevices,
+    'diesel_cost'
+  );
+  const organizationDieselCostValues = {
+    values: sumArrayOfArrays(allDevicesDieselCostValues),
+    unit: 'litres',
+    diesel_litre_price: dieselUnitLitrePrice,
+  };
 
   return {
-    name: data.name,
-    ...organizationEnergyData,
-    daily_kwh: organizationDailyKwh,
-    usage_hours: organizationMonthlyUsage,
+    dates: { values: organizationLagsDates, unit: 'date' },
+    lags: organizationLagValues,
+    diesel_cost: organizationDieselCostValues,
   };
 };
 
-export { getRefinedOrganizationData };
+// Operating Time
+const getOrganizationOperatingTime = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const organizationOperatingTimeDates = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.score_card.operating_time.chart.dates
+  )[0];
+
+  const allDevicesOperatingTimeValues = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.score_card.operating_time.chart.values
+  );
+  const organizationOperatingTimeValues = sumArrayOfArrays(
+    allDevicesOperatingTimeValues
+  );
+
+  const organizationEstimatedTimeWasted = sumOperatingTimeValues(
+    allOrganizationDevices,
+    'estimated_time_wasted'
+  );
+  const organizationEstimatedDieselWasted = sumOperatingTimeValues(
+    allOrganizationDevices,
+    'estimated_diesel_wasted'
+  );
+  const organizationEstimatedDieselCost = sumOperatingTimeValues(
+    allOrganizationDevices,
+    'estimated_cost'
+  );
+
+  return {
+    chart: {
+      dates: organizationOperatingTimeDates,
+      values: organizationOperatingTimeValues,
+    },
+    estimated_time_wasted: {
+      unit: 'hours',
+      value: organizationEstimatedTimeWasted,
+    },
+    estimated_diesel_wasted: {
+      unit: 'litres',
+      value: organizationEstimatedDieselWasted,
+    },
+    estimated_cost: {
+      unit: 'naira',
+      value: organizationEstimatedDieselCost,
+    },
+  };
+};
+
+// Fuel Consumption
+const getOrganizationFuelConsumptionArray = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    if (eachDevice.score_card.fuel_consumption)
+      eachDevice.score_card.fuel_consumption.name = eachDevice.name;
+
+    return eachDevice.score_card.fuel_consumption
+      ? eachDevice.score_card.fuel_consumption
+      : false;
+  });
+};
+/* -------------------------------------------------------------------
+/* Org Score Card Calculations End -----------------------------------
+--------------------------------------------------------------------*/
+
+const getRefinedOrganizationData = (data) => {
+  return {
+    name: data.name,
+    // Dashboard Stuff
+    ...getOrganizationEnergyData(data),
+    daily_kwh: getOrganizationDailyKwh(data),
+    usage_hours: getOrganizationMonthlyUsage(data),
+    // Score Card Stuff
+    baseline_energy: getOrganizationBaselineEnergy(data),
+    peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
+    score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
+    generator_size_efficiency: getOrgGeneratorSizeEfficiencyArray(data),
+    change_over_lags: getOrganizationChangeOverLags(data),
+    operating_time: getOrganizationOperatingTime(data),
+    fuel_consumption: getOrganizationFuelConsumptionArray(data),
+  };
+};
+
+export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray };

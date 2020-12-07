@@ -1,24 +1,4 @@
-.breadcrumb-and-print-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.print-buttons {
-  display: flex;
-}
-
-.print-button-container {
-  margin-right: 20px;
-
-  &:last-of-type {
-    margin-right: 0;
-  }
-}
-
-.print-button {
-  border: 0;
-}
 
 .dashboard-row-1 {
   width: 100%;

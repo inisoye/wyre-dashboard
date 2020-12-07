@@ -1091,25 +1091,21 @@ p {
   }
 }
 
-.top-bar-short-button {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  height: 40px;
-}
-
-@media (min-width: 768px) {
-  .top-bar-short-button {
-    margin-top: 0;
-    margin-left: 20px;
-    height: 40px;
-    width: auto;
-  }
-}
-
 /*--------------------------------------------------------------
 # Breadcrumb
 --------------------------------------------------------------*/
+.breadcrumb-and-print-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .breadcrumb {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1146,6 +1142,34 @@ p {
   margin-left: 0;
 }
 
+.breadcrumb-text {
+  white-space: nowrap;
+}
+
+.print-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .print-buttons.h-hidden-medium-down {
+    display: none;
+  }
+}
+
+.print-button-container {
+  margin-right: 20px;
+}
+
+.print-button-container:last-of-type {
+  margin-right: 0;
+}
+
+.print-button {
+  border: 0;
+}
+
 /*--------------------------------------------------------------
 # Generic Main Content Styles
 --------------------------------------------------------------*/
@@ -1163,36 +1187,6 @@ p {
 /*--------------------------------------------------------------
 # Dashboard
 --------------------------------------------------------------*/
-.breadcrumb-and-print-buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.print-buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.print-button-container {
-  margin-right: 20px;
-}
-
-.print-button-container:last-of-type {
-  margin-right: 0;
-}
-
-.print-button {
-  border: 0;
-}
-
 .dashboard-row-1 {
   width: 100%;
 }

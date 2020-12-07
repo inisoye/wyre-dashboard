@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
-import CompleteDataContext from '../Context';
+import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../helpers/genericHelpers';
+import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const StackedBarChart = ({ data, organization }) => {
+const DashboardStackedBarChart = ({ data, organization }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
@@ -126,4 +126,4 @@ const StackedBarChart = ({ data, organization }) => {
   );
 };
 
-export default StackedBarChart;
+export default DashboardStackedBarChart;

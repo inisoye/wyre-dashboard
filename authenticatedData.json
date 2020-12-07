@@ -7,109 +7,322 @@
         "devices": [
           {
             "name": "Utility",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": false,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": false,
+              "change_over_lags": false,
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estmmated_diesel_wasted": false,
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": false
             },
             "id": 1
           },
           {
             "name": "Gen1",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": true,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": {
+                "size": "100kva",
+                "usage": 30,
+                "unit": "%"
+              },
+              "change_over_lags": {
+                "dates": {
+                  "values": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "unit": "date"
+                },
+                "lags": {
+                  "values": [15, 14, 60, 120, 90],
+                  "unit": "minutes"
+                },
+                "diesel_cost": {
+                  "values": [20, 10, 15, 30, 15],
+                  "unit": "litres",
+                  "diesel_litre_price": 240
+                }
+              },
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estmmated_diesel_wasted": {
+                  "unit": "litres",
+                  "value": 300
+                },
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": {
+                "name": "main_generator",
+                "size": "100kva",
+                "diesel_usage": 30,
+                "time_used": "12",
+                "hours_to_maintenence": {
+                  "hours": 23,
+                  "unit": "hours"
+                }
+              }
             },
             "id": 2
           },
           {
             "name": "Gen2",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": true,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": {
+                "size": "50kva",
+                "usage": 20,
+                "unit": "%"
+              },
+              "change_over_lags": {
+                "dates": {
+                  "values": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4, 2020",
+                    "jan 5, 2020"
+                  ],
+                  "unit": "date"
+                },
+                "lags": {
+                  "values": [15, 14, 60, 120, 90],
+                  "unit": "minutes"
+                },
+                "diesel_cost": {
+                  "values": [20, 10, 15, 30, 15],
+                  "unit": "litres",
+                  "diesel_litre_price": 240
+                }
+              },
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estimated_diesel_wasted": {
+                  "unit": "litres",
+                  "value": 300
+                },
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": {
+                "name": "secondary generator",
+                "size": "50kva",
+                "diesel_usage": 20,
+                "time_used": "13",
+                "hours_to_maintenence": {
+                  "hours": 23,
+                  "unit": "hours"
+                }
+              }
             },
             "id": 3
           }
@@ -259,109 +472,321 @@
         "devices": [
           {
             "name": "Utility",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": false,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": false,
+              "change_over_lags": false,
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estmmated_diesel_wasted": false,
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": false
             },
             "id": 1
           },
           {
             "name": "Gen1",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": true,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": {
+                "size": "100kva",
+                "usage": 30,
+                "unit": "%"
+              },
+              "change_over_lags": {
+                "dates": {
+                  "values": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "unit": "date"
+                },
+                "lags": {
+                  "values": [15, 14, 60, 120, 90],
+                  "unit": "minutes"
+                },
+                "diesel_cost": {
+                  "values": [20, 10, 15, 30, 15],
+                  "unit": "litres",
+                  "diesel_litre_price": 240
+                }
+              },
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estmmated_diesel_wasted": {
+                  "unit": "litres",
+                  "value": 300
+                },
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": {
+                "name": "main_generator",
+                "size": "100kva",
+                "diesel_usage": 30,
+                "time_used": "12",
+                "hours_to_maintenence": {
+                  "hours": 23,
+                  "unit": "hours"
+                }
+              }
             },
             "id": 2
           },
           {
             "name": "Gen2",
-            "total_kwh": {
-              "unit": "kwh",
-              "value": 1000
+            "dashboard": {
+              "total_kwh": {
+                "unit": "kwh",
+                "value": 1000
+              },
+              "min_demand": {
+                "unit": "kw",
+                "value": 200
+              },
+              "max_demand": {
+                "unit": "kw",
+                "value": 300
+              },
+              "avg_demand": {
+                "unit": "kw",
+                "value": 150
+              },
+              "dashboard_carbon_emissions": {
+                "unit": "tons",
+                "value": 34.25
+              },
+              "cost_of_energy": {
+                "unit": "naira",
+                "value": 4000
+              },
+              "today": {
+                "value": 150,
+                "unit": "kwh"
+              },
+              "yesterday": {
+                "value": 3000,
+                "unit": "kwh"
+              }
             },
-            "min_demand": {
-              "unit": "kw",
-              "value": 200
-            },
-            "max_demand": {
-              "unit": "kw",
-              "value": 300
-            },
-            "avg_demand": {
-              "unit": "kw",
-              "value": 150
-            },
-            "carbon_emissions": {
-              "unit": "tons",
-              "value": 34.25
-            },
-            "cost_of_energy": {
-              "unit": "naira",
-              "value": 4000
-            },
-            "today": {
-              "value": 150,
-              "unit": "kwh"
-            },
-            "yesterday": {
-              "value": 3000,
-              "unit": "kwh"
+            "score_card": {
+              "is_generator": true,
+              "baseline_energy": {
+                "unit": "kwh",
+                "forecast": 1000,
+                "used": 500
+              },
+              "peak_to_avg_power_ratio": {
+                "unit": "kw",
+                "peak": 1000,
+                "avg": 500,
+                "message": "Not so efficient, Higher is better",
+                "message_color": "green"
+              },
+              "score_card_carbon_emissions": {
+                "unit": "tons",
+                "estimated_value": 110,
+                "actual_value": 50,
+                "message": "Equivalent to 15 Acacia trees"
+              },
+              "generator_size_efficiency": {
+                "size": "50kva",
+                "usage": 20,
+                "unit": "%"
+              },
+              "change_over_lags": {
+                "dates": {
+                  "values": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4, 2020",
+                    "jan 5, 2020"
+                  ],
+                  "unit": "date"
+                },
+                "lags": {
+                  "values": [15, 14, 60, 120, 90],
+                  "unit": "minutes"
+                },
+                "diesel_cost": {
+                  "values": [20, 10, 15, 30, 15],
+                  "unit": "litres",
+                  "diesel_litre_price": 240
+                }
+              },
+              "operating_time": {
+                "chart": {
+                  "dates": [
+                    "jan 1 2020",
+                    "jan 2, 2020",
+                    "jan 3, 2020",
+                    "jan 4. 2020",
+                    "jan 5, 2020"
+                  ],
+                  "values": [12, 23, 43, 60, 2]
+                },
+                "estimated_time_wasted": {
+                  "unit": "hours",
+                  "value": 12
+                },
+                "estimated_diesel_wasted": {
+                  "unit": "litres",
+                  "value": 300
+                },
+                "estimated_cost": {
+                  "unit": "naira",
+                  "value": 12000
+                }
+              },
+              "fuel_consumption": {
+                "size": "50kva",
+                "diesel_usage": false,
+                "time_used": "13",
+                "hours_to_maintenence": {
+                  "hours": 23,
+                  "unit": "hours"
+                }
+              }
             },
             "id": 3
           }

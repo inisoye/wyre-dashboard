@@ -25,12 +25,10 @@ function SidebarOrganization({ orgData }) {
     <li className='sidebar-org'>
       <div className='sidebar-org__details'>
         <span>{orgData.name}</span>
-        {orgData.branches ? (
+        {orgData.branches && (
           <button className='sidebar-org__button' onClick={handleToggle}>
             {Icon}
           </button>
-        ) : (
-          ''
         )}
       </div>
 
