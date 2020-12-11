@@ -9,54 +9,54 @@
             "name": "Utility",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": false,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -66,13 +66,71 @@
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
@@ -80,7 +138,7 @@
                 },
                 "estmmated_diesel_wasted": false,
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
@@ -92,54 +150,54 @@
             "name": "Gen1",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": true,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -188,31 +246,89 @@
                   }
                 ],
                 "units": {
-                  "lag_duration": "minutes",
-                  "diesel_cost": "litres"
+                  "lag_duration": "Minutes",
+                  "diesel_cost": "Litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
                   "value": 12
                 },
                 "estmmated_diesel_wasted": {
-                  "unit": "litres",
+                  "unit": "Litres",
                   "value": 300
                 },
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
@@ -233,54 +349,54 @@
             "name": "Gen2",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": true,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -329,31 +445,89 @@
                   }
                 ],
                 "units": {
-                  "lag_duration": "minutes",
-                  "diesel_cost": "litres"
+                  "lag_duration": "Minutes",
+                  "diesel_cost": "Litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
                   "value": 12
                 },
                 "estimated_diesel_wasted": {
-                  "unit": "litres",
+                  "unit": "Litres",
                   "value": 300
                 },
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
@@ -518,54 +692,54 @@
             "name": "Utility",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": false,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -575,13 +749,71 @@
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
@@ -589,7 +821,7 @@
                 },
                 "estmmated_diesel_wasted": false,
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
@@ -601,54 +833,54 @@
             "name": "Gen1",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": true,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -697,31 +929,89 @@
                   }
                 ],
                 "units": {
-                  "lag_duration": "minutes",
-                  "diesel_cost": "litres"
+                  "lag_duration": "Minutes",
+                  "diesel_cost": "Litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
                   "value": 12
                 },
                 "estmmated_diesel_wasted": {
-                  "unit": "litres",
+                  "unit": "Litres",
                   "value": 300
                 },
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
@@ -742,54 +1032,54 @@
             "name": "Gen2",
             "dashboard": {
               "total_kwh": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "value": 1000
               },
               "min_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 200
               },
               "max_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 300
               },
               "avg_demand": {
-                "unit": "kw",
+                "unit": "kW",
                 "value": 150
               },
               "dashboard_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "value": 34.25
               },
               "cost_of_energy": {
-                "unit": "naira",
+                "unit": "Naira",
                 "value": 4000
               },
               "today": {
                 "value": 150,
-                "unit": "kwh"
+                "unit": "kWh"
               },
               "yesterday": {
                 "value": 3000,
-                "unit": "kwh"
+                "unit": "kWh"
               }
             },
             "score_card": {
               "is_generator": true,
               "baseline_energy": {
-                "unit": "kwh",
+                "unit": "kWh",
                 "forecast": 1000,
                 "used": 500
               },
               "peak_to_avg_power_ratio": {
-                "unit": "kw",
+                "unit": "kW",
                 "peak": 1000,
                 "avg": 500,
                 "message": "Not so efficient, Higher is better",
                 "message_color": "green"
               },
               "score_card_carbon_emissions": {
-                "unit": "tons",
+                "unit": "Tons",
                 "estimated_value": 110,
                 "actual_value": 50,
                 "message": "Equivalent to 15 Acacia trees"
@@ -838,31 +1128,89 @@
                   }
                 ],
                 "units": {
-                  "lag_duration": "minutes",
-                  "diesel_cost": "litres"
+                  "lag_duration": "Minutes",
+                  "diesel_cost": "Litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "Jan 1 2020",
-                    "Jan 2, 2020",
-                    "Jan 3, 2020",
-                    "Jan 4. 2020",
-                    "Jan 5, 2020"
+                    "Jan 1",
+                    "Jan 2",
+                    "Jan 3",
+                    "Jan 4",
+                    "Jan 5",
+                    "Jan 6",
+                    "Jan 7",
+                    "Jan 8",
+                    "Jan 9",
+                    "Jan 10",
+                    "Jan 11",
+                    "Jan 12",
+                    "Jan 13",
+                    "Jan 14",
+                    "Jan 15",
+                    "Jan 16",
+                    "Jan 17",
+                    "Jan 18",
+                    "Jan 19",
+                    "Jan 10",
+                    "Jan 21",
+                    "Jan 22",
+                    "Jan 23",
+                    "Jan 24",
+                    "Jan 25",
+                    "Jan 26",
+                    "Jan 27",
+                    "Jan 28",
+                    "Jan 29",
+                    "Jan 30",
+                    "Jan 31"
                   ],
-                  "values": [12, 23, 43, 60, 2]
+                  "values": [
+                    199,
+                    78,
+                    52,
+                    140,
+                    111,
+                    44,
+                    186,
+                    122,
+                    12,
+                    158,
+                    174,
+                    51,
+                    218,
+                    88,
+                    196,
+                    154,
+                    70,
+                    47,
+                    54,
+                    189,
+                    17,
+                    217,
+                    25,
+                    164,
+                    243,
+                    20,
+                    5,
+                    39,
+                    227,
+                    168,
+                    161
+                  ]
                 },
                 "estimated_time_wasted": {
                   "unit": "hours",
                   "value": 12
                 },
                 "estimated_diesel_wasted": {
-                  "unit": "litres",
+                  "unit": "Litres",
                   "value": 300
                 },
                 "estimated_cost": {
-                  "unit": "naira",
+                  "unit": "Naira",
                   "value": 12000
                 }
               },
