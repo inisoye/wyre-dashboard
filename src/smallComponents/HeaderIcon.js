@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function HeaderIcon({ children, count, countClassName, iconClassName }) {
+function HeaderIcon({ children, count, countClassName, iconClassName, onClick }) {
   return (
-    <Link className={`${iconClassName} header-icon`} to=''>
+    <Link onClick={onClick} className={`${iconClassName} header-icon`} to=''>
       {children}
       <span className={countClassName}>{count}</span>
     </Link>

@@ -98,6 +98,14 @@
   margin-right: 16px;
 }
 
+.h-mt-16 {
+  margin-top: 16px;
+}
+
+.h-mt-24 {
+  margin-top: 24px;
+}
+
 .h-no-margin {
   margin: 0;
 }
@@ -112,4 +120,12 @@
   @include media('>=medium') {
     stroke: $purple;
   }
+}
+
+.h-red-text {
+  color: $red;
+}
+
+.h-green-text {
+  color: $green;
 }

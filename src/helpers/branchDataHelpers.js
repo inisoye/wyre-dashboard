@@ -7,7 +7,6 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
-  joinChangeOverLagsValues,
   sumOperatingTimeValues,
 } from '../helpers/genericHelpers';
 
@@ -132,44 +131,48 @@ const getBranchGeneratorSizeEfficiencyArray = (data) => {
 
 // Change Over Lags
 const getBranchChangeOverLags = (data) => {
-  // Pick out dates for first device that is not false(a utility)
-  const branchLagsDates = data.devices
-    .map(
-      (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags.dates.values
-    )
+  // Get Units First
+  const changeOverLagUnits = data.devices
+    .map((eachDevice) => eachDevice.score_card.change_over_lags.units)
     .filter(Boolean)[0];
 
-  const dieselUnitLitrePrice = data.devices
-    .map(
-      (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags.diesel_cost.diesel_litre_price
-    )
-    .filter(Boolean)[0];
+  // Get Data
+  const allDevicesChangeOverLagData = data.devices
+    .map((eachDevice) => eachDevice.score_card.change_over_lags.data)
+    .filter(Boolean)
+    .flat();
 
-  const allDevicesLagValues = joinChangeOverLagsValues(data.devices, 'lags');
-  const branchLagValues = {
-    values: sumArrayOfArrays(allDevicesLagValues),
-    unit: 'minutes',
-  };
-
-  const allDevicesDieselCostValues = joinChangeOverLagsValues(
-    data.devices,
-    'diesel_cost'
+  // Group data by date
+  const groupedBranchChangeOverLags = allDevicesChangeOverLagData.reduce(
+    function (acc, curr) {
+      acc[curr.date] = acc[curr.date] || [];
+      acc[curr.date].push(curr);
+      return acc;
+    },
+    Object.create(null)
   );
-  const branchDieselCostValues = {
-    values: sumArrayOfArrays(allDevicesDieselCostValues),
-    unit: 'litres',
-    diesel_litre_price: dieselUnitLitrePrice,
-  };
 
-  return {
-    dates: { values: branchLagsDates, unit: 'date' },
-    lags: branchLagValues,
-    diesel_cost: branchDieselCostValues,
-  };
+  const branchChangeOverLagsData = [];
+
+  // Add up values at each date, without adding up(or concatenating) the dates
+  for (const date in groupedBranchChangeOverLags) {
+    const summedChangeOverLag = groupedBranchChangeOverLags[date].reduce(
+      (acc, curr) => {
+        for (const prop in curr) {
+          if (acc.hasOwnProperty(prop) && prop !== 'date' && prop !== 'id')
+            acc[prop] += curr[prop];
+          else acc[prop] = curr[prop];
+        }
+        return acc;
+      },
+      {}
+    );
+
+    // Push summed values to change over lags array
+    branchChangeOverLagsData.push(summedChangeOverLag);
+  }
+
+  return { data: branchChangeOverLagsData, units: changeOverLagUnits };
 };
 
 // Operating Time

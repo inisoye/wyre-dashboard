@@ -220,8 +220,12 @@
   left: 13px;
   padding: 1px;
   position: absolute;
-  top: -6px;
+  top: -13px;
   width: 15px;
+
+  @include media('>medium') {
+     top: -6px;
+  }
 }
 
 .header-avater-container.h-hidden-medium-up {

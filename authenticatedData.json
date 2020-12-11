@@ -66,11 +66,11 @@
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -150,34 +150,56 @@
                 "unit": "%"
               },
               "change_over_lags": {
-                "dates": {
-                  "values": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
-                  ],
-                  "unit": "date"
-                },
-                "lags": {
-                  "values": [15, 14, 60, 120, 90],
-                  "unit": "minutes"
-                },
-                "diesel_cost": {
-                  "values": [20, 10, 15, 30, 15],
-                  "unit": "litres",
-                  "diesel_litre_price": 240
+                "data": [
+                  {
+                    "date": "Jan 1 2020",
+                    "lag_duration": 15,
+                    "diesel_cost": 20,
+                    "diesel_value": 4800,
+                    "id": 1
+                  },
+                  {
+                    "date": "Jan 2 2020",
+                    "lag_duration": 14,
+                    "diesel_cost": 10,
+                    "diesel_value": 2400,
+                    "id": 2
+                  },
+                  {
+                    "date": "Jan 3 2020",
+                    "lag_duration": 60,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 3
+                  },
+                  {
+                    "date": "Jan 4 2020",
+                    "lag_duration": 120,
+                    "diesel_cost": 30,
+                    "diesel_value": 7200,
+                    "id": 4
+                  },
+                  {
+                    "date": "Jan 5 2020",
+                    "lag_duration": 90,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 5
+                  }
+                ],
+                "units": {
+                  "lag_duration": "minutes",
+                  "diesel_cost": "litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -199,7 +221,7 @@
                 "size": "100kva",
                 "diesel_usage": 30,
                 "time_used": "12",
-                "hours_to_maintenence": {
+                "hours_to_maintenance": {
                   "hours": 23,
                   "unit": "hours"
                 }
@@ -269,34 +291,56 @@
                 "unit": "%"
               },
               "change_over_lags": {
-                "dates": {
-                  "values": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4, 2020",
-                    "jan 5, 2020"
-                  ],
-                  "unit": "date"
-                },
-                "lags": {
-                  "values": [15, 14, 60, 120, 90],
-                  "unit": "minutes"
-                },
-                "diesel_cost": {
-                  "values": [20, 10, 15, 30, 15],
-                  "unit": "litres",
-                  "diesel_litre_price": 240
+                "data": [
+                  {
+                    "date": "Jan 1 2020",
+                    "lag_duration": 15,
+                    "diesel_cost": 20,
+                    "diesel_value": 4800,
+                    "id": 1
+                  },
+                  {
+                    "date": "Jan 2 2020",
+                    "lag_duration": 14,
+                    "diesel_cost": 10,
+                    "diesel_value": 2400,
+                    "id": 2
+                  },
+                  {
+                    "date": "Jan 3 2020",
+                    "lag_duration": 60,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 3
+                  },
+                  {
+                    "date": "Jan 4 2020",
+                    "lag_duration": 120,
+                    "diesel_cost": 30,
+                    "diesel_value": 7200,
+                    "id": 4
+                  },
+                  {
+                    "date": "Jan 5 2020",
+                    "lag_duration": 90,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 5
+                  }
+                ],
+                "units": {
+                  "lag_duration": "minutes",
+                  "diesel_cost": "litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -318,7 +362,7 @@
                 "size": "50kva",
                 "diesel_usage": 20,
                 "time_used": "13",
-                "hours_to_maintenence": {
+                "hours_to_maintenance": {
                   "hours": 23,
                   "unit": "hours"
                 }
@@ -531,11 +575,11 @@
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -615,34 +659,56 @@
                 "unit": "%"
               },
               "change_over_lags": {
-                "dates": {
-                  "values": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
-                  ],
-                  "unit": "date"
-                },
-                "lags": {
-                  "values": [15, 14, 60, 120, 90],
-                  "unit": "minutes"
-                },
-                "diesel_cost": {
-                  "values": [20, 10, 15, 30, 15],
-                  "unit": "litres",
-                  "diesel_litre_price": 240
+                "data": [
+                  {
+                    "date": "Jan 1 2020",
+                    "lag_duration": 15,
+                    "diesel_cost": 20,
+                    "diesel_value": 4800,
+                    "id": 1
+                  },
+                  {
+                    "date": "Jan 2 2020",
+                    "lag_duration": 14,
+                    "diesel_cost": 10,
+                    "diesel_value": 2400,
+                    "id": 2
+                  },
+                  {
+                    "date": "Jan 3 2020",
+                    "lag_duration": 60,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 3
+                  },
+                  {
+                    "date": "Jan 4 2020",
+                    "lag_duration": 120,
+                    "diesel_cost": 30,
+                    "diesel_value": 7200,
+                    "id": 4
+                  },
+                  {
+                    "date": "Jan 5 2020",
+                    "lag_duration": 90,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 5
+                  }
+                ],
+                "units": {
+                  "lag_duration": "minutes",
+                  "diesel_cost": "litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -664,7 +730,7 @@
                 "size": "100kva",
                 "diesel_usage": 30,
                 "time_used": "12",
-                "hours_to_maintenence": {
+                "hours_to_maintenance": {
                   "hours": 23,
                   "unit": "hours"
                 }
@@ -734,34 +800,56 @@
                 "unit": "%"
               },
               "change_over_lags": {
-                "dates": {
-                  "values": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4, 2020",
-                    "jan 5, 2020"
-                  ],
-                  "unit": "date"
-                },
-                "lags": {
-                  "values": [15, 14, 60, 120, 90],
-                  "unit": "minutes"
-                },
-                "diesel_cost": {
-                  "values": [20, 10, 15, 30, 15],
-                  "unit": "litres",
-                  "diesel_litre_price": 240
+                "data": [
+                  {
+                    "date": "Jan 1 2020",
+                    "lag_duration": 15,
+                    "diesel_cost": 20,
+                    "diesel_value": 4800,
+                    "id": 1
+                  },
+                  {
+                    "date": "Jan 2 2020",
+                    "lag_duration": 14,
+                    "diesel_cost": 10,
+                    "diesel_value": 2400,
+                    "id": 2
+                  },
+                  {
+                    "date": "Jan 3 2020",
+                    "lag_duration": 60,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 3
+                  },
+                  {
+                    "date": "Jan 4 2020",
+                    "lag_duration": 120,
+                    "diesel_cost": 30,
+                    "diesel_value": 7200,
+                    "id": 4
+                  },
+                  {
+                    "date": "Jan 5 2020",
+                    "lag_duration": 90,
+                    "diesel_cost": 15,
+                    "diesel_value": 3600,
+                    "id": 5
+                  }
+                ],
+                "units": {
+                  "lag_duration": "minutes",
+                  "diesel_cost": "litres"
                 }
               },
               "operating_time": {
                 "chart": {
                   "dates": [
-                    "jan 1 2020",
-                    "jan 2, 2020",
-                    "jan 3, 2020",
-                    "jan 4. 2020",
-                    "jan 5, 2020"
+                    "Jan 1 2020",
+                    "Jan 2, 2020",
+                    "Jan 3, 2020",
+                    "Jan 4. 2020",
+                    "Jan 5, 2020"
                   ],
                   "values": [12, 23, 43, 60, 2]
                 },
@@ -782,7 +870,7 @@
                 "size": "50kva",
                 "diesel_usage": false,
                 "time_used": "13",
-                "hours_to_maintenence": {
+                "hours_to_maintenance": {
                   "hours": 23,
                   "unit": "hours"
                 }

@@ -54,28 +54,52 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink url='/' linkText='Dashboard' />
-            <HeaderLink url='/score-card' linkText='Score Card' />
-            <HeaderLink url='/parameters' linkText='Parameters' />
-            <HeaderLink url='/report' linkText='Report' />
-            <HeaderLink url='/cost-tracker' linkText='Cost Tracker' />
-            <HeaderLink url='/billing' linkText='Billing' />
-            <HeaderLink url='/messages' linkText='Messages' />
+            <HeaderLink onClick={toggleNav} url='/' linkText='Dashboard' />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/score-card'
+              linkText='Score Card'
+            />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/parameters'
+              linkText='Parameters'
+            />
+            <HeaderLink onClick={toggleNav} url='/report' linkText='Report' />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/cost-tracker'
+              linkText='Cost Tracker'
+            />
+            <HeaderLink onClick={toggleNav} url='/billing' linkText='Billing' />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/messages'
+              linkText='Messages'
+            />
 
             <li className='header-nav-list__item h-hidden-1296-up'>
-              <HeaderIcon count={4} countClassName='header-icon__count'>
+              <HeaderIcon
+                onClick={toggleNav}
+                count={4}
+                countClassName='header-icon__count'
+              >
                 <MessageIcon className='header-icon__image' />
               </HeaderIcon>
             </li>
 
             <li className='header-nav-list__item h-hidden-1296-up'>
-              <HeaderIcon count={2} countClassName='header-icon__count'>
+              <HeaderIcon
+                onClick={toggleNav}
+                count={2}
+                countClassName='header-icon__count'
+              >
                 <NotificationIcon className='header-icon__image' />
               </HeaderIcon>
             </li>
 
             <li className='header-nav-list__item header-avater-container h-hidden-1296-up'>
-              <button className='header-avatar'>
+              <button onClick={toggleNav} className='header-avatar'>
                 <img src={avatar} alt='' />
               </button>
             </li>

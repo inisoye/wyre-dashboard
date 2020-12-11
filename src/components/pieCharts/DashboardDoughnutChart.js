@@ -3,11 +3,11 @@ import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import CompleteDataContext from '../../Context';
 
-const DashboardDoughnutChart = (data) => {
+const DashboardDoughnutChart = ({ data }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
 
-  const { devices, hours } = data.data
-    ? data.data
+  const { devices, hours } = data
+    ? data
     : { devices: ['Empty'], hours: ['Empty'] };
 
   const plottedData = {

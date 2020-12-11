@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import CompleteDataContext from '../Context';
 
-import DateTimePicker from '../smallComponents/DateTimePicker';
+import DateTimePicker from './DateTimePicker';
 
 function TopBar() {
   const { isSidebarOpen } = useContext(CompleteDataContext);

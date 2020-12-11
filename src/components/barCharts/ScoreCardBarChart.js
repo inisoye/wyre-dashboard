@@ -1,0 +1,121 @@
+import React, { useContext } from 'react';
+import { Bar } from 'react-chartjs-2';
+import CompleteDataContext from '../../Context';
+
+const VerticalBar = ({ operatingTimeData }) => {
+  const { isMediumScreen } = useContext(CompleteDataContext);
+
+  const options = {
+    legend: {
+      display: false,
+    },
+    maintainAspectRatio: false,
+    scales: {
+      yAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            beginAtZero: true,
+            fontFamily: 'Roboto',
+            fontColor: '#A3A3A3',
+            maxTicksLimit: 6,
+            fontSize: 10,
+            padding: 0,
+          },
+          scaleLabel: {
+            display: true,
+            padding: 10,
+            labelString: 'Wastage',
+            fontColor: 'black',
+            fontSize: isMediumScreen ? 14 : 18,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            beginAtZero: true,
+            fontFamily: 'Montserrat',
+            fontColor: '#A3A3A3',
+            maxTicksLimit: 6,
+            padding: 0,
+            fontSize: 12,
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Days of the Month',
+            fontColor: 'black',
+            fontSize: isMediumScreen ? 14 : 18,
+          },
+        },
+      ],
+    },
+  };
+
+  const {
+    chart,
+    estimated_time_wasted,
+    estimated_diesel_wasted,
+    estimated_cost,
+  } = operatingTimeData
+    ? operatingTimeData
+    : {
+        chart: {},
+        estimated_time_wasted: {},
+        estimated_diesel_wasted: {},
+        estimated_cost: {},
+      };
+
+  const chartDays = chart.dates && chart.dates.map((day) => day.slice(4, 5));
+  const chartValues = chart.values;
+
+  const timeWasted =
+    estimated_time_wasted.value + ' ' + estimated_time_wasted.unit;
+
+  const dieselWasted =
+    estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
+
+  const data = {
+    labels: chartDays,
+    datasets: [
+      {
+        label: 'Wastage',
+        maxBarThickness: 60,
+        data: chartValues,
+        backgroundColor: '#6c00fa',
+        borderColor: '#6c00fa',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <div className='score-card-bar-chart-container'>
+      <div className='h-flex'>
+        <h2 className='score-card-heading'>Operating Time</h2>
+        <div className='score-card-bar-chart__text-wrapper'>
+          <p>
+            Total Waste: <strong>{dieselWasted}</strong>
+          </p>
+          <p>
+            Total Cost: <strong>{`₦ ${estimated_cost.value}`}</strong>
+          </p>
+          <p>
+            Total Time: <strong>{timeWasted}</strong>
+          </p>
+        </div>
+      </div>
+
+      <div className='score-card-bar-chart__chart-wrapper'>
+        <Bar data={data} options={options} />
+      </div>
+    </div>
+  );
+};
+
+export default VerticalBar;

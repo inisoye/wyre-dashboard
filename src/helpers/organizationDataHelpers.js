@@ -12,7 +12,6 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
-  joinChangeOverLagsValues,
   sumOperatingTimeValues,
 } from './genericHelpers';
 
@@ -201,47 +200,48 @@ const getOrgGeneratorSizeEfficiencyArray = (data) => {
 const getOrganizationChangeOverLags = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
-  // Pick out dates for first device that is not false(a utility)
-  const organizationLagsDates = allOrganizationDevices
-    .map(
-      (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags.dates.values
-    )
+  // Get Units First
+  const changeOverLagUnits = allOrganizationDevices
+    .map((eachDevice) => eachDevice.score_card.change_over_lags.units)
     .filter(Boolean)[0];
 
-  const dieselUnitLitrePrice = allOrganizationDevices
-    .map(
-      (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags.diesel_cost.diesel_litre_price
-    )
-    .filter(Boolean)[0];
+  // Get Data
+  const allDevicesChangeOverLagData = allOrganizationDevices
+    .map((eachDevice) => eachDevice.score_card.change_over_lags.data)
+    .filter(Boolean)
+    .flat();
 
-  const allDevicesLagValues = joinChangeOverLagsValues(
-    allOrganizationDevices,
-    'lags'
+  // Group data by date
+  const groupedOrganizationChangeOverLags = allDevicesChangeOverLagData.reduce(
+    function (acc, curr) {
+      acc[curr.date] = acc[curr.date] || [];
+      acc[curr.date].push(curr);
+      return acc;
+    },
+    Object.create(null)
   );
-  const organizationLagValues = {
-    values: sumArrayOfArrays(allDevicesLagValues),
-    unit: 'minutes',
-  };
 
-  const allDevicesDieselCostValues = joinChangeOverLagsValues(
-    allOrganizationDevices,
-    'diesel_cost'
-  );
-  const organizationDieselCostValues = {
-    values: sumArrayOfArrays(allDevicesDieselCostValues),
-    unit: 'litres',
-    diesel_litre_price: dieselUnitLitrePrice,
-  };
+  const organizationChangeOverLagsData = [];
 
-  return {
-    dates: { values: organizationLagsDates, unit: 'date' },
-    lags: organizationLagValues,
-    diesel_cost: organizationDieselCostValues,
-  };
+  // Add up values at each date, without adding up(or concatenating) the dates
+  for (const date in groupedOrganizationChangeOverLags) {
+    const summedChangeOverLag = groupedOrganizationChangeOverLags[date].reduce(
+      (acc, curr) => {
+        for (const prop in curr) {
+          if (acc.hasOwnProperty(prop) && prop !== 'date' && prop !== 'id')
+            acc[prop] += curr[prop];
+          else acc[prop] = curr[prop];
+        }
+        return acc;
+      },
+      {}
+    );
+
+    // Push summed values to change over lags array
+    organizationChangeOverLagsData.push(summedChangeOverLag);
+  }
+
+  return { data: organizationChangeOverLagsData, units: changeOverLagUnits };
 };
 
 // Operating Time

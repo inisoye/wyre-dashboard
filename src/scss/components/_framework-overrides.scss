@@ -1,0 +1,151 @@
+/*--------------------------------------------------------------
+# Date Time Picker
+--------------------------------------------------------------*/
+:root {
+  --antd-wave-shadow-color: $purple;
+}
+
+.date-range-picker-containers {
+  width: 100%;
+
+  @include media('>=medium') {
+    max-width: 285px;
+  }
+}
+
+.date-range-picker {
+  border-radius: 8px;
+  height: 40px;
+  width: 100%;
+
+  @include media('>=medium') {
+    max-width: 285px;
+  }
+
+  * {
+    font-size: 1.2rem !important;
+  }
+}
+
+.ant-picker-focused,
+.ant-picker:hover {
+  border-bottom-color: $purple;
+  border-color: $purple;
+}
+
+.ant-picker-focused {
+  // Use lightened purple
+  box-shadow: scale-color($purple, $lightness: 90%) 0px 0px 0px 2px;
+}
+
+.ant-picker-range .ant-picker-active-bar {
+  background-color: $purple;
+}
+
+.ant-picker-dropdown {
+  * {
+    font-size: 1.2rem !important;
+  }
+
+  .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner,
+  .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+  .ant-btn-primary {
+    background-color: $purple;
+    color: $white;
+  }
+
+  .ant-btn-primary {
+    border-radius: 8px;
+    border: 0;
+  }
+
+  .ant-picker-cell .ant-picker-cell-inner {
+    border-color: $purple;
+  }
+
+  .ant-picker-cell-inner::before {
+    border-color: $purple !important;
+  }
+
+  .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+  .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
+    background-color: scale-color($purple, $lightness: 90%);
+  }
+
+  .ant-picker-time-panel-column
+    > li.ant-picker-time-panel-cell-selected
+    .ant-picker-time-panel-cell-inner {
+    background-color: scale-color($purple, $lightness: 90%);
+  }
+}
+
+/*--------------------------------------------------------------
+# Table
+--------------------------------------------------------------*/
+.ant-table-filter-column-title {
+  font-size: 1.4rem;
+  font-weight: $regular;
+}
+
+.ant-table-cell {
+  font-size: 1.3rem;
+  font-weight: $light;
+}
+
+.ant-pagination-item-active,
+.ant-pagination-item-active:focus,
+.ant-pagination-item-active:hover {
+  border-color: $purple;
+
+  a {
+    color: $purple;
+  }
+}
+
+.table-striped-rows tr:nth-child(2n) {
+  background-color: $purplegrey;
+
+  &:hover {
+    background-color: $purplegrey;
+  }
+}
+
+thead.ant-table-thead {
+  background-color: $white;
+  border-bottom: 1px solid $border-grey1;
+
+  tr {
+    background-color: $white;
+    border-bottom: 1px solid $border-grey1;
+
+    th {
+      background-color: $white;
+      border-bottom: 1px solid $border-grey1;
+    }
+  }
+}
+
+.ant-input,
+.ant-input:hover,
+.ant-input:focus {
+  border-color: $purple !important;
+  outline-color: $purple !important;
+}
+
+.ant-table-filter-dropdown {
+  .ant-btn:hover,
+  .ant-btn:focus {
+    border-color: $purple !important;
+    color: $purple;
+  }
+
+  .ant-btn-primary,
+  .ant-btn-primary:hover .ant-btn-primary:focus {
+    background-color: $purple !important;
+    color: $white !important; 
+    border-color: $purple !important;
+  }
+}

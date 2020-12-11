@@ -33,6 +33,18 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
+const calculateRatio = (num_1, num_2) => {
+  for (let num = num_2; num > 1; num--) {
+    if (num_1 % num === 0 && num_2 % num === 0) {
+      num_1 = num_1 / num;
+      num_2 = num_2 / num;
+    }
+  }
+  const ratio = num_1 + ':' + num_2;
+  return ratio;
+};
+
+const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -218,7 +230,11 @@ const sumScoreCardCarbonEmissions = (array) => {
   const estimatedTotal = estimatedValues.reduce((acc, curr) => acc + curr, 0);
   const actualTotal = actualValues.reduce((acc, curr) => acc + curr, 0);
 
-  return { unit: 'tons', estimated_value: estimatedTotal, used: actualTotal };
+  return {
+    unit: 'tons',
+    estimated_value: estimatedTotal,
+    actual_value: actualTotal,
+  };
 };
 
 const joinChangeOverLagsValues = (parentArray, nestedValue) => {
@@ -249,6 +265,8 @@ export {
   toCamelCase,
   toKebabCase,
   sumArrayOfArrays,
+  calculateRatio,
+  calculatePercentage,
   getAllOrganizationDevices,
   sumObjectValuesUp,
   sumNestedObjectValuesUp,

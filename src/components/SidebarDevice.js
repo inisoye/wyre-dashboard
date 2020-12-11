@@ -51,11 +51,9 @@ function SidebarDevice({
     fuel_consumption,
   } = deviceData.score_card;
 
-  // Add name to generator size efficiency data
+  // Add name to generator size efficiency & fuel consumption data
   if (generator_size_efficiency)
     generator_size_efficiency.name = modifiedDeviceName;
-
-  // console.log(generator_size_efficiency);
 
   if (fuel_consumption) fuel_consumption.name = modifiedDeviceName;
 

@@ -136,54 +136,50 @@ const getSelectionGeneratorSizeEfficiencyArray = (data) => {
 
 // Change Over Lags
 const getSelectionChangeOverLags = (data) => {
-  // Pick out dates for first device that is not false(a utility)
-  const selectionLagsDates = data
-    .map(
-      (eachItem) =>
-        eachItem.change_over_lags && eachItem.change_over_lags.dates.values
-    )
+  // Get Units First
+  const changeOverLagUnits = data
+    .map((eachSelection) => eachSelection.change_over_lags.units)
     .filter(Boolean)[0];
 
-  const dieselUnitLitrePrice = data
-    .map(
-      (eachItem) =>
-        eachItem.change_over_lags &&
-        eachItem.change_over_lags.diesel_cost.diesel_litre_price
-    )
-    .filter(Boolean)[0];
+  // Get Data
+  const allSelectionsChangeOverLagData = data
+    .map((eachSelection) => eachSelection.change_over_lags.data)
+    .filter(Boolean)
+    .flat();
 
-  // create custom joiner function (excludes 'score-card' nesting)
-  const joinChangeOverLagsValues = (parentArray, nestedValue) => {
-    return parentArray
-      .map(
-        (eachSelection) =>
-          eachSelection.change_over_lags &&
-          eachSelection.change_over_lags[nestedValue].values
-      )
-      .filter(Boolean);
-  };
-
-  const allSelectionsLagValues = joinChangeOverLagsValues(data, 'lags');
-  const selectionLagValues = {
-    values: sumArrayOfArrays(allSelectionsLagValues),
-    unit: 'minutes',
-  };
-
-  const allSelectionsDieselCostValues = joinChangeOverLagsValues(
-    data,
-    'diesel_cost'
+  // Group data by date
+  const groupedSelectionChangeOverLags = allSelectionsChangeOverLagData.reduce(
+    function (acc, curr) {
+      acc[curr.date] = acc[curr.date] || [];
+      acc[curr.date].push(curr);
+      return acc;
+    },
+    Object.create(null)
   );
-  const selectionDieselCostValues = {
-    values: sumArrayOfArrays(allSelectionsDieselCostValues),
-    unit: 'litres',
-    diesel_litre_price: dieselUnitLitrePrice,
-  };
 
-  return {
-    dates: { values: selectionLagsDates, unit: 'date' },
-    lags: selectionLagValues,
-    diesel_cost: selectionDieselCostValues,
-  };
+  const selectionChangeOverLagsData = [];
+
+  // Add up values at each date, without adding up(or concatenating) the dates
+  for (const date in groupedSelectionChangeOverLags) {
+    const summedChangeOverLag = groupedSelectionChangeOverLags[date].reduce(
+      (acc, curr) => {
+        for (const prop in curr) {
+          if (acc.hasOwnProperty(prop) && prop !== 'date' && prop !== 'id')
+            acc[prop] += curr[prop];
+          else acc[prop] = curr[prop];
+        }
+        return acc;
+      },
+      {}
+    );
+
+    // Push summed values to change over lags array
+    selectionChangeOverLagsData.push(summedChangeOverLag);
+  }
+
+  console.log({ data: selectionChangeOverLagsData, units: changeOverLagUnits });
+
+  return { data: selectionChangeOverLagsData, units: changeOverLagUnits };
 };
 
 // Operating Time
