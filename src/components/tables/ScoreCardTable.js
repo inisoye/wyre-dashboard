@@ -1,7 +1,9 @@
 import React from 'react';
-import { Table, Input, Button, Space } from 'antd';
+import { Table, Input, Button, Space, Typography } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+
+const { Text } = Typography;
 
 class ScoreCardTable extends React.Component {
   state = {
@@ -107,19 +109,19 @@ class ScoreCardTable extends React.Component {
         ...this.getColumnSearchProps('date'),
       },
       {
-        title: 'Change Over Lags',
+        title: `Change Over Lags (${units.lag_duration})`,
         dataIndex: 'lag_duration',
         key: 'lag_duration',
         ...this.getColumnSearchProps('lag_duration'),
       },
       {
-        title: 'Diesel Cost',
+        title: `Diesel Cost (${units.diesel_cost})`,
         dataIndex: 'diesel_cost',
         key: 'diesel_cost',
         ...this.getColumnSearchProps('diesel_cost'),
       },
       {
-        title: 'Value',
+        title: 'Value (Naira)',
         dataIndex: 'diesel_value',
         key: 'diesel_value',
         ...this.getColumnSearchProps('diesel_value'),
@@ -134,6 +136,34 @@ class ScoreCardTable extends React.Component {
           dataSource={data}
           rowKey='id'
           pagination={{ position: ['none', 'bottomCenter'] }}
+          summary={(pageData) => {
+            let totalLagDuration = 0;
+            let totalDieselCost = 0;
+            let totalDieselValue = 0;
+
+            pageData.forEach(({ lag_duration, diesel_cost, diesel_value }) => {
+              totalLagDuration += lag_duration;
+              totalDieselCost += diesel_cost;
+              totalDieselValue += diesel_value;
+            });
+
+            return (
+              <>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell>Total:</Table.Summary.Cell>
+                  <Table.Summary.Cell>
+                    <Text>{totalLagDuration}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell>
+                    <Text>{totalDieselCost}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell>
+                    <Text>{totalDieselValue}</Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </>
+            );
+          }}
         />
       </>
     );

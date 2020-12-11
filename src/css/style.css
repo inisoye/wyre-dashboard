@@ -710,6 +710,11 @@ thead.ant-table-thead tr th {
   border-color: #6c00fa !important;
 }
 
+.ant-table-summary .ant-table-cell {
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
 /*--------------------------------------------------------------
 # Small Components
 --------------------------------------------------------------*/

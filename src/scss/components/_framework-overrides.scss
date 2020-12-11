@@ -145,7 +145,14 @@ thead.ant-table-thead {
   .ant-btn-primary,
   .ant-btn-primary:hover .ant-btn-primary:focus {
     background-color: $purple !important;
-    color: $white !important; 
+    color: $white !important;
     border-color: $purple !important;
+  }
+}
+
+.ant-table-summary {
+  .ant-table-cell {
+    font-weight: $semi-bold;
+    font-size: 1.6rem;
   }
 }
