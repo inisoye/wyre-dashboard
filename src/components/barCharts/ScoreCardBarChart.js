@@ -81,11 +81,13 @@ const VerticalBar = ({ operatingTimeData }) => {
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
 
+  console.log(chart);
+
   const data = {
     labels: isMediumScreen
-      ? getLastArrayItems(chart.dates, 7)
+      ? chart.dates && getLastArrayItems(chart.dates, 7)
       : isLessThan1296
-      ? getLastArrayItems(chart.dates, 14)
+      ? chart.dates && getLastArrayItems(chart.dates, 14)
       : chart.dates,
     datasets: [
       {
