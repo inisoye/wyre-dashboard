@@ -109,13 +109,13 @@ class ScoreCardTable extends React.Component {
         ...this.getColumnSearchProps('date'),
       },
       {
-        title: `Change Over Lags (${units.lag_duration})`,
+        title: `Change Over Lags (${units && units.lag_duration})`,
         dataIndex: 'lag_duration',
         key: 'lag_duration',
         ...this.getColumnSearchProps('lag_duration'),
       },
       {
-        title: `Diesel Cost (${units.diesel_cost})`,
+        title: `Diesel Cost (${units && units.diesel_cost})`,
         dataIndex: 'diesel_cost',
         key: 'diesel_cost',
         ...this.getColumnSearchProps('diesel_cost'),
