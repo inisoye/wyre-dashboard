@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
+import { getLastArrayItems } from '../../helpers/genericHelpers';
+
 const VerticalBar = ({ operatingTimeData }) => {
-  const { isMediumScreen } = useContext(CompleteDataContext);
+  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
     legend: {
@@ -42,7 +44,7 @@ const VerticalBar = ({ operatingTimeData }) => {
             beginAtZero: true,
             fontFamily: 'Montserrat',
             fontColor: '#A3A3A3',
-            maxTicksLimit: 6,
+            maxTicksLimit: 10,
             padding: 0,
             fontSize: 12,
           },
@@ -71,7 +73,6 @@ const VerticalBar = ({ operatingTimeData }) => {
         estimated_cost: {},
       };
 
-  const chartDays = chart.dates && chart.dates.map((day) => day.slice(4, 5));
   const chartValues = chart.values;
 
   const timeWasted =
@@ -81,7 +82,11 @@ const VerticalBar = ({ operatingTimeData }) => {
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
 
   const data = {
-    labels: chartDays,
+    labels: isMediumScreen
+      ? getLastArrayItems(chart.dates, 7)
+      : isLessThan1296
+      ? getLastArrayItems(chart.dates, 14)
+      : chart.dates,
     datasets: [
       {
         label: 'Wastage',

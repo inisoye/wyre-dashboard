@@ -57,6 +57,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
           ticks: {
             fontFamily: 'Roboto',
             padding: 10,
+            maxTicksLimit: 10,
           },
           gridLines: {
             drawTicks: false,
