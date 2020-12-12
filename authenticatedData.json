@@ -136,7 +136,7 @@
                   "unit": "hours",
                   "value": 12
                 },
-                "estmmated_diesel_wasted": false,
+                "estimated_diesel_wasted": false,
                 "estimated_cost": {
                   "unit": "Naira",
                   "value": 12000
@@ -323,7 +323,7 @@
                   "unit": "hours",
                   "value": 12
                 },
-                "estmmated_diesel_wasted": {
+                "estimated_diesel_wasted": {
                   "unit": "Litres",
                   "value": 300
                 },
@@ -819,7 +819,7 @@
                   "unit": "hours",
                   "value": 12
                 },
-                "estmmated_diesel_wasted": false,
+                "estimated_diesel_wasted": false,
                 "estimated_cost": {
                   "unit": "Naira",
                   "value": 12000
@@ -1006,7 +1006,7 @@
                   "unit": "hours",
                   "value": 12
                 },
-                "estmmated_diesel_wasted": {
+                "estimated_diesel_wasted": {
                   "unit": "Litres",
                   "value": 300
                 },
