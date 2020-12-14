@@ -63,7 +63,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
           {usage}
           {unit} Load
         </p>
-        <p className='h-green-text'>Good or bad</p>
+        <p className='h-green-text'>Good</p>
       </div>
     </div>
   );

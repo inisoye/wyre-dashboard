@@ -27,7 +27,6 @@ const CompleteDataProvider = (props) => {
 
   useEffect(() => {
     const getData = () => {
-      // This should be changed to a get single later
       dataHttpServices
         .getAuthenticated()
         .then((returnedData) => {
