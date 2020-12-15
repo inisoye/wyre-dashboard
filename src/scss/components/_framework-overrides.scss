@@ -83,6 +83,22 @@
 }
 
 /*--------------------------------------------------------------
+# Checkbox
+--------------------------------------------------------------*/
+.ant-checkbox,
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-inner:after {
+  background-color: $purple !important;
+  border-color: $white !important;
+}
+
+// Fix off-center behavior of tick. Particularly in Chrome
+.ant-checkbox-checked .ant-checkbox-inner::after {
+  left: 50%;
+  transform: rotate(45deg) scale(1) translate(-100%, -20%);
+}
+
+/*--------------------------------------------------------------
 # Table
 --------------------------------------------------------------*/
 .ant-table-filter-column-title {

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
 
@@ -31,7 +32,6 @@ function SidebarBranch({ branchData }) {
 
   const Icon = isOpen ? <ChevronUp /> : <ChevronDown />;
   const checkBoxName = toCamelCase(branchData.name);
-  const checkboxId = toKebabCase(branchData.name) + '-checkbox';
 
   const deviceComponents =
     branchData.devices && isOpen
@@ -113,14 +113,13 @@ function SidebarBranch({ branchData }) {
     <li className='sidebar-branch'>
       <div className='sidebar-branch__details'>
         <div>
-          <input
+          <Checkbox
             className='sidebar-branch__checkbox'
-            type='checkbox'
             name={checkBoxName}
-            id={checkboxId}
             onChange={handleCheck}
-          />
-          <label htmlFor={checkboxId}>{branchData.name}</label>
+          >
+            {branchData.name}
+          </Checkbox>
         </div>
         {branchData.devices ? (
           <button className='sidebar-branch__button' onClick={handleToggle}>

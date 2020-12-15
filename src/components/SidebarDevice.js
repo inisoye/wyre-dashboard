@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
 
@@ -117,14 +118,13 @@ function SidebarDevice({
   return (
     <li className='sidebar-device'>
       <div className='sidebar-device__details'>
-        <input
+        <Checkbox
           className='sidebar-device__checkbox'
-          type='checkbox'
           name={checkBoxName}
-          id={checkboxId}
           onChange={handleCheck}
-        />
-        <label htmlFor={checkboxId}>{originalDeviceName}</label>
+        >
+          {originalDeviceName}
+        </Checkbox>
       </div>
     </li>
   );
