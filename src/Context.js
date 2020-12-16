@@ -18,6 +18,7 @@ const CompleteDataProvider = (props) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -68,6 +69,8 @@ const CompleteDataProvider = (props) => {
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+        isNavLinkDropdownOpen: isNavLinkDropdownOpen,
+        setIsNavLinkDropdownOpen: setIsNavLinkDropdownOpen,
 
         isSmallScreen: isSmallScreen,
         isMediumScreen: isMediumScreen,

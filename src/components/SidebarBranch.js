@@ -10,7 +10,6 @@ import ChevronUp from '../icons/ChevronUp';
 
 import {
   toCamelCase,
-  toKebabCase,
   cloneObject,
 } from '../helpers/genericHelpers';
 import { getRefinedBranchData } from '../helpers/branchDataHelpers';

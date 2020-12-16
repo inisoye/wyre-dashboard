@@ -647,9 +647,24 @@ p {
 --------------------------------------------------------------*/
 .ant-checkbox,
 .ant-checkbox-checked .ant-checkbox-inner,
-.ant-checkbox-inner:after {
-  background-color: #6c00fa !important;
-  border-color: #ffffff !important;
+.ant-checkbox-inner:after,
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  background-color: #ffffff !important;
+  border-color: #6c00fa !important;
+}
+
+@media (min-width: 768px) {
+  .ant-checkbox,
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-inner:after,
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    background-color: #6c00fa !important;
+    border-color: #ffffff !important;
+  }
 }
 
 .ant-checkbox-checked .ant-checkbox-inner::after {
@@ -851,6 +866,12 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 768px) {
   .header {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    background-image: linear-gradient(to right, #6c00fa, #6c00fa 300.45px, #ffffff 15%, #ffffff 100%);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
@@ -858,30 +879,24 @@ thead.ant-table-thead tr th {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-    background-image: linear-gradient(to right, #6c00fa, #6c00fa 300.45px, #ffffff 15%, #ffffff 100%);
   }
 }
 
 @media (min-width: 768px) {
   .header-group-1-and-nav {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1295px) {
   .header-group-1-and-nav {
-    width: 100%;
     position: relative;
+    width: 100%;
   }
 }
 
@@ -977,14 +992,15 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 768px) and (max-width: 1295px) {
   .header-nav {
-    position: absolute;
-    z-index: 1;
-    right: 0;
-    top: 50px;
     background-color: #ffffff;
-    padding: 20px;
     border: #f0f0f0 1px solid;
     border-radius: 8px;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    z-index: 1;
+    min-width: 220px;
   }
 }
 
@@ -1003,6 +1019,9 @@ thead.ant-table-thead tr th {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding-left: 40px;
   }
 }
@@ -1027,10 +1046,10 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 768px) and (max-width: 1295px) {
   .header-nav-list__item {
+    border-top: #f0f0f0 1px solid;
     margin-right: 0;
     padding: 10px 0;
     padding-right: 30px;
-    border-top: #f0f0f0 1px solid;
   }
   .header-nav-list__item:first-of-type {
     border-top: 0;
@@ -1052,24 +1071,114 @@ thead.ant-table-thead tr th {
     text-decoration: none;
   }
   .header-link:hover:after {
-    content: '';
     background: #6c00fa;
-    position: absolute;
-    bottom: -5px;
-    width: 100%;
-    height: 4px;
-    display: block;
     border-radius: 4px 4px 0px 0px;
+    bottom: -5px;
+    content: '';
+    display: block;
+    height: 4px;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.header-link-with-dropdown {
+  position: relative;
+}
+
+.header-link-dropdown-button {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1295px) {
+  .header-link-dropdown-button:hover {
+    color: #6c00fa;
+  }
+}
+
+@media (min-width: 1296px) {
+  .header-link-dropdown-button:hover {
+    text-decoration: none;
+  }
+  .header-link-dropdown-button:hover:after {
+    background: #6c00fa;
+    border-radius: 4px 4px 0px 0px;
+    bottom: -5px;
+    content: '';
+    display: block;
+    height: 4px;
+    position: absolute;
+    width: 100px;
+  }
+}
+
+.header-link-dropdown-icon path {
+  fill: #000000;
+  opacity: 0.54;
+}
+
+.header-sublinks-list {
+  padding-left: 3%;
+}
+
+@media (min-width: 1296px) {
+  .header-sublinks-list {
+    padding-left: 0;
+    position: absolute;
+    min-width: 200px;
+    z-index: 1;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+}
+
+@media (min-width: 1296px) {
+  .header-sublinks-list__item {
+    cursor: pointer;
+  }
+  .header-sublinks-list__item:hover {
+    background-color: #6c00fa;
+  }
+  .header-sublinks-list__item:hover .header-sublink {
+    color: #ffffff;
+  }
+}
+
+.header-sublink {
+  padding: 10px 0;
+  display: block;
+  font-size: 1.2rem;
+}
+
+@media (min-width: 768px) and (max-width: 1295px) {
+  .header-sublink:hover {
+    color: #6c00fa;
+  }
+}
+
+@media (min-width: 1296px) {
+  .header-sublink {
+    padding-left: 24px;
   }
 }
 
 .all-header-icons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 @media (max-width: 1295px) {
@@ -1084,11 +1193,11 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 768px) {
   .header-icon {
-    margin-right: 30px;
-    display: inline-block;
     -ms-flex-item-align: center;
         -ms-grid-row-align: center;
         align-self: center;
+    display: inline-block;
+    margin-right: 30px;
   }
   .header-icon.message-icon {
     height: 20px;
@@ -1132,11 +1241,11 @@ thead.ant-table-thead tr th {
 }
 
 .header-avatar {
-  border-radius: 50%;
-  padding: 4px;
-  height: 44px;
-  width: 44px;
   border: 1px solid #c4c4c4;
+  border-radius: 50%;
+  height: 44px;
+  padding: 4px;
+  width: 44px;
 }
 
 /*--------------------------------------------------------------

@@ -9,6 +9,11 @@ import Parameters from './pages/Parameters';
 import Report from './pages/Report';
 import ScoreCard from './pages/ScoreCard';
 import Error from './pages/Error';
+import PowerQuality from './pages/PowerQuality';
+import EnergyConsumption from './pages/EnergyConsumption';
+import PowerDemand from './pages/PowerDemand';
+import TimeOfUse from './pages/TimeOfUse';
+import LastReading from './pages/LastReading';
 
 import ScrollToTop from './helpers/ScrollToTop';
 
@@ -35,6 +40,14 @@ function App() {
                 <Route path='/cost-tracker' component={CostTracker} />
                 <Route path='/messages' component={Messages} />
                 <Route path='/parameters' component={Parameters} />
+                <Route path='/last-reading' component={LastReading} />
+                <Route path='/time-of-use' component={TimeOfUse} />
+                <Route path='/power-demand' component={PowerDemand} />
+                <Route path='/power-quality' component={PowerQuality} />
+                <Route
+                  path='/energy-consumption'
+                  component={EnergyConsumption}
+                />
                 <Route path='/report' component={Report} />
                 <Route path='/score-card' component={ScoreCard} />
                 <Route component={Error} />
