@@ -177,8 +177,6 @@ const getSelectionChangeOverLags = (data) => {
     selectionChangeOverLagsData.push(summedChangeOverLag);
   }
 
-  console.log({ data: selectionChangeOverLagsData, units: changeOverLagUnits });
-
   return { data: selectionChangeOverLagsData, units: changeOverLagUnits };
 };
 

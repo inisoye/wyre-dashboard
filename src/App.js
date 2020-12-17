@@ -5,7 +5,6 @@ import Billing from './pages/Billing';
 import CostTracker from './pages/CostTracker';
 import Dashboard from './pages/Dashboard';
 import Messages from './pages/Messages';
-import Parameters from './pages/Parameters';
 import Report from './pages/Report';
 import ScoreCard from './pages/ScoreCard';
 import Error from './pages/Error';
@@ -39,13 +38,21 @@ function App() {
                 <Route path='/billing' component={Billing} />
                 <Route path='/cost-tracker' component={CostTracker} />
                 <Route path='/messages' component={Messages} />
-                <Route path='/parameters' component={Parameters} />
-                <Route path='/last-reading' component={LastReading} />
-                <Route path='/time-of-use' component={TimeOfUse} />
-                <Route path='/power-demand' component={PowerDemand} />
-                <Route path='/power-quality' component={PowerQuality} />
                 <Route
-                  path='/energy-consumption'
+                  path='/parameters/last-reading'
+                  component={LastReading}
+                />
+                <Route path='/parameters/time-of-use' component={TimeOfUse} />
+                <Route
+                  path='/parameters/power-demand'
+                  component={PowerDemand}
+                />
+                <Route
+                  path='/parameters/power-quality'
+                  component={PowerQuality}
+                />
+                <Route
+                  path='/parameters/energy-consumption'
                   component={EnergyConsumption}
                 />
                 <Route path='/report' component={Report} />

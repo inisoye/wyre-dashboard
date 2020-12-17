@@ -20,11 +20,15 @@ const CompleteDataProvider = (props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
 
+  const [currentUrl, setCurrentUrl] = useState('/');
+
   const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
   const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
   const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
+
+  console.log(currentUrl);
 
   useEffect(() => {
     const getData = () => {
@@ -71,6 +75,9 @@ const CompleteDataProvider = (props) => {
         setIsSidebarOpen: setIsSidebarOpen,
         isNavLinkDropdownOpen: isNavLinkDropdownOpen,
         setIsNavLinkDropdownOpen: setIsNavLinkDropdownOpen,
+
+        currentUrl: currentUrl,
+        setCurrentUrl: setCurrentUrl,
 
         isSmallScreen: isSmallScreen,
         isMediumScreen: isMediumScreen,

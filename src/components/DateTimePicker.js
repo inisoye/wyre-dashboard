@@ -12,7 +12,7 @@ function onOk(value) {
   console.log('onOk: ', value);
 }
 
-function DateTimePicker() {
+function DateTimePicker({ isDateTimePickerHidden }) {
   return (
     <>
       <Space
@@ -26,6 +26,7 @@ function DateTimePicker() {
           format='DD-MM-YYYY HH:mm'
           onChange={onChange}
           onOk={onOk}
+          disabled={isDateTimePickerHidden}
         />
       </Space>
     </>

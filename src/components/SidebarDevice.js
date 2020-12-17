@@ -3,11 +3,7 @@ import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
 
-import {
-  toCamelCase,
-  toKebabCase,
-  cloneObject,
-} from '../helpers/genericHelpers';
+import { toCamelCase, cloneObject } from '../helpers/genericHelpers';
 
 function SidebarDevice({
   modifiedDeviceName,
@@ -26,7 +22,6 @@ function SidebarDevice({
   } = useContext(CompleteDataContext);
 
   const checkBoxName = toCamelCase(modifiedDeviceName);
-  const checkboxId = toKebabCase(modifiedDeviceName) + '-checkbox';
 
   // Destructure dashboard data for device
   const {

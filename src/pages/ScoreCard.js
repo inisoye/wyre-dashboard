@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import CompleteDataContext from '../Context';
 
@@ -17,11 +17,19 @@ import { calculateRatio, calculatePercentage } from '../helpers/genericHelpers';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
-  { url: '/score-card', name: 'Score Card', id: 2 },
+  { url: '#', name: 'Score Card', id: 2 },
 ];
 
-function ScoreCard() {
-  const { refinedRenderedData } = useContext(CompleteDataContext);
+function ScoreCard({ match }) {
+  const { refinedRenderedData, setCurrentUrl } = useContext(
+    CompleteDataContext
+  );
+
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
 
   const {
     baseline_energy,

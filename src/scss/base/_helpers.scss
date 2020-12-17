@@ -54,6 +54,10 @@
   display: none;
 }
 
+.h-not-visible {
+  visibility: hidden;
+}
+
 .h-flex {
   display: flex;
 }
@@ -114,11 +118,23 @@
   @include media('>=medium') {
     fill: $white;
   }
+
+  path {
+    @include media('>=medium') {
+      fill: $white;
+    }
+  }
 }
 
 .h-purple-stroke-medium-up {
   @include media('>=medium') {
     stroke: $purple;
+  }
+
+  path {
+    @include media('>=medium') {
+      stroke: $purple;
+    }
   }
 }
 

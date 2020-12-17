@@ -8,10 +8,7 @@ import SidebarDevice from './SidebarDevice';
 import ChevronDown from '../icons/ChevronDown';
 import ChevronUp from '../icons/ChevronUp';
 
-import {
-  toCamelCase,
-  cloneObject,
-} from '../helpers/genericHelpers';
+import { toCamelCase, cloneObject } from '../helpers/genericHelpers';
 import { getRefinedBranchData } from '../helpers/branchDataHelpers';
 
 function SidebarBranch({ branchData }) {
@@ -29,7 +26,11 @@ function SidebarBranch({ branchData }) {
     setIsOpen(!isOpen);
   };
 
-  const Icon = isOpen ? <ChevronUp /> : <ChevronDown />;
+  const Icon = isOpen ? (
+    <ChevronUp className='h-white-fill-medium-up' />
+  ) : (
+    <ChevronDown className='h-white-fill-medium-up' />
+  );
   const checkBoxName = toCamelCase(branchData.name);
 
   const deviceComponents =

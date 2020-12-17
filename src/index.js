@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
+import './css/custom-antd.css';
 import './css/style.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,12 +19,10 @@ Chart.Legend.prototype.afterFit = function () {
 Chart.defaults.global.defaultFontFamily = "'Montserrat'";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CompleteDataProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </CompleteDataProvider>
-  </React.StrictMode>,
+  <CompleteDataProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </CompleteDataProvider>,
   document.getElementById('root')
 );

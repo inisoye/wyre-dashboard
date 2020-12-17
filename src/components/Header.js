@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 
-import HeaderNav from './HeaderNav';
-
 import HeaderLink from '../smallComponents/HeaderLink';
 import HeaderIcon from '../smallComponents/HeaderIcon';
 
@@ -16,7 +14,9 @@ import ChevronDown from '../icons/ChevronDown';
 
 import avatar from '../images/avatar.png';
 import HeaderSublink from '../smallComponents/HeaderSublink';
-import HeaderSublinksList from './HeaderSublinksList';
+
+import HeaderLinkWithDropdown from './groups/HeaderLinkWithDropdown';
+import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
 
 function Header() {
   const { isNavOpen, setIsNavOpen } = useContext(CompleteDataContext);
@@ -46,7 +46,8 @@ function Header() {
 
   return (
     <header className='header'>
-      <div className='header-group-1-and-nav'>
+      <HeaderGroup1AndNav className='header-group-1-and-nav'>
+        {' '}
         <div className='header-group-1'>
           <button
             className='headerMenu-button dotmenu-button h-hidden-medium-up'
@@ -66,8 +67,7 @@ function Header() {
             <Hamburger className='headerMenu-button__image hamburger-button__image' />
           </button>
         </div>
-
-        <HeaderNav
+        <nav
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
@@ -79,7 +79,7 @@ function Header() {
               linkText='Score Card'
             />
 
-            <li className='header-nav-list__item header-link-with-dropdown'>
+            <HeaderLinkWithDropdown className='header-nav-list__item header-link-with-dropdown'>
               <button
                 className='header-link-dropdown-button'
                 onClick={toggleNavLinkDropdown}
@@ -88,7 +88,7 @@ function Header() {
                 <ChevronDown className='header-link-dropdown-icon' />
               </button>
 
-              <HeaderSublinksList
+              <ul
                 className={
                   isNavLinkDropdownOpen
                     ? 'header-sublinks-list'
@@ -97,31 +97,31 @@ function Header() {
               >
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/energy-consumption'
+                  url='/parameters/energy-consumption'
                   linkText='Energy Consumption'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/power-quality'
+                  url='/parameters/power-quality'
                   linkText='Power Quality'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/power-demand'
+                  url='/parameters/power-demand'
                   linkText='Power Demand'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/time-of-use'
+                  url='/parameters/time-of-use'
                   linkText='Time of Use'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/last-reading'
+                  url='/parameters/last-reading'
                   linkText='Last Reading'
                 />
-              </HeaderSublinksList>
-            </li>
+              </ul>
+            </HeaderLinkWithDropdown>
 
             <HeaderLink onClick={toggleNav} url='/report' linkText='Report' />
 
@@ -165,8 +165,8 @@ function Header() {
               </button>
             </li>
           </ul>
-        </HeaderNav>
-      </div>
+        </nav>
+      </HeaderGroup1AndNav>
 
       <div className='all-header-icons h-hidden-1296-down'>
         <HeaderIcon
