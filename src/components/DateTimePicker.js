@@ -1,5 +1,6 @@
 import React from 'react';
 import { DatePicker, Space } from 'antd';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
@@ -27,6 +28,20 @@ function DateTimePicker({ isDateTimePickerHidden }) {
           onChange={onChange}
           onOk={onOk}
           disabled={isDateTimePickerHidden}
+          ranges={{
+            Today: [moment(), moment()],
+            Yesterday: [
+              moment().subtract(1, 'days'),
+              moment().subtract(1, 'days'),
+            ],
+            'This Week': [moment().startOf('week'), moment().endOf('week')],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'This Quarter': [
+              moment().quarter(moment().quarter()).startOf('quarter'),
+              moment().quarter(moment().quarter()).endOf('quarter'),
+            ],
+            'This Year': [moment().startOf('year'), moment().endOf('year')],
+          }}
         />
       </Space>
     </>
