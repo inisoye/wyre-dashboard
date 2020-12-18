@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import CompleteDataContext from '../Context';
 
@@ -16,8 +16,16 @@ const breadCrumbRoutes = [
   { url: '/', name: 'Dashboard', id: 2 },
 ];
 
-function Dashboard() {
+function Dashboard({ match }) {
   let { refinedRenderedData } = useContext(CompleteDataContext);
+
+  const { setCurrentUrl } = useContext(CompleteDataContext);
+
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
 
   const {
     name,
