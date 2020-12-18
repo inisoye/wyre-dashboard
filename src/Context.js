@@ -28,8 +28,6 @@ const CompleteDataProvider = (props) => {
   const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
   const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
 
-  console.log(currentUrl);
-
   useEffect(() => {
     const getData = () => {
       dataHttpServices
