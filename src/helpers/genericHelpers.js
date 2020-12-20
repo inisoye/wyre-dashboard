@@ -261,6 +261,47 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
 /* Score Card Helpers End -------------------------------------------
 --------------------------------------------------------------------*/
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+/* --------------------------------------------------------------------
+/* Parameters Helpers Start-------------------------------------------
+--------------------------------------------------------------------*/
+const formatParametersDates = (dateStrings) => {
+  // Convert each date string to a native date object
+  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
+
+  // Change date style and return output
+  return dateObjects.map((eachDate) =>
+    eachDate.toLocaleString('en-US', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+      hour12: true,
+    })
+  );
+};
+
+const formatParameterData = (deviceData, parameterName) => {
+  // Create a copy of original parameter data
+  const parameterData = Object.assign({}, deviceData[parameterName]);
+  const { dates } = parameterData;
+  // console.log(dates);
+  // Format dates into UI required format
+  const formattedParameterDates = formatParametersDates(dates);
+  // Add dates and device name to data
+  parameterData.dates = formattedParameterDates;
+
+  return parameterData;
+};
+/* --------------------------------------------------------------------
+/* Parameters Helpers End -------------------------------------------
+--------------------------------------------------------------------*/
+
 export {
   toCamelCase,
   toKebabCase,
@@ -283,4 +324,6 @@ export {
   sumScoreCardCarbonEmissions,
   joinChangeOverLagsValues,
   sumOperatingTimeValues,
+  formatParametersDates,
+  formatParameterData,
 };

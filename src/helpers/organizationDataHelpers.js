@@ -13,6 +13,7 @@ import {
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
+  formatParameterData,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -309,6 +310,24 @@ const getOrganizationFuelConsumptionArray = (data) => {
 /* Org Score Card Calculations End -----------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Org Parameters Calculations Start ---------------------------------
+--------------------------------------------------------------------*/
+const getOrganizationParameterData = (data, parameterName) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const deviceParameterData = formatParameterData(eachDevice, parameterName);
+    // Add device name to data
+    deviceParameterData.deviceName = eachDevice.name;
+
+    return deviceParameterData;
+  });
+};
+/* -------------------------------------------------------------------
+/* Org Parameters Calculations End -----------------------------------
+--------------------------------------------------------------------*/
+
 const getRefinedOrganizationData = (data) => {
   return {
     name: data.name,
@@ -324,6 +343,15 @@ const getRefinedOrganizationData = (data) => {
     change_over_lags: getOrganizationChangeOverLags(data),
     operating_time: getOrganizationOperatingTime(data),
     fuel_consumption: getOrganizationFuelConsumptionArray(data),
+    // Power Quality Stuff
+    power_quality: getOrganizationParameterData(data, 'power_quality'),
+    // Energy Consumption Stuff
+    energy_consumption: getOrganizationParameterData(
+      data,
+      'energy_consumption'
+    ),
+    // Power Demand Stuff
+    power_demand: getOrganizationParameterData(data, 'power_demand'),
   };
 };
 

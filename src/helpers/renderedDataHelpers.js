@@ -270,6 +270,38 @@ const getSelectionFuelConsumptionArray = (data) => {
 /* Score Card Calculations Begin -------------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Parameters Calculations Start ---------------------------------
+--------------------------------------------------------------------*/
+// Combines property arrays for each selection and removes duplicates
+const getSelectionParameterPropertyArray = (data, propertyName) => {
+  const nestedProperties = data.map((eachSelection) => {
+    return eachSelection[propertyName] ? eachSelection[propertyName] : false;
+  });
+
+  const flattenedProperties = nestedProperties
+    .map((eachSelection) => {
+      // Remove falsy values, selection names
+      return Object.values(eachSelection).filter(
+        (eachItem) => typeof eachItem === 'object'
+      );
+    })
+    // flatten
+    .flat();
+
+  // Remove duplicates with ES6 Sets
+  const selectedPropertiesSet = new Set();
+
+  return flattenedProperties.filter((item) => {
+    const duplicate = selectedPropertiesSet.has(item.deviceName);
+    selectedPropertiesSet.add(item.deviceName);
+    return !duplicate;
+  });
+};
+/* -------------------------------------------------------------------
+/* Parameters Calculations End -----------------------------------
+--------------------------------------------------------------------*/
+
 const getRenderedData = (data) => {
   return {
     // Dashboard Stuff
@@ -284,6 +316,15 @@ const getRenderedData = (data) => {
     change_over_lags: getSelectionChangeOverLags(data),
     operating_time: getSelectionOperatingTime(data),
     fuel_consumption: getSelectionFuelConsumptionArray(data),
+    // Power Quality Stuff
+    power_quality: getSelectionParameterPropertyArray(data, 'power_quality'),
+    // Energy Consumption Stuff
+    energy_consumption: getSelectionParameterPropertyArray(
+      data,
+      'energy_consumption'
+    ),
+    // Power Demand Stuff
+    power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
   };
 };
 

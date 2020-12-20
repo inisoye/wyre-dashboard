@@ -3,7 +3,11 @@ import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
 
-import { toCamelCase, cloneObject } from '../helpers/genericHelpers';
+import {
+  toCamelCase,
+  cloneObject,
+  formatParameterData,
+} from '../helpers/genericHelpers';
 
 function SidebarDevice({
   modifiedDeviceName,
@@ -47,16 +51,31 @@ function SidebarDevice({
     fuel_consumption,
   } = deviceData.score_card;
 
+  const powerQualityData = formatParameterData(deviceData, 'power_quality');
+  // Add device name to data
+  powerQualityData.deviceName = modifiedDeviceName;
+
+  const energyConsumptionData = formatParameterData(
+    deviceData,
+    'energy_consumption'
+  );
+  // Add device name to data
+  energyConsumptionData.deviceName = modifiedDeviceName;
+
+  const powerDemandData = formatParameterData(deviceData, 'power_demand');
+  // Add device name to data
+  powerDemandData.deviceName = modifiedDeviceName;
+
   // Add name to generator size efficiency & fuel consumption data
   if (generator_size_efficiency)
     generator_size_efficiency.name = modifiedDeviceName;
-
   if (fuel_consumption) fuel_consumption.name = modifiedDeviceName;
 
   // Place all data for device in new object
   const refinedDeviceData = {
     [modifiedDeviceName]: {
       name: modifiedDeviceName,
+      // Dashboard data
       total_kwh,
       min_demand,
       max_demand,
@@ -67,6 +86,7 @@ function SidebarDevice({
       yesterday,
       daily_kwh: deviceDailyKwh,
       usage_hours: deviceMonthlyUsage,
+      // Score card data
       is_generator,
       baseline_energy,
       peak_to_avg_power_ratio,
@@ -75,6 +95,12 @@ function SidebarDevice({
       change_over_lags,
       operating_time,
       fuel_consumption: [fuel_consumption],
+      // Power Quality Data
+      power_quality: [powerQualityData],
+      // Energy Consumption Data
+      energy_consumption: [energyConsumptionData],
+      // Power Demand Data
+      power_demand: [powerDemandData],
     },
   };
 

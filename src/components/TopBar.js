@@ -26,6 +26,10 @@ function TopBar() {
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
+  const handleIntervalChange = (interval) => {
+    console.log(interval);
+  };
+
   return (
     <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
       <div>
@@ -42,7 +46,7 @@ function TopBar() {
         <Select
           className='time-interval-selector'
           defaultValue='15Mins'
-          // style={{ width: 120 }}
+          onChange={handleIntervalChange}
           suffixIcon={<CaretDownFilled />}
         >
           <Option className='time-interval-option' value='15Mins'>

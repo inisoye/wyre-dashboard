@@ -8,6 +8,7 @@ import {
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
+  formatParameterData,
 } from '../helpers/genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -239,6 +240,25 @@ const getBranchFuelConsumptionArray = (data) =>
 /* Branch Score Card Calculations End --------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Branch Parameters Calculations Start ---------------------------
+--------------------------------------------------------------------*/
+const getBranchParameterData = (data, parameterName) =>
+  data.devices.map((eachDevice) => {
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const deviceParameterData = formatParameterData(eachDevice, parameterName);
+    // Add device name to data
+    deviceParameterData.deviceName = modifiedDeviceName;
+
+    return deviceParameterData;
+  });
+/* -------------------------------------------------------------------
+/* Branch Parameters Calculations Start ---------------------------
+--------------------------------------------------------------------*/
+
 const getRefinedBranchData = (data) => {
   return {
     [data.name]: {
@@ -255,6 +275,12 @@ const getRefinedBranchData = (data) => {
       change_over_lags: getBranchChangeOverLags(data),
       operating_time: getBranchOperatingTime(data),
       fuel_consumption: getBranchFuelConsumptionArray(data),
+      // Power Quality Stuff
+      power_quality: getBranchParameterData(data, 'power_quality'),
+      // Energy Consumption Stuff
+      energy_consumption: getBranchParameterData(data, 'energy_consumption'),
+      // Power Demand Stuff
+      power_demand: getBranchParameterData(data, 'power_demand'),
     },
   };
 };
