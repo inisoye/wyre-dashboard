@@ -277,10 +277,10 @@ const getRefinedBranchData = (data) => {
       fuel_consumption: getBranchFuelConsumptionArray(data),
       // Power Quality Stuff
       power_quality: getBranchParameterData(data, 'power_quality'),
-      // Energy Consumption Stuff
-      energy_consumption: getBranchParameterData(data, 'energy_consumption'),
-      // Power Demand Stuff
-      power_demand: getBranchParameterData(data, 'power_demand'),
+      // // Energy Consumption Stuff
+      // energy_consumption: getBranchParameterData(data, 'energy_consumption'),
+      // // Power Demand Stuff
+      // power_demand: getBranchParameterData(data, 'power_demand'),
     },
   };
 };

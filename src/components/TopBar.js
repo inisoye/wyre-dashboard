@@ -9,7 +9,9 @@ import { CaretDownFilled } from '@ant-design/icons';
 const { Option } = Select;
 
 function TopBar() {
-  const { isSidebarOpen, currentUrl } = useContext(CompleteDataContext);
+  const { isSidebarOpen, currentUrl, setPowerQualityUnit } = useContext(
+    CompleteDataContext
+  );
 
   const isDateTimePickerHidden = currentUrl.includes('last-reading');
 
@@ -28,6 +30,10 @@ function TopBar() {
 
   const handleIntervalChange = (interval) => {
     console.log(interval);
+  };
+
+  const handleUnitChange = (unit) => {
+    setPowerQualityUnit(unit);
   };
 
   return (
@@ -81,6 +87,7 @@ function TopBar() {
           className='plotted-unit-selector'
           defaultValue='Current (Amps)'
           suffixIcon={<CaretDownFilled />}
+          onChange={handleUnitChange}
         >
           <Option className='plotted-unit-option' value='Current (Amps)'>
             Current (Amps)
@@ -96,9 +103,6 @@ function TopBar() {
           </Option>
           <Option className='plotted-unit-option' value='Energy (kWh)'>
             Energy (kWh)
-          </Option>
-          <Option className='plotted-unit-option' value='Months'>
-            Months
           </Option>
         </Select>
       </div>

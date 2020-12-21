@@ -345,13 +345,13 @@ const getRefinedOrganizationData = (data) => {
     fuel_consumption: getOrganizationFuelConsumptionArray(data),
     // Power Quality Stuff
     power_quality: getOrganizationParameterData(data, 'power_quality'),
-    // Energy Consumption Stuff
-    energy_consumption: getOrganizationParameterData(
-      data,
-      'energy_consumption'
-    ),
-    // Power Demand Stuff
-    power_demand: getOrganizationParameterData(data, 'power_demand'),
+    // // Energy Consumption Stuff
+    // energy_consumption: getOrganizationParameterData(
+    //   data,
+    //   'energy_consumption'
+    // ),
+    // // Power Demand Stuff
+    // power_demand: getOrganizationParameterData(data, 'power_demand'),
   };
 };
 

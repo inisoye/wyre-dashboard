@@ -21,6 +21,7 @@ const CompleteDataProvider = (props) => {
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
 
   const [currentUrl, setCurrentUrl] = useState('/');
+  const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -29,6 +30,8 @@ const CompleteDataProvider = (props) => {
   const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
 
   // console.log(refinedRenderedData);
+
+  // console.log(powerQualityUnit);
 
   useEffect(() => {
     const getData = () => {
@@ -41,14 +44,13 @@ const CompleteDataProvider = (props) => {
           );
 
           // If nothing is checked, render organization's data
+          // Otherwise, render data from checked items
           if (
             Object.keys(checkedItems).length === 0 &&
             checkedItems.constructor === Object
           ) {
             setRefinedRenderedData(refinedOrganizationData);
           } else {
-            setRenderedDataObjects(renderedDataObjects);
-
             const renderedDataArray = Object.values(renderedDataObjects);
             setRefinedRenderedData(getRenderedData(renderedDataArray));
           }
@@ -78,6 +80,8 @@ const CompleteDataProvider = (props) => {
 
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,
+        powerQualityUnit: powerQualityUnit,
+        setPowerQualityUnit: setPowerQualityUnit,
 
         isSmallScreen: isSmallScreen,
         isMediumScreen: isMediumScreen,

@@ -15,6 +15,13 @@ const toKebabCase = (str) =>
     .map((x) => x.toLowerCase())
     .join('-');
 
+const toSnakeCase = (str) =>
+  str &&
+  str
+    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+    .map((x) => x.toLowerCase())
+    .join('_');
+
 const cloneObject = (object) => Object.assign({}, object);
 
 const getLastArrayItems = (array, numberOfItems) => {
@@ -272,14 +279,55 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
 /* --------------------------------------------------------------------
 /* Parameters Helpers Start-------------------------------------------
 --------------------------------------------------------------------*/
-const formatParametersDates = (dateStrings) => {
+const formatParametersDatetimesToUkFormat = (dateStrings) => {
+  // Convert each date string to a native date object
+  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
+
+  // Change date style and return output
+  return dateObjects.map((eachDate) =>
+    eachDate.toLocaleString('en-UK', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+      hour12: true,
+    })
+  );
+};
+
+const formatParametersDatetimesToGbFormat = (dateStrings) => {
+  // Convert each date string to a native date object
+  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
+
+  // Change date style and return output
+  return dateObjects.map((eachDate) =>
+    eachDate
+      .toLocaleString('en-GB', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        hour12: true,
+      })
+      .toUpperCase()
+  );
+};
+
+const formatParametersDatesToGbFormat = (dateStrings) => {
+  // Convert each date string to a native date object
+  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
+
+  // Change date style and return output
+  return dateObjects.map((eachDate) =>
+    eachDate.toLocaleString('en-GB', {
+      dateStyle: 'short',
+    })
+  );
+};
+
+const formatParametersTimes = (dateStrings) => {
   // Convert each date string to a native date object
   const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
 
   // Change date style and return output
   return dateObjects.map((eachDate) =>
     eachDate.toLocaleString('en-US', {
-      dateStyle: 'short',
       timeStyle: 'short',
       hour12: true,
     })
@@ -292,7 +340,7 @@ const formatParameterData = (deviceData, parameterName) => {
   const { dates } = parameterData;
   // console.log(dates);
   // Format dates into UI required format
-  const formattedParameterDates = formatParametersDates(dates);
+  const formattedParameterDates = formatParametersDatetimesToUkFormat(dates);
   // Add dates and device name to data
   parameterData.dates = formattedParameterDates;
 
@@ -305,6 +353,7 @@ const formatParameterData = (deviceData, parameterName) => {
 export {
   toCamelCase,
   toKebabCase,
+  toSnakeCase,
   sumArrayOfArrays,
   calculateRatio,
   calculatePercentage,
@@ -324,6 +373,9 @@ export {
   sumScoreCardCarbonEmissions,
   joinChangeOverLagsValues,
   sumOperatingTimeValues,
-  formatParametersDates,
+  formatParametersDatetimesToUkFormat,
+  formatParametersDatetimesToGbFormat,
+  formatParametersDatesToGbFormat,
+  formatParametersTimes,
   formatParameterData,
 };

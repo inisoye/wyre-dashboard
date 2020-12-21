@@ -3,6 +3,7 @@ import React, { useEffect, useContext } from 'react';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
+import PowerQualityPageSection from '../components/parameterPagesSections/PowerQualityPageSection';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -13,13 +14,17 @@ const breadCrumbRoutes = [
 ];
 
 function PowerQuality({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { refinedRenderedData, setCurrentUrl } = useContext(
+    CompleteDataContext
+  );
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
   }, [match, setCurrentUrl]);
+
+  const { power_quality } = refinedRenderedData;
 
   return (
     <>
@@ -28,7 +33,7 @@ function PowerQuality({ match }) {
         <PrintButtons />
       </div>
 
-      <p>Power Quality</p>
+      <PowerQualityPageSection pqData={power_quality && power_quality[0]} />
     </>
   );
 }
