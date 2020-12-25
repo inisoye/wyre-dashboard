@@ -23,6 +23,8 @@ const CompleteDataProvider = (props) => {
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
 
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(true);
+
   const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
@@ -82,6 +84,9 @@ const CompleteDataProvider = (props) => {
         setCurrentUrl: setCurrentUrl,
         powerQualityUnit: powerQualityUnit,
         setPowerQualityUnit: setPowerQualityUnit,
+
+        isUserAuthenticated: isUserAuthenticated,
+        setIsUserAuthenticated: setIsUserAuthenticated,
 
         isSmallScreen: isSmallScreen,
         isMediumScreen: isMediumScreen,

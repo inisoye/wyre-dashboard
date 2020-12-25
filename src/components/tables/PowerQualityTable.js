@@ -1,9 +1,7 @@
 import React from 'react';
-import { Table, Input, Button, Space, Typography } from 'antd';
+import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-
-const { Text } = Typography;
 
 class ScoreCardTable extends React.Component {
   state = {
@@ -95,15 +93,17 @@ class ScoreCardTable extends React.Component {
   };
 
   render() {
-    const dataAndUnits = this.props.changeOverLagsData;
-
-    const { data, units } = dataAndUnits
-      ? dataAndUnits
-      : { data: ['Empty'], units: { lag_duration: 'empty' } };
+    const data = this.props.powerQualityData;
+    const unit = this.props.powerQualityUnit;
 
     const columns = [
       {
-        title: 'Date of Supply',
+        title: 'Index',
+        dataIndex: 'index',
+        key: 'index',
+      },
+      {
+        title: 'Date',
         dataIndex: 'date',
         key: 'date',
         ...this.getColumnSearchProps('date'),
@@ -111,25 +111,51 @@ class ScoreCardTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: `Change Over Lags (${units && units.lag_duration})`,
-        dataIndex: 'lag_duration',
-        key: 'lag_duration',
-        ...this.getColumnSearchProps('lag_duration'),
-        sorter: (a, b) => a.lag_duration - b.lag_duration,
+        title: 'Time',
+        dataIndex: 'time',
+        key: 'time',
+        ...this.getColumnSearchProps('time'),
+        sorter: (a, b) => a.time.localeCompare(b.time),
+        sortDirections: ['descend', 'ascend'],
       },
       {
-        title: `Diesel Cost (${units && units.diesel_cost})`,
-        dataIndex: 'diesel_cost',
-        key: 'diesel_cost',
-        ...this.getColumnSearchProps('diesel_cost'),
-        sorter: (a, b) => a.diesel_cost - b.diesel_cost,
+        title: `Line 1 (${unit})`,
+        dataIndex: 'l1',
+        key: 'l1',
+        ...this.getColumnSearchProps('l1'),
+        sorter: (a, b) => a.l1 - b.l1,
+        sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Value (Naira)',
-        dataIndex: 'diesel_value',
-        key: 'diesel_value',
-        ...this.getColumnSearchProps('diesel_value'),
-        sorter: (a, b) => a.diesel_value - b.diesel_value,
+        title: `Line 2 (${unit})`,
+        dataIndex: 'l2',
+        key: 'l2',
+        ...this.getColumnSearchProps('l2'),
+        sorter: (a, b) => a.l2 - b.l2,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: `Line 3 (${unit})`,
+        dataIndex: 'l3',
+        key: 'l3',
+        ...this.getColumnSearchProps('l3'),
+        sorter: (a, b) => a.l3 - b.l3,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: `Neutral (${unit})`,
+        dataIndex: 'neutral',
+        key: 'neutral',
+        ...this.getColumnSearchProps('neutral'),
+        sorter: (a, b) => a.neutral - b.neutral,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Frequency (Hz)',
+        dataIndex: 'frequency',
+        key: 'frequency',
+        ...this.getColumnSearchProps('frequency'),
+        sorter: (a, b) => a.frequency - b.frequency,
       },
     ];
 
@@ -139,36 +165,9 @@ class ScoreCardTable extends React.Component {
           className='table-striped-rows'
           columns={columns}
           dataSource={data}
-          rowKey='id'
+          rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
-          summary={(pageData) => {
-            let totalLagDuration = 0;
-            let totalDieselCost = 0;
-            let totalDieselValue = 0;
-
-            pageData.forEach(({ lag_duration, diesel_cost, diesel_value }) => {
-              totalLagDuration += lag_duration;
-              totalDieselCost += diesel_cost;
-              totalDieselValue += diesel_value;
-            });
-
-            return (
-              <>
-                <Table.Summary.Row>
-                  <Table.Summary.Cell>Total:</Table.Summary.Cell>
-                  <Table.Summary.Cell>
-                    <Text>{totalLagDuration}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell>
-                    <Text>{totalDieselCost}</Text>
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell>
-                    <Text>{totalDieselValue}</Text>
-                  </Table.Summary.Cell>
-                </Table.Summary.Row>
-              </>
-            );
-          }}
+          footer={() => `${data && data.length} entries in total`}
         />
       </>
     );

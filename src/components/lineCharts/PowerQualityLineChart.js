@@ -34,6 +34,7 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
         fill: false,
         backgroundColor: colorsArray[index],
         borderColor: colorsArray[index],
+        borderWidth: 2,
       };
     });
 
@@ -60,7 +61,7 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
         padding: isMediumScreen ? 10 : 25,
       },
     },
-    // maintainAspectRatio: false,
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -74,6 +75,7 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
             beginAtZero: true,
             fontFamily: 'Roboto',
             padding: 10,
+            fontColor: '#A3A3A3',
             maxTicksLimit: 9,
           },
           scaleLabel: {
@@ -88,9 +90,10 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
       xAxes: [
         {
           ticks: {
+            fontColor: '#A3A3A3',
             fontFamily: 'Roboto',
             padding: 10,
-            maxTicksLimit: isMediumScreen ? 7 : 10,
+            maxTicksLimit: isMediumScreen ? 5 : isLessThan1296 ? 7 : 9,
           },
           gridLines: {
             drawTicks: false,

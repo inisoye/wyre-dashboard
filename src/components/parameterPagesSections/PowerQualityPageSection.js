@@ -3,12 +3,15 @@ import CompleteDataContext from '../../Context';
 
 import {
   toSnakeCase,
-  formatParametersDatetimesToGbFormat,
-  formatParametersDatesToGbFormat,
+  formatParametersDatetimes,
+  formatParametersDates,
   formatParametersTimes,
 } from '../../helpers/genericHelpers';
 
 import PowerQualityLineChart from '../lineCharts/PowerQualityLineChart';
+import PowerQualityTable from '../tables/PowerQualityTable';
+
+import ExcelIcon from '../../icons/ExcelIcon';
 
 function PowerQualityPageSection({ pqData }) {
   // Obtain selected unit from context API
@@ -20,7 +23,7 @@ function PowerQualityPageSection({ pqData }) {
 
   // Pick out data based on selection in UI
   const plottedData = pqData && pqData[formattedPowerQualityName];
-  const plottedDates = pqData && formatParametersDatetimesToGbFormat(pqData);
+  const plottedDates = pqData && formatParametersDatetimes(pqData);
 
   // Clone plotted data for usage in table
   const tableData = Object.assign({}, plottedData);
@@ -29,7 +32,7 @@ function PowerQualityPageSection({ pqData }) {
     delete tableData.deviceName;
   }
 
-  const tableDates = pqData && formatParametersDatesToGbFormat(pqData);
+  const tableDates = pqData && formatParametersDates(pqData);
   const tableTimes = pqData && formatParametersTimes(pqData);
 
   const { frequency } = pqData ? pqData : { frequency: ['Empty'] };
@@ -71,16 +74,45 @@ function PowerQualityPageSection({ pqData }) {
       return acc;
     }, []);
 
-  console.log(formattedTableData);
+  const formattedTableDataWithIndex =
+    formattedTableData &&
+    formattedTableData.map(function (currentValue, index) {
+      currentValue.index = index + 1;
+      return currentValue;
+    });
 
   return (
-    <section>
-      <h2>{pqData && pqData.deviceName}</h2>
-      <article>
+    <section className='power-quality-section'>
+      <h2 className='power-quality-section__heading'>
+        {pqData && pqData.deviceName}
+      </h2>
+
+      <article className='power-quality-line-container'>
         <PowerQualityLineChart
           data={plottedData}
           dates={plottedDates}
           powerQualityUnit={powerQualityUnit}
+        />
+      </article>
+
+      <article className='parameters-table-container'>
+        <div className='parameters-table-header'>
+          <div className='h-hidden-medium-down'>
+            <button className='parameters-table-left-button'>PDF</button>
+            <button className='parameters-table-left-button'>CSV</button>
+          </div>
+
+          <h3 className='parameters-table-heading'>Raw Logs</h3>
+
+          <button className='parameters-table-right-button h-hidden-medium-down'>
+            <ExcelIcon />
+            <span>Download in Excel</span>
+          </button>
+        </div>
+
+        <PowerQualityTable
+          powerQualityUnit={plottedData && plottedData.units}
+          powerQualityData={formattedTableDataWithIndex}
         />
       </article>
     </section>

@@ -139,7 +139,7 @@ class ScoreCardTable extends React.Component {
           className='table-striped-rows'
           columns={columns}
           dataSource={data}
-          rowKey='id'
+          rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
           summary={(pageData) => {
             let totalLagDuration = 0;

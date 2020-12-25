@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
 --------------------------------------------------------------------*/
@@ -279,70 +281,35 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
 /* --------------------------------------------------------------------
 /* Parameters Helpers Start-------------------------------------------
 --------------------------------------------------------------------*/
-const formatParametersDatetimesToUkFormat = (dateStrings) => {
-  // Convert each date string to a native date object
-  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
 
-  // Change date style and return output
-  return dateObjects.map((eachDate) =>
-    eachDate.toLocaleString('en-UK', {
-      dateStyle: 'short',
-      timeStyle: 'short',
-      hour12: true,
-    })
+// DayJS chosen for browser compatibility (and consistency) issues with native date objects.
+const convertDateStringsToObjects = (dateStrings) => {
+  return dateStrings.dates.map((eachDate) => dayjs(eachDate));
+};
+
+const formatParametersDatetimes = (dateStrings) => {
+  return dateStrings.dates.map((eachDate) =>
+    eachDate.format('DD/MM/YYYY h:mm A')
   );
 };
 
-const formatParametersDatetimesToGbFormat = (dateStrings) => {
-  // Convert each date string to a native date object
-  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
-
-  // Change date style and return output
-  return dateObjects.map((eachDate) =>
-    eachDate
-      .toLocaleString('en-GB', {
-        dateStyle: 'short',
-        timeStyle: 'short',
-        hour12: true,
-      })
-      .toUpperCase()
-  );
-};
-
-const formatParametersDatesToGbFormat = (dateStrings) => {
-  // Convert each date string to a native date object
-  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
-
-  // Change date style and return output
-  return dateObjects.map((eachDate) =>
-    eachDate.toLocaleString('en-GB', {
-      dateStyle: 'short',
-    })
-  );
+const formatParametersDates = (dateStrings) => {
+  return dateStrings.dates.map((eachDate) => eachDate.format('DD/MM/YYYY'));
 };
 
 const formatParametersTimes = (dateStrings) => {
-  // Convert each date string to a native date object
-  const dateObjects = dateStrings.dates.map((eachDate) => new Date(eachDate));
-
-  // Change date style and return output
-  return dateObjects.map((eachDate) =>
-    eachDate.toLocaleString('en-US', {
-      timeStyle: 'short',
-      hour12: true,
-    })
-  );
+  return dateStrings.dates.map((eachDate) => eachDate.format('h:mm A'));
 };
 
 const formatParameterData = (deviceData, parameterName) => {
   // Create a copy of original parameter data
   const parameterData = Object.assign({}, deviceData[parameterName]);
   const { dates } = parameterData;
-  // console.log(dates);
-  // Format dates into UI required format
-  const formattedParameterDates = formatParametersDatetimesToUkFormat(dates);
-  // Add dates and device name to data
-  parameterData.dates = formattedParameterDates;
+
+  // Convert dates to objects for easy manipulation
+  const parameterDateObjects = convertDateStringsToObjects(dates);
+  // Add date objects and device name to data
+  parameterData.dates = parameterDateObjects;
 
   return parameterData;
 };
@@ -373,9 +340,9 @@ export {
   sumScoreCardCarbonEmissions,
   joinChangeOverLagsValues,
   sumOperatingTimeValues,
-  formatParametersDatetimesToUkFormat,
-  formatParametersDatetimesToGbFormat,
-  formatParametersDatesToGbFormat,
+  convertDateStringsToObjects,
+  formatParametersDatetimes,
+  formatParametersDates,
   formatParametersTimes,
   formatParameterData,
 };

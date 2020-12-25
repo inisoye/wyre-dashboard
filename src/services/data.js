@@ -1,9 +1,9 @@
 import axios from 'axios';
-const baseUrl = 'https://dtekluva.github.io/weather_app/authenticatedData.json';
+const baseUrl = 'http://localhost:3001/authenticatedData';
 
 const getAuthenticated = () => {
   const request = axios.get(baseUrl);
-  return request.then((response) => response.data.authenticatedData);
+  return request.then((response) => response.data);
 };
 
 export default { getAuthenticated };
