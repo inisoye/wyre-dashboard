@@ -1,0 +1,11 @@
+.main-container {
+  @include media('>=medium') {
+    width: calc(100% - 300.45px);
+  }
+}
+
+.page-content {
+  background-color: $bluegrey;
+  @extend %gutters;
+  padding-bottom: 30px;
+}

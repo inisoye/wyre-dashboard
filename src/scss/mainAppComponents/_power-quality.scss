@@ -1,0 +1,19 @@
+.power-quality-section {
+  margin-bottom: 70px;
+}
+
+.power-quality-section__heading {
+  font-size: 24px;
+  font-weight: $medium;
+  text-align: center;
+}
+
+.power-quality-line-container {
+  background-color: $white;
+  height: 450px;
+  margin-top: 30px;
+
+  @include media('>=medium') {
+    height: 547px;
+  }
+}

@@ -1,0 +1,43 @@
+.top-bar {
+  align-items: center;
+  box-shadow: $grey-box-shadow;
+  padding-bottom: 40px;
+  padding-top: 10px;
+  width: 100%;
+  @extend %gutters;
+
+  @include media('>=medium') {
+    box-shadow: $grey-box-shadow;
+    display: flex;
+    overflow: auto;
+    padding-bottom: 12px;
+    padding-top: 10px;
+  }
+
+  &.h-hidden-medium-down {
+    @include media('<medium') {
+      display: none;
+    }
+  }
+}
+
+.plotted-unit-selector-container,
+.time-interval-selector-container {
+  margin-top: 30px;
+
+  @include media('>=medium') {
+    margin-left: 30px;
+    margin-top: 0;
+  }
+}
+
+.plotted-unit-selector {
+  @include media('>=medium') {
+    min-width: 180px;
+  }
+}
+
+.plotted-unit-selector-option,
+.time-interval-selector-option {
+  font-size: 12px !important;
+}
