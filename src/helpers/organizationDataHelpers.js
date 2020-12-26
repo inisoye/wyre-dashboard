@@ -13,7 +13,8 @@ import {
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
-  formatParameterData,
+  convertDateStringToObject,
+  convertPowerQualityDateStringsToObjects,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -311,21 +312,43 @@ const getOrganizationFuelConsumptionArray = (data) => {
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Org Parameters Calculations Start ---------------------------------
+/* Org Power Quality Calculations Start ------------------------------
 --------------------------------------------------------------------*/
-const getOrganizationParameterData = (data, parameterName) => {
+const getOrganizationPowerQualityData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
   return allOrganizationDevices.map((eachDevice) => {
-    const deviceParameterData = formatParameterData(eachDevice, parameterName);
+    const devicePowerQualityData = convertPowerQualityDateStringsToObjects(
+      eachDevice
+    );
     // Add device name to data
-    deviceParameterData.deviceName = eachDevice.name;
+    devicePowerQualityData.deviceName = eachDevice.name;
 
-    return deviceParameterData;
+    return devicePowerQualityData;
   });
 };
 /* -------------------------------------------------------------------
-/* Org Parameters Calculations End -----------------------------------
+/* Org Power Quality Calculations End --------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Org Power Quality Calculations Start ------------------------------
+--------------------------------------------------------------------*/
+const getOrganizationLastReadingData = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const deviceLastReadingData = Object.assign({}, eachDevice.last_reading);
+    deviceLastReadingData.date = convertDateStringToObject(
+      deviceLastReadingData.date
+    );
+    deviceLastReadingData.deviceName = eachDevice.name;
+
+    return deviceLastReadingData;
+  });
+};
+/* -------------------------------------------------------------------
+/* Org Power Quality Calculations End --------------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
@@ -344,14 +367,9 @@ const getRefinedOrganizationData = (data) => {
     operating_time: getOrganizationOperatingTime(data),
     fuel_consumption: getOrganizationFuelConsumptionArray(data),
     // Power Quality Stuff
-    power_quality: getOrganizationParameterData(data, 'power_quality'),
-    // // Energy Consumption Stuff
-    // energy_consumption: getOrganizationParameterData(
-    //   data,
-    //   'energy_consumption'
-    // ),
-    // // Power Demand Stuff
-    // power_demand: getOrganizationParameterData(data, 'power_demand'),
+    power_quality: getOrganizationPowerQualityData(data),
+    // Time of Use Stuff
+    last_reading: getOrganizationLastReadingData(data),
   };
 };
 

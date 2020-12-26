@@ -710,7 +710,7 @@ thead.ant-table-thead tr th {
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
-***** MAIN APP COMPONENT STYLES *****
+***** MAIN APP COMPONENTS STYLES *****
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 --------------------------------------------------------------*/
@@ -2021,17 +2021,14 @@ thead.ant-table-thead tr th {
 /*--------------------------------------------------------------
 # Styles shared amongst parameter pages
 --------------------------------------------------------------*/
-.parameters-table-container {
-  background-color: #ffffff;
-  margin-top: 30px;
-  overflow: auto;
-  padding-top: 24px;
+.parameter-section {
+  margin-bottom: 70px;
 }
 
-@media (min-width: 768px) {
-  .parameters-table-container {
-    padding-top: 16px;
-  }
+.parameter-section__heading {
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -2085,6 +2082,7 @@ thead.ant-table-thead tr th {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  padding: 0;
 }
 
 @media (max-width: 767px) {
@@ -2104,12 +2102,6 @@ thead.ant-table-thead tr th {
   margin-bottom: 70px;
 }
 
-.power-quality-section__heading {
-  font-size: 24px;
-  font-weight: 500;
-  text-align: center;
-}
-
 .power-quality-line-container {
   background-color: #ffffff;
   height: 450px;
@@ -2122,10 +2114,95 @@ thead.ant-table-thead tr th {
   }
 }
 
+.power-quality-table-container {
+  background-color: #ffffff;
+  margin-top: 30px;
+  overflow: auto;
+  padding-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .power-quality-table-container {
+    padding-top: 16px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Last Reading
+--------------------------------------------------------------*/
+.last-reading-table-container {
+  background-color: #ffffff;
+  margin-top: 30px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .last-reading-table-container {
+    padding-top: 16px;
+  }
+}
+
+.last-reading-table-wrapper {
+  overflow: auto;
+}
+
+.last-reading-table-header-and-date {
+  border-bottom: 0.5px solid #c4c4c4;
+  padding-bottom: 7px;
+}
+
+.last-reading-date {
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: 40px;
+  padding: 0 16px;
+}
+
+.last-reading-table-total-and-history {
+  padding: 24px 16px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.last-reading-table-total-and-history.first {
+  padding-top: 39px;
+}
+
+.last-reading-table-total {
+  color: #00c7e6;
+  font-size: 18px;
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+@media (max-width: 420px) {
+  .last-reading-table-total {
+    margin-bottom: 16px;
+  }
+}
+
+.last-reading-table-history-button {
+  border: 0.5px solid #6c00fa;
+  color: #6c00fa;
+  font-weight: 500;
+  padding: 9px 13px;
+}
+
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
-***** AUTH APP COMPONENT STYLES *****
+***** AUTH APP COMPONENTS STYLES *****
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 --------------------------------------------------------------*/

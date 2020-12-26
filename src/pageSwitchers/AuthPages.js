@@ -1,22 +1,22 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-// import Home from '../AuthPages/Home';
-import About from '../AuthPages/About';
-import Contact from '../AuthPages/Contact';
-import Features from '../AuthPages/Features';
-import Login from '../AuthPages/Login';
-import SignUp from '../AuthPages/SignUp';
-import ChangePassword from '../AuthPages/ChangePassword';
-import ResetPassword from '../AuthPages/ResetPassword';
-import Error from '../AuthPages/Error';
+// import Home from '../authPages/Home';
+import About from '../authPages/About';
+import Contact from '../authPages/Contact';
+import Features from '../authPages/Features';
+import Login from '../authPages/Login';
+import SignUp from '../authPages/SignUp';
+import ChangePassword from '../authPages/ChangePassword';
+import ResetPassword from '../authPages/ResetPassword';
+import Error from '../authPages/Error';
 
 import ScrollToTop from '../helpers/ScrollToTop';
 
 import AuthHeader from '../components/AuthHeader';
 import Footer from '../components/Footer';
 
-function AuthPages() {
+function authPages() {
   return (
     <div>
       <AuthHeader />
@@ -43,4 +43,4 @@ function AuthPages() {
   );
 }
 
-export default AuthPages;
+export default authPages;

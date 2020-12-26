@@ -82,8 +82,8 @@ function PowerQualityPageSection({ pqData }) {
     });
 
   return (
-    <section className='power-quality-section'>
-      <h2 className='power-quality-section__heading'>
+    <section className='parameter-section'>
+      <h2 className='parameter-section__heading'>
         {pqData && pqData.deviceName}
       </h2>
 
@@ -95,7 +95,7 @@ function PowerQualityPageSection({ pqData }) {
         />
       </article>
 
-      <article className='parameters-table-container'>
+      <article className='power-quality-table-container'>
         <div className='parameters-table-header'>
           <div className='h-hidden-medium-down'>
             <button className='parameters-table-left-button'>PDF</button>

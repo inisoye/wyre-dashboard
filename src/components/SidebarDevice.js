@@ -6,7 +6,8 @@ import CompleteDataContext from '../Context';
 import {
   toCamelCase,
   cloneObject,
-  formatParameterData,
+  convertDateStringToObject,
+  convertPowerQualityDateStringsToObjects,
 } from '../helpers/genericHelpers';
 
 function SidebarDevice({
@@ -51,20 +52,13 @@ function SidebarDevice({
     fuel_consumption,
   } = deviceData.score_card;
 
-  const powerQualityData = formatParameterData(deviceData, 'power_quality');
+  const powerQualityData = convertPowerQualityDateStringsToObjects(deviceData);
   // Add device name to data
   powerQualityData.deviceName = modifiedDeviceName;
 
-  const energyConsumptionData = formatParameterData(
-    deviceData,
-    'energy_consumption'
-  );
-  // Add device name to data
-  energyConsumptionData.deviceName = modifiedDeviceName;
-
-  const powerDemandData = formatParameterData(deviceData, 'power_demand');
-  // Add device name to data
-  powerDemandData.deviceName = modifiedDeviceName;
+  const lastReadingData = Object.assign({}, deviceData.last_reading);
+  lastReadingData.date = convertDateStringToObject(lastReadingData.date);
+  lastReadingData.deviceName = modifiedDeviceName;
 
   // Add name to generator size efficiency & fuel consumption data
   if (generator_size_efficiency)
@@ -97,10 +91,8 @@ function SidebarDevice({
       fuel_consumption: [fuel_consumption],
       // Power Quality Data
       power_quality: [powerQualityData],
-      // Energy Consumption Data
-      energy_consumption: [energyConsumptionData],
-      // Power Demand Data
-      power_demand: [powerDemandData],
+      // Last Reading Data
+      last_reading: [lastReadingData],
     },
   };
 

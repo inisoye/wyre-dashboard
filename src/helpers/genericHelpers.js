@@ -283,6 +283,10 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
 --------------------------------------------------------------------*/
 
 // DayJS chosen for browser compatibility (and consistency) issues with native date objects.
+const convertDateStringToObject = (dateString) => {
+  return dayjs(dateString);
+};
+
 const convertDateStringsToObjects = (dateStrings) => {
   return dateStrings.dates.map((eachDate) => dayjs(eachDate));
 };
@@ -301,17 +305,17 @@ const formatParametersTimes = (dateStrings) => {
   return dateStrings.dates.map((eachDate) => eachDate.format('h:mm A'));
 };
 
-const formatParameterData = (deviceData, parameterName) => {
+const convertPowerQualityDateStringsToObjects = (deviceData) => {
   // Create a copy of original parameter data
-  const parameterData = Object.assign({}, deviceData[parameterName]);
-  const { dates } = parameterData;
+  const powerQualityData = Object.assign({}, deviceData.power_quality);
+  const { dates } = powerQualityData;
 
   // Convert dates to objects for easy manipulation
-  const parameterDateObjects = convertDateStringsToObjects(dates);
+  const powerQualityDateObjects = convertDateStringsToObjects(dates);
   // Add date objects and device name to data
-  parameterData.dates = parameterDateObjects;
+  powerQualityData.dates = powerQualityDateObjects;
 
-  return parameterData;
+  return powerQualityData;
 };
 /* --------------------------------------------------------------------
 /* Parameters Helpers End -------------------------------------------
@@ -340,9 +344,10 @@ export {
   sumScoreCardCarbonEmissions,
   joinChangeOverLagsValues,
   sumOperatingTimeValues,
+  convertDateStringToObject,
   convertDateStringsToObjects,
   formatParametersDatetimes,
   formatParametersDates,
   formatParametersTimes,
-  formatParameterData,
+  convertPowerQualityDateStringsToObjects,
 };

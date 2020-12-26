@@ -2,12 +2,6 @@
   margin-bottom: 70px;
 }
 
-.power-quality-section__heading {
-  font-size: 24px;
-  font-weight: $medium;
-  text-align: center;
-}
-
 .power-quality-line-container {
   background-color: $white;
   height: 450px;
@@ -15,5 +9,16 @@
 
   @include media('>=medium') {
     height: 547px;
+  }
+}
+
+.power-quality-table-container {
+  background-color: $white;
+  margin-top: 30px;
+  overflow: auto;
+  padding-top: 24px;
+
+  @include media('>=medium') {
+    padding-top: 16px;
   }
 }

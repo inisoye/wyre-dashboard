@@ -3,6 +3,7 @@ import React, { useEffect, useContext } from 'react';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
+import LastReadingPageSection from '../components/parameterPagesSections/LastReadingPageSection';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -13,13 +14,23 @@ const breadCrumbRoutes = [
 ];
 
 function LastReading({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { refinedRenderedData, setCurrentUrl } = useContext(
+    CompleteDataContext
+  );
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
   }, [match, setCurrentUrl]);
+
+  const { last_reading } = refinedRenderedData;
+
+  const lastReadingSections =
+    last_reading &&
+    last_reading.map((eachDevice) => (
+      <LastReadingPageSection key={eachDevice.deviceName} lrData={eachDevice} />
+    ));
 
   return (
     <>
@@ -28,7 +39,7 @@ function LastReading({ match }) {
         <PrintButtons />
       </div>
 
-      <p>Last Reading</p>
+      {lastReadingSections}
     </>
   );
 }

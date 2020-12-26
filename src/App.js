@@ -7,11 +7,7 @@ import AuthPages from './pageSwitchers/AuthPages';
 function App() {
   const { isUserAuthenticated } = useContext(CompleteDataContext);
 
-  return (
-    <>
-      {isUserAuthenticated ? <MainAppPages /> : <AuthPages />}
-    </>
-  );
+  return <>{isUserAuthenticated ? <MainAppPages /> : <AuthPages />}</>;
 }
 
 export default App;

@@ -8,7 +8,8 @@ import {
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
-  formatParameterData,
+  convertDateStringToObject,
+  convertPowerQualityDateStringsToObjects,
 } from '../helpers/genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -241,22 +242,47 @@ const getBranchFuelConsumptionArray = (data) =>
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Branch Parameters Calculations Start ---------------------------
+/* Branch Power Quality Calculations Start ---------------------------
 --------------------------------------------------------------------*/
-const getBranchParameterData = (data, parameterName) =>
+const getBranchPowerQualityData = (data) =>
   data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
     const modifiedDeviceName = !eachDevice.name.includes(data.name)
       ? data.name + ' ' + eachDevice.name
       : eachDevice.name;
 
-    const deviceParameterData = formatParameterData(eachDevice, parameterName);
+    const devicePowerQualityData = convertPowerQualityDateStringsToObjects(
+      eachDevice
+    );
     // Add device name to data
-    deviceParameterData.deviceName = modifiedDeviceName;
+    devicePowerQualityData.deviceName = modifiedDeviceName;
 
-    return deviceParameterData;
+    return devicePowerQualityData;
   });
 /* -------------------------------------------------------------------
-/* Branch Parameters Calculations Start ---------------------------
+/* Branch Power Quality Calculations Start ---------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Branch Time of Use Calculations Start ---------------------------
+--------------------------------------------------------------------*/
+const getBranchLastReadingData = (data) =>
+  data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const deviceLastReadingData = Object.assign({}, eachDevice.last_reading);
+    deviceLastReadingData.date = convertDateStringToObject(
+      deviceLastReadingData.date
+    );
+    deviceLastReadingData.deviceName = modifiedDeviceName;
+
+    return deviceLastReadingData;
+  });
+/* -------------------------------------------------------------------
+/* Branch Time of Use Calculations Start ---------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedBranchData = (data) => {
@@ -276,11 +302,9 @@ const getRefinedBranchData = (data) => {
       operating_time: getBranchOperatingTime(data),
       fuel_consumption: getBranchFuelConsumptionArray(data),
       // Power Quality Stuff
-      power_quality: getBranchParameterData(data, 'power_quality'),
-      // // Energy Consumption Stuff
-      // energy_consumption: getBranchParameterData(data, 'energy_consumption'),
-      // // Power Demand Stuff
-      // power_demand: getBranchParameterData(data, 'power_demand'),
+      power_quality: getBranchPowerQualityData(data),
+      // Time of Use Stuff
+      last_reading: getBranchLastReadingData(data),
     },
   };
 };

@@ -318,13 +318,8 @@ const getRenderedData = (data) => {
     fuel_consumption: getSelectionFuelConsumptionArray(data),
     // Power Quality Stuff
     power_quality: getSelectionParameterPropertyArray(data, 'power_quality'),
-    // // Energy Consumption Stuff
-    // energy_consumption: getSelectionParameterPropertyArray(
-    //   data,
-    //   'energy_consumption'
-    // ),
-    // // Power Demand Stuff
-    // power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
+    // Time of Use Stuff
+    last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
   };
 };
 
