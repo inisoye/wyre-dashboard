@@ -14,7 +14,8 @@ import {
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
   convertDateStringToObject,
-  convertPowerQualityDateStringsToObjects,
+  convertParameterDateStringsToObjects,
+  sumPowerDemandValues,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -318,8 +319,9 @@ const getOrganizationPowerQualityData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
   return allOrganizationDevices.map((eachDevice) => {
-    const devicePowerQualityData = convertPowerQualityDateStringsToObjects(
-      eachDevice
+    const devicePowerQualityData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'power_quality'
     );
     // Add device name to data
     devicePowerQualityData.deviceName = eachDevice.name;
@@ -332,7 +334,7 @@ const getOrganizationPowerQualityData = (data) => {
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Org Power Quality Calculations Start ------------------------------
+/* Org Last Reading Calculations Start ------------------------------
 --------------------------------------------------------------------*/
 const getOrganizationLastReadingData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
@@ -348,7 +350,55 @@ const getOrganizationLastReadingData = (data) => {
   });
 };
 /* -------------------------------------------------------------------
-/* Org Power Quality Calculations End --------------------------------
+/* Org Last Reading Calculations End --------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Org Power Demand Calculations Start ------------------------------
+--------------------------------------------------------------------*/
+const getOrganizationPowerDemandDates = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const powerDemandData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'power_demand'
+    );
+    const { dates: power_demand_dates } = powerDemandData;
+    return power_demand_dates;
+  })[0];
+};
+
+const getOrganizationPowerDemandValues = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const allDevicesPowerDemandValues = allOrganizationDevices.map(
+    (eachDevice) => {
+      const { power_demand_values } = eachDevice.power_demand;
+      return power_demand_values;
+    }
+  );
+
+  return sumPowerDemandValues(allDevicesPowerDemandValues);
+};
+
+const getOrganizationPowerDemandData = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const devicePowerDemandData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'power_demand'
+    );
+
+    const { dates, power_demand_values } = devicePowerDemandData;
+    if (power_demand_values) power_demand_values.source = eachDevice.name;
+
+    return { dates, ...power_demand_values };
+  });
+};
+/* -------------------------------------------------------------------
+/* Org Power Demand Calculations End --------------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
@@ -370,6 +420,8 @@ const getRefinedOrganizationData = (data) => {
     power_quality: getOrganizationPowerQualityData(data),
     // Time of Use Stuff
     last_reading: getOrganizationLastReadingData(data),
+    // Power Demand Stuff
+    power_demand: getOrganizationPowerDemandData(data),
   };
 };
 

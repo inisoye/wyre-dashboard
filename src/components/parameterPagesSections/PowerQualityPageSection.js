@@ -6,6 +6,7 @@ import {
   formatParametersDatetimes,
   formatParametersDates,
   formatParametersTimes,
+  formatParameterTableData,
 } from '../../helpers/genericHelpers';
 
 import PowerQualityLineChart from '../lineCharts/PowerQualityLineChart';
@@ -23,7 +24,7 @@ function PowerQualityPageSection({ pqData }) {
 
   // Pick out data based on selection in UI
   const plottedData = pqData && pqData[formattedPowerQualityName];
-  const plottedDates = pqData && formatParametersDatetimes(pqData);
+  const plottedDates = pqData && formatParametersDatetimes(pqData.dates);
 
   // Clone plotted data for usage in table
   const tableData = Object.assign({}, plottedData);
@@ -32,8 +33,8 @@ function PowerQualityPageSection({ pqData }) {
     delete tableData.deviceName;
   }
 
-  const tableDates = pqData && formatParametersDates(pqData);
-  const tableTimes = pqData && formatParametersTimes(pqData);
+  const tableDates = pqData && formatParametersDates(pqData.dates);
+  const tableTimes = pqData && formatParametersTimes(pqData.dates);
 
   const { frequency } = pqData ? pqData : { frequency: ['Empty'] };
   if (frequency) {
@@ -54,32 +55,10 @@ function PowerQualityPageSection({ pqData }) {
     frequency: frequency && frequency.average,
   });
 
-  const tableValuesWithHeadings =
-    tableValues[0] &&
-    tableValues.map((eachArray, index1) =>
-      eachArray.map((eachItem) => {
-        return {
-          [tableHeadings[index1]]: eachItem,
-        };
-      })
-    );
-
-  const formattedTableData =
-    tableValuesWithHeadings &&
-    tableValuesWithHeadings.reduce((acc, currArray) => {
-      currArray.forEach((eachItem, index) => {
-        acc[index] = { ...acc[index], ...eachItem };
-      });
-
-      return acc;
-    }, []);
-
-  const formattedTableDataWithIndex =
-    formattedTableData &&
-    formattedTableData.map(function (currentValue, index) {
-      currentValue.index = index + 1;
-      return currentValue;
-    });
+  const formattedTableData = formatParameterTableData(
+    tableHeadings,
+    tableValues
+  );
 
   return (
     <section className='parameter-section'>
@@ -112,7 +91,7 @@ function PowerQualityPageSection({ pqData }) {
 
         <PowerQualityTable
           powerQualityUnit={plottedData && plottedData.units}
-          powerQualityData={formattedTableDataWithIndex}
+          powerQualityData={formattedTableData}
         />
       </article>
     </section>

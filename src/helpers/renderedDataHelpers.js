@@ -7,6 +7,7 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
+  sumPowerDemandValues,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -271,7 +272,7 @@ const getSelectionFuelConsumptionArray = (data) => {
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Parameters Calculations Start ---------------------------------
+/* Parameters Calculations Start -------------------------------------
 --------------------------------------------------------------------*/
 // Combines property arrays for each selection and removes duplicates
 const getSelectionParameterPropertyArray = (data, propertyName) => {
@@ -293,13 +294,22 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
   const selectedPropertiesSet = new Set();
 
   return flattenedProperties.filter((item) => {
-    const duplicate = selectedPropertiesSet.has(item.deviceName);
-    selectedPropertiesSet.add(item.deviceName);
+    const filterProperty = item.deviceName || item.source;
+    const duplicate = selectedPropertiesSet.has(filterProperty);
+    selectedPropertiesSet.add(filterProperty);
     return !duplicate;
   });
 };
 /* -------------------------------------------------------------------
-/* Parameters Calculations End -----------------------------------
+/* Parameters Calculations End ---------------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Power Demand Calculations Start ---------------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Power Demand Calculations End ---------------------------------------
 --------------------------------------------------------------------*/
 
 const getRenderedData = (data) => {
@@ -320,6 +330,8 @@ const getRenderedData = (data) => {
     power_quality: getSelectionParameterPropertyArray(data, 'power_quality'),
     // Time of Use Stuff
     last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
+    // Power Demand Stuff
+    power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
   };
 };
 

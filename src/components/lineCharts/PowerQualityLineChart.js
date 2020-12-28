@@ -110,6 +110,15 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
         },
       ],
     },
+    tooltips: {
+      enabled: true,
+      mode: 'index',
+      callbacks: {
+        title: function (tooltipItem, data) {
+          return data['labels'][tooltipItem[0]['index']];
+        },
+      },
+    },
   };
 
   return (

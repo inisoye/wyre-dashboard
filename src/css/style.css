@@ -2200,6 +2200,37 @@ thead.ant-table-thead tr th {
 }
 
 /*--------------------------------------------------------------
+# Power Demand
+--------------------------------------------------------------*/
+.power-demand-bar-container {
+  background-color: #ffffff;
+  height: 450px;
+}
+
+@media (min-width: 768px) {
+  .power-demand-bar-container {
+    height: 547px;
+  }
+}
+
+.power-demand-table-container {
+  background-color: #ffffff;
+  margin-top: 30px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .power-demand-table-container {
+    padding-top: 16px;
+  }
+}
+
+.power-demand-table-wrapper {
+  overflow: auto;
+}
+
+/*--------------------------------------------------------------
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 ***** AUTH APP COMPONENTS STYLES *****

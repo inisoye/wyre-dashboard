@@ -281,7 +281,6 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
 /* --------------------------------------------------------------------
 /* Parameters Helpers Start-------------------------------------------
 --------------------------------------------------------------------*/
-
 // DayJS chosen for browser compatibility (and consistency) issues with native date objects.
 const convertDateStringToObject = (dateString) => {
   return dayjs(dateString);
@@ -292,33 +291,87 @@ const convertDateStringsToObjects = (dateStrings) => {
 };
 
 const formatParametersDatetimes = (dateStrings) => {
-  return dateStrings.dates.map((eachDate) =>
-    eachDate.format('DD/MM/YYYY h:mm A')
-  );
+  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY h:mm A'));
 };
 
 const formatParametersDates = (dateStrings) => {
-  return dateStrings.dates.map((eachDate) => eachDate.format('DD/MM/YYYY'));
+  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY'));
 };
 
 const formatParametersTimes = (dateStrings) => {
-  return dateStrings.dates.map((eachDate) => eachDate.format('h:mm A'));
+  return dateStrings.map((eachDate) => eachDate.format('hh:mm A'));
 };
 
-const convertPowerQualityDateStringsToObjects = (deviceData) => {
+const formatParameterTableData = (tableHeadings, tableValues) => {
+  const tableValuesWithHeadings =
+    tableValues[0] &&
+    tableValues.map((eachArray, index1) =>
+      eachArray.map((eachItem) => {
+        return {
+          [tableHeadings[index1]]: eachItem,
+        };
+      })
+    );
+
+  const formattedTableData =
+    tableValuesWithHeadings &&
+    tableValuesWithHeadings.reduce((acc, currArray) => {
+      currArray.forEach((eachItem, index) => {
+        acc[index] = { ...acc[index], ...eachItem };
+      });
+
+      return acc;
+    }, []);
+
+  const formattedTableDataWithIndex =
+    formattedTableData &&
+    formattedTableData.map(function (currentValue, index) {
+      currentValue.index = index + 1;
+      return currentValue;
+    });
+
+  return formattedTableDataWithIndex;
+};
+/* -------------------------------------------------------------------
+/* Parameters Helpers End -------------------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Parameter Helpers Start -------------------------------------------
+--------------------------------------------------------------------*/
+const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   // Create a copy of original parameter data
-  const powerQualityData = Object.assign({}, deviceData.power_quality);
-  const { dates } = powerQualityData;
+  const parameterData = Object.assign({}, deviceData[parameterName]);
+  const { dates } = parameterData;
 
   // Convert dates to objects for easy manipulation
-  const powerQualityDateObjects = convertDateStringsToObjects(dates);
+  const parameterDateObjects = convertDateStringsToObjects(dates);
   // Add date objects and device name to data
-  powerQualityData.dates = powerQualityDateObjects;
+  parameterData.dates = parameterDateObjects;
 
-  return powerQualityData;
+  return parameterData;
 };
-/* --------------------------------------------------------------------
-/* Parameters Helpers End -------------------------------------------
+/* -------------------------------------------------------------------
+/* Parameter Helpers End ---------------------------------------------
+--------------------------------------------------------------------*/
+/* -------------------------------------------------------------------
+/* Power Demand Helpers Start ----------------------------------------
+--------------------------------------------------------------------*/
+const sumPowerDemandValues = (allDevicesPowerDemandValues) => {
+  const allDevicesDemandValues = allDevicesPowerDemandValues.map(
+    (eachDevice) => eachDevice.demand
+  );
+
+  const DemandValues = sumArrayOfArrays(allDevicesDemandValues);
+  const Unit = allDevicesPowerDemandValues[0].units;
+
+  return {
+    demand: DemandValues,
+    units: Unit,
+  };
+};
+/* -------------------------------------------------------------------
+/* Power Demand Helpers End ------------------------------------------
 --------------------------------------------------------------------*/
 
 export {
@@ -349,5 +402,7 @@ export {
   formatParametersDatetimes,
   formatParametersDates,
   formatParametersTimes,
-  convertPowerQualityDateStringsToObjects,
+  formatParameterTableData,
+  convertParameterDateStringsToObjects,
+  sumPowerDemandValues,
 };

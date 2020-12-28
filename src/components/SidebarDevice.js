@@ -7,7 +7,7 @@ import {
   toCamelCase,
   cloneObject,
   convertDateStringToObject,
-  convertPowerQualityDateStringsToObjects,
+  convertParameterDateStringsToObjects,
 } from '../helpers/genericHelpers';
 
 function SidebarDevice({
@@ -28,6 +28,9 @@ function SidebarDevice({
 
   const checkBoxName = toCamelCase(modifiedDeviceName);
 
+  /* -------------------------------------------------------------------
+  /* Dashboard Begins --------------------------------------------------
+  --------------------------------------------------------------------*/
   // Destructure dashboard data for device
   const {
     total_kwh,
@@ -39,7 +42,13 @@ function SidebarDevice({
     today,
     yesterday,
   } = deviceData.dashboard;
+  /* -------------------------------------------------------------------
+  /* Dashboard Ends ----------------------------------------------------
+  --------------------------------------------------------------------*/
 
+  /* -------------------------------------------------------------------
+  /* Score Card Begins -------------------------------------------------
+  --------------------------------------------------------------------*/
   // Destructure score card data for device
   const {
     is_generator,
@@ -52,18 +61,49 @@ function SidebarDevice({
     fuel_consumption,
   } = deviceData.score_card;
 
-  const powerQualityData = convertPowerQualityDateStringsToObjects(deviceData);
-  // Add device name to data
-  powerQualityData.deviceName = modifiedDeviceName;
-
-  const lastReadingData = Object.assign({}, deviceData.last_reading);
-  lastReadingData.date = convertDateStringToObject(lastReadingData.date);
-  lastReadingData.deviceName = modifiedDeviceName;
-
   // Add name to generator size efficiency & fuel consumption data
   if (generator_size_efficiency)
     generator_size_efficiency.name = modifiedDeviceName;
   if (fuel_consumption) fuel_consumption.name = modifiedDeviceName;
+  /* -------------------------------------------------------------------
+  /* Score Card Ends ---------------------------------------------------
+  --------------------------------------------------------------------*/
+
+  /* -------------------------------------------------------------------
+  /* Power Quality Begins ----------------------------------------------
+  --------------------------------------------------------------------*/
+  const powerQualityData = convertParameterDateStringsToObjects(
+    deviceData,
+    'power_quality'
+  );
+  // Add device name to data
+  powerQualityData.deviceName = modifiedDeviceName;
+  /* -------------------------------------------------------------------
+  /* Power Quality Ends ------------------------------------------------
+  --------------------------------------------------------------------*/
+
+  /* -------------------------------------------------------------------
+  /* Last Reading Begins -----------------------------------------------
+  --------------------------------------------------------------------*/
+  const lastReadingData = Object.assign({}, deviceData.last_reading);
+  lastReadingData.date = convertDateStringToObject(lastReadingData.date);
+  lastReadingData.deviceName = modifiedDeviceName;
+  /* -------------------------------------------------------------------
+  /* Last Reading Ends -------------------------------------------------
+  --------------------------------------------------------------------*/
+
+  /* -------------------------------------------------------------------
+  /* Power Demand Begins -----------------------------------------------
+  --------------------------------------------------------------------*/
+  const powerDemandData = convertParameterDateStringsToObjects(
+    deviceData,
+    'power_demand'
+  );
+  const { dates: power_demand_dates, power_demand_values } = powerDemandData;
+  if (power_demand_values) power_demand_values.source = modifiedDeviceName;
+  /* -------------------------------------------------------------------
+  /* Power Demand Ends -------------------------------------------------
+  --------------------------------------------------------------------*/
 
   // Place all data for device in new object
   const refinedDeviceData = {
@@ -93,6 +133,8 @@ function SidebarDevice({
       power_quality: [powerQualityData],
       // Last Reading Data
       last_reading: [lastReadingData],
+      // Power Demand Data
+      power_demand: [{ dates: power_demand_dates, ...power_demand_values }],
     },
   };
 

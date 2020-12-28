@@ -4,7 +4,13 @@ import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const DashboardStackedBarChart = ({ data, organization }) => {
+const PowerDemandStackedBarChart = ({
+  chartDemandValues,
+  chartDeviceNames,
+  chartTooltipValues,
+  chartDates,
+  powerDemandUnit,
+}) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
@@ -45,7 +51,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
           },
           scaleLabel: {
             display: true,
-            labelString: 'Energy - Kilowatt (kW)/Hour',
+            labelString: `Demand (${powerDemandUnit})`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -67,7 +73,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
           stacked: true,
           scaleLabel: {
             display: true,
-            labelString: 'Days of the month',
+            labelString: 'Date and Time',
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -77,15 +83,6 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     },
   };
 
-  // ensure total(organization data) is removed from initial render
-  if (data) {
-    delete data[organization];
-  }
-
-  // Destructure data conditionally
-  const { dates, ...values } = data ? data : { dates: [] };
-  const dataNames = Object.keys(values);
-  const dataValues = Object.values(values);
   const colorsArray = [
     '#6C00FA',
     '#00C7E6',
@@ -99,32 +96,37 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     '#FFE11A',
   ];
 
-  const plottedDataSet = dataNames.map((_, index) => {
-    return {
-      maxBarThickness: 50,
-      label: dataNames[index],
-      // Pick data for last week if screen is a medium screen or less
-      data: isMediumScreen
-        ? getLastArrayItems(dataValues[index])
-        : dataValues[index],
-      backgroundColor: colorsArray[index],
-    };
-  });
+  const plottedDataSet =
+    chartDeviceNames &&
+    chartDeviceNames.map((_, index) => {
+      return {
+        maxBarThickness: 50,
+        label: chartDeviceNames[index],
+        // Pick data for last week if screen is a medium screen or less
+        data: isMediumScreen
+          ? getLastArrayItems(chartDemandValues[index])
+          : chartDemandValues[index],
+        backgroundColor: colorsArray[index],
+      };
+    });
 
-  const plottedData = {
+  const plottedData = chartDates && {
     labels: isMediumScreen
-      ? getLastArrayItems(dates, 7)
+      ? getLastArrayItems(chartDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(dates, 14)
-      : dates,
+      ? getLastArrayItems(chartDates, 14)
+      : chartDates,
     datasets: plottedDataSet,
   };
 
   return (
     <>
-      <Bar data={plottedData} options={options} />
+      <Bar
+        data={plottedData || { datasets: [], labels: [] }}
+        options={options}
+      />
     </>
   );
 };
 
-export default DashboardStackedBarChart;
+export default PowerDemandStackedBarChart;
