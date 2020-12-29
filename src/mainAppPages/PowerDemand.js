@@ -43,7 +43,12 @@ function PowerDemand({ match }) {
   const chartTooltipValues =
     power_demand &&
     power_demand.map((eachDevice) => {
-      return { avg: eachDevice.avg, min: eachDevice.min, max: eachDevice.max };
+      return {
+        source: eachDevice.source,
+        avg: eachDevice.avg,
+        min: eachDevice.min,
+        max: eachDevice.max,
+      };
     });
   const chartDates =
     power_demand && formatParametersDatetimes(power_demand[0].dates);

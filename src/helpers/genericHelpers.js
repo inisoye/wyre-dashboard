@@ -354,25 +354,6 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
-/* -------------------------------------------------------------------
-/* Power Demand Helpers Start ----------------------------------------
---------------------------------------------------------------------*/
-const sumPowerDemandValues = (allDevicesPowerDemandValues) => {
-  const allDevicesDemandValues = allDevicesPowerDemandValues.map(
-    (eachDevice) => eachDevice.demand
-  );
-
-  const DemandValues = sumArrayOfArrays(allDevicesDemandValues);
-  const Unit = allDevicesPowerDemandValues[0].units;
-
-  return {
-    demand: DemandValues,
-    units: Unit,
-  };
-};
-/* -------------------------------------------------------------------
-/* Power Demand Helpers End ------------------------------------------
---------------------------------------------------------------------*/
 
 export {
   toCamelCase,
@@ -404,5 +385,4 @@ export {
   formatParametersTimes,
   formatParameterTableData,
   convertParameterDateStringsToObjects,
-  sumPowerDemandValues,
 };

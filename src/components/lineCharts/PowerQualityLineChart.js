@@ -2,6 +2,30 @@ import React, { useContext } from 'react';
 import { Line } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
+const VerticalLinePlugin = {
+  id: 'verticalLineAcrossDataPoints',
+  afterDatasetsDraw: function (chart) {
+    if (chart.tooltip._active && chart.tooltip._active.length) {
+      var activePoint = chart.tooltip._active[0],
+        ctx = chart.ctx,
+        y_axis = chart.scales['y-axis-0'],
+        x = activePoint.tooltipPosition().x,
+        topY = y_axis.top,
+        bottomY = y_axis.bottom;
+      // draw line
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, topY);
+      ctx.lineTo(x, bottomY);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#E5E5E5';
+      ctx.opacity = 0.5;
+      ctx.stroke();
+      ctx.restore();
+    }
+  },
+};
+
 const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
   const pqDataUnit = data && data.units;
@@ -123,7 +147,11 @@ const PowerQualityLineChart = ({ data, dates, powerQualityUnit }) => {
 
   return (
     <>
-      <Line data={plottedData} options={options} />
+      <Line
+        data={plottedData}
+        options={options}
+        plugins={[VerticalLinePlugin]}
+      />
     </>
   );
 };

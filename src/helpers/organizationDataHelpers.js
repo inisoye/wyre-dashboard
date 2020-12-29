@@ -15,7 +15,6 @@ import {
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
-  sumPowerDemandValues,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -356,32 +355,6 @@ const getOrganizationLastReadingData = (data) => {
 /* -------------------------------------------------------------------
 /* Org Power Demand Calculations Start ------------------------------
 --------------------------------------------------------------------*/
-const getOrganizationPowerDemandDates = (data) => {
-  const allOrganizationDevices = getAllOrganizationDevices(data);
-
-  return allOrganizationDevices.map((eachDevice) => {
-    const powerDemandData = convertParameterDateStringsToObjects(
-      eachDevice,
-      'power_demand'
-    );
-    const { dates: power_demand_dates } = powerDemandData;
-    return power_demand_dates;
-  })[0];
-};
-
-const getOrganizationPowerDemandValues = (data) => {
-  const allOrganizationDevices = getAllOrganizationDevices(data);
-
-  const allDevicesPowerDemandValues = allOrganizationDevices.map(
-    (eachDevice) => {
-      const { power_demand_values } = eachDevice.power_demand;
-      return power_demand_values;
-    }
-  );
-
-  return sumPowerDemandValues(allDevicesPowerDemandValues);
-};
-
 const getOrganizationPowerDemandData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
