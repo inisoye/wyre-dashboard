@@ -38,8 +38,10 @@ function PowerDemand({ match }) {
 
   const chartDemandValues =
     power_demand && power_demand.map((eachDevice) => eachDevice.demand);
+
   const chartDeviceNames =
     power_demand && power_demand.map((eachDevice) => eachDevice.source);
+
   const chartTooltipValues =
     power_demand &&
     power_demand.map((eachDevice) => {
@@ -50,12 +52,13 @@ function PowerDemand({ match }) {
         max: eachDevice.max,
       };
     });
+
   const chartDates =
     power_demand && formatParametersDatetimes(power_demand[0].dates);
 
   const powerDemandUnit = power_demand && power_demand[0].units;
 
-  const tablePowerDemandClone =
+  const powerDemandTableDataClone =
     power_demand &&
     power_demand.map((eachDevice) => {
       // Make the device name available at every data point
@@ -69,21 +72,25 @@ function PowerDemand({ match }) {
       return { ...dataWithoutUnitsAndDemand, source: arrayOfDeviceName };
     });
 
+  console.log(powerDemandTableDataClone);
+
   const tableHeadings = Object.keys({
     date: '',
     time: '',
-    ...(tablePowerDemandClone ? tablePowerDemandClone[0] : []),
+    ...(powerDemandTableDataClone ? powerDemandTableDataClone[0] : []),
   });
 
   const arrayOfTableValues =
-    tablePowerDemandClone &&
-    tablePowerDemandClone.map((eachDevice) => {
+    powerDemandTableDataClone &&
+    powerDemandTableDataClone.map((eachDevice) => {
       return Object.values({
         date: formatParametersDates(eachDevice.dates),
         time: formatParametersTimes(eachDevice.dates),
         ...eachDevice,
       });
     });
+
+  console.log(arrayOfTableValues);
 
   const arrayOfFormattedTableData =
     arrayOfTableValues &&
@@ -109,7 +116,7 @@ function PowerDemand({ match }) {
         <PrintButtons />
       </div>
 
-      <article className='power-demand-bar-container'>
+      <article className='parameters-stacked-bar-container'>
         <PowerDemandStackedBarChart
           chartDemandValues={chartDemandValues}
           chartDeviceNames={chartDeviceNames}
