@@ -18,6 +18,7 @@ function LastReadingPageSections({ lrData }) {
   const energyData = lrData && lrData.data.energy;
   const demandData = lrData && lrData.data.demands;
   const totalDemandData = lrData && lrData.data.total_demands;
+  const harmonicDistortionData = lrData && lrData.data.harmonic_distortion;
 
   return (
     <section className='parameter-section'>
@@ -75,7 +76,7 @@ function LastReadingPageSections({ lrData }) {
         </div>
 
         <div className='last-reading-table-wrapper'>
-          <HarmonicDistortionTable />
+          <HarmonicDistortionTable data={harmonicDistortionData} />
         </div>
       </article>
 
