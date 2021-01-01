@@ -374,6 +374,45 @@ const getOrganizationPowerDemandData = (data) => {
 /* Org Power Demand Calculations End --------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Org Time of Use Calculations Start ------------------------------
+--------------------------------------------------------------------*/
+const getOrganizationTimeOfUseChartData = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const deviceTimeOfUseChartData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'time_of_use'
+    );
+
+    if (deviceTimeOfUseChartData)
+      deviceTimeOfUseChartData.deviceName = eachDevice.name;
+
+    return deviceTimeOfUseChartData;
+  });
+};
+
+const getOrganizationTimeOfUseTableData = (data) => {
+  const organizationTimeOfUseTableData =
+    data &&
+    data.branches.map((eachBranch) => {
+      const branchTimeOfUseTableData =
+        eachBranch && eachBranch.time_of_use_table;
+      const modifiedBranchTimeOfUseTableData = {
+        ...branchTimeOfUseTableData,
+        branchName: eachBranch.name,
+      };
+
+      return modifiedBranchTimeOfUseTableData;
+    });
+
+  return organizationTimeOfUseTableData;
+};
+/* -------------------------------------------------------------------
+/* Org Time of Use Calculations End --------------------------------
+--------------------------------------------------------------------*/
+
 const getRefinedOrganizationData = (data) => {
   return {
     name: data.name,
@@ -395,6 +434,9 @@ const getRefinedOrganizationData = (data) => {
     last_reading: getOrganizationLastReadingData(data),
     // Power Demand Stuff
     power_demand: getOrganizationPowerDemandData(data),
+    // Time of Use Stuff
+    time_of_use_chart: getOrganizationTimeOfUseChartData(data),
+    time_of_use_table: getOrganizationTimeOfUseTableData(data),
   };
 };
 

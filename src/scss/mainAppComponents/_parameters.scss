@@ -8,6 +8,15 @@
   text-align: center;
 }
 
+.parameters-stacked-bar-container {
+  background-color: $white;
+  height: 450px;
+
+  @include media('>=medium') {
+    height: 547px;
+  }
+}
+
 .parameters-table-header {
   @include media('>=medium') {
     align-items: center;
@@ -53,4 +62,21 @@
   span {
     margin-top: 4.5px;
   }
+}
+
+.power-demand-table-container,
+.time-of-use-table-container {
+  background-color: $white;
+  margin-top: 30px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+
+  @include media('>=medium') {
+    padding-top: 16px;
+  }
+}
+
+.power-demand-table-wrapper,
+.time-of-use-table-wrapper {
+  overflow: auto;
 }

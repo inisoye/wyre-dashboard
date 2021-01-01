@@ -7,7 +7,6 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
-  sumPowerDemandValues,
 } from './genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -294,7 +293,7 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
   const selectedPropertiesSet = new Set();
 
   return flattenedProperties.filter((item) => {
-    const filterProperty = item.deviceName || item.source;
+    const filterProperty = item.deviceName || item.source || item.branchName;
     const duplicate = selectedPropertiesSet.has(filterProperty);
     selectedPropertiesSet.add(filterProperty);
     return !duplicate;
@@ -304,15 +303,9 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
 /* Parameters Calculations End ---------------------------------------
 --------------------------------------------------------------------*/
 
-/* -------------------------------------------------------------------
-/* Power Demand Calculations Start ---------------------------------------
---------------------------------------------------------------------*/
-
-/* -------------------------------------------------------------------
-/* Power Demand Calculations End ---------------------------------------
---------------------------------------------------------------------*/
-
 const getRenderedData = (data) => {
+  console.log(getSelectionParameterPropertyArray(data, 'time_of_use_table'));
+
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
@@ -332,6 +325,16 @@ const getRenderedData = (data) => {
     last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
     // Power Demand Stuff
     power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
+    // Time of Use Data
+    time_of_use_chart: getSelectionParameterPropertyArray(
+      data,
+      'time_of_use_chart'
+    ),
+    // time_of_use_table: getSelectionTimeOfUseTableData(data),
+    time_of_use_table: getSelectionParameterPropertyArray(
+      data,
+      'time_of_use_table'
+    ),
   };
 };
 

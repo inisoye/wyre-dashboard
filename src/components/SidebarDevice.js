@@ -16,6 +16,7 @@ function SidebarDevice({
   deviceData,
   deviceDailyKwh,
   deviceMonthlyUsage,
+  deviceTimeOfUseTableData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -105,6 +106,19 @@ function SidebarDevice({
   /* Power Demand Ends -------------------------------------------------
   --------------------------------------------------------------------*/
 
+  /* -------------------------------------------------------------------
+  /* Time of Use Begins -----------------------------------------------
+  --------------------------------------------------------------------*/
+  const timeOfUseChartData = convertParameterDateStringsToObjects(
+    deviceData,
+    'time_of_use'
+  );
+  if (timeOfUseChartData) timeOfUseChartData.deviceName = modifiedDeviceName;
+
+  /* -------------------------------------------------------------------
+  /* Time of Use Ends -------------------------------------------------
+  --------------------------------------------------------------------*/
+
   // Place all data for device in new object
   const refinedDeviceData = {
     [modifiedDeviceName]: {
@@ -135,8 +149,13 @@ function SidebarDevice({
       last_reading: [lastReadingData],
       // Power Demand Data
       power_demand: [{ dates: power_demand_dates, ...power_demand_values }],
+      // Time of Use Data
+      time_of_use_chart: [timeOfUseChartData],
+      time_of_use_table: [deviceTimeOfUseTableData],
     },
   };
+
+  console.log(refinedDeviceData);
 
   const handleCheck = (event) => {
     setIsChecked(!isChecked);

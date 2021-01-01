@@ -287,7 +287,7 @@ const convertDateStringToObject = (dateString) => {
 };
 
 const convertDateStringsToObjects = (dateStrings) => {
-  return dateStrings.dates.map((eachDate) => dayjs(eachDate));
+  return dateStrings.map((eachDate) => dayjs(eachDate));
 };
 
 const formatParametersDatetimes = (dateStrings) => {
@@ -305,13 +305,13 @@ const formatParametersTimes = (dateStrings) => {
 const formatParameterTableData = (tableHeadings, tableValues) => {
   const tableValuesWithHeadings =
     tableValues[0] &&
-    tableValues.map((eachArray, index1) =>
-      eachArray.map((eachItem) => {
+    tableValues.map((eachArray, index1) => {
+      return eachArray.map((eachItem) => {
         return {
           [tableHeadings[index1]]: eachItem,
         };
-      })
-    );
+      });
+    });
 
   const formattedTableData =
     tableValuesWithHeadings &&
@@ -345,7 +345,9 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   const { dates } = parameterData;
 
   // Convert dates to objects for easy manipulation
-  const parameterDateObjects = convertDateStringsToObjects(dates);
+  const parameterDateObjects = convertDateStringsToObjects(
+    dates.dates || dates
+  );
   // Add date objects and device name to data
   parameterData.dates = parameterDateObjects;
 

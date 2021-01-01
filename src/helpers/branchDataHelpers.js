@@ -10,7 +10,6 @@ import {
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
-  sumPowerDemandValues,
 } from '../helpers/genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -266,7 +265,7 @@ const getBranchPowerQualityData = (data) =>
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Branch Last Reading Calculations Start ---------------------------
+/* Branch Last Reading Calculations Start ----------------------------
 --------------------------------------------------------------------*/
 const getBranchLastReadingData = (data) =>
   data.devices.map((eachDevice) => {
@@ -284,11 +283,11 @@ const getBranchLastReadingData = (data) =>
     return deviceLastReadingData;
   });
 /* -------------------------------------------------------------------
-/* Branch Last Reading Calculations Start ---------------------------
+/* Branch Last Reading Calculations Start ----------------------------
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Branch Power Demand Calculations Start ---------------------------
+/* Branch Power Demand Calculations Start ----------------------------
 --------------------------------------------------------------------*/
 const getBranchPowerDemandData = (data) =>
   data.devices.map((eachDevice) => {
@@ -308,7 +307,42 @@ const getBranchPowerDemandData = (data) =>
     return { dates, ...power_demand_values };
   });
 /* -------------------------------------------------------------------
-/* Branch Power Demand Calculations Start ---------------------------
+/* Branch Power Demand Calculations Start ----------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Branch Time of Use Calculations Start -----------------------------
+--------------------------------------------------------------------*/
+const getBranchTimeOfUseChartData = (data) =>
+  data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const deviceTimeOfUseChartData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'time_of_use'
+    );
+
+    if (deviceTimeOfUseChartData)
+      deviceTimeOfUseChartData.deviceName = modifiedDeviceName;
+
+    return deviceTimeOfUseChartData;
+  });
+
+const getBranchTimeOfUseTableData = (data) => {
+  const branchTimeOfUseTableData = data && data.time_of_use_table;
+
+  const modifiedBranchTimeOfUseTableData = {
+    ...branchTimeOfUseTableData,
+    branchName: data.name,
+  };
+
+  return modifiedBranchTimeOfUseTableData;
+};
+/* -------------------------------------------------------------------
+/* Branch Time of Use Calculations Start -----------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedBranchData = (data) => {
@@ -333,6 +367,9 @@ const getRefinedBranchData = (data) => {
       last_reading: getBranchLastReadingData(data),
       // Power Demand Stuff
       power_demand: getBranchPowerDemandData(data),
+      // Time of Use Stuff
+      time_of_use_chart: getBranchTimeOfUseChartData(data),
+      time_of_use_table: [getBranchTimeOfUseTableData(data)],
     },
   };
 };

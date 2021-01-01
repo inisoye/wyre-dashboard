@@ -63,6 +63,12 @@ function SidebarBranch({ branchData }) {
             hours: [branchMonthlyUsage.hours[deviceIndex]],
           };
 
+          const branchTimeOfUseTableData = branchData.time_of_use_table;
+          const modifiedBranchTimeOfUseTableData = {
+            ...branchTimeOfUseTableData,
+            branchName: branchData.name,
+          };
+
           return (
             <SidebarDevice
               originalDeviceName={originalDeviceName}
@@ -70,6 +76,7 @@ function SidebarBranch({ branchData }) {
               deviceData={eachDevice}
               deviceDailyKwh={deviceDailyKwh}
               deviceMonthlyUsage={deviceMonthlyUsage}
+              deviceTimeOfUseTableData={modifiedBranchTimeOfUseTableData}
               key={eachDevice.id}
             />
           );
