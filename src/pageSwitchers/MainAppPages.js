@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import AddBills from '../mainAppPages/AddBills';
+import AddEquipment from '../mainAppPages/AddEquipment';
 import Billing from '../mainAppPages/Billing';
 import CostTracker from '../mainAppPages/CostTracker';
 import Dashboard from '../mainAppPages/Dashboard';
@@ -36,7 +38,12 @@ function App() {
               <Switch>
                 <Route exact path='/' component={Dashboard} />
                 <Route path='/billing' component={Billing} />
-                <Route path='/cost-tracker' component={CostTracker} />
+                <Route exact path='/cost-tracker' component={CostTracker} />
+                <Route path='/cost-tracker/add-bills' component={AddBills} />
+                <Route
+                  path='/cost-tracker/add-equipment'
+                  component={AddEquipment}
+                />
                 <Route path='/messages' component={Messages} />
                 <Route
                   path='/parameters/last-reading'

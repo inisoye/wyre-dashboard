@@ -7,8 +7,8 @@
   @extend %gutters;
 
   @include media('>=medium') {
-    box-shadow: $grey-box-shadow;
     display: flex;
+    justify-content: space-between;
     overflow: auto;
     padding-bottom: 12px;
     padding-top: 10px;
@@ -18,6 +18,15 @@
     @include media('<medium') {
       display: none;
     }
+  }
+}
+
+.top-bar__left {
+  align-items: center;
+
+  @include media('>=medium') {
+    display: flex;
+    overflow: auto;
   }
 }
 
@@ -31,6 +40,14 @@
   }
 }
 
+.plotted-unit-selector,
+.time-interval-selector {
+  width: 100%;
+  @include media('>=medium') {
+    max-width: 230px;
+  }
+}
+
 .plotted-unit-selector {
   @include media('>=medium') {
     min-width: 180px;
@@ -40,4 +57,43 @@
 .plotted-unit-selector-option,
 .time-interval-selector-option {
   font-size: 12px !important;
+}
+
+.top-bar-right__button {
+  background-color: $purple;
+  border-radius: 8px;
+  color: $white;
+  font-size: 1.2rem;
+  font-weight: $bold;
+  padding: 12px 13px;
+  text-align: center;
+
+  @include media('<medium') {
+    display: block;
+    margin-top: 30px;
+    width: 100%;
+  }
+
+  @include media('>=medium') {
+    margin-right: 20px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  @include media('>=medium', '<888px') {
+    display: block;
+    margin: 0 auto 7px;
+    text-align: center;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  &:hover {
+    color: $white;
+    opacity: 0.95;
+  }
 }

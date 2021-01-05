@@ -2,16 +2,29 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
+import {
+  getLastArrayItems,
+  convertDateStringsToObjects,
+  formatParametersDatetimes,
+} from '../../helpers/genericHelpers';
 
-const PowerDemandStackedBarChart = ({
-  chartDemandValues,
-  chartDeviceNames,
-  chartTooltipValues,
-  chartDates,
-  powerDemandUnit,
-}) => {
+const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
+
+  const {
+    branchName,
+    dates: dateStrings,
+    units: unit,
+    ...actualData
+  } = consumptionData
+    ? consumptionData
+    : { branchName: '', dates: [], units: '' };
+
+  const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
+  const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
+
+  const consumptionValues = actualData && Object.values(actualData);
+  const deviceNames = actualData && Object.keys(actualData);
 
   const options = {
     layout: {
@@ -35,7 +48,6 @@ const PowerDemandStackedBarChart = ({
     scales: {
       yAxes: [
         {
-          stacked: true,
           display: true,
           gridLines: {
             color: '#f0f0f0',
@@ -48,10 +60,12 @@ const PowerDemandStackedBarChart = ({
             fontFamily: 'Roboto',
             padding: 10,
             maxTicksLimit: 6,
+            fontSize: 10,
+            fontColor: '#A3A3A3',
           },
           scaleLabel: {
             display: true,
-            labelString: `Demand (${powerDemandUnit})`,
+            labelString: `Quantity of Diesel Consumed (${unit})`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -62,6 +76,8 @@ const PowerDemandStackedBarChart = ({
         {
           ticks: {
             fontFamily: 'Roboto',
+            fontSize: 10,
+            fontColor: '#A3A3A3',
             padding: 10,
             maxTicksLimit: 10,
           },
@@ -70,7 +86,6 @@ const PowerDemandStackedBarChart = ({
             color: '#f0f0f0',
             zeroLineColor: '#f0f0f0',
           },
-          stacked: true,
           scaleLabel: {
             display: true,
             labelString: 'Date and Time',
@@ -84,8 +99,9 @@ const PowerDemandStackedBarChart = ({
   };
 
   const colorsArray = [
-    '#6C00FA',
+    '#FF3DA1',
     '#00C7E6',
+    '#6C00FA',
     '#FF3DA1',
     '#82ca9d',
     '#ff9b3d',
@@ -97,25 +113,25 @@ const PowerDemandStackedBarChart = ({
   ];
 
   const plottedDataSet =
-    chartDeviceNames &&
-    chartDeviceNames.map((_, index) => {
+    deviceNames &&
+    deviceNames.map((_, index) => {
       return {
         maxBarThickness: 50,
-        label: chartDeviceNames[index],
+        label: deviceNames[index],
         // Pick data for last week if screen is a medium screen or less
         data: isMediumScreen
-          ? getLastArrayItems(chartDemandValues[index])
-          : chartDemandValues[index],
+          ? getLastArrayItems(consumptionValues[index])
+          : consumptionValues[index],
         backgroundColor: colorsArray[index],
       };
     });
 
-  const plottedData = chartDates && {
+  const plottedData = formattedDates && {
     labels: isMediumScreen
-      ? getLastArrayItems(chartDates, 7)
+      ? getLastArrayItems(formattedDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(chartDates, 14)
-      : chartDates,
+      ? getLastArrayItems(formattedDates, 14)
+      : formattedDates,
     datasets: plottedDataSet,
   };
 
@@ -129,4 +145,4 @@ const PowerDemandStackedBarChart = ({
   );
 };
 
-export default PowerDemandStackedBarChart;
+export default CostTrackerConsumptionGroupedBarChart;

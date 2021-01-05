@@ -1,6 +1,7 @@
 import {
   sumArrayOfArrays,
   getAllOrganizationDevices,
+  getModifiedBranchLevelData,
   sumObjectValuesUp,
   sumNestedObjectValuesUp,
   getMinDemandObject,
@@ -393,24 +394,49 @@ const getOrganizationTimeOfUseChartData = (data) => {
   });
 };
 
-const getOrganizationTimeOfUseTableData = (data) => {
-  const organizationTimeOfUseTableData =
-    data &&
-    data.branches.map((eachBranch) => {
-      const branchTimeOfUseTableData =
-        eachBranch && eachBranch.time_of_use_table;
-      const modifiedBranchTimeOfUseTableData = {
-        ...branchTimeOfUseTableData,
-        branchName: eachBranch.name,
-      };
-
-      return modifiedBranchTimeOfUseTableData;
-    });
-
-  return organizationTimeOfUseTableData;
-};
+const getOrganizationTimeOfUseTableData = (data) =>
+  data &&
+  data.branches.map((eachBranch) =>
+    getModifiedBranchLevelData(eachBranch, 'time_of_use_table', eachBranch.name)
+  );
 /* -------------------------------------------------------------------
 /* Org Time of Use Calculations End --------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Org Cost Tracker Calculations Start -----------------------------
+--------------------------------------------------------------------*/
+const getOrganizationCostTrackerDieselQuantityData = (data) =>
+  data &&
+  data.branches.map((eachBranch) =>
+    getModifiedBranchLevelData(
+      eachBranch,
+      'cost_tracker_qty_of_diesel',
+      eachBranch.name
+    )
+  );
+
+const getOrganizationCostTrackerMonthlyCostData = (data) =>
+  data &&
+  data.branches.map((eachBranch) =>
+    getModifiedBranchLevelData(
+      eachBranch,
+      'cost_tracker_monthly_cost',
+      eachBranch.name
+    )
+  );
+
+const getOrganizationCostTrackerConsumptionData = (data) =>
+  data &&
+  data.branches.map((eachBranch) =>
+    getModifiedBranchLevelData(
+      eachBranch,
+      'cost_tracker_consumption_breakdown',
+      eachBranch.name
+    )
+  );
+/* -------------------------------------------------------------------
+/* Org Cost Tracker Calculations Start -----------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
@@ -437,6 +463,10 @@ const getRefinedOrganizationData = (data) => {
     // Time of Use Stuff
     time_of_use_chart: getOrganizationTimeOfUseChartData(data),
     time_of_use_table: getOrganizationTimeOfUseTableData(data),
+    // Cost Tracker  Stuff
+    cost_tracker_diesel_qty: getOrganizationCostTrackerDieselQuantityData(data),
+    cost_tracker_monthly_cost: getOrganizationCostTrackerMonthlyCostData(data),
+    cost_tracker_consumption: getOrganizationCostTrackerConsumptionData(data),
   };
 };
 

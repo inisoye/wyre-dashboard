@@ -304,8 +304,6 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
 --------------------------------------------------------------------*/
 
 const getRenderedData = (data) => {
-  console.log(getSelectionParameterPropertyArray(data, 'time_of_use_table'));
-
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
@@ -325,15 +323,27 @@ const getRenderedData = (data) => {
     last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
     // Power Demand Stuff
     power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
-    // Time of Use Data
+    // Time of Use Stuff
     time_of_use_chart: getSelectionParameterPropertyArray(
       data,
       'time_of_use_chart'
     ),
-    // time_of_use_table: getSelectionTimeOfUseTableData(data),
     time_of_use_table: getSelectionParameterPropertyArray(
       data,
       'time_of_use_table'
+    ),
+    // Cost Tracker Stuff
+    cost_tracker_diesel_qty: getSelectionParameterPropertyArray(
+      data,
+      'cost_tracker_diesel_qty'
+    ),
+    cost_tracker_monthly_cost: getSelectionParameterPropertyArray(
+      data,
+      'cost_tracker_monthly_cost'
+    ),
+    cost_tracker_consumption: getSelectionParameterPropertyArray(
+      data,
+      'cost_tracker_consumption'
     ),
   };
 };

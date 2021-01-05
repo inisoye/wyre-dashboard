@@ -8,7 +8,11 @@ import SidebarDevice from './SidebarDevice';
 import ChevronDown from '../icons/ChevronDown';
 import ChevronUp from '../icons/ChevronUp';
 
-import { toCamelCase, cloneObject } from '../helpers/genericHelpers';
+import {
+  toCamelCase,
+  cloneObject,
+  getModifiedBranchLevelData,
+} from '../helpers/genericHelpers';
 import { getRefinedBranchData } from '../helpers/branchDataHelpers';
 
 function SidebarBranch({ branchData }) {
@@ -63,11 +67,29 @@ function SidebarBranch({ branchData }) {
             hours: [branchMonthlyUsage.hours[deviceIndex]],
           };
 
-          const branchTimeOfUseTableData = branchData.time_of_use_table;
-          const modifiedBranchTimeOfUseTableData = {
-            ...branchTimeOfUseTableData,
-            branchName: branchData.name,
-          };
+          const modifiedBranchTimeOfUseTableData = getModifiedBranchLevelData(
+            branchData,
+            'time_of_use_table',
+            branchData.name
+          );
+
+          const modifiedBranchCostTrackerDieselQuantityData = getModifiedBranchLevelData(
+            branchData,
+            'cost_tracker_qty_of_diesel',
+            branchData.name
+          );
+
+          const modifiedBranchCostTrackerMonthlyCostData = getModifiedBranchLevelData(
+            branchData,
+            'cost_tracker_monthly_cost',
+            branchData.name
+          );
+
+          const modifiedBranchCostTrackerConsumptionData = getModifiedBranchLevelData(
+            branchData,
+            'cost_tracker_consumption_breakdown',
+            branchData.name
+          );
 
           return (
             <SidebarDevice
@@ -77,6 +99,15 @@ function SidebarBranch({ branchData }) {
               deviceDailyKwh={deviceDailyKwh}
               deviceMonthlyUsage={deviceMonthlyUsage}
               deviceTimeOfUseTableData={modifiedBranchTimeOfUseTableData}
+              deviceCostTrackerDieselQuantityData={
+                modifiedBranchCostTrackerDieselQuantityData
+              }
+              deviceCostTrackerMonthlyCostData={
+                modifiedBranchCostTrackerMonthlyCostData
+              }
+              deviceCostTrackerConsumptionData={
+                modifiedBranchCostTrackerConsumptionData
+              }
               key={eachDevice.id}
             />
           );

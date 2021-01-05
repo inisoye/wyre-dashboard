@@ -1,0 +1,27 @@
+.equipment-table-container {
+  background-color: $white;
+  margin-top: 30px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+
+  @include media('>=medium') {
+    padding-top: 16px;
+  }
+}
+
+.equipment-table-container__heading {
+  padding: 10px 16px 24px;
+  border-bottom: 0.5px solid $border-grey1;
+}
+
+.equipment-table-wrapper {
+  overflow: auto;
+}
+
+.equipment-edit-button {
+  padding: 6px 16px;
+  font-weight: $medium;
+  color: $purple;
+  border: 1px solid $purple;
+  border-radius: 3px;
+}

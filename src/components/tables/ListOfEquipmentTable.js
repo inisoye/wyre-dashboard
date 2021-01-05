@@ -3,7 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-class TimeOfUseTable extends React.Component {
+class ListOfEquipmentTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -93,69 +93,53 @@ class TimeOfUseTable extends React.Component {
   };
 
   render() {
-    const data = this.props.timeOfUseData;
+    const data = this.props.listOfEquipmentData;
 
     const columns = [
       {
-        title: 'Index',
-        dataIndex: 'index',
-        key: 'index',
-      },
-      {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-        ...this.getColumnSearchProps('date'),
-        sorter: (a, b) => new Date(a.date) - new Date(b.date),
+        title: 'Equipment Name',
+        dataIndex: 'name',
+        key: 'name',
+        ...this.getColumnSearchProps('name'),
+        sorter: (a, b) => a.name.localeCompare(b.name),
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Gen 1 (Hrs)',
-        dataIndex: 'gen1',
-        key: 'gen1',
-        ...this.getColumnSearchProps('gen1'),
-        sorter: (a, b) => a.gen1 - b.gen1,
+        title: 'Wattage (watts)',
+        dataIndex: 'wattage',
+        key: 'wattage',
+        ...this.getColumnSearchProps('wattage'),
+        sorter: (a, b) => a.wattage - b.wattage,
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Gen 2 (Hrs)',
-        dataIndex: 'gen2',
-        key: 'gen2',
-        ...this.getColumnSearchProps('gen2'),
-        sorter: (a, b) => a.gen2 - b.gen2,
+        title: 'Date Purchased',
+        dataIndex: 'date_purchased',
+        key: 'date_purchased',
+        ...this.getColumnSearchProps('date_purchased'),
+        sorter: (a, b) => a.date_purchased.localeCompare(b.date_purchased),
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Active Gen 2 (Hrs)',
-        dataIndex: 'active_gen',
-        key: 'active_gen',
-        ...this.getColumnSearchProps('active_gen'),
-        sorter: (a, b) => a.active_gen.localeCompare(b.active_gen),
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+        ...this.getColumnSearchProps('quantity'),
+        sorter: (a, b) => a.quantity - b.quantity,
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'First Time ON',
-        dataIndex: 'time_on',
-        key: 'time_on',
-        ...this.getColumnSearchProps('time_on'),
-        sorter: (a, b) => a.time_on.localeCompare(b.time_on),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Last Time OFF',
-        dataIndex: 'time_off',
-        key: 'time_off',
-        ...this.getColumnSearchProps('time_off'),
-        sorter: (a, b) => a.time_off.localeCompare(b.time_off),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Hours of Use',
-        dataIndex: 'hours_of_use',
-        key: 'hours_of_use',
-        ...this.getColumnSearchProps('hours_of_use'),
-        sorter: (a, b) => a.hours_of_use.localeCompare(b.hours_of_use),
-        sortDirections: ['descend', 'ascend'],
+        title: 'Action',
+        key: 'key',
+        dataIndex: 'key',
+        render: (_, record) => (
+          <button
+            className='equipment-edit-button'
+            onClick={() => console.log(record)}
+          >
+            Edit
+          </button>
+        ),
       },
     ];
 
@@ -166,12 +150,12 @@ class TimeOfUseTable extends React.Component {
           columns={columns}
           dataSource={data}
           rowKey={(record) => record.id}
-          pagination={{ position: ['none', 'bottomCenter'] }}
-          footer={() => `${data && data.length} entries in total`}
+          pagination={false}
+          footer={() => ``}
         />
       </>
     );
   }
 }
 
-export default TimeOfUseTable;
+export default ListOfEquipmentTable;

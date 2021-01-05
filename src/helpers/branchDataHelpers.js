@@ -1,4 +1,5 @@
 import {
+  getModifiedBranchLevelData,
   sumNestedObjectValuesUp,
   getNestedMinDemandObject,
   getNestedMaxDemandObject,
@@ -331,16 +332,6 @@ const getBranchTimeOfUseChartData = (data) =>
     return deviceTimeOfUseChartData;
   });
 
-const getBranchTimeOfUseTableData = (data) => {
-  const branchTimeOfUseTableData = data && data.time_of_use_table;
-
-  const modifiedBranchTimeOfUseTableData = {
-    ...branchTimeOfUseTableData,
-    branchName: data.name,
-  };
-
-  return modifiedBranchTimeOfUseTableData;
-};
 /* -------------------------------------------------------------------
 /* Branch Time of Use Calculations Start -----------------------------
 --------------------------------------------------------------------*/
@@ -369,7 +360,31 @@ const getRefinedBranchData = (data) => {
       power_demand: getBranchPowerDemandData(data),
       // Time of Use Stuff
       time_of_use_chart: getBranchTimeOfUseChartData(data),
-      time_of_use_table: [getBranchTimeOfUseTableData(data)],
+      time_of_use_table: [
+        getModifiedBranchLevelData(data, 'time_of_use_table', data.name),
+      ],
+      // Cost Tracker Stuff
+      cost_tracker_diesel_qty: [
+        getModifiedBranchLevelData(
+          data,
+          'cost_tracker_qty_of_diesel',
+          data.name
+        ),
+      ],
+      cost_tracker_monthly_cost: [
+        getModifiedBranchLevelData(
+          data,
+          'cost_tracker_monthly_cost',
+          data.name
+        ),
+      ],
+      cost_tracker_consumption: [
+        getModifiedBranchLevelData(
+          data,
+          'cost_tracker_consumption_breakdown',
+          data.name
+        ),
+      ],
     },
   };
 };

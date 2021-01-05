@@ -24,7 +24,7 @@ const TimeOfUseStackedBarChart = ({
       display: true,
       labels: {
         boxWidth: isMediumScreen ? 13 : 16,
-        fontSize: isMediumScreen ? 14 : 16,
+        fontSize: isLessThan1296 ? 14 : 16,
         fontColor: 'black',
         padding: isMediumScreen ? 10 : 25,
       },

@@ -17,6 +17,9 @@ function SidebarDevice({
   deviceDailyKwh,
   deviceMonthlyUsage,
   deviceTimeOfUseTableData,
+  deviceCostTrackerDieselQuantityData,
+  deviceCostTrackerMonthlyCostData,
+  deviceCostTrackerConsumptionData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -114,7 +117,6 @@ function SidebarDevice({
     'time_of_use'
   );
   if (timeOfUseChartData) timeOfUseChartData.deviceName = modifiedDeviceName;
-
   /* -------------------------------------------------------------------
   /* Time of Use Ends -------------------------------------------------
   --------------------------------------------------------------------*/
@@ -152,10 +154,12 @@ function SidebarDevice({
       // Time of Use Data
       time_of_use_chart: [timeOfUseChartData],
       time_of_use_table: [deviceTimeOfUseTableData],
+      // Cost Tracker Data
+      cost_tracker_diesel_qty: [deviceCostTrackerDieselQuantityData],
+      cost_tracker_monthly_cost: [deviceCostTrackerMonthlyCostData],
+      cost_tracker_consumption: [deviceCostTrackerConsumptionData],
     },
   };
-
-  console.log(refinedDeviceData);
 
   const handleCheck = (event) => {
     setIsChecked(!isChecked);

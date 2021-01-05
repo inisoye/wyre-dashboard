@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import CompleteDataContext from '../Context';
+import { Link } from 'react-router-dom';
 import { Select } from 'antd';
 
 import DateTimePicker from './DateTimePicker';
@@ -28,6 +29,8 @@ function TopBar() {
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
+  const isTopBarRightDisplayed = currentUrl.includes('cost-tracker');
+
   const handleIntervalChange = (interval) => {
     console.log(interval);
   };
@@ -38,73 +41,94 @@ function TopBar() {
 
   return (
     <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
-      <div>
-        <DateTimePicker isDateTimePickerHidden={isDateTimePickerHidden} />
+      <div className='top-bar__left'>
+        <div>
+          <DateTimePicker isDateTimePickerHidden={isDateTimePickerHidden} />
+        </div>
+
+        <div
+          className={
+            isTimeIntervalSelectorDisplayed
+              ? 'time-interval-selector-container'
+              : 'time-interval-selector-container h-hide'
+          }
+        >
+          <Select
+            className='time-interval-selector h-8-br'
+            defaultValue='15Mins'
+            onChange={handleIntervalChange}
+            suffixIcon={<CaretDownFilled />}
+          >
+            <Option className='time-interval-option' value='15Mins'>
+              15Mins
+            </Option>
+            <Option className='time-interval-option' value='30Mins'>
+              30Mins
+            </Option>
+            <Option className='time-interval-option' value='1Hour'>
+              1Hour
+            </Option>
+            <Option className='time-interval-option' value='Daily'>
+              Daily
+            </Option>
+            <Option className='time-interval-option' value='Weeks'>
+              Weeks
+            </Option>
+            <Option className='time-interval-option' value='Months'>
+              Months
+            </Option>
+          </Select>
+        </div>
+
+        <div
+          className={
+            isPlottedUnitSelectorDisplayed
+              ? 'plotted-unit-selector-container'
+              : 'plotted-unit-selector-container h-hide'
+          }
+        >
+          <Select
+            className='plotted-unit-selector h-8-br'
+            defaultValue='Current (Amps)'
+            suffixIcon={<CaretDownFilled />}
+            onChange={handleUnitChange}
+          >
+            <Option className='plotted-unit-option' value='Current (Amps)'>
+              Current (Amps)
+            </Option>
+            <Option className='plotted-unit-option' value='Voltage (Volts)'>
+              Voltage (Volts)
+            </Option>
+            <Option className='plotted-unit-option' value='Active-Power (kW)'>
+              Active-Power (kW)
+            </Option>
+            <Option
+              className='plotted-unit-option'
+              value='Reactive-Power (kVar)'
+            >
+              Reactive-Power (kVar)
+            </Option>
+            <Option className='plotted-unit-option' value='Energy (kWh)'>
+              Energy (kWh)
+            </Option>
+          </Select>
+        </div>
       </div>
 
       <div
         className={
-          isTimeIntervalSelectorDisplayed
-            ? 'time-interval-selector-container'
-            : 'time-interval-selector-container h-hide'
+          isTopBarRightDisplayed ? 'top-bar__right' : 'top-bar__right h-hide'
         }
       >
-        <Select
-          className='time-interval-selector'
-          defaultValue='15Mins'
-          onChange={handleIntervalChange}
-          suffixIcon={<CaretDownFilled />}
+        <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
+          Add Bills
+        </Link>
+        <Link
+          className='top-bar-right__button'
+          to='/cost-tracker/add-equipment'
         >
-          <Option className='time-interval-option' value='15Mins'>
-            15Mins
-          </Option>
-          <Option className='time-interval-option' value='30Mins'>
-            30Mins
-          </Option>
-          <Option className='time-interval-option' value='1Hour'>
-            1Hour
-          </Option>
-          <Option className='time-interval-option' value='Daily'>
-            Daily
-          </Option>
-          <Option className='time-interval-option' value='Weeks'>
-            Weeks
-          </Option>
-          <Option className='time-interval-option' value='Months'>
-            Months
-          </Option>
-        </Select>
-      </div>
-
-      <div
-        className={
-          isPlottedUnitSelectorDisplayed
-            ? 'plotted-unit-selector-container'
-            : 'plotted-unit-selector-container h-hide'
-        }
-      >
-        <Select
-          className='plotted-unit-selector'
-          defaultValue='Current (Amps)'
-          suffixIcon={<CaretDownFilled />}
-          onChange={handleUnitChange}
-        >
-          <Option className='plotted-unit-option' value='Current (Amps)'>
-            Current (Amps)
-          </Option>
-          <Option className='plotted-unit-option' value='Voltage (Volts)'>
-            Voltage (Volts)
-          </Option>
-          <Option className='plotted-unit-option' value='Active-Power (kW)'>
-            Active-Power (kW)
-          </Option>
-          <Option className='plotted-unit-option' value='Reactive-Power (kVar)'>
-            Reactive-Power (kVar)
-          </Option>
-          <Option className='plotted-unit-option' value='Energy (kWh)'>
-            Energy (kWh)
-          </Option>
-        </Select>
+          Add Equipment
+        </Link>
       </div>
     </div>
   );

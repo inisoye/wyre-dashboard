@@ -80,6 +80,16 @@ const getAllOrganizationDevices = (data) => {
   );
 };
 
+const getModifiedBranchLevelData = (branchData, propertyName, branchName) => {
+  const branchLevelDataOfProperty = branchData && branchData[propertyName];
+
+  // Add name to data
+  return {
+    ...branchLevelDataOfProperty,
+    branchName: branchName,
+  };
+};
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -332,13 +342,7 @@ const formatParameterTableData = (tableHeadings, tableValues) => {
 
   return formattedTableDataWithIndex;
 };
-/* -------------------------------------------------------------------
-/* Parameters Helpers End -------------------------------------------
---------------------------------------------------------------------*/
 
-/* -------------------------------------------------------------------
-/* Parameter Helpers Start -------------------------------------------
---------------------------------------------------------------------*/
 const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   // Create a copy of original parameter data
   const parameterData = Object.assign({}, deviceData[parameterName]);
@@ -357,6 +361,22 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+/* -------------------------------------------------------------------
+/* Cost Tracker Helpers Start ----------------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Cost Tracker Helpers End ------------------------------------------
+--------------------------------------------------------------------*/
+
 export {
   toCamelCase,
   toKebabCase,
@@ -367,6 +387,7 @@ export {
   getAllOrganizationDevices,
   sumObjectValuesUp,
   sumNestedObjectValuesUp,
+  getModifiedBranchLevelData,
   getMinDemandObject,
   getMaxDemandObject,
   getAvgDemandObject,

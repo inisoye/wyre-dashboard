@@ -53,6 +53,8 @@ function PowerDemand({ match }) {
       };
     });
 
+  console.log(chartDeviceNames);
+
   const chartDates =
     power_demand && formatParametersDatetimes(power_demand[0].dates);
 
@@ -72,8 +74,6 @@ function PowerDemand({ match }) {
       return { ...dataWithoutUnitsAndDemand, source: arrayOfDeviceName };
     });
 
-  console.log(powerDemandTableDataClone);
-
   const tableHeadings = Object.keys({
     date: '',
     time: '',
@@ -89,8 +89,6 @@ function PowerDemand({ match }) {
         ...eachDevice,
       });
     });
-
-  console.log(arrayOfTableValues);
 
   const arrayOfFormattedTableData =
     arrayOfTableValues &&

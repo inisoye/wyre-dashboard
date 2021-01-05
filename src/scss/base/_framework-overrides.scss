@@ -39,6 +39,14 @@
   }
 }
 
+.anticon.anticon-calendar {
+  svg {
+    fill: $purple;
+    width: 17px;
+    height: 17px;
+  }
+}
+
 /*--------------------------------------------------------------
 # Checkbox
 --------------------------------------------------------------*/
@@ -68,17 +76,20 @@
 # Select Box
 --------------------------------------------------------------*/
 
-.ant-select {
-  width: 100%;
-  @include media('>=medium') {
-    max-width: 230px;
-  }
-}
-
 .ant-select-selector {
   min-height: 40px;
-  border-radius: 8px !important;
   align-items: center;
+}
+
+.h-8-br {
+  .ant-select-selector {
+    border-radius: 8px !important;
+  }
+}
+.h-4-br {
+  .ant-select-selector {
+    border-radius: 4px !important;
+  }
 }
 
 /*--------------------------------------------------------------
@@ -104,15 +115,15 @@
 
 thead.ant-table-thead {
   background-color: $white;
-  border-bottom: 1px solid $border-grey1;
+  border-bottom: 0.5px solid $border-grey1;
 
   tr {
     background-color: $white;
-    border-bottom: 1px solid $border-grey1;
+    border-bottom: 0.5px solid $border-grey1;
 
     th {
       background-color: $white;
-      border-bottom: 1px solid $border-grey1;
+      border-bottom: 0.5px solid $border-grey1;
     }
   }
 }

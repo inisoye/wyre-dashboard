@@ -3,7 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-class ScoreCardTable extends React.Component {
+class PowerQualityTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -174,4 +174,4 @@ class ScoreCardTable extends React.Component {
   }
 }
 
-export default ScoreCardTable;
+export default PowerQualityTable;

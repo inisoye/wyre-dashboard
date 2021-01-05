@@ -90,8 +90,8 @@ main {
 button {
   background: transparent;
   border: 0;
-  cursor: pointer;
   border: $grey1 solid 1px;
+  cursor: pointer;
 }
 
 /* Remove IOS input style */
@@ -104,6 +104,15 @@ textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+input {
+  &:focus {
+    border-color: $purple;
+    box-shadow: 0 0 10px $light-purple;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline: 1px solid $light-purple;
+  }
 }
 
 %gutters {

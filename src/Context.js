@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-import dataHttpServices from './services/data';
+import dataHttpServices from './services/devices';
 
 import { getRefinedOrganizationData } from './helpers/organizationDataHelpers';
 import { getRenderedData } from './helpers/renderedDataHelpers';
