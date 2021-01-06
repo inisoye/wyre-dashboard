@@ -303,6 +303,18 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
 /* Parameters Calculations End ---------------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Energy Consumption Calculations Begin -----------------------------
+--------------------------------------------------------------------*/
+const sumSelectionEnergyConsumptionValues = (data, valueName) => {
+  const allDevicesValues = data.map((eachDevice) => eachDevice[valueName]);
+
+  return allDevicesValues.reduce((a, b) => a + b, 0);
+};
+/* -------------------------------------------------------------------
+/* Energy Consumption Calculations End -------------------------------
+--------------------------------------------------------------------*/
+
 const getRenderedData = (data) => {
   return {
     // Dashboard Stuff
@@ -331,6 +343,23 @@ const getRenderedData = (data) => {
     time_of_use_table: getSelectionParameterPropertyArray(
       data,
       'time_of_use_table'
+    ),
+    // Energy Consumption Stuff
+    energy_consumption_values: getSelectionParameterPropertyArray(
+      data,
+      'energy_consumption_values'
+    ),
+    energy_consumption_previous: sumSelectionEnergyConsumptionValues(
+      data,
+      'energy_consumption_previous'
+    ),
+    energy_consumption_current: sumSelectionEnergyConsumptionValues(
+      data,
+      'energy_consumption_current'
+    ),
+    energy_consumption_usage: sumSelectionEnergyConsumptionValues(
+      data,
+      'energy_consumption_usage'
     ),
     // Cost Tracker Stuff
     cost_tracker_diesel_qty: getSelectionParameterPropertyArray(

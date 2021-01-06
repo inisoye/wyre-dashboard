@@ -354,7 +354,7 @@ const getOrganizationLastReadingData = (data) => {
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Org Power Demand Calculations Start ------------------------------
+/* Org Power Demand Calculations Start -------------------------------
 --------------------------------------------------------------------*/
 const getOrganizationPowerDemandData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
@@ -372,11 +372,11 @@ const getOrganizationPowerDemandData = (data) => {
   });
 };
 /* -------------------------------------------------------------------
-/* Org Power Demand Calculations End --------------------------------
+/* Org Power Demand Calculations End ---------------------------------
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Org Time of Use Calculations Start ------------------------------
+/* Org Time of Use Calculations Start --------------------------------
 --------------------------------------------------------------------*/
 const getOrganizationTimeOfUseChartData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
@@ -400,7 +400,40 @@ const getOrganizationTimeOfUseTableData = (data) =>
     getModifiedBranchLevelData(eachBranch, 'time_of_use_table', eachBranch.name)
   );
 /* -------------------------------------------------------------------
-/* Org Time of Use Calculations End --------------------------------
+/* Org Time of Use Calculations End ----------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Energy Consumption Calculations Start -----------------------------
+--------------------------------------------------------------------*/
+const getOrganizationEnergyConsumptionValues = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'energy_consumption'
+    );
+
+    const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
+    if (energy_consumption_values)
+      energy_consumption_values.deviceName = eachDevice.name;
+
+    return { dates, ...energy_consumption_values };
+  });
+};
+
+const sumOrganizationEnergyConsumptionValues = (data, valueName) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const allDevicesValues = allOrganizationDevices.map(
+    (eachDevice) => eachDevice.energy_consumption[valueName]
+  );
+
+  return allDevicesValues.reduce((a, b) => a + b, 0);
+};
+/* -------------------------------------------------------------------
+/* Energy Consumption Calculations End -------------------------------
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
@@ -463,6 +496,20 @@ const getRefinedOrganizationData = (data) => {
     // Time of Use Stuff
     time_of_use_chart: getOrganizationTimeOfUseChartData(data),
     time_of_use_table: getOrganizationTimeOfUseTableData(data),
+    // Energy Consumption Stuff
+    energy_consumption_values: getOrganizationEnergyConsumptionValues(data),
+    energy_consumption_previous: sumOrganizationEnergyConsumptionValues(
+      data,
+      'previous'
+    ),
+    energy_consumption_current: sumOrganizationEnergyConsumptionValues(
+      data,
+      'current'
+    ),
+    energy_consumption_usage: sumOrganizationEnergyConsumptionValues(
+      data,
+      'usage'
+    ),
     // Cost Tracker  Stuff
     cost_tracker_diesel_qty: getOrganizationCostTrackerDieselQuantityData(data),
     cost_tracker_monthly_cost: getOrganizationCostTrackerMonthlyCostData(data),

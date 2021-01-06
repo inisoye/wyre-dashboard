@@ -16,6 +16,7 @@ const CompleteDataProvider = (props) => {
   // Note: the rendered data objects state exludes data for the whole organisation
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
+  const [checkedBranches, setCheckedBranches] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -30,8 +31,6 @@ const CompleteDataProvider = (props) => {
   const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
   const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
   const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
-
-  // console.log(refinedRenderedData);
 
   // console.log(powerQualityUnit);
 
@@ -72,6 +71,10 @@ const CompleteDataProvider = (props) => {
         setRenderedDataObjects: setRenderedDataObjects,
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
+        checkedBranches: checkedBranches,
+        setCheckedBranches: setCheckedBranches,
+        numberOfCheckedItems: Object.keys(checkedItems).length,
+        numberOfCheckedBranches: Object.keys(checkedBranches).length,
 
         isNavOpen: isNavOpen,
         setIsNavOpen: setIsNavOpen,

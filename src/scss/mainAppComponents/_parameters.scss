@@ -65,6 +65,7 @@
 }
 
 .power-demand-table-container,
+.energy-consumption-table-container,
 .time-of-use-table-container {
   background-color: $white;
   margin-top: 30px;
@@ -77,6 +78,7 @@
 }
 
 .power-demand-table-wrapper,
+.energy-consumption-table-wrapper,
 .time-of-use-table-wrapper {
   overflow: auto;
 }

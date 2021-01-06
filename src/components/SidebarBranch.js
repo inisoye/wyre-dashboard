@@ -24,6 +24,8 @@ function SidebarBranch({ branchData }) {
     setRenderedDataObjects,
     checkedItems,
     setCheckedItems,
+    checkedBranches,
+    setCheckedBranches,
   } = useContext(CompleteDataContext);
 
   const handleToggle = () => {
@@ -131,6 +133,12 @@ function SidebarBranch({ branchData }) {
         ...checkedItems,
         [branchData.name]: true,
       });
+
+      // Add this branch to list of checked branches
+      setCheckedBranches({
+        ...checkedBranches,
+        [branchData.name]: true,
+      });
     } else {
       // Delete this branch to list of rendered objects (and checked items) when unchecked
       const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
@@ -143,6 +151,12 @@ function SidebarBranch({ branchData }) {
       delete modifiedCheckedItems[branchData.name];
       setCheckedItems({
         ...modifiedCheckedItems,
+      });
+
+      const modifiedCheckedBranches = cloneObject(checkedBranches);
+      delete modifiedCheckedBranches[branchData.name];
+      setCheckedBranches({
+        ...modifiedCheckedBranches,
       });
     }
   };

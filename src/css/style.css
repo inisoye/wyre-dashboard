@@ -2123,6 +2123,7 @@ thead.ant-table-thead tr th {
 }
 
 .power-demand-table-container,
+.energy-consumption-table-container,
 .time-of-use-table-container {
   background-color: #ffffff;
   margin-top: 30px;
@@ -2132,14 +2133,60 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 768px) {
   .power-demand-table-container,
+  .energy-consumption-table-container,
   .time-of-use-table-container {
     padding-top: 16px;
   }
 }
 
 .power-demand-table-wrapper,
+.energy-consumption-table-wrapper,
 .time-of-use-table-wrapper {
   overflow: auto;
+}
+
+/*--------------------------------------------------------------
+# Energy Consumption
+--------------------------------------------------------------*/
+.energy-consumption-middle-cards-container {
+  margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+  .energy-consumption-middle-cards-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin-top: 0;
+  }
+}
+
+.energy-consumption-middle-card {
+  background-color: white;
+  padding: 16px 0;
+  text-align: center;
+  margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+  .energy-consumption-middle-card {
+    width: 202px;
+  }
+}
+
+.energy-consumption-middle-card-heading {
+  display: block;
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
+.energy-consumption-middle-card-body {
+  display: block;
+  margin-top: 16px;
+  font-size: 1.6rem;
 }
 
 /*--------------------------------------------------------------
@@ -2269,7 +2316,7 @@ thead.ant-table-thead tr th {
 .cost-tracker-branch-name {
   font-size: 1.8rem;
   font-weight: 500;
-  padding: 20px 10px 10px;
+  padding: 30px 10px 10px;
   text-align: center;
 }
 

@@ -1,0 +1,32 @@
+.energy-consumption-middle-cards-container {
+  margin-top: 30px;
+
+  @include media('>=medium') {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+  }
+}
+
+.energy-consumption-middle-card {
+  background-color: white;
+  padding: 16px 0;
+  text-align: center;
+  margin-top: 30px;
+
+  @include media('>=medium') {
+    width: 202px;
+  }
+}
+
+.energy-consumption-middle-card-heading {
+  display: block;
+  font-weight: $medium;
+  font-size: 1.8rem;
+}
+
+.energy-consumption-middle-card-body {
+  display: block;
+  margin-top: 16px;
+  font-size: 1.6rem;
+}

@@ -336,6 +336,40 @@ const getBranchTimeOfUseChartData = (data) =>
 /* Branch Time of Use Calculations Start -----------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Branch Energy Consumption Calculations Start ----------------------
+--------------------------------------------------------------------*/
+// Values for chart and table
+const getBranchEnergyConsumptionValues = (data) =>
+  data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
+      eachDevice,
+      'energy_consumption'
+    );
+
+    const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
+    if (energy_consumption_values)
+      energy_consumption_values.deviceName = modifiedDeviceName;
+
+    return { dates, ...energy_consumption_values };
+  });
+
+const sumBranchEnergyConsumptionValues = (data, valueName) => {
+  const allDevicesValues = data.devices.map(
+    (eachDevice) => eachDevice.energy_consumption[valueName]
+  );
+
+  return allDevicesValues.reduce((a, b) => a + b, 0);
+};
+/* -------------------------------------------------------------------
+/* Branch Energy Consumption Calculations Start ----------------------
+--------------------------------------------------------------------*/
+
 const getRefinedBranchData = (data) => {
   return {
     [data.name]: {
@@ -363,6 +397,17 @@ const getRefinedBranchData = (data) => {
       time_of_use_table: [
         getModifiedBranchLevelData(data, 'time_of_use_table', data.name),
       ],
+      // Energy Consumption Stuff
+      energy_consumption_values: getBranchEnergyConsumptionValues(data),
+      energy_consumption_previous: sumBranchEnergyConsumptionValues(
+        data,
+        'previous'
+      ),
+      energy_consumption_current: sumBranchEnergyConsumptionValues(
+        data,
+        'current'
+      ),
+      energy_consumption_usage: sumBranchEnergyConsumptionValues(data, 'usage'),
       // Cost Tracker Stuff
       cost_tracker_diesel_qty: [
         getModifiedBranchLevelData(

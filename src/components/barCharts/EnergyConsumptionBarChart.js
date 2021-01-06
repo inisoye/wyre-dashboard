@@ -2,29 +2,26 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import {
-  getLastArrayItems,
-  convertDateStringsToObjects,
-  formatParametersDatetimes,
-} from '../../helpers/genericHelpers';
+import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
-  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
-
+const CostTrackerConsumptionGroupedBarChart = ({
+  chartConsumptionValues,
+  chartDeviceNames,
+  chartDates,
+  energyConsumptionUnit,
+}) => {
   const {
-    branchName,
-    dates: dateStrings,
-    units: unit,
-    ...actualData
-  } = consumptionData
-    ? consumptionData
-    : { branchName: '', dates: [], units: '' };
+    isMediumScreen,
+    isLessThan1296,
+    numberOfCheckedItems,
+    numberOfCheckedBranches,
+  } = useContext(CompleteDataContext);
 
-  const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
-  const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
-
-  const consumptionValues = actualData && Object.values(actualData);
-  const deviceNames = actualData && Object.keys(actualData);
+  const isChartStacked =
+    numberOfCheckedItems < 1 ||
+    numberOfCheckedBranches > 0 ||
+    numberOfCheckedItems > 3 ||
+    false;
 
   const options = {
     layout: {
@@ -48,6 +45,7 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
     scales: {
       yAxes: [
         {
+          stacked: isChartStacked,
           display: true,
           gridLines: {
             color: '#f0f0f0',
@@ -65,7 +63,7 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
           },
           scaleLabel: {
             display: true,
-            labelString: `Quantity of Diesel Consumed (${unit})`,
+            labelString: `Quantity of Diesel Consumed (${energyConsumptionUnit})`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -74,6 +72,7 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
       ],
       xAxes: [
         {
+          stacked: isChartStacked,
           ticks: {
             fontFamily: 'Roboto',
             fontSize: 10,
@@ -112,25 +111,25 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
   ];
 
   const plottedDataSet =
-    deviceNames &&
-    deviceNames.map((_, index) => {
+    chartDeviceNames &&
+    chartDeviceNames.map((_, index) => {
       return {
         maxBarThickness: 50,
-        label: deviceNames[index],
+        label: chartDeviceNames[index],
         // Pick data for last week if screen is a medium screen or less
         data: isMediumScreen
-          ? getLastArrayItems(consumptionValues[index])
-          : consumptionValues[index],
+          ? getLastArrayItems(chartConsumptionValues[index])
+          : chartConsumptionValues[index],
         backgroundColor: colorsArray[index],
       };
     });
 
-  const plottedData = formattedDates && {
+  const plottedData = chartDates && {
     labels: isMediumScreen
-      ? getLastArrayItems(formattedDates, 7)
+      ? getLastArrayItems(chartDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+      ? getLastArrayItems(chartDates, 14)
+      : chartDates,
     datasets: plottedDataSet,
   };
 

@@ -110,7 +110,7 @@ function SidebarDevice({
   --------------------------------------------------------------------*/
 
   /* -------------------------------------------------------------------
-  /* Time of Use Begins -----------------------------------------------
+  /* Time of Use Begins ------------------------------------------------
   --------------------------------------------------------------------*/
   const timeOfUseChartData = convertParameterDateStringsToObjects(
     deviceData,
@@ -118,7 +118,29 @@ function SidebarDevice({
   );
   if (timeOfUseChartData) timeOfUseChartData.deviceName = modifiedDeviceName;
   /* -------------------------------------------------------------------
-  /* Time of Use Ends -------------------------------------------------
+  /* Time of Use Ends --------------------------------------------------
+  --------------------------------------------------------------------*/
+
+  /* -------------------------------------------------------------------
+  /* Energy Consumption Ends -------------------------------------------
+  --------------------------------------------------------------------*/
+  const energyConsumptionData = convertParameterDateStringsToObjects(
+    deviceData,
+    'energy_consumption'
+  );
+
+  const {
+    dates: energy_consumption_dates,
+    energy_consumption_values,
+    previous: energy_consumption_previous,
+    current: energy_consumption_current,
+    usage: energy_consumption_usage,
+  } = energyConsumptionData;
+
+  if (energy_consumption_values)
+    energy_consumption_values.deviceName = modifiedDeviceName;
+  /* -------------------------------------------------------------------
+  /* Energy Consumption Ends -------------------------------------------
   --------------------------------------------------------------------*/
 
   // Place all data for device in new object
@@ -154,6 +176,13 @@ function SidebarDevice({
       // Time of Use Data
       time_of_use_chart: [timeOfUseChartData],
       time_of_use_table: [deviceTimeOfUseTableData],
+      // Energy Consumption Data
+      energy_consumption_values: [
+        { dates: energy_consumption_dates, ...energy_consumption_values },
+      ],
+      energy_consumption_previous: energy_consumption_previous,
+      energy_consumption_current: energy_consumption_current,
+      energy_consumption_usage: energy_consumption_usage,
       // Cost Tracker Data
       cost_tracker_diesel_qty: [deviceCostTrackerDieselQuantityData],
       cost_tracker_monthly_cost: [deviceCostTrackerMonthlyCostData],

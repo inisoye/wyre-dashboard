@@ -53,8 +53,6 @@ function PowerDemand({ match }) {
       };
     });
 
-  console.log(chartDeviceNames);
-
   const chartDates =
     power_demand && formatParametersDatetimes(power_demand[0].dates);
 
