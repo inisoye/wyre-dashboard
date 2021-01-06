@@ -1545,6 +1545,7 @@ thead.ant-table-thead tr th {
 .page-content {
   background-color: #e0e8f3;
   padding-bottom: 30px;
+  min-height: 100vh;
 }
 
 /*--------------------------------------------------------------

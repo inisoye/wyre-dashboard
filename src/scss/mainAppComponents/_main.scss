@@ -8,4 +8,5 @@
   background-color: $bluegrey;
   @extend %gutters;
   padding-bottom: 30px;
+  min-height: 100vh;
 }
