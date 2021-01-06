@@ -63,7 +63,7 @@ const CostTrackerConsumptionGroupedBarChart = ({
           },
           scaleLabel: {
             display: true,
-            labelString: `Quantity of Diesel Consumed (${energyConsumptionUnit})`,
+            labelString: `Energy Consumption (${energyConsumptionUnit})`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
