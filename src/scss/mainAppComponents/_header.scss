@@ -233,6 +233,13 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
     margin-top: 10px;
     border-radius: 4px;
+
+    &.avatar-sublinks-list {
+      right: 0;
+      margin-right: 40px;
+      margin-top: 22px;
+      padding-bottom: 15px;
+    }
   }
 }
 
@@ -262,6 +269,29 @@
 
   @include media('>=desktop-header-break') {
     padding-left: 24px;
+  }
+
+  &.avatar-sublink {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 10px;
+      font-weight: $medium;
+    }
+
+    @include media('>=desktop-header-break') {
+      &:hover {
+        path {
+          stroke: $white;
+
+          &.h-hover-white-fill {
+            fill: $white;
+            stroke: none;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -325,4 +355,8 @@
   height: 44px;
   padding: 4px;
   width: 44px;
+
+  &:hover {
+    border-color: $purple;
+  }
 }

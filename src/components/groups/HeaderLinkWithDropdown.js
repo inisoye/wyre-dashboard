@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import onClickOutside from 'react-onclickoutside';
-import CompleteDataContext from '../../Context';
 
-function HeaderLinkWithDropdown({ children, className }) {
-  const { setIsNavLinkDropdownOpen } = useContext(CompleteDataContext);
-  HeaderLinkWithDropdown.handleClickOutside = () => setIsNavLinkDropdownOpen(false);
+function HeaderLinkWithDropdown({
+  children,
+  className,
+  setIsNavLinkDropdownOpen,
+}) {
+  HeaderLinkWithDropdown.handleClickOutside = () =>
+    setIsNavLinkDropdownOpen(false);
 
   return <li className={className}>{children}</li>;
 }

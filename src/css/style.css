@@ -1053,6 +1053,12 @@ thead.ant-table-thead tr th {
     margin-top: 10px;
     border-radius: 4px;
   }
+  .header-sublinks-list.avatar-sublinks-list {
+    right: 0;
+    margin-right: 40px;
+    margin-top: 22px;
+    padding-bottom: 15px;
+  }
 }
 
 @media (min-width: 1296px) {
@@ -1082,6 +1088,30 @@ thead.ant-table-thead tr th {
 @media (min-width: 1296px) {
   .header-sublink {
     padding-left: 24px;
+  }
+}
+
+.header-sublink.avatar-sublink {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header-sublink.avatar-sublink span {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+@media (min-width: 1296px) {
+  .header-sublink.avatar-sublink:hover path {
+    stroke: #ffffff;
+  }
+  .header-sublink.avatar-sublink:hover path.h-hover-white-fill {
+    fill: #ffffff;
+    stroke: none;
   }
 }
 
@@ -1159,6 +1189,10 @@ thead.ant-table-thead tr th {
   height: 44px;
   padding: 4px;
   width: 44px;
+}
+
+.header-avatar:hover {
+  border-color: #6c00fa;
 }
 
 /*--------------------------------------------------------------

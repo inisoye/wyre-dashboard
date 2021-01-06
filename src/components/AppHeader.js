@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 
@@ -16,7 +16,14 @@ import ChevronDown from '../icons/ChevronDown';
 import avatar from '../images/avatar.png';
 
 import HeaderLinkWithDropdown from './groups/HeaderLinkWithDropdown';
+import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropdown';
+import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
 import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
+import ProfileIcon from '../icons/ProfileIcon';
+import OverviewIcon from '../icons/OverviewIcon';
+import PadlockIcon from '../icons/PadlockIcon';
+import SettingsIcon from '../icons/SettingsIcon';
+import LogoutIcon from '../icons/LogoutIcon';
 
 function Header() {
   const {
@@ -24,9 +31,11 @@ function Header() {
     setIsNavOpen,
     isSidebarOpen,
     setIsSidebarOpen,
-    isNavLinkDropdownOpen,
-    setIsNavLinkDropdownOpen,
   } = useContext(CompleteDataContext);
+
+  const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
+  const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
+  const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -42,9 +51,18 @@ function Header() {
     setIsNavLinkDropdownOpen(!isNavLinkDropdownOpen);
   };
 
+  const toggleMobileAvatarMenu = () => {
+    setIsMobileAvatarMenuOpen(!isMobileAvatarMenuOpen);
+  };
+
+  const toggleDesktopAvatarMenu = () => {
+    setIsDesktopAvatarMenuOpen(!isDesktopAvatarMenuOpen);
+  };
+
   const toggleNavAndDropdown = () => {
     toggleNav();
     toggleNavLinkDropdown();
+    toggleMobileAvatarMenu();
   };
 
   return (
@@ -82,7 +100,10 @@ function Header() {
               linkText='Score Card'
             />
 
-            <HeaderLinkWithDropdown className='header-nav-list__item header-link-with-dropdown'>
+            <HeaderLinkWithDropdown
+              className='header-nav-list__item header-link-with-dropdown'
+              setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
+            >
               <button
                 className='header-link-dropdown-button'
                 onClick={toggleNavLinkDropdown}
@@ -162,11 +183,70 @@ function Header() {
               </HeaderIcon>
             </li>
 
-            <li className='header-nav-list__item header-avater-container h-hidden-1296-up'>
-              <button onClick={toggleNav} className='header-avatar'>
+            <HeaderMobileAvatarWithDropdown
+              className='header-nav-list__item header-avater-container h-hidden-1296-up'
+              setIsMobileAvatarMenuOpen={setIsMobileAvatarMenuOpen}
+            >
+              <button
+                onClick={toggleMobileAvatarMenu}
+                className='header-avatar'
+              >
                 <img src={avatar} alt='' />
               </button>
-            </li>
+
+              <ul
+                className={
+                  isMobileAvatarMenuOpen
+                    ? 'header-sublinks-list'
+                    : 'header-sublinks-list h-hide'
+                }
+              >
+                <li className='header-sublinks-list__item avatar-sublink-item'>
+                  <Link
+                    className='header-sublink avatar-sublink'
+                    onClick={toggleNavAndDropdown}
+                  >
+                    <ProfileIcon /> <span>Personal Data</span>
+                  </Link>
+                </li>
+
+                <li className='header-sublinks-list__item avatar-sublink-item'>
+                  <Link
+                    className='header-sublink avatar-sublink'
+                    onClick={toggleNavAndDropdown}
+                  >
+                    <OverviewIcon /> <span>Overview</span>
+                  </Link>
+                </li>
+
+                <li className='header-sublinks-list__item avatar-sublink-item'>
+                  <Link
+                    className='header-sublink avatar-sublink'
+                    onClick={toggleNavAndDropdown}
+                  >
+                    <PadlockIcon /> <span>Password</span>
+                  </Link>
+                </li>
+
+                <li className='header-sublinks-list__item avatar-sublink-item'>
+                  <Link
+                    className='header-sublink avatar-sublink'
+                    onClick={toggleNavAndDropdown}
+                  >
+                    <SettingsIcon /> <span>Settings</span>
+                  </Link>
+                </li>
+
+                <li className='header-sublinks-list__item avatar-sublink-item'>
+                  <Link
+                    className='header-sublink avatar-sublink'
+                    onClick={toggleNavAndDropdown}
+                  >
+                    <LogoutIcon /> <span>Logout</span>
+                  </Link>
+                </li>
+              </ul>
+            </HeaderMobileAvatarWithDropdown>
           </ul>
         </nav>
       </HeaderGroup1AndNav>
@@ -188,9 +268,51 @@ function Header() {
           <NotificationIcon className='header-icon__image' />
         </HeaderIcon>
 
-        <button className='header-avatar'>
-          <img src={avatar} alt='' />
-        </button>
+        <HeaderDesktopAvatarWithDropdown
+          setIsDesktopAvatarMenuOpen={setIsDesktopAvatarMenuOpen}
+        >
+          <button onClick={toggleDesktopAvatarMenu} className='header-avatar'>
+            <img src={avatar} alt='' />
+          </button>
+
+          <ul
+            className={
+              isDesktopAvatarMenuOpen
+                ? 'header-sublinks-list avatar-sublinks-list'
+                : 'header-sublinks-list avatar-sublinks-list h-hide'
+            }
+          >
+            <li className='header-sublinks-list__item avatar-sublink-item'>
+              <Link className='header-sublink avatar-sublink'>
+                <ProfileIcon /> <span>Personal Data</span>
+              </Link>
+            </li>
+
+            <li className='header-sublinks-list__item avatar-sublink-item'>
+              <Link className='header-sublink avatar-sublink'>
+                <OverviewIcon /> <span>Overview</span>
+              </Link>
+            </li>
+
+            <li className='header-sublinks-list__item avatar-sublink-item'>
+              <Link className='header-sublink avatar-sublink'>
+                <PadlockIcon /> <span>Password</span>
+              </Link>
+            </li>
+
+            <li className='header-sublinks-list__item avatar-sublink-item'>
+              <Link className='header-sublink avatar-sublink'>
+                <SettingsIcon /> <span>Settings</span>
+              </Link>
+            </li>
+
+            <li className='header-sublinks-list__item avatar-sublink-item'>
+              <Link className='header-sublink avatar-sublink'>
+                <LogoutIcon /> <span>Logout</span>
+              </Link>
+            </li>
+          </ul>
+        </HeaderDesktopAvatarWithDropdown>
       </div>
     </header>
   );

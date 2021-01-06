@@ -19,7 +19,6 @@ const CompleteDataProvider = (props) => {
   const [checkedBranches, setCheckedBranches] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
 
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
@@ -80,8 +79,6 @@ const CompleteDataProvider = (props) => {
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
-        isNavLinkDropdownOpen: isNavLinkDropdownOpen,
-        setIsNavLinkDropdownOpen: setIsNavLinkDropdownOpen,
 
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,
