@@ -346,10 +346,10 @@ function ClientProfile({ match }) {
                 rules={{
                   required: true,
                 }}
-                help={errors.siteOperatingHours && 'Please enter a date'}
+                help={errors.siteOperatingHours && 'Please enter a time range'}
               />
               <p className='input-error-message'>
-                {errors.siteOperatingHours && 'Please enter a date'}
+                {errors.siteOperatingHours && 'Please enter a time range'}
               </p>
             </div>
           </fieldset>
@@ -391,10 +391,10 @@ function ClientProfile({ match }) {
                 rules={{
                   required: true,
                 }}
-                help={errors.sourceType && 'Please enter a date'}
+                help={errors.sourceType && 'Please select a value'}
               />
               <p className='input-error-message'>
-                {errors.sourceType && 'Please enter a date'}
+                {errors.sourceType && 'Please select a value'}
               </p>
             </div>
 
@@ -455,10 +455,10 @@ function ClientProfile({ match }) {
                 rules={{
                   required: true,
                 }}
-                help={errors.deviceType && 'Please enter a date'}
+                help={errors.deviceType && 'Please select a value'}
               />
               <p className='input-error-message'>
-                {errors.deviceType && 'Please enter a date'}
+                {errors.deviceType && 'Please select a value'}
               </p>
             </div>
           </fieldset>

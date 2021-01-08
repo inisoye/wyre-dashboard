@@ -2589,7 +2589,7 @@ thead.ant-table-thead tr th {
 
 .client-info-form-inputs-wrapper {
   padding: 0;
-  margin-top: 70px;
+  margin-top: 90px;
 }
 
 @media (min-width: 1086px) {
@@ -2618,6 +2618,7 @@ thead.ant-table-thead tr th {
 @media (min-width: 1086px) {
   .client-info-input-container {
     margin-right: 20px;
+    margin-top: 40px;
     -webkit-box-flex: 1;
         -ms-flex: 1 1 30%;
             flex: 1 1 30%;
@@ -2691,6 +2692,86 @@ thead.ant-table-thead tr th {
   margin-top: 70px;
   -ms-flex-item-align: end;
       align-self: flex-end;
+}
+
+/*--------------------------------------------------------------
+# Branches User Form
+--------------------------------------------------------------*/
+.user-form-content-wrapper {
+  background-color: #ffffff;
+  padding: 16px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .user-form-content-wrapper {
+    padding: 24px 50px 80px;
+  }
+}
+
+@media (min-width: 1455px) {
+  .user-form-content-wrapper {
+    padding: 24px 86px 80px;
+  }
+}
+
+@media (min-width: 1086px) {
+  .user-form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
+@media (min-width: 1086px) {
+  .user-form-inputs-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+}
+
+.user-form-input-container {
+  margin-top: 30px;
+}
+
+@media (min-width: 1086px) {
+  .user-form-input-container {
+    margin-right: 20px;
+    margin-top: 80px;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 30%;
+            flex: 1 1 30%;
+  }
+  .user-form-input-container.h-no-mr {
+    margin-right: 0;
+  }
+  .user-form-input-container.h-no-growth {
+    max-width: 31.75%;
+  }
+}
+
+@media (min-width: 1455px) {
+  .user-form-input-container {
+    margin-right: 30px;
+  }
+}
+
+.user-form-input {
+  border-radius: 4px !important;
+}
+
+.user-form-submit-button {
+  margin-top: 60px;
 }
 
 /*--------------------------------------------------------------
