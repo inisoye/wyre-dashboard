@@ -13,7 +13,7 @@ function onOk(value) {
   console.log('onOk: ', value);
 }
 
-function DateTimePicker({ isDateTimePickerHidden }) {
+function DateTimePicker({ isDateTimePickerDisabled }) {
   return (
     <>
       <Space
@@ -27,7 +27,7 @@ function DateTimePicker({ isDateTimePickerHidden }) {
           format='DD-MM-YYYY HH:mm'
           onChange={onChange}
           onOk={onOk}
-          disabled={isDateTimePickerHidden}
+          disabled={isDateTimePickerDisabled}
           ranges={{
             Today: [moment(), moment()],
             Yesterday: [

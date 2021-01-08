@@ -20,6 +20,12 @@ const { Option } = Select;
 function AddBills({ match }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
 
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
   const {
     register: registerPurchaseTracker,
     handleSubmit: handleSubmitPurchaseTracker,
@@ -44,15 +50,9 @@ function AddBills({ match }) {
     errors: errorsPaymentTrackerPost,
   } = useForm();
 
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
-
   const fuelPurchaseDatePicker = (
     <DatePicker
-      className='cost-tracker-input'
+      className='generic-input'
       id='fuel-purchase-date'
       onChange={(e) =>
         setValuePurchaseTracker('fuelPurchaseDate', e.target.value, true)
@@ -64,7 +64,7 @@ function AddBills({ match }) {
     <Select
       className='cost-tracker-select h-4-br fuel-type-selector'
       id='fuel-type'
-      defaultValue='15Mins'
+      defaultValue='diesel'
       suffixIcon={<CaretDownFilled />}
       onChange={(e) =>
         setValuePurchaseTracker('fuelType', e.target.value, true)
@@ -81,7 +81,7 @@ function AddBills({ match }) {
 
   const utilityPaymentPreDatePicker = (
     <DatePicker
-      className='cost-tracker-input'
+      className='generic-input'
       id='utility-payment-pre-date'
       onChange={(e) =>
         setValuePaymentTrackerPre('utilityPaymentDate', e.target.value, true)
@@ -91,7 +91,7 @@ function AddBills({ match }) {
 
   const utilityPaymentPostDatePicker = (
     <DatePicker
-      className='cost-tracker-input'
+      className='generic-input'
       id='utility-payment-post-date'
       onChange={(e) =>
         setValuePaymentTrackerPost('utilityPaymentDate', e.target.value, true)
@@ -147,7 +147,7 @@ function AddBills({ match }) {
         <h1 className='center-main-heading'>Add Bills</h1>
 
         <section className='cost-tracker-form-section add-bills-section'>
-          <h2 className='cost-tracker-form-section__heading add-bills-section__heading'>
+          <h2 className='form-section-heading add-bills-section__heading'>
             Diesel/Petrol Purchase Tracker
           </h2>
 
@@ -159,13 +159,13 @@ function AddBills({ match }) {
             <div className='cost-tracker-form-inputs-wrapper'>
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='fuel-quantity'
                 >
                   Quantity
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='fuelQuantity'
@@ -178,13 +178,13 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='fuel-price-per-litre'
                 >
                   Price/Litre
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='fuelPricePerLitre'
@@ -196,7 +196,7 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='fuel-purchase-date'
                 >
                   Date
@@ -227,7 +227,10 @@ function AddBills({ match }) {
               </div>
 
               <div className='cost-tracker-input-container'>
-                <label className='cost-tracker-input-label' htmlFor='fuel-type'>
+                <label
+                  className='generic-input-label cost-tracker-input-label'
+                  htmlFor='fuel-type'
+                >
                   Diesel/Petrol
                 </label>
 
@@ -248,12 +251,14 @@ function AddBills({ match }) {
                 </p>
               </div>
             </div>
-            <button className='cost-tracker-form-submit-button'>Submit</button>
+            <button className='generic-submit-button cost-tracker-form-submit-button'>
+              Submit
+            </button>
           </form>
         </section>
 
         <section className='cost-tracker-form-section'>
-          <h2 className='cost-tracker-form-section__heading'>
+          <h2 className='form-section-heading'>
             Utility Payment Tracker (Pre-paid)
           </h2>
 
@@ -267,13 +272,13 @@ function AddBills({ match }) {
             <div className='cost-tracker-form-inputs-wrapper'>
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-amount'
                 >
                   Amount
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPreAmount'
@@ -285,7 +290,7 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-date'
                 >
                   Date
@@ -317,13 +322,13 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-tariff'
                 >
                   Tariff (if applicable)
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPreTariff'
@@ -334,13 +339,13 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-value'
                 >
                   Value (Kwatt/hr)
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPreValue'
@@ -351,12 +356,14 @@ function AddBills({ match }) {
               </div>
             </div>
 
-            <button className='cost-tracker-form-submit-button'>Submit</button>
+            <button className='generic-submit-button cost-tracker-form-submit-button'>
+              Submit
+            </button>
           </form>
         </section>
 
         <section className='cost-tracker-form-section'>
-          <h2 className='cost-tracker-form-section__heading'>
+          <h2 className='form-section-heading'>
             Utility Payment Tracker (Post-paid)
           </h2>
 
@@ -370,13 +377,13 @@ function AddBills({ match }) {
             <div className='cost-tracker-form-inputs-wrapper'>
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-amount'
                 >
                   Amount
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPostAmount'
@@ -388,7 +395,7 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-date'
                 >
                   Date
@@ -420,13 +427,13 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-tariff'
                 >
                   Tariff (if applicable)
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPostTariff'
@@ -437,13 +444,13 @@ function AddBills({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-value'
                 >
                   Value (Kwatt/hr)
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='utilityPaymentPostValue'
@@ -454,7 +461,9 @@ function AddBills({ match }) {
               </div>
             </div>
 
-            <button className='cost-tracker-form-submit-button'>Submit</button>
+            <button className='generic-submit-button cost-tracker-form-submit-button'>
+              Submit
+            </button>
           </form>
         </section>
       </div>

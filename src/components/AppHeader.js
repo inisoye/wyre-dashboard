@@ -92,7 +92,11 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink onClick={toggleNav} url='/' linkText='Dashboard' />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/'
+              linkText='Dashboard'
+            />
 
             <HeaderLink
               onClick={toggleNav}
@@ -205,6 +209,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
+                    to='/client-profile'
                   >
                     <ProfileIcon /> <span>Personal Data</span>
                   </Link>
@@ -214,6 +219,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
+                    to='#'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
@@ -223,6 +229,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
+                    to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
@@ -232,6 +239,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
+                    to='#'
                   >
                     <SettingsIcon /> <span>Settings</span>
                   </Link>
@@ -241,6 +249,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
+                    to='#'
                   >
                     <LogoutIcon /> <span>Logout</span>
                   </Link>
@@ -283,31 +292,34 @@ function Header() {
             }
           >
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink'>
+              <Link
+                className='header-sublink avatar-sublink'
+                to='/client-profile'
+              >
                 <ProfileIcon /> <span>Personal Data</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink'>
+              <Link className='header-sublink avatar-sublink' to='#'>
                 <OverviewIcon /> <span>Overview</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink'>
+              <Link className='header-sublink avatar-sublink' to='/password'>
                 <PadlockIcon /> <span>Password</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink'>
+              <Link className='header-sublink avatar-sublink' to='#'>
                 <SettingsIcon /> <span>Settings</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink'>
+              <Link className='header-sublink avatar-sublink' to='#'>
                 <LogoutIcon /> <span>Logout</span>
               </Link>
             </li>

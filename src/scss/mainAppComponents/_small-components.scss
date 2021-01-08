@@ -21,7 +21,56 @@
   text-align: center;
 }
 
+.form-section-heading {
+  color: $turquoise-blue;
+  font-size: 1.8rem;
+  font-weight: $medium;
+}
+
 .input-error-message {
   font-size: 1.4rem;
   color: $red;
+}
+
+.generic-input-label {
+  display: inline-block;
+  font-weight: $light;
+  margin-bottom: 8px;
+
+  font-size: 1.4rem;
+
+  @include media('>=1086px') {
+    font-size: 1.6rem;
+  }
+}
+
+.generic-input {
+  border: 1px solid $border-grey4;
+  color: scale-color($black, $lightness: 35%);
+  display: block;
+  font-size: 1.4rem;
+  height: 40px;
+  padding: 8px 11px;
+  width: 100%;
+
+  &::placeholder {
+    color: $grey4;
+  }
+}
+
+.generic-submit-button {
+  background-color: $purple;
+  border: 0;
+  color: $white;
+  display: block;
+  font-size: 1.2rem;
+  font-weight: $bold;
+  margin-top: 30px;
+  padding: 12.5px 0;
+  width: 100%;
+
+  @include media('>=1086px') {
+    max-width: 178px;
+    align-self: flex-end;
+  }
 }

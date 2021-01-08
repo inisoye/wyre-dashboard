@@ -38,7 +38,6 @@
 
   @include media('>=medium') {
     padding: 24px;
-    padding-bottom: 40px;
   }
 }
 
@@ -58,12 +57,6 @@
   }
 }
 
-.cost-tracker-form-section__heading {
-  color: $turquoise-blue;
-  font-size: 1.8rem;
-  font-weight: $medium;
-}
-
 .cost-tracker-form {
   margin-top: 24px;
 
@@ -81,9 +74,11 @@
 }
 
 .cost-tracker-input-label {
-  display: inline-block;
-  font-weight: $light;
-  margin-bottom: 8px;
+  font-size: 1.4rem;
+
+  @include media('>=1086px') {
+    font-size: 1.6rem;
+  }
 }
 
 .cost-tracker-input-container {
@@ -104,37 +99,6 @@
   border-radius: 4px !important;
 }
 
-.cost-tracker-input {
-  border: 1px solid $border-grey4;
-  color: scale-color($black, $lightness: 35%);
-  display: block;
-  font-size: 1.4rem;
-  height: 40px;
-  padding: 8px 11px;
-  width: 100%;
-
-  &::placeholder {
-    color: $grey4;
-  }
-}
-
 .cost-tracker-select {
   display: block;
-}
-
-.cost-tracker-form-submit-button {
-  background-color: $purple;
-  border: 0;
-  color: $white;
-  display: block;
-  font-size: 1.2rem;
-  font-weight: $bold;
-  margin-top: 30px;
-  padding: 12.5px 0;
-  width: 100%;
-
-  @include media('>=1086px') {
-    max-width: 178px;
-    align-self: flex-end;
-  }
 }

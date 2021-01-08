@@ -34,7 +34,7 @@ function AddEquipment({ match }) {
 
   const equipmentPurchaseDatePicker = (
     <DatePicker
-      className='cost-tracker-input'
+      className='generic-input'
       id='equipment-purchase-date'
       onChange={(e) => setValue('equipmentPurchaseDate', e.target.value, true)}
     />
@@ -65,7 +65,9 @@ function AddEquipment({ match }) {
         <h1 className='center-main-heading'>Equipment</h1>
 
         <section className='cost-tracker-form-section'>
-          <h2 className='cost-tracker-form-section__heading'>Add Equipment</h2>
+          <h2 className='form-section-heading cost-tracker-form-section__heading'>
+            Add Equipment
+          </h2>
 
           <form
             className='cost-tracker-form'
@@ -75,13 +77,13 @@ function AddEquipment({ match }) {
             <div className='cost-tracker-form-inputs-wrapper'>
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='equipment-name'
                 >
                   Equipment Name
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   name='equipmentName'
                   id='equipment-name'
@@ -94,13 +96,13 @@ function AddEquipment({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='equipment-wattage'
                 >
                   Wattage (watts)
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='equipmentWattage'
@@ -113,7 +115,7 @@ function AddEquipment({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='equipment-purchase-date'
                 >
                   Date Purchased
@@ -140,13 +142,13 @@ function AddEquipment({ match }) {
 
               <div className='cost-tracker-input-container'>
                 <label
-                  className='cost-tracker-input-label'
+                  className='generic-input-label cost-tracker-input-label'
                   htmlFor='equipment-quantity'
                 >
                   Quantity
                 </label>
                 <input
-                  className='cost-tracker-input'
+                  className='generic-input'
                   type='text'
                   inputMode='decimal'
                   name='equipmentQuantity'
@@ -158,13 +160,15 @@ function AddEquipment({ match }) {
               </div>
             </div>
 
-            <button className='cost-tracker-form-submit-button'>Add</button>
+            <button className='generic-submit-button cost-tracker-form-submit-button'>
+              Add
+            </button>
           </form>
         </section>
       </div>
 
       <article className='equipment-table-container'>
-        <h2 className='equipment-table-container__heading cost-tracker-form-section__heading'>
+        <h2 className='equipment-table-container__heading form-section-heading cost-tracker-form-section__heading'>
           List of Equipment
         </h2>
 

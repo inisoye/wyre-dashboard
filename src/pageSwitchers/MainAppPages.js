@@ -15,6 +15,11 @@ import EnergyConsumption from '../mainAppPages/EnergyConsumption';
 import PowerDemand from '../mainAppPages/PowerDemand';
 import TimeOfUse from '../mainAppPages/TimeOfUse';
 import LastReading from '../mainAppPages/LastReading';
+import ClientProfile from '../mainAppPages/ClientProfile';
+import Password from '../mainAppPages/Password';
+import AlertsAndAlarms from '../mainAppPages/AlertsAndAlarms';
+import BranchesDevicesAndUsers from '../mainAppPages/BranchesDevicesAndUsers';
+import BranchesUserForm from '../mainAppPages/BranchesUserForm';
 
 import ScrollToTop from '../helpers/ScrollToTop';
 
@@ -64,6 +69,18 @@ function App() {
                 />
                 <Route path='/report' component={Report} />
                 <Route path='/score-card' component={ScoreCard} />
+                <Route path='/client-profile' component={ClientProfile} />
+                <Route path='/password' component={Password} />
+                <Route path='/alerts-and-alarms' component={AlertsAndAlarms} />
+                <Route
+                  exact
+                  path='/branches'
+                  component={BranchesDevicesAndUsers}
+                />
+                <Route
+                  path='/branches/user-form'
+                  component={BranchesUserForm}
+                />
                 <Route component={Error} />
               </Switch>
             </div>

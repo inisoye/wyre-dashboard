@@ -14,7 +14,12 @@ function TopBar() {
     CompleteDataContext
   );
 
-  const isDateTimePickerHidden = currentUrl.includes('last-reading');
+  const pagesWithoutDateTimePickers = [
+    'add-bills',
+    'add-equipment',
+    'client-profile',
+    'password',
+  ];
 
   const pagesWithTimeIntervalSelector = [
     'energy-consumption',
@@ -23,9 +28,15 @@ function TopBar() {
     'time-of-use',
   ];
 
+  const isDateTimePickerNotDisplayed = pagesWithoutDateTimePickers.some(
+    (page) => currentUrl.includes(page)
+  );
+
   const isTimeIntervalSelectorDisplayed = pagesWithTimeIntervalSelector.some(
     (page) => currentUrl.includes(page)
   );
+
+  const isDateTimePickerDisabled = currentUrl.includes('last-reading');
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
@@ -42,8 +53,8 @@ function TopBar() {
   return (
     <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
       <div className='top-bar__left'>
-        <div>
-          <DateTimePicker isDateTimePickerHidden={isDateTimePickerHidden} />
+        <div className={isDateTimePickerNotDisplayed ? 'h-hide' : ''}>
+          <DateTimePicker isDateTimePickerDisabled={isDateTimePickerDisabled} />
         </div>
 
         <div
