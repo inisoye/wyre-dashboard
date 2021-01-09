@@ -2946,8 +2946,6 @@ thead.ant-table-thead tr th {
 .billing-bill-table {
   min-width: 500px;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
 }
 
 .billing-bill-table th,

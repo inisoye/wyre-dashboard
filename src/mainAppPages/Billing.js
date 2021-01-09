@@ -21,6 +21,12 @@ function Billing({ match }) {
     CompleteDataContext
   );
 
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
   const {
     billing_consumption_kwh,
     billing_consumption_naira,
@@ -76,12 +82,6 @@ function Billing({ match }) {
     formatParametersDatetimes(billing_consumption_naira.dates);
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
-
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
 
   return (
     <>

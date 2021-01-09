@@ -41,7 +41,7 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
         boxWidth: isMediumScreen ? 13 : 16,
         fontSize: isLessThan1296 ? 14 : 16,
         fontColor: 'black',
-        padding: isMediumScreen ? 10 : 25,
+        padding: isLessThan1296 ? 10 : 25,
       },
     },
     maintainAspectRatio: false,
