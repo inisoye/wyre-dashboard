@@ -16,8 +16,8 @@
 }
 
 .center-main-heading {
-  font-weight: $medium;
   font-size: 2.4rem;
+  font-weight: $medium;
   text-align: center;
 }
 
@@ -28,16 +28,16 @@
 }
 
 .input-error-message {
-  font-size: 1.4rem;
   color: $red;
+  font-size: 1.4rem;
 }
 
 .generic-input-label {
   display: inline-block;
+  font-size: 1.4rem;
   font-weight: $light;
   margin-bottom: 8px;
-
-  font-size: 1.4rem;
+  white-space: nowrap;
 
   @include media('>=1086px') {
     font-size: 1.6rem;
@@ -70,7 +70,7 @@
   width: 100%;
 
   @include media('>=1086px') {
-    max-width: 178px;
     align-self: flex-end;
+    max-width: 178px;
   }
 }

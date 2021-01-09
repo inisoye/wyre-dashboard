@@ -19,6 +19,7 @@ function TopBar() {
     'add-equipment',
     'client-profile',
     'password',
+    'alerts-and-alarms',
   ];
 
   const pagesWithTimeIntervalSelector = [

@@ -331,7 +331,6 @@ const getBranchTimeOfUseChartData = (data) =>
 
     return deviceTimeOfUseChartData;
   });
-
 /* -------------------------------------------------------------------
 /* Branch Time of Use Calculations Start -----------------------------
 --------------------------------------------------------------------*/
@@ -368,6 +367,76 @@ const sumBranchEnergyConsumptionValues = (data, valueName) => {
 };
 /* -------------------------------------------------------------------
 /* Branch Energy Consumption Calculations Start ----------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Branch Billing Calculations Start ---------------------------------
+--------------------------------------------------------------------*/
+const getBranchBillingConsumptionKwhValues = (data) =>
+  data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const { billing } = eachDevice;
+
+    const deviceConsumptionKwhWithoutName = convertParameterDateStringsToObjects(
+      billing,
+      'consumption_kwh'
+    );
+
+    return {
+      ...deviceConsumptionKwhWithoutName,
+      deviceName: modifiedDeviceName,
+    };
+  });
+
+const getBranchBillingConsumptionNairaValues = (data) => {
+  const allDevicesConsumptionNairaObjects = data.devices.map((eachDevice) => {
+    const { billing } = eachDevice;
+    const deviceConsumptionNairaWithDateObjects = convertParameterDateStringsToObjects(
+      billing,
+      'consumption_naira'
+    );
+
+    return deviceConsumptionNairaWithDateObjects;
+  });
+
+  const branchConsumptionNairaDates =
+    allDevicesConsumptionNairaObjects[0].dates;
+
+  const allDevicesConsumptionNairaValues = allDevicesConsumptionNairaObjects.map(
+    (eachDevice) => eachDevice.values
+  );
+  const branchConsumptionNairaValues = sumArrayOfArrays(
+    allDevicesConsumptionNairaValues
+  );
+
+  return {
+    dates: branchConsumptionNairaDates,
+    values: branchConsumptionNairaValues,
+  };
+};
+
+// Obtains previous total or present total for all devices in a branch
+const getBranchDevicesBillingTotal = (data, totalType) =>
+  data.devices.map((eachDevice) => {
+    // Check if device name includes branch name already
+    const modifiedDeviceName = !eachDevice.name.includes(data.name)
+      ? data.name + ' ' + eachDevice.name
+      : eachDevice.name;
+
+    const { billing } = eachDevice;
+    const specifiedTotal = billing.totals[totalType];
+
+    return {
+      ...specifiedTotal,
+      deviceName: modifiedDeviceName,
+    };
+  });
+/* -------------------------------------------------------------------
+/* Branch Billing Calculations End -----------------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedBranchData = (data) => {
@@ -430,6 +499,23 @@ const getRefinedBranchData = (data) => {
           data.name
         ),
       ],
+      // Billing Stuff
+      billing_consumption_kwh: getBranchBillingConsumptionKwhValues(data),
+      billing_consumption_naira: getBranchBillingConsumptionNairaValues(data),
+      overall_billing_totals: getModifiedBranchLevelData(
+        data,
+        'billing_totals',
+        data.name
+      ),
+
+      devices_previous_billing_total: getBranchDevicesBillingTotal(
+        data,
+        'previous_total'
+      ),
+      devices_present_billing_total: getBranchDevicesBillingTotal(
+        data,
+        'present_total'
+      ),
     },
   };
 };

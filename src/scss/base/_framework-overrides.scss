@@ -50,15 +50,31 @@
 /*--------------------------------------------------------------
 # Checkbox
 --------------------------------------------------------------*/
-.ant-checkbox,
-.ant-checkbox-checked .ant-checkbox-inner,
-.ant-checkbox-inner:after,
-.ant-checkbox-wrapper:hover .ant-checkbox-inner,
-.ant-checkbox:hover .ant-checkbox-inner,
-.ant-checkbox-input:focus + .ant-checkbox-inner {
-  @include media('>=medium') {
-    background-color: $purple !important;
-    border-color: $white !important;
+.sidebar-checkbox {
+  .ant-checkbox,
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-input .ant-checkbox-checked,
+  .ant-checkbox-inner:after,
+  .ant-checkbox-inner,
+  .ant-checkbox-input,
+  .ant-checkbox-input:hover,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    @include media('>=medium') {
+      background-color: $purple !important;
+      border-color: $white !important;
+    }
+  }
+}
+
+.alerts-and-alarms-checkbox {
+  .ant-checkbox,
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-inner:after,
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    background-color: $white !important;
+    border-color: $purple !important;
   }
 }
 

@@ -111,7 +111,8 @@ input {
     border-color: $purple;
     box-shadow: 0 0 10px $light-purple;
     outline: 5px auto -webkit-focus-ring-color;
-    outline: 1px solid $light-purple;
+    outline: 2px solid $light-purple;
+    outline-offset: 0.5px;
   }
 }
 

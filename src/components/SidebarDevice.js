@@ -20,6 +20,7 @@ function SidebarDevice({
   deviceCostTrackerDieselQuantityData,
   deviceCostTrackerMonthlyCostData,
   deviceCostTrackerConsumptionData,
+  deviceBillingTotalsData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -122,7 +123,7 @@ function SidebarDevice({
   --------------------------------------------------------------------*/
 
   /* -------------------------------------------------------------------
-  /* Energy Consumption Ends -------------------------------------------
+  /* Energy Consumption Begins -------------------------------------------
   --------------------------------------------------------------------*/
   const energyConsumptionData = convertParameterDateStringsToObjects(
     deviceData,
@@ -142,6 +143,36 @@ function SidebarDevice({
   /* -------------------------------------------------------------------
   /* Energy Consumption Ends -------------------------------------------
   --------------------------------------------------------------------*/
+
+  /* -------------------------------------------------------------------
+  /* Billing Begins ----------------------------------------------------
+  --------------------------------------------------------------------*/
+  const { billing } = deviceData;
+
+  const consumptionKwhWithoutName = convertParameterDateStringsToObjects(
+    billing,
+    'consumption_kwh'
+  );
+  const consumptionNairaWithoutName = convertParameterDateStringsToObjects(
+    billing,
+    'consumption_naira'
+  );
+
+  const { previous_total, present_total } = billing.totals;
+
+  const devicePreviousTotal = {
+    ...previous_total,
+    deviceName: modifiedDeviceName,
+  };
+  const devicePresentTotal = {
+    ...present_total,
+    deviceName: modifiedDeviceName,
+  };
+  /* -------------------------------------------------------------------
+  /* Billing Ends ------------------------------------------------------
+  --------------------------------------------------------------------*/
+
+  console.log(deviceBillingTotalsData);
 
   // Place all data for device in new object
   const refinedDeviceData = {
@@ -187,6 +218,17 @@ function SidebarDevice({
       cost_tracker_diesel_qty: [deviceCostTrackerDieselQuantityData],
       cost_tracker_monthly_cost: [deviceCostTrackerMonthlyCostData],
       cost_tracker_consumption: [deviceCostTrackerConsumptionData],
+      // Billing Data
+      billing_consumption_kwh: [
+        {
+          ...consumptionKwhWithoutName,
+          deviceName: modifiedDeviceName,
+        },
+      ],
+      billing_consumption_naira: consumptionNairaWithoutName,
+      overall_billing_totals: deviceBillingTotalsData,
+      devices_previous_billing_total: [devicePreviousTotal],
+      devices_present_billing_total: [devicePresentTotal],
     },
   };
 
@@ -226,7 +268,7 @@ function SidebarDevice({
     <li className='sidebar-device'>
       <div className='sidebar-device__details'>
         <Checkbox
-          className='sidebar-device__checkbox'
+          className='sidebar-device__checkbox sidebar-checkbox'
           name={checkBoxName}
           onChange={handleCheck}
         >

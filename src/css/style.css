@@ -325,7 +325,8 @@ input:focus {
   -webkit-box-shadow: 0 0 10px #f0e5ff;
           box-shadow: 0 0 10px #f0e5ff;
   outline: 5px auto -webkit-focus-ring-color;
-  outline: 1px solid #f0e5ff;
+  outline: 2px solid #f0e5ff;
+  outline-offset: 0.5px;
 }
 
 header,
@@ -578,6 +579,10 @@ p {
   color: #1b934e;
 }
 
+.h-caption-up {
+  caption-side: top;
+}
+
 /*--------------------------------------------------------------
 # Framework Overrides
 --------------------------------------------------------------*/
@@ -634,15 +639,27 @@ p {
 # Checkbox
 --------------------------------------------------------------*/
 @media (min-width: 768px) {
-  .ant-checkbox,
-  .ant-checkbox-checked .ant-checkbox-inner,
-  .ant-checkbox-inner:after,
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-  .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner {
+  .sidebar-checkbox .ant-checkbox,
+  .sidebar-checkbox .ant-checkbox-checked .ant-checkbox-inner,
+  .sidebar-checkbox .ant-checkbox-input .ant-checkbox-checked,
+  .sidebar-checkbox .ant-checkbox-inner:after,
+  .sidebar-checkbox .ant-checkbox-inner,
+  .sidebar-checkbox .ant-checkbox-input,
+  .sidebar-checkbox .ant-checkbox-input:hover,
+  .sidebar-checkbox .ant-checkbox-input:focus + .ant-checkbox-inner {
     background-color: #6c00fa !important;
     border-color: #ffffff !important;
   }
+}
+
+.alerts-and-alarms-checkbox .ant-checkbox,
+.alerts-and-alarms-checkbox .ant-checkbox-checked .ant-checkbox-inner,
+.alerts-and-alarms-checkbox .ant-checkbox-inner:after,
+.alerts-and-alarms-checkbox .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.alerts-and-alarms-checkbox .ant-checkbox:hover .ant-checkbox-inner,
+.alerts-and-alarms-checkbox .ant-checkbox-input:focus + .ant-checkbox-inner {
+  background-color: #ffffff !important;
+  border-color: #6c00fa !important;
 }
 
 .ant-checkbox-checked .ant-checkbox-inner::after {
@@ -752,8 +769,8 @@ thead.ant-table-thead tr th {
 }
 
 .center-main-heading {
-  font-weight: 500;
   font-size: 2.4rem;
+  font-weight: 500;
   text-align: center;
 }
 
@@ -764,15 +781,16 @@ thead.ant-table-thead tr th {
 }
 
 .input-error-message {
-  font-size: 1.4rem;
   color: #fa0303;
+  font-size: 1.4rem;
 }
 
 .generic-input-label {
   display: inline-block;
+  font-size: 1.4rem;
   font-weight: 300;
   margin-bottom: 8px;
-  font-size: 1.4rem;
+  white-space: nowrap;
 }
 
 @media (min-width: 1086px) {
@@ -821,9 +839,9 @@ thead.ant-table-thead tr th {
 
 @media (min-width: 1086px) {
   .generic-submit-button {
-    max-width: 178px;
     -ms-flex-item-align: end;
         align-self: flex-end;
+    max-width: 178px;
   }
 }
 
@@ -2772,6 +2790,286 @@ thead.ant-table-thead tr th {
 
 .user-form-submit-button {
   margin-top: 60px;
+}
+
+/*--------------------------------------------------------------
+# Alerts and Alarms
+--------------------------------------------------------------*/
+.alerts-and-alarms-form-content-wrapper {
+  padding-bottom: 40px;
+}
+
+.alerts-and-alarms-heading,
+.alerts-and-alarms-form-inputs-wrapper {
+  background-color: #ffffff;
+  padding: 0;
+}
+
+.alerts-and-alarms-heading {
+  padding-top: 24px;
+}
+
+.alerts-and-alarms-form-inputs-wrapper.h-second {
+  margin-top: 30px;
+}
+
+.alerts-and-alarms-form-section-heading,
+.alerts-and-alarms-list {
+  padding: 0 48px;
+}
+
+@media (min-width: 1100px) {
+  .alerts-and-alarms-form-section-heading,
+  .alerts-and-alarms-list {
+    padding: 0 11.5%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .alerts-and-alarms-form-section-heading,
+  .alerts-and-alarms-list {
+    padding: 0 20%;
+  }
+}
+
+.alerts-and-alarms-form-section-heading {
+  font-size: 1.8rem;
+  font-weight: 500;
+  display: inline-block;
+  background-color: #ffffff;
+  padding-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .alerts-and-alarms-form-section-heading {
+    font-size: 2rem;
+  }
+}
+
+.alerts-and-alarms-list {
+  list-style: decimal;
+  padding-top: 25px;
+  padding-bottom: 60px;
+}
+
+.alerts-and-alarms-list-item {
+  margin-top: 35px;
+}
+
+.alerts-and-alarms-list-item:first-of-type {
+  margin-top: 0;
+}
+
+.alerts-and-alarms-question-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.alerts-and-alarms-question {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-right: 50px;
+}
+
+@media (min-width: 768px) {
+  .alerts-and-alarms-question {
+    font-size: 1.7rem;
+  }
+}
+
+.alerts-and-alarms-input {
+  border: 1px solid #d9d9d9;
+  color: #595959;
+  font-size: 1.4rem;
+  height: 24px;
+  padding: 8px 11px;
+  max-width: 54px;
+  border-radius: 2px;
+  margin: 0 10px;
+}
+
+.alerts-and-alarms-checkbox {
+  -webkit-transform: scale(1.35);
+          transform: scale(1.35);
+}
+
+/*--------------------------------------------------------------
+# Billing
+--------------------------------------------------------------*/
+.billing-bar-container {
+  background-color: #ffffff;
+  height: 450px;
+}
+
+@media (min-width: 768px) {
+  .billing-bar-container {
+    height: 547px;
+  }
+}
+
+.billing-bar-container.h-mt {
+  margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+  .billing-bill-tables {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+}
+
+.billing-bill-table-container {
+  background-color: #ffffff;
+  margin-top: 30px;
+  overflow: auto;
+  padding-bottom: 52px;
+  width: 100%;
+}
+
+@media (min-width: 1248px) {
+  .billing-bill-table-container {
+    width: 50%;
+  }
+}
+
+.billing-bill-table {
+  min-width: 500px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.billing-bill-table th,
+.billing-bill-table td {
+  font-size: 1.3rem;
+  font-weight: 300;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.billing-bill-table th span,
+.billing-bill-table td span {
+  margin: 0 15px;
+}
+
+.billing-bill-table th span:first-of-type,
+.billing-bill-table td span:first-of-type {
+  margin-left: 0;
+}
+
+.billing-bill-table th span:last-of-type,
+.billing-bill-table td span:last-of-type {
+  margin-right: 0;
+}
+
+.billing-bill-table tr:nth-child(odd) {
+  background-color: #f2f2f8;
+}
+
+.billing-table-caption {
+  border-bottom: 0.5px solid #c4c4c4;
+  color: #000000;
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding: 30px 16px 12px;
+}
+
+.billing-bill-table__first-row th,
+.billing-bill-table__first-row td {
+  font-weight: 400;
+}
+
+@media (min-width: 1210px) {
+  .usage-and-metrics-tables {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+}
+
+.billing-metrics-table {
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 30px;
+  padding-bottom: 52px;
+  padding-top: 15px;
+  width: 100%;
+}
+
+@media (min-width: 1210px) {
+  .billing-metrics-table {
+    width: 49%;
+  }
+}
+
+.billing-metrics-table td {
+  border: 0;
+  font-size: 1.6rem;
+  font-weight: 300;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.billing-metrics-table tbody tr:nth-child(odd) {
+  background-color: #f2f2f8;
+}
+
+.billing-metrics-table tfoot td {
+  font-weight: 500;
+}
+
+.billing-metrics-table .metric-name {
+  font-weight: 400;
+}
+
+.billing-usage-table-container {
+  background-color: #ffffff;
+  margin-top: 30px;
+  padding-bottom: 52px;
+}
+
+@media (min-width: 1210px) {
+  .billing-usage-table-container {
+    width: 49%;
+  }
+}
+
+.billing-usage-table {
+  width: 100%;
+}
+
+.billing-usage-table th,
+.billing-usage-table td {
+  padding: 12px 16px;
+  font-size: 1.6rem;
+}
+
+.billing-usage-table th {
+  font-weight: 400;
+  border-bottom: 0.5px solid #c4c4c4;
+}
+
+.billing-usage-table td {
+  font-weight: 300;
+  text-align: left;
 }
 
 /*--------------------------------------------------------------

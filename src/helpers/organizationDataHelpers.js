@@ -469,7 +469,153 @@ const getOrganizationCostTrackerConsumptionData = (data) =>
     )
   );
 /* -------------------------------------------------------------------
-/* Org Cost Tracker Calculations Start -----------------------------
+/* Org Cost Tracker Calculations End ---------------------------------
+--------------------------------------------------------------------*/
+
+/* -------------------------------------------------------------------
+/* Org Billing Calculations Start ------------------------------------
+--------------------------------------------------------------------*/
+const getOrganizationBillingConsumptionKwhValues = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const { billing } = eachDevice;
+
+    const deviceConsumptionKwhWithoutName = convertParameterDateStringsToObjects(
+      billing,
+      'consumption_kwh'
+    );
+
+    return {
+      ...deviceConsumptionKwhWithoutName,
+      deviceName: eachDevice.name,
+    };
+  });
+};
+
+const getOrganizationBillingConsumptionNairaValues = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const allDevicesConsumptionNairaObjects = allOrganizationDevices.map(
+    (eachDevice) => {
+      const { billing } = eachDevice;
+      const deviceConsumptionNairaWithDateObjects = convertParameterDateStringsToObjects(
+        billing,
+        'consumption_naira'
+      );
+
+      return deviceConsumptionNairaWithDateObjects;
+    }
+  );
+
+  const organizationConsumptionNairaDates =
+    allDevicesConsumptionNairaObjects[0].dates;
+
+  const allDevicesConsumptionNairaValues = allDevicesConsumptionNairaObjects.map(
+    (eachDevice) => eachDevice.values
+  );
+  const organizationConsumptionNairaValues = sumArrayOfArrays(
+    allDevicesConsumptionNairaValues
+  );
+
+  return {
+    dates: organizationConsumptionNairaDates,
+    values: organizationConsumptionNairaValues,
+  };
+};
+
+const getOrganizationBillingTotals = (data) => {
+  const allBranchesBillingTotals =
+    data &&
+    data.branches.map((eachBranch) =>
+      getModifiedBranchLevelData(eachBranch, 'billing_totals', eachBranch.name)
+    );
+
+  const extractSingleBranchValueType = (
+    combinedBranchValues,
+    extractedValueName
+  ) => combinedBranchValues.map((eachBranch) => eachBranch[extractedValueName]);
+
+  // Present Values
+  const allBranchesPresentTotalValues = extractSingleBranchValueType(
+    allBranchesBillingTotals,
+    'present_total'
+  );
+  const organizationPresentTotalKwh = extractSingleBranchValueType(
+    allBranchesPresentTotalValues,
+    'usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const organizationPresentTotalNairaValue = extractSingleBranchValueType(
+    allBranchesPresentTotalValues,
+    'value_naira'
+  ).reduce((a, b) => a + b, 0);
+
+  // Previous Values
+  const allBranchesPreviousTotalValues = extractSingleBranchValueType(
+    allBranchesBillingTotals,
+    'previous_total'
+  );
+  const organizationPreviousTotalKwh = extractSingleBranchValueType(
+    allBranchesPreviousTotalValues,
+    'usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const organizationPreviousTotalNairaValue = extractSingleBranchValueType(
+    allBranchesPreviousTotalValues,
+    'value_naira'
+  ).reduce((a, b) => a + b, 0);
+
+  // Usage Values
+  const allBranchesUsageValues = extractSingleBranchValueType(
+    allBranchesBillingTotals,
+    'usage'
+  );
+  const organizationUsagePresentKwhValue = extractSingleBranchValueType(
+    allBranchesUsageValues,
+    'present_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const organizationUsagePreviousKwhValue = extractSingleBranchValueType(
+    allBranchesUsageValues,
+    'previous_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const organizationUsageTotalKwhValue = extractSingleBranchValueType(
+    allBranchesUsageValues,
+    'total_usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+
+  return {
+    metrics: allBranchesBillingTotals[0].metrics,
+    present_total: {
+      usage_kwh: organizationPresentTotalKwh,
+      value_naira: organizationPresentTotalNairaValue,
+    },
+    previous_total: {
+      usage_kwh: organizationPreviousTotalKwh,
+      value_naira: organizationPreviousTotalNairaValue,
+    },
+    usage: {
+      previous_kwh: organizationUsagePreviousKwhValue,
+      present_kwh: organizationUsagePresentKwhValue,
+      total_usage_kwh: organizationUsageTotalKwhValue,
+    },
+  };
+};
+
+// Obtains previous total or present total for all devices in a organization
+const getOrganizationDevicesBillingTotal = (data, totalType) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  return allOrganizationDevices.map((eachDevice) => {
+    const { billing } = eachDevice;
+    const specifiedTotal = billing.totals[totalType];
+
+    return {
+      ...specifiedTotal,
+      deviceName: eachDevice.name,
+    };
+  });
+};
+/* -------------------------------------------------------------------
+/* Org Billing Calculations End --------------------------------------
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
@@ -514,6 +660,20 @@ const getRefinedOrganizationData = (data) => {
     cost_tracker_diesel_qty: getOrganizationCostTrackerDieselQuantityData(data),
     cost_tracker_monthly_cost: getOrganizationCostTrackerMonthlyCostData(data),
     cost_tracker_consumption: getOrganizationCostTrackerConsumptionData(data),
+    // Billing Stuff
+    billing_consumption_kwh: getOrganizationBillingConsumptionKwhValues(data),
+    billing_consumption_naira: getOrganizationBillingConsumptionNairaValues(
+      data
+    ),
+    overall_billing_totals: getOrganizationBillingTotals(data),
+    devices_previous_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'previous_total'
+    ),
+    devices_present_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'present_total'
+    ),
   };
 };
 

@@ -31,12 +31,12 @@ const getSelectionMonthlyUsage = (data) => {
   let SelectionMonthlyUsage = { devices: [], hours: [] };
 
   // Add data for each branch
-  data.forEach((eachBranch) => {
-    const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+  data.forEach((eachSelection) => {
+    const branchMonthlyUsage = eachSelection.usage_hours.hours.reduce(
       (acc, curr) => acc + curr,
       0
     );
-    SelectionMonthlyUsage.devices.push(eachBranch.name);
+    SelectionMonthlyUsage.devices.push(eachSelection.name);
     SelectionMonthlyUsage.hours.push(branchMonthlyUsage);
   });
 
@@ -315,6 +315,107 @@ const sumSelectionEnergyConsumptionValues = (data, valueName) => {
 /* Energy Consumption Calculations End -------------------------------
 --------------------------------------------------------------------*/
 
+/* -------------------------------------------------------------------
+/* Billing Calculations Begin ----------------------------------------
+--------------------------------------------------------------------*/
+const getSelectionBillingConsumptionNairaValues = (data) => {
+  const selectionConsumptionNairaDates =
+    data[0].billing_consumption_naira.dates;
+
+  const allSelectionsConsumptionNairaValues = data.map(
+    (eachSelection) => eachSelection.billing_consumption_naira.values
+  );
+
+  const selectionConsumptionNairaValues = sumArrayOfArrays(
+    allSelectionsConsumptionNairaValues
+  );
+
+  return {
+    dates: selectionConsumptionNairaDates,
+    values: selectionConsumptionNairaValues,
+  };
+};
+
+const getSelectionBillingTotals = (data) => {
+  const allSelectionsBillingTotals = data.map(
+    (eachSelection) => eachSelection.overall_billing_totals
+  );
+
+  const extractSingleSelectionValueType = (
+    combinedSelectionValues,
+    extractedValueName
+  ) =>
+    combinedSelectionValues.map(
+      (eachSelection) => eachSelection[extractedValueName]
+    );
+
+  // Present Values
+  const allSelectionsPresentTotalValues = extractSingleSelectionValueType(
+    allSelectionsBillingTotals,
+    'present_total'
+  );
+  const selectionPresentTotalKwh = extractSingleSelectionValueType(
+    allSelectionsPresentTotalValues,
+    'usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const selectionPresentTotalNairaValue = extractSingleSelectionValueType(
+    allSelectionsPresentTotalValues,
+    'value_naira'
+  ).reduce((a, b) => a + b, 0);
+
+  // Previous Values
+  const allSelectionsPreviousTotalValues = extractSingleSelectionValueType(
+    allSelectionsBillingTotals,
+    'previous_total'
+  );
+  const selectionPreviousTotalKwh = extractSingleSelectionValueType(
+    allSelectionsPreviousTotalValues,
+    'usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const selectionPreviousTotalNairaValue = extractSingleSelectionValueType(
+    allSelectionsPreviousTotalValues,
+    'value_naira'
+  ).reduce((a, b) => a + b, 0);
+
+  // Usage Values
+  const allSelectionsUsageValues = extractSingleSelectionValueType(
+    allSelectionsBillingTotals,
+    'usage'
+  );
+  const selectionUsagePresentKwhValue = extractSingleSelectionValueType(
+    allSelectionsUsageValues,
+    'present_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const selectionUsagePreviousKwhValue = extractSingleSelectionValueType(
+    allSelectionsUsageValues,
+    'previous_kwh'
+  ).reduce((a, b) => a + b, 0);
+  const selectionUsageTotalKwhValue = extractSingleSelectionValueType(
+    allSelectionsUsageValues,
+    'total_usage_kwh'
+  ).reduce((a, b) => a + b, 0);
+
+  return {
+    metrics: allSelectionsBillingTotals[0].metrics,
+    present_total: {
+      usage_kwh: selectionPresentTotalKwh,
+      value_naira: selectionPresentTotalNairaValue,
+    },
+    previous_total: {
+      usage_kwh: selectionPreviousTotalKwh,
+      value_naira: selectionPreviousTotalNairaValue,
+    },
+    usage: {
+      previous_kwh: selectionUsagePreviousKwhValue,
+      present_kwh: selectionUsagePresentKwhValue,
+      total_usage_kwh: selectionUsageTotalKwhValue,
+    },
+  };
+};
+/* -------------------------------------------------------------------
+/* Billing Calculations End ------------------------------------------
+--------------------------------------------------------------------*/
+
 const getRenderedData = (data) => {
   return {
     // Dashboard Stuff
@@ -373,6 +474,21 @@ const getRenderedData = (data) => {
     cost_tracker_consumption: getSelectionParameterPropertyArray(
       data,
       'cost_tracker_consumption'
+    ),
+    // Billing Stuff
+    billing_consumption_kwh: getSelectionParameterPropertyArray(
+      data,
+      'billing_consumption_kwh'
+    ),
+    billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
+    overall_billing_totals: getSelectionBillingTotals(data),
+    devices_previous_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_previous_billing_total'
+    ),
+    devices_present_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_present_billing_total'
     ),
   };
 };

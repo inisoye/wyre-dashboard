@@ -1,0 +1,89 @@
+.alerts-and-alarms-form-content-wrapper {
+  padding-bottom: 40px;
+}
+
+.alerts-and-alarms-heading,
+.alerts-and-alarms-form-inputs-wrapper {
+  background-color: $white;
+  padding: 0;
+}
+
+.alerts-and-alarms-heading {
+  padding-top: 24px;
+}
+
+.alerts-and-alarms-form-inputs-wrapper {
+  &.h-second {
+    margin-top: 30px;
+  }
+}
+
+.alerts-and-alarms-form-section-heading,
+.alerts-and-alarms-list {
+  padding: 0 48px;
+
+  @include media('>=1100px') {
+    padding: 0 11.5%;
+  }
+
+  @include media('>=1500px') {
+    padding: 0 20%;
+  }
+}
+
+.alerts-and-alarms-form-section-heading {
+  font-size: 1.8rem;
+  font-weight: $medium;
+  display: inline-block;
+  background-color: $white;
+  padding-top: 40px;
+
+  @include media('>=medium') {
+    font-size: 2rem;
+  }
+}
+
+.alerts-and-alarms-list {
+  list-style: decimal;
+  padding-top: 25px;
+  padding-bottom: 60px;
+}
+
+.alerts-and-alarms-list-item {
+  margin-top: 35px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.alerts-and-alarms-question-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alerts-and-alarms-question {
+  font-size: 1.5rem;
+  font-weight: $light;
+  margin-right: 50px;
+
+  @include media('>=medium') {
+    font-size: 1.7rem;
+  }
+}
+
+.alerts-and-alarms-input {
+  border: 1px solid $border-grey4;
+  color: scale-color($black, $lightness: 35%);
+  font-size: 1.4rem;
+  height: 24px;
+  padding: 8px 11px;
+  max-width: 54px;
+  border-radius: 2px;
+  margin: 0 10px;
+}
+
+.alerts-and-alarms-checkbox {
+  transform: scale(1.35);
+}

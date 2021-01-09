@@ -355,7 +355,7 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   // Add date objects and device name to data
   parameterData.dates = parameterDateObjects;
 
-  return parameterData;
+  return { ...parameterData, dates: parameterDateObjects };
 };
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
@@ -377,11 +377,11 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 // -------------------------------------------------------------------
 
 /* -------------------------------------------------------------------
-/* Cost Tracker Helpers Start ----------------------------------------
+/* Billing Helpers Start ---------------------------------------------
 --------------------------------------------------------------------*/
 
 /* -------------------------------------------------------------------
-/* Cost Tracker Helpers End ------------------------------------------
+/* Billing Helpers End -----------------------------------------------
 --------------------------------------------------------------------*/
 
 export {

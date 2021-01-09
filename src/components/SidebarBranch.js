@@ -93,6 +93,12 @@ function SidebarBranch({ branchData }) {
             branchData.name
           );
 
+          const modifiedBranchBillingTotalsData = getModifiedBranchLevelData(
+            branchData,
+            'billing_totals',
+            branchData.name
+          );
+
           return (
             <SidebarDevice
               originalDeviceName={originalDeviceName}
@@ -110,6 +116,16 @@ function SidebarBranch({ branchData }) {
               deviceCostTrackerConsumptionData={
                 modifiedBranchCostTrackerConsumptionData
               }
+              deviceBillingTotalsData={{
+                ...modifiedBranchBillingTotalsData,
+                present_total: { usage_kwh: 0, value_naira: 0 },
+                previous_total: { usage_kwh: 0, value_naira: 0 },
+                usage: {
+                  previous_kwh: 0,
+                  present_kwh: 0,
+                  total_usage_kwh: 0,
+                },
+              }}
               key={eachDevice.id}
             />
           );
@@ -166,7 +182,7 @@ function SidebarBranch({ branchData }) {
       <div className='sidebar-branch__details'>
         <div>
           <Checkbox
-            className='sidebar-branch__checkbox'
+            className='sidebar-branch__checkbox sidebar-checkbox'
             name={checkBoxName}
             onChange={handleCheck}
           >

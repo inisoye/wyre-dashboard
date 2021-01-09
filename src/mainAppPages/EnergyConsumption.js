@@ -28,6 +28,12 @@ function EnergyConsumption({ match }) {
     CompleteDataContext
   );
 
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
   const {
     energy_consumption_values,
     energy_consumption_current,
@@ -81,12 +87,6 @@ function EnergyConsumption({ match }) {
     tableHeadings,
     tableValues
   );
-
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
 
   return (
     <>
