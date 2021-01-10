@@ -105,14 +105,14 @@ function Dashboard({ match }) {
         </article>
 
         <article className='dashboard-today-and-yesterday'>
-          <section className='today-usage'>
+          <div className='today-usage'>
             <h3 className='today-usage__heading'>Today's Usage (KWh)</h3>
             <div className='usage-value-and-arrow'>
               <p className='today-usage__value'>{today && today.value}</p>
               <UpAndDownArrows />
             </div>
-          </section>
-          <section className='yesterday-usage'>
+          </div>
+          <div className='yesterday-usage'>
             <h3 className='yesterday-usage__heading'>
               Yesterday's Usage (KWh)
             </h3>
@@ -122,7 +122,7 @@ function Dashboard({ match }) {
               </p>
               <UpAndDownArrows />
             </div>
-          </section>
+          </div>
         </article>
       </div>
     </>

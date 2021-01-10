@@ -2,7 +2,7 @@ import React from 'react';
 
 function DashboardSmallBannerSection({ name, value, unit }) {
   return (
-    <section className='small-banner-section'>
+    <div className='small-banner-section'>
       <h3 className='small-banner-section__heading'>
         {name}{' '}
         <span className='small-banner-section__subheading'>This Month</span>
@@ -11,7 +11,7 @@ function DashboardSmallBannerSection({ name, value, unit }) {
         <span className='value'>{value}</span>
         <span className='unit'>{unit}</span>
       </p>
-    </section>
+    </div>
   );
 }
 
