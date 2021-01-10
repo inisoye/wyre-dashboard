@@ -430,7 +430,7 @@ const sumOrganizationEnergyConsumptionValues = (data, valueName) => {
     (eachDevice) => eachDevice.energy_consumption[valueName]
   );
 
-  return allDevicesValues.reduce((a, b) => a + b, 0);
+  return allDevicesValues.reduce((acc, curr) => acc + curr, 0);
 };
 /* -------------------------------------------------------------------
 /* Energy Consumption Calculations End -------------------------------
@@ -541,49 +541,79 @@ const getOrganizationBillingTotals = (data) => {
     allBranchesBillingTotals,
     'present_total'
   );
+
   const organizationPresentTotalKwh = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const organizationPresentTotalNairaValue = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'value_naira'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
 
   // Previous Values
   const allBranchesPreviousTotalValues = extractSingleBranchValueType(
     allBranchesBillingTotals,
     'previous_total'
   );
+
   const organizationPreviousTotalKwh = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
     'usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const organizationPreviousTotalNairaValue = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
     'value_naira'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
 
   // Usage Values
   const allBranchesUsageValues = extractSingleBranchValueType(
     allBranchesBillingTotals,
     'usage'
   );
+
   const organizationUsagePresentKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'present_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const organizationUsagePreviousKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'previous_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const organizationUsageTotalKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'total_usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
+  // Metrics Values
+  const allBranchesMetricsValues = extractSingleBranchValueType(
+    allBranchesBillingTotals,
+    'metrics'
+  );
+  // Calculate averages of each set of metrics values
+  const organizationMetricsDieselPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'diesel_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
+  const organizationMetricsUtilityPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'utility_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
+  const organizationMetricsBlendedCostPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'blended_cost_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   return {
-    metrics: allBranchesBillingTotals[0].metrics,
     present_total: {
       usage_kwh: organizationPresentTotalKwh,
       value_naira: organizationPresentTotalNairaValue,
@@ -591,6 +621,12 @@ const getOrganizationBillingTotals = (data) => {
     previous_total: {
       usage_kwh: organizationPreviousTotalKwh,
       value_naira: organizationPreviousTotalNairaValue,
+    },
+    metrics: {
+      diesel_per_kwh: organizationMetricsDieselPerKwh,
+      utility_per_kwh: organizationMetricsUtilityPerKwh,
+      blended_cost_per_kwh: organizationMetricsBlendedCostPerKwh,
+      unit: '₦',
     },
     usage: {
       previous_kwh: organizationUsagePreviousKwhValue,

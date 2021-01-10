@@ -19,8 +19,6 @@ const getAllData = async () => {
     headers: { Authorization: token },
   };
 
-  console.log(token);
-
   const response = await axios.get(baseUrlNew, config);
   return response.data.authenticatedData;
 };

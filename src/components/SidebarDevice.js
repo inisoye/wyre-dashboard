@@ -172,8 +172,6 @@ function SidebarDevice({
   /* Billing Ends ------------------------------------------------------
   --------------------------------------------------------------------*/
 
-  console.log(deviceBillingTotalsData);
-
   // Place all data for device in new object
   const refinedDeviceData = {
     [modifiedDeviceName]: {

@@ -36,8 +36,6 @@ function Login() {
     setErrorMessage(undefined);
   };
 
-  console.log(errorMessage);
-
   return (
     <div className='auth-page-container'>
       <form

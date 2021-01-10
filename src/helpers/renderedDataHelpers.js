@@ -309,7 +309,7 @@ const getSelectionParameterPropertyArray = (data, propertyName) => {
 const sumSelectionEnergyConsumptionValues = (data, valueName) => {
   const allDevicesValues = data.map((eachDevice) => eachDevice[valueName]);
 
-  return allDevicesValues.reduce((a, b) => a + b, 0);
+  return allDevicesValues.reduce((acc, curr) => acc + curr, 0);
 };
 /* -------------------------------------------------------------------
 /* Energy Consumption Calculations End -------------------------------
@@ -354,49 +354,92 @@ const getSelectionBillingTotals = (data) => {
     allSelectionsBillingTotals,
     'present_total'
   );
+
   const selectionPresentTotalKwh = extractSingleSelectionValueType(
     allSelectionsPresentTotalValues,
     'usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const selectionPresentTotalNairaValue = extractSingleSelectionValueType(
     allSelectionsPresentTotalValues,
     'value_naira'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
 
   // Previous Values
   const allSelectionsPreviousTotalValues = extractSingleSelectionValueType(
     allSelectionsBillingTotals,
     'previous_total'
   );
+
   const selectionPreviousTotalKwh = extractSingleSelectionValueType(
     allSelectionsPreviousTotalValues,
     'usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const selectionPreviousTotalNairaValue = extractSingleSelectionValueType(
     allSelectionsPreviousTotalValues,
     'value_naira'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
 
   // Usage Values
   const allSelectionsUsageValues = extractSingleSelectionValueType(
     allSelectionsBillingTotals,
     'usage'
   );
+
   const selectionUsagePresentKwhValue = extractSingleSelectionValueType(
     allSelectionsUsageValues,
     'present_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const selectionUsagePreviousKwhValue = extractSingleSelectionValueType(
     allSelectionsUsageValues,
     'previous_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
   const selectionUsageTotalKwhValue = extractSingleSelectionValueType(
     allSelectionsUsageValues,
     'total_usage_kwh'
-  ).reduce((a, b) => a + b, 0);
+  ).reduce((acc, curr) => acc + curr, 0);
+
+  // Metrics Values
+  const allSelectionsMetricsValues = extractSingleSelectionValueType(
+    allSelectionsBillingTotals,
+    'metrics'
+  );
+  // Calculate averages of each set of metrics values
+  const allSelectionsMetricsDieselPerKwh = extractSingleSelectionValueType(
+    allSelectionsMetricsValues,
+    'diesel_per_kwh'
+  ).filter((val) => val !== 0);
+  const avgSelectionMetricsDieselPerKwh =
+    allSelectionsMetricsDieselPerKwh.reduce((acc, curr) => acc + curr, 0) /
+    allSelectionsMetricsDieselPerKwh.length;
+
+  const allSelectionsMetricsUtilityPerKwh = extractSingleSelectionValueType(
+    allSelectionsMetricsValues,
+    'utility_per_kwh'
+  ).filter((val) => val !== 0);
+  const avgSelectionMetricsUtilityPerKwh =
+    allSelectionsMetricsUtilityPerKwh.reduce((acc, curr) => acc + curr, 0) /
+    allSelectionsMetricsUtilityPerKwh.length;
+
+  const allSelectionsMetricsBlendedCostPerKwh = extractSingleSelectionValueType(
+    allSelectionsMetricsValues,
+    'blended_cost_per_kwh'
+  ).filter((val) => val !== 0);
+  const avgSelectionMetricsBlendedCostPerKwh =
+    allSelectionsMetricsBlendedCostPerKwh.reduce((acc, curr) => acc + curr, 0) /
+    allSelectionsMetricsBlendedCostPerKwh.length;
+
+  console.log(
+    extractSingleSelectionValueType(
+      allSelectionsMetricsValues,
+      'diesel_per_kwh'
+    ).filter((val) => val !== 0)
+  );
 
   return {
-    metrics: allSelectionsBillingTotals[0].metrics,
     present_total: {
       usage_kwh: selectionPresentTotalKwh,
       value_naira: selectionPresentTotalNairaValue,
@@ -404,6 +447,12 @@ const getSelectionBillingTotals = (data) => {
     previous_total: {
       usage_kwh: selectionPreviousTotalKwh,
       value_naira: selectionPreviousTotalNairaValue,
+    },
+    metrics: {
+      diesel_per_kwh: avgSelectionMetricsDieselPerKwh,
+      utility_per_kwh: avgSelectionMetricsUtilityPerKwh,
+      blended_cost_per_kwh: avgSelectionMetricsBlendedCostPerKwh,
+      unit: '₦',
     },
     usage: {
       previous_kwh: selectionUsagePreviousKwhValue,

@@ -3002,6 +3002,10 @@ thead.ant-table-thead tr th {
   }
 }
 
+.usage-and-metrics-tables.h-hide {
+  display: none;
+}
+
 .billing-metrics-table {
   background-color: #ffffff;
   border-collapse: separate;
@@ -3058,6 +3062,7 @@ thead.ant-table-thead tr th {
 .billing-usage-table td {
   padding: 12px 16px;
   font-size: 1.6rem;
+  text-align: left;
 }
 
 .billing-usage-table th {
@@ -3067,7 +3072,6 @@ thead.ant-table-thead tr th {
 
 .billing-usage-table td {
   font-weight: 300;
-  text-align: left;
 }
 
 /*--------------------------------------------------------------

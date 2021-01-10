@@ -170,7 +170,13 @@ function Billing({ match }) {
         </div>
       </div>
 
-      <div className='usage-and-metrics-tables'>
+      <div
+        className={
+          usage && usage.previous_kwh > 0
+            ? 'usage-and-metrics-tables'
+            : 'usage-and-metrics-tables h-hide'
+        }
+      >
         <table className='billing-table billing-metrics-table'>
           <tbody>
             <tr>
@@ -206,13 +212,7 @@ function Billing({ match }) {
         </table>
 
         <div className='billing-usage-table-container'>
-          <table
-            className={
-              usage && usage.previous_kwh > 0
-                ? 'billing-table billing-usage-table'
-                : 'billing-table billing-usage-table h-hide'
-            }
-          >
+          <table className='billing-table billing-usage-table'>
             <caption className='billing-table-caption h-caption-up'>
               Usage
             </caption>

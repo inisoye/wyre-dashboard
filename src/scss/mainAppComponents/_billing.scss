@@ -81,6 +81,10 @@
     flex-wrap: wrap;
     justify-content: space-between;
   }
+
+  &.h-hide {
+    display: none;
+  }
 }
 
 .billing-metrics-table {
@@ -138,6 +142,7 @@
   td {
     padding: 12px 16px;
     font-size: 1.6rem;
+    text-align: left;
   }
 
   th {
@@ -147,6 +152,5 @@
 
   td {
     font-weight: $light;
-    text-align: left;
   }
 }

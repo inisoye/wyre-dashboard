@@ -27,7 +27,7 @@ import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
 
-function App() {
+function MainAppPages() {
   return (
     <div className='app'>
       <AppHeader />
@@ -94,4 +94,4 @@ function App() {
   );
 }
 
-export default App;
+export default MainAppPages;

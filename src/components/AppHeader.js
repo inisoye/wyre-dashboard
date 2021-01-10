@@ -71,6 +71,8 @@ function Header() {
   const logOut = () => {
     window.localStorage.removeItem('loggedWyreUser');
 
+    // Go home
+    history.push('/');
     // Refresh page
     history.go(0);
   };

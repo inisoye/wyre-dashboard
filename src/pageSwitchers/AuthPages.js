@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // import Home from '../authPages/Home';
 import About from '../authPages/About';
@@ -16,32 +16,7 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AuthHeader from '../components/AuthHeader';
 import Footer from '../components/Footer';
 
-const mainPageRedirectionUrls = [
-  '/billing',
-  '/cost-tracker',
-  '/cost-tracker/add-bills',
-  '/cost-tracker/add-equipment',
-  '/messages',
-  '/parameters/last-reading',
-  '/parameters/power-demand',
-  '/parameters/power-quality',
-  '/parameters/energy-consumption',
-  '/report',
-  '/score-card',
-  '/client-profile',
-  '/password',
-  '/alerts-and-alarms',
-  '/branches',
-  '/branches/user-form',
-];
-
-const mainPageRedirections = mainPageRedirectionUrls.map((eachUrl) => (
-  <Route exact key={eachUrl} path={eachUrl}>
-    <Redirect to='/' />
-  </Route>
-));
-
-function authPages() {
+function AuthPages() {
   return (
     <div>
       <AuthHeader />
@@ -50,7 +25,6 @@ function authPages() {
         <ScrollToTop>
           <Switch>
             <Route exact path='/' component={Login} />
-            {mainPageRedirections}
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
             <Route path='/features' component={Features} />
@@ -68,4 +42,4 @@ function authPages() {
   );
 }
 
-export default authPages;
+export default AuthPages;
