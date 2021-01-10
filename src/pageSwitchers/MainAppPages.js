@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import AddBills from '../mainAppPages/AddBills';
 import AddEquipment from '../mainAppPages/AddEquipment';
@@ -42,6 +42,9 @@ function App() {
             <div className='page-content'>
               <Switch>
                 <Route exact path='/' component={Dashboard} />
+                <Route exact path='/log-in'>
+                  <Redirect to='/' />
+                </Route>
                 <Route path='/billing' component={Billing} />
                 <Route exact path='/cost-tracker' component={CostTracker} />
                 <Route path='/cost-tracker/add-bills' component={AddBills} />

@@ -3219,6 +3219,11 @@ thead.ant-table-thead tr th {
   opacity: 1;
 }
 
+.signup-login-contact-error-message {
+  font-size: 1.4rem;
+  color: #fa0303;
+}
+
 .forgot-password-wrapper {
   margin: 16px auto 40px;
 }
@@ -3375,7 +3380,6 @@ thead.ant-table-thead tr th {
 @media (min-width: 768px) {
   .header-nav-list__item--auth {
     border-top: 0;
-    font-size: 1.6rem;
     margin-right: 0;
     padding: 10px 0;
     padding-right: 30px;

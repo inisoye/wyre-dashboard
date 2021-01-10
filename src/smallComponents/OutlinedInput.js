@@ -10,6 +10,7 @@ const OutlinedInput = ({
   autoFocus,
   register,
   className,
+  onChange,
 }) => {
   return (
     <input
@@ -23,6 +24,7 @@ const OutlinedInput = ({
       autoFocus={autoFocus}
       autoCapitalize='off'
       ref={register}
+      onChange={onChange}
     />
   );
 };

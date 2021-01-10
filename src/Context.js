@@ -31,12 +31,18 @@ const CompleteDataProvider = (props) => {
   const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
   const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
 
-  // console.log(powerQualityUnit);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState(undefined);
+  const [token, setToken] = useState();
+
+  // console.log(userData);
+  // console.log(token);
 
   useEffect(() => {
     const getData = () => {
       dataHttpServices
-        .getAuthenticated()
+        .getAllData()
         .then((returnedData) => {
           setOrganization(returnedData);
           const refinedOrganizationData = getRefinedOrganizationData(
@@ -58,8 +64,19 @@ const CompleteDataProvider = (props) => {
         .catch((error) => console.log(error));
     };
 
-    getData();
-  }, [checkedItems, renderedDataObjects]);
+    if (userData) {
+      getData();
+    }
+  }, [checkedItems, renderedDataObjects, userData]);
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      dataHttpServices.setToken(user.data.token);
+      setUserData(user);
+    }
+  }, []);
 
   return (
     <CompleteDataContext.Provider
@@ -93,6 +110,15 @@ const CompleteDataProvider = (props) => {
         isLargeScreen: isLargeScreen,
         isXLargeScreen: isXLargeScreen,
         isLessThan1296: isLessThan1296,
+
+        username: username,
+        setUsername: setUsername,
+        password: password,
+        setPassword: setPassword,
+        userData: userData,
+        setUserData: setUserData,
+        token: token,
+        setToken: setToken,
       }}
     >
       {props.children}

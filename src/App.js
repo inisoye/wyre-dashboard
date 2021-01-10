@@ -5,9 +5,11 @@ import MainAppPages from './pageSwitchers/MainAppPages';
 import AuthPages from './pageSwitchers/AuthPages';
 
 function App() {
-  const { isUserAuthenticated } = useContext(CompleteDataContext);
+  const { userData } = useContext(CompleteDataContext);
 
-  return <>{isUserAuthenticated ? <MainAppPages /> : <AuthPages />}</>;
+  console.log(userData);
+
+  return <>{userData ? <MainAppPages /> : <AuthPages />}</>;
 }
 
 export default App;

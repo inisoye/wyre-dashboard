@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
+import { useHistory } from 'react-router';
 
 import HeaderLink from '../smallComponents/HeaderLink';
 import HeaderIcon from '../smallComponents/HeaderIcon';
@@ -37,6 +38,8 @@ function Header() {
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
 
+  const history = useHistory();
+
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
     setIsSidebarOpen(false);
@@ -63,6 +66,13 @@ function Header() {
     toggleNav();
     toggleNavLinkDropdown();
     toggleMobileAvatarMenu();
+  };
+
+  const logOut = () => {
+    window.localStorage.removeItem('loggedWyreUser');
+
+    // Refresh page
+    history.go(0);
   };
 
   return (
@@ -92,11 +102,7 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink
-              onClick={toggleNav}
-              url='/'
-              linkText='Dashboard'
-            />
+            <HeaderLink onClick={toggleNav} url='/' linkText='Dashboard' />
 
             <HeaderLink
               onClick={toggleNav}
@@ -248,10 +254,13 @@ function Header() {
                 <li className='header-sublinks-list__item avatar-sublink-item'>
                   <Link
                     className='header-sublink avatar-sublink'
-                    onClick={toggleNavAndDropdown}
-                    to='#'
+                    onClick={() => {
+                      logOut();
+                      toggleNavAndDropdown();
+                    }}
+                    to='/'
                   >
-                    <LogoutIcon /> <span>Logout</span>
+                    <LogoutIcon /> <span>Log Out</span>
                   </Link>
                 </li>
               </ul>
@@ -319,8 +328,12 @@ function Header() {
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='#'>
-                <LogoutIcon /> <span>Logout</span>
+              <Link
+                onClick={logOut}
+                className='header-sublink avatar-sublink'
+                to='/'
+              >
+                <LogoutIcon /> <span>Log Out</span>
               </Link>
             </li>
           </ul>

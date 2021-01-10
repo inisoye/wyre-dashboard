@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+
+import CompleteDataContext from '../Context';
+import loginHttpServices from '../services/login';
+import dataHttpServices from '../services/devices';
 
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 import OutlinedInput from '../smallComponents/OutlinedInput';
 import SocialCluster from '../smallComponents/SocialCluster';
 
 function Login() {
+  const [errorMessage, setErrorMessage] = useState(undefined);
+  const { setUserData } = useContext(CompleteDataContext);
+
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = ({ email, password }) => {
-    console.log(email, password);
+  const onSubmit = async ({ email, password }) => {
+    try {
+      const user = await loginHttpServices.login({
+        username: email,
+        password: password,
+      });
+
+      window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
+
+      dataHttpServices.setToken(user.data.token);
+      setUserData(user);
+    } catch (exception) {
+      setErrorMessage(exception.response.data.error);
+    }
   };
+
+  const removeErrorMessage = () => {
+    setErrorMessage(undefined);
+  };
+
+  console.log(errorMessage);
 
   return (
     <div className='auth-page-container'>
@@ -28,14 +53,15 @@ function Login() {
           <HiddenInputLabel htmlFor='login-email' labelText='Email' />
           <OutlinedInput
             className='signup-login-contact-input'
-            type='email'
+            type='text'
             name='email'
             id='login-email'
             placeholder='Username or email'
-            autoComplete='email'
+            autoComplete='username'
             required={true}
             autoFocus={true}
             register={register}
+            onChange={removeErrorMessage}
           />
         </p>
 
@@ -51,8 +77,11 @@ function Login() {
             required={true}
             autoFocus={false}
             register={register}
+            onChange={removeErrorMessage}
           />
         </p>
+
+        <p className='signup-login-contact-error-message'>{errorMessage}</p>
 
         <div className='forgot-password-wrapper'>
           <Link className='forgot-password' to='/reset-password'>
