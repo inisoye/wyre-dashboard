@@ -1,10 +1,116 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
-function BranchesDevicesAndUsers() {
+import CompleteDataContext from '../Context';
+
+import branchesHttpServices from '../services/userBranches';
+
+import BreadCrumb from '../components/BreadCrumb';
+import UserBranchesTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/UserBranchesTable';
+import UserDevicesTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/UserDevicesTable';
+
+import PrintButtons from '../smallComponents/PrintButtons';
+
+import ExcelIcon from '../icons/ExcelIcon';
+import ListOfUsersTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/ListOfUsersTable';
+
+const breadCrumbRoutes = [
+  { url: '/', name: 'Home', id: 1 },
+  { url: '#', name: 'Branches', id: 2 },
+];
+
+function BranchesDevicesAndUsers({ match }) {
+  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const [allBranches, setAllBranches] = useState([]);
+  const [allDevices, setAllDevices] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
+  useEffect(() => {
+    branchesHttpServices.getAll('branches').then((returnedData) => {
+      setAllBranches(returnedData);
+    });
+    branchesHttpServices.getAll('devices').then((returnedData) => {
+      setAllDevices(returnedData);
+    });
+    branchesHttpServices.getAll('users').then((returnedData) => {
+      setAllUsers(returnedData);
+    });
+  }, []);
+
+  console.log(allBranches);
+
   return (
-    <div>
-      <p>Branches Devices and Users</p>
-    </div>
+    <>
+      <div className='breadcrumb-and-print-buttons'>
+        <BreadCrumb routesArray={breadCrumbRoutes} />
+        <PrintButtons />
+      </div>
+
+      <article className='table-with-header-container h-no-mt'>
+        <div className='table-header'>
+          <div className='h-hidden-medium-down'>
+            <button className='table-header__left-button'>PDF</button>
+            <button className='table-header__left-button'>CSV</button>
+          </div>
+
+          <h3 className='table-header__heading'>Branches</h3>
+
+          <button className='table-header__right-button h-hidden-medium-down'>
+            <ExcelIcon />
+            <span>Download in Excel</span>
+          </button>
+        </div>
+
+        <div className='h-overflow-auto'>
+          <UserBranchesTable listOfBranchesData={allBranches} />
+        </div>
+      </article>
+
+      <article className='table-with-header-container'>
+        <div className='table-header'>
+          <div className='h-hidden-medium-down'>
+            <button className='table-header__left-button'>PDF</button>
+            <button className='table-header__left-button'>CSV</button>
+          </div>
+
+          <h3 className='table-header__heading'>Devices</h3>
+
+          <button className='table-header__right-button h-hidden-medium-down'>
+            <ExcelIcon />
+            <span>Download in Excel</span>
+          </button>
+        </div>
+
+        <div className='h-overflow-auto'>
+          <UserDevicesTable listOfDevicesData={allDevices} />
+        </div>
+      </article>
+
+      <article className='table-with-header-container'>
+        <div className='table-header'>
+          <div className='h-hidden-medium-down'>
+            <button className='table-header__left-button'>PDF</button>
+            <button className='table-header__left-button'>CSV</button>
+          </div>
+
+          <h3 className='table-header__heading'>Users</h3>
+
+          <button className='table-header__right-button h-hidden-medium-down'>
+            <ExcelIcon />
+            <span>Download in Excel</span>
+          </button>
+        </div>
+
+        <div className='h-overflow-auto'>
+          <ListOfUsersTable listOfUsersData={allUsers} />
+        </div>
+      </article>
+    </>
   );
 }
 

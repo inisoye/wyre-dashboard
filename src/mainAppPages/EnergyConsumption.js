@@ -129,16 +129,16 @@ function EnergyConsumption({ match }) {
         </p>
       </div>
 
-      <article className='energy-consumption-table-container'>
-        <div className='parameters-table-header'>
+      <article className='table-with-header-container'>
+        <div className='table-header'>
           <div className='h-hidden-medium-down'>
-            <button className='parameters-table-left-button'>PDF</button>
-            <button className='parameters-table-left-button'>CSV</button>
+            <button className='table-header__left-button'>PDF</button>
+            <button className='table-header__left-button'>CSV</button>
           </div>
 
-          <h3 className='parameters-table-heading'>Raw Logs</h3>
+          <h3 className='table-header__heading'>Raw Logs</h3>
 
-          <button className='parameters-table-right-button h-hidden-medium-down'>
+          <button className='table-header__right-button h-hidden-medium-down'>
             <ExcelIcon />
             <span>Download in Excel</span>
           </button>

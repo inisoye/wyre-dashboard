@@ -28,15 +28,15 @@ function LastReadingPageSections({ lrData }) {
 
       <article className='last-reading-table-container'>
         <div className='last-reading-table-header-and-date'>
-          <div className='parameters-table-header'>
+          <div className='table-header'>
             <div className='h-hidden-medium-down'>
-              <button className='parameters-table-left-button'>PDF</button>
-              <button className='parameters-table-left-button'>CSV</button>
+              <button className='table-header__left-button'>PDF</button>
+              <button className='table-header__left-button'>CSV</button>
             </div>
 
-            <h2 className='parameters-table-heading'>Last Reading Raw Logs</h2>
+            <h2 className='table-header__heading'>Last Reading Raw Logs</h2>
 
-            <button className='parameters-table-right-button h-hidden-medium-down'>
+            <button className='table-header__right-button h-hidden-medium-down'>
               <ExcelIcon />
               <span>Download in Excel</span>
             </button>

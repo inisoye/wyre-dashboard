@@ -3,7 +3,9 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-class ListOfEquipmentTable extends React.Component {
+import CaretDown from '../../../icons/CaretDown';
+
+class UserBranchesTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -93,11 +95,11 @@ class ListOfEquipmentTable extends React.Component {
   };
 
   render() {
-    const data = this.props.listOfEquipmentData;
+    const data = this.props.listOfBranchesData;
 
     const columns = [
       {
-        title: 'Equipment Name',
+        title: 'Branch Name',
         dataIndex: 'name',
         key: 'name',
         ...this.getColumnSearchProps('name'),
@@ -105,28 +107,18 @@ class ListOfEquipmentTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Wattage (watts)',
-        dataIndex: 'wattage',
-        key: 'wattage',
-        ...this.getColumnSearchProps('wattage'),
-        sorter: (a, b) => a.wattage - b.wattage,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Date Purchased',
-        dataIndex: 'date_purchased',
-        key: 'date_purchased',
-        ...this.getColumnSearchProps('date_purchased'),
-        sorter: (a, b) => a.date_purchased.localeCompare(b.date_purchased),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Quantity',
-        dataIndex: 'quantity',
-        key: 'quantity',
-        ...this.getColumnSearchProps('quantity'),
-        sorter: (a, b) => a.quantity - b.quantity,
-        sortDirections: ['descend', 'ascend'],
+        title: 'Devices',
+        key: 'key',
+        dataIndex: 'key',
+        render: (_, record) => (
+          <button
+            className='table-row-button branch-users-view-button'
+            onClick={() => console.log(record)}
+          >
+            <span>View</span>
+            <CaretDown />
+          </button>
+        ),
       },
       {
         title: 'Action',
@@ -134,12 +126,29 @@ class ListOfEquipmentTable extends React.Component {
         dataIndex: 'key',
         render: (_, record) => (
           <button
-            className='table-row-button'
+            className='table-row-button branch-devices-view-button'
             onClick={() => console.log(record)}
           >
-            Edit
+            <span>View</span>
+            <CaretDown />
           </button>
         ),
+      },
+      {
+        title: 'Date Registered',
+        dataIndex: 'date_registered',
+        key: 'date_registered',
+        ...this.getColumnSearchProps('date_registered'),
+        sorter: (a, b) => a.date_registered.localeCompare(b.date_purchased),
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Total Consumption (kWatt)',
+        dataIndex: 'total_consumption',
+        key: 'total_consumption',
+        ...this.getColumnSearchProps('total_consumption'),
+        sorter: (a, b) => a.total_consumption - b.total_consumption,
+        sortDirections: ['descend', 'ascend'],
       },
     ];
 
@@ -158,4 +167,4 @@ class ListOfEquipmentTable extends React.Component {
   }
 }
 
-export default ListOfEquipmentTable;
+export default UserBranchesTable;

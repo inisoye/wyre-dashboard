@@ -20,6 +20,7 @@ function TopBar() {
     'client-profile',
     'password',
     'alerts-and-alarms',
+    'branches',
   ];
 
   const pagesWithTimeIntervalSelector = [
@@ -41,7 +42,10 @@ function TopBar() {
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
-  const isTopBarRightDisplayed = currentUrl.includes('cost-tracker');
+  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker');
+
+  const isTopBarUserBranchesRightDisplayed =
+    currentUrl.includes('branches') && !currentUrl.includes('user-form');
 
   const handleIntervalChange = (interval) => {
     console.log(interval);
@@ -129,7 +133,9 @@ function TopBar() {
 
       <div
         className={
-          isTopBarRightDisplayed ? 'top-bar__right' : 'top-bar__right h-hide'
+          isTopBarCostTrackerRightDisplayed
+            ? 'top-bar__right'
+            : 'top-bar__right h-hide'
         }
       >
         <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
@@ -140,6 +146,18 @@ function TopBar() {
           to='/cost-tracker/add-equipment'
         >
           Add Equipment
+        </Link>
+      </div>
+
+      <div
+        className={
+          isTopBarUserBranchesRightDisplayed
+            ? 'top-bar__right'
+            : 'top-bar__right h-hide'
+        }
+      >
+        <Link className='top-bar-right__button h-extra-padding'>
+          Edit Client
         </Link>
       </div>
     </div>

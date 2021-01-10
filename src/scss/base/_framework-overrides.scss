@@ -111,7 +111,8 @@
 /*--------------------------------------------------------------
 # Table
 --------------------------------------------------------------*/
-.ant-table-filter-column-title {
+.ant-table-filter-column-title,
+.ant-table-thead .ant-table-cell {
   font-size: 1.4rem;
   font-weight: $regular;
 }

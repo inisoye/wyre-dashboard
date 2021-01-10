@@ -1,0 +1,148 @@
+{
+  "branches": [
+    {
+      "id": 1,
+      "name": "Richmond Gate",
+      "users": [
+        "Adama James (Admin)",
+        "Wilock Shadrach (Manager)",
+        "Tamitope Tobi (Utility Officer)",
+        "Adamu Johnson (Utility Officer 2)"
+      ],
+      "devices": [
+        "EM 133 - Generator 2",
+        "EM 211 - Utility",
+        "EM 223 - Generator 1",
+        "EM 111 - Utility"
+      ],
+      "date_registered": "10/12/2020",
+      "total_consumption": "200.25"
+    },
+    {
+      "id": 2,
+      "name": "Meadow Hall",
+      "users": [
+        "Adama James (Admin)",
+        "Wilock Shadrach (Manager)",
+        "Tamitope Tobi (Utility Officer)",
+        "Adamu Johnson (Utility Officer 2)"
+      ],
+      "devices": [
+        "EM 133 - Generator 2",
+        "EM 211 - Utility",
+        "EM 223 - Generator 1",
+        "EM 111 - Utility"
+      ],
+      "date_registered": "12/12/2020",
+      "total_consumption": "400"
+    }
+  ],
+
+  "devices": [
+    {
+      "id": 1,
+      "name": "Utility",
+      "branch": "Richmond Gate",
+      "code": "EM 133",
+      "added": "18/01/2018",
+      "consumption": "500"
+    },
+    {
+      "id": 2,
+      "name": "Utility",
+      "branch": "Meadow Hall",
+      "code": "EM 122",
+      "added": "19/01/2019",
+      "consumption": "425"
+    },
+    {
+      "id": 3,
+      "name": "Generator 1",
+      "branch": "Meadow Hall",
+      "code": "EM 141",
+      "added": "20/01/2020",
+      "consumption": "300"
+    },
+    {
+      "id": 4,
+      "name": "Utility",
+      "branch": "Meadow Hall",
+      "code": "EM 111",
+      "added": "01/02/2020",
+      "consumption": "521"
+    },
+    {
+      "id": 5,
+      "name": "Utility",
+      "branch": "Richmond Gate",
+      "code": "EM 210",
+      "added": "03/06/2020",
+      "consumption": "320"
+    },
+    {
+      "id": 6,
+      "name": "Generator 2",
+      "branch": "Meadow Hall",
+      "code": "EM 121",
+      "added": "15/11/2020",
+      "consumption": "400"
+    }
+  ],
+
+  "users": [
+    {
+      "id": 1,
+      "name": "Bolaji Thomas",
+      "email": "Bolaji@gmail.com",
+      "phone": "08063214578",
+      "organisation": "Alphamead",
+      "branch": "Yaba",
+      "added": "10/11/2019"
+    },
+    {
+      "id": 2,
+      "name": "Demaji Bankole",
+      "email": "Demaji@gmail.com",
+      "phone": "09087423421",
+      "organisation": "Alphamead",
+      "branch": "Ikotun",
+      "added": "11/12/2019"
+    },
+    {
+      "id": 3,
+      "name": "John Adams",
+      "email": "John@gmail.com",
+      "phone": "08123456789",
+      "organisation": "Alphamead",
+      "branch": "Gbagada",
+      "added": "12/01/2020"
+    },
+    {
+      "id": 4,
+      "name": "Samson Imole",
+      "email": "Samson@gmail.com",
+      "phone": "07098765432",
+      "organisation": "Alphamead",
+      "branch": "Isolo",
+      "added": "13/02/2020"
+    },
+    {
+      "id": 5,
+      "name": "Samuel Adeola",
+      "email": "Samuel@gmail.com",
+      "phone": "09123547698",
+      "organisation": "Alphamead",
+      "branch": "Ikeja",
+      "added": "14/03/2020"
+    },
+    {
+      "id": 6,
+      "name": "Wisdom Ikotun",
+      "email": "Wisdom@gmail.com",
+      "phone": "08067563412",
+      "organisation": "Alphamead",
+      "branch": "Ikoyi",
+      "added": "15/04/2020"
+    }
+  ]
+}

@@ -69,6 +69,10 @@
   padding: 12px 13px;
   text-align: center;
 
+  &.h-extra-padding {
+    padding: 12px 30px;
+  }
+
   @include media('<medium') {
     display: block;
     margin-top: 30px;

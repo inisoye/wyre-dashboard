@@ -1,8 +1,8 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3002/equipment';
+const baseUrl = 'http://localhost:3003';
 
-const getAll = () => {
-  const request = axios.get(baseUrl);
+const getAll = (dataType) => {
+  const request = axios.get(`${baseUrl}/${dataType}`);
   return request.then((response) => response.data);
 };
 

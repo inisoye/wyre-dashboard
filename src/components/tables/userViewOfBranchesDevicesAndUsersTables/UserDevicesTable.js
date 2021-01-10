@@ -3,7 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-class ListOfEquipmentTable extends React.Component {
+class UserDevicesTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -93,11 +93,11 @@ class ListOfEquipmentTable extends React.Component {
   };
 
   render() {
-    const data = this.props.listOfEquipmentData;
+    const data = this.props.listOfDevicesData;
 
     const columns = [
       {
-        title: 'Equipment Name',
+        title: 'Devices Name',
         dataIndex: 'name',
         key: 'name',
         ...this.getColumnSearchProps('name'),
@@ -105,27 +105,35 @@ class ListOfEquipmentTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Wattage (watts)',
-        dataIndex: 'wattage',
-        key: 'wattage',
-        ...this.getColumnSearchProps('wattage'),
-        sorter: (a, b) => a.wattage - b.wattage,
+        title: 'Branch',
+        dataIndex: 'branch',
+        key: 'branch',
+        ...this.getColumnSearchProps('branch'),
+        sorter: (a, b) => a.branch.localeCompare(b.branch),
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Date Purchased',
-        dataIndex: 'date_purchased',
-        key: 'date_purchased',
-        ...this.getColumnSearchProps('date_purchased'),
-        sorter: (a, b) => a.date_purchased.localeCompare(b.date_purchased),
+        title: 'Code',
+        dataIndex: 'code',
+        key: 'code',
+        ...this.getColumnSearchProps('code'),
+        sorter: (a, b) => a.code.localeCompare(b.code),
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Quantity',
-        dataIndex: 'quantity',
-        key: 'quantity',
-        ...this.getColumnSearchProps('quantity'),
-        sorter: (a, b) => a.quantity - b.quantity,
+        title: 'Added',
+        dataIndex: 'added',
+        key: 'added',
+        ...this.getColumnSearchProps('added'),
+        sorter: (a, b) => a.added.localeCompare(b.added),
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Consumption',
+        dataIndex: 'consumption',
+        key: 'consumption',
+        ...this.getColumnSearchProps('consumption'),
+        sorter: (a, b) => a.consumption - b.consumption,
         sortDirections: ['descend', 'ascend'],
       },
       {
@@ -134,7 +142,7 @@ class ListOfEquipmentTable extends React.Component {
         dataIndex: 'key',
         render: (_, record) => (
           <button
-            className='table-row-button'
+            className='table-row-button h-greyed-out'
             onClick={() => console.log(record)}
           >
             Edit
@@ -158,4 +166,4 @@ class ListOfEquipmentTable extends React.Component {
   }
 }
 
-export default ListOfEquipmentTable;
+export default UserDevicesTable;
