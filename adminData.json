@@ -1,0 +1,153 @@
+{
+  "overview": [
+    {
+      "id": 1,
+      "name": "Alphamead",
+      "total_energy": "200.03",
+      "max_demand": "34.25",
+      "min_demand": "34.25",
+      "avg_demand": "34.25",
+      "score": "25"
+    },
+    {
+      "id": 2,
+      "name": "Lenoxx Mall",
+      "total_energy": "200.03",
+      "max_demand": "34.25",
+      "min_demand": "34.25",
+      "avg_demand": "34.25",
+      "score": "75"
+    },
+    {
+      "id": 3,
+      "name": "Sapio Utilities",
+      "total_energy": "200.03",
+      "max_demand": "34.25",
+      "min_demand": "34.25",
+      "avg_demand": "34.25",
+      "score": "95"
+    },
+    {
+      "id": 4,
+      "name": "PPL",
+      "total_energy": "200.03",
+      "max_demand": "34.25",
+      "min_demand": "34.25",
+      "avg_demand": "34.25",
+      "score": "40"
+    }
+  ],
+
+  "devices": [
+    {
+      "id": 1,
+      "name": "Utility",
+      "branch": "Richmond Gate",
+      "code": "EM 133",
+      "added": "18/01/2018",
+      "consumption": "500"
+    },
+    {
+      "id": 2,
+      "name": "Utility",
+      "branch": "Meadow Hall",
+      "code": "EM 122",
+      "added": "19/01/2019",
+      "consumption": "425"
+    },
+    {
+      "id": 3,
+      "name": "Generator 1",
+      "branch": "Meadow Hall",
+      "code": "EM 141",
+      "added": "20/01/2020",
+      "consumption": "300"
+    },
+    {
+      "id": 4,
+      "name": "Utility",
+      "branch": "Meadow Hall",
+      "code": "EM 111",
+      "added": "01/02/2020",
+      "consumption": "521"
+    },
+    {
+      "id": 5,
+      "name": "Utility",
+      "branch": "Richmond Gate",
+      "code": "EM 210",
+      "added": "03/06/2020",
+      "consumption": "320"
+    },
+    {
+      "id": 6,
+      "name": "Generator 2",
+      "branch": "Meadow Hall",
+      "code": "EM 121",
+      "added": "15/11/2020",
+      "consumption": "400"
+    }
+  ],
+
+  "branches": [
+    {
+      "id": 1,
+      "name": "Richmond Gate",
+      "organisation": "Sapio",
+      "number_of_sources": "3",
+      "papr": "30",
+      "generator_efficiency": "30",
+      "carbon_emission": "30",
+      "total_score": "30"
+    },
+    {
+      "id": 2,
+      "name": "Meadow Hall",
+      "organisation": "Sapio",
+      "number_of_sources": "4",
+      "papr": "52",
+      "generator_efficiency": "52",
+      "carbon_emission": "52",
+      "total_score": "52"
+    }
+  ],
+
+  "clients": [
+    {
+      "id": 1,
+      "name": "Alphamead",
+      "phone": "08062313454",
+      "contact_person": "Bolaji Johnson",
+      "plan_months": "10",
+      "plan_expiry": "10/10/2021",
+      "branches": "10"
+    },
+    {
+      "id": 2,
+      "name": "Lenoxx Mall",
+      "phone": "09031245678",
+      "contact_person": "Adewale Adams",
+      "plan_months": "12",
+      "plan_expiry": "12/01/2021",
+      "branches": "3"
+    },
+    {
+      "id": 3,
+      "name": "Sapio Utilities",
+      "phone": "08132145678",
+      "contact_person": "Kudirat Samson",
+      "plan_months": "24",
+      "plan_expiry": "16/08/2021",
+      "branches": "8"
+    },
+    {
+      "id": 4,
+      "name": "PPL",
+      "phone": "07072315485",
+      "contact_person": "James Isong",
+      "plan_months": "10",
+      "plan_expiry": "07/09/2021",
+      "branches": "14"
+    }
+  ]
+}

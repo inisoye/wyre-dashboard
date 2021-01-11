@@ -29,7 +29,8 @@
     "eject": "react-scripts eject",
     "authenticated-server": "json-server -p3001 --watch authenticatedData.json",
     "equipment-server": "json-server -p3002 --watch equipmentData.json",
-    "branches-server": "json-server -p3003 --watch branchesData.json"
+    "branches-server": "json-server -p3003 --watch branchesData.json",
+    "admin-server": "json-server -p3004 --watch adminData.json"
   },
   "eslintConfig": {
     "extends": [

@@ -78,7 +78,7 @@ function Header() {
   };
 
   return (
-    <header className='header'>
+    <header className='header h-no-linear-gradient'>
       <HeaderGroup1AndNav className='header-group-1-and-nav'>
         {' '}
         <div className='header-group-1'>
@@ -90,7 +90,7 @@ function Header() {
           </button>
 
           <Link className='header-logo' to='/'>
-            <Logo className='header- h-white-fill-medium-up' />
+            <Logo className='header-logo__image' />
           </Link>
 
           <button
@@ -104,13 +104,7 @@ function Header() {
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
           <ul className='header-nav-list'>
-            <HeaderLink onClick={toggleNav} url='/' linkText='Dashboard' />
-
-            <HeaderLink
-              onClick={toggleNav}
-              url='/score-card'
-              linkText='Score Card'
-            />
+            <HeaderLink onClick={toggleNav} url='/' linkText='Admin Overview' />
 
             <HeaderLinkWithDropdown
               className='header-nav-list__item header-link-with-dropdown'
@@ -120,7 +114,7 @@ function Header() {
                 className='header-link-dropdown-button'
                 onClick={toggleNavLinkDropdown}
               >
-                Parameters
+                Manage
                 <ChevronDown className='header-link-dropdown-icon' />
               </button>
 
@@ -133,41 +127,21 @@ function Header() {
               >
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/energy-consumption'
-                  linkText='Energy Consumption'
+                  url='/view-organisation'
+                  linkText='View Organisation'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/power-quality'
-                  linkText='Power Quality'
+                  url='/view-branches'
+                  linkText='View Branches'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/power-demand'
-                  linkText='Power Demand'
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url='/parameters/time-of-use'
-                  linkText='Time of Use'
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url='/parameters/last-reading'
-                  linkText='Last Reading'
+                  url='/view-devices'
+                  linkText='View Devices'
                 />
               </ul>
             </HeaderLinkWithDropdown>
-
-            <HeaderLink onClick={toggleNav} url='/report' linkText='Report' />
-
-            <HeaderLink
-              onClick={toggleNav}
-              url='/cost-tracker'
-              linkText='Cost Tracker'
-            />
-
-            <HeaderLink onClick={toggleNav} url='/billing' linkText='Billing' />
 
             <HeaderLink
               onClick={toggleNav}

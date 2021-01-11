@@ -25,7 +25,7 @@ import ScrollToTop from '../helpers/ScrollToTop';
 
 import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
-import TopBar from '../components/TopBar';
+import TopBar from '../components/AppTopBar';
 
 function MainAppPages() {
   return (

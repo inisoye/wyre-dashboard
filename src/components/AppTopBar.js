@@ -156,7 +156,7 @@ function TopBar() {
             : 'top-bar__right h-hide'
         }
       >
-        <Link className='top-bar-right__button h-extra-padding'>
+        <Link className='top-bar-right__button h-extra-padding' to='#'>
           Edit Client
         </Link>
       </div>

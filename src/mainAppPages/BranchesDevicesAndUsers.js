@@ -7,11 +7,11 @@ import branchesHttpServices from '../services/userBranches';
 import BreadCrumb from '../components/BreadCrumb';
 import UserBranchesTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/UserBranchesTable';
 import UserDevicesTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/UserDevicesTable';
+import ListOfUsersTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/ListOfUsersTable';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
-import ListOfUsersTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/ListOfUsersTable';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },

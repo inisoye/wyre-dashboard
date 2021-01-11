@@ -308,6 +308,10 @@ button {
   cursor: pointer;
 }
 
+button:focus, button:focus-visible {
+  outline: 5px auto #6c00fa;
+}
+
 /* Remove IOS input style */
 input[type='email'],
 input[type='text'],
@@ -541,6 +545,10 @@ p {
 
 .h-mt-24 {
   margin-top: 24px;
+}
+
+.h-ml-20 {
+  margin-left: 20px;
 }
 
 .h-no-margin {
@@ -806,6 +814,7 @@ thead.ant-table-thead tr th {
 
 .generic-input {
   border: 1px solid #d9d9d9;
+  border-radius: 4px;
   color: #595959;
   display: block;
   font-size: 1.4rem;
@@ -853,8 +862,8 @@ thead.ant-table-thead tr th {
 .table-with-header-container {
   background-color: #ffffff;
   margin-top: 30px;
-  padding-top: 24px;
   padding-bottom: 8px;
+  padding-top: 24px;
 }
 
 @media (min-width: 768px) {
@@ -865,6 +874,10 @@ thead.ant-table-thead tr th {
 
 .table-with-header-container.h-no-mt {
   margin-top: 0;
+}
+
+.table-header {
+  padding-bottom: 24px;
 }
 
 @media (min-width: 768px) {
@@ -878,9 +891,12 @@ thead.ant-table-thead tr th {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    margin-bottom: 24px;
-    padding: 0 16px;
+    padding: 0 16px 24px;
   }
+}
+
+.table-header.h-border-bottom {
+  border-bottom: 0.5px solid #c4c4c4;
 }
 
 .table-header__heading {
@@ -984,6 +1000,10 @@ thead.ant-table-thead tr th {
   }
 }
 
+.header.h-no-linear-gradient {
+  background-image: none;
+}
+
 @media (min-width: 768px) {
   .header-group-1-and-nav {
     -webkit-box-align: center;
@@ -1057,9 +1077,6 @@ thead.ant-table-thead tr th {
 @media (min-width: 768px) {
   .header-logo__image {
     height: 50px;
-  }
-  .header-logo__image path {
-    fill: white;
   }
 }
 
@@ -1217,7 +1234,7 @@ thead.ant-table-thead tr th {
     display: block;
     height: 4px;
     position: absolute;
-    width: 100px;
+    width: 100%;
   }
 }
 

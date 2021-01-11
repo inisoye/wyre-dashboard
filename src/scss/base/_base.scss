@@ -92,6 +92,11 @@ button {
   border: 0;
   border: $grey1 solid 1px;
   cursor: pointer;
+
+  &:focus,
+  &:focus-visible {
+    outline: 5px auto $purple;
+  }
 }
 
 /* Remove IOS input style */

@@ -3,11 +3,22 @@ import CompleteDataContext from './Context';
 
 import MainAppPages from './pageSwitchers/MainAppPages';
 import AuthPages from './pageSwitchers/AuthPages';
+import AdminPages from './pageSwitchers/AdminPages';
 
 function App() {
-  const { userData } = useContext(CompleteDataContext);
+  const { userData, isUserAdmin } = useContext(CompleteDataContext);
 
-  return <>{userData ? <MainAppPages /> : <AuthPages />}</>;
+  return (
+    <>
+      {isUserAdmin ? (
+        <AdminPages />
+      ) : userData ? (
+        <MainAppPages />
+      ) : (
+        <AuthPages />
+      )}
+    </>
+  );
 }
 
 export default App;

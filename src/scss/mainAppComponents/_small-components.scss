@@ -46,6 +46,7 @@
 
 .generic-input {
   border: 1px solid $border-grey4;
+  border-radius: 4px;
   color: scale-color($black, $lightness: 35%);
   display: block;
   font-size: 1.4rem;
@@ -78,8 +79,8 @@
 .table-with-header-container {
   background-color: $white;
   margin-top: 30px;
-  padding-top: 24px;
   padding-bottom: 8px;
+  padding-top: 24px;
 
   @include media('>=medium') {
     padding-top: 16px;
@@ -92,12 +93,17 @@
 
 // Table header styles
 .table-header {
+  padding-bottom: 24px;
+
   @include media('>=medium') {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 24px;
-    padding: 0 16px;
+    padding: 0 16px 24px;
+  }
+
+  &.h-border-bottom {
+    border-bottom: 0.5px solid $border-grey1;
   }
 }
 

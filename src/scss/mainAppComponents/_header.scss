@@ -17,6 +17,10 @@
     flex-direction: row;
     justify-content: space-between;
   }
+
+  &.h-no-linear-gradient {
+    background-image: none;
+  }
 }
 
 .header-group-1-and-nav {
@@ -66,10 +70,6 @@
 
   @include media('>=medium') {
     height: 50px;
-
-    path {
-      fill: white;
-    }
   }
 }
 
@@ -208,7 +208,7 @@
         display: block;
         height: 4px;
         position: absolute;
-        width: 100px;
+        width: 100%;
       }
     }
   }
