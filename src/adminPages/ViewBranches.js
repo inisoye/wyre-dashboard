@@ -11,7 +11,6 @@ import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
-
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Manage', id: 2 },
@@ -44,13 +43,20 @@ function ViewBranches({ match }) {
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>
           <div className='h-hidden-medium-down'>
-            <button className='table-header__left-button'>PDF</button>
-            <button className='table-header__left-button'>CSV</button>
+            <button type='button' className='table-header__left-button'>
+              PDF
+            </button>
+            <button type='button' className='table-header__left-button'>
+              CSV
+            </button>
           </div>
 
           <h3 className='table-header__heading'>Branches</h3>
 
-          <button className='table-header__right-button h-hidden-medium-down'>
+          <button
+            type='button'
+            className='table-header__right-button h-hidden-medium-down'
+          >
             <ExcelIcon />
             <span>Download in Excel</span>
           </button>

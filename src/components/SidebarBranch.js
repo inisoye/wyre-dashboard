@@ -196,7 +196,11 @@ function SidebarBranch({ branchData }) {
           </Checkbox>
         </div>
         {branchData.devices ? (
-          <button className='sidebar-branch__button' onClick={handleToggle}>
+          <button
+            type='button'
+            className='sidebar-branch__button'
+            onClick={handleToggle}
+          >
             {Icon}
           </button>
         ) : (

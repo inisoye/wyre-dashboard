@@ -26,7 +26,11 @@ function SidebarOrganization({ orgData }) {
       <div className='sidebar-org__details'>
         <span>{orgData.name}</span>
         {orgData.branches && (
-          <button className='sidebar-org__button' onClick={handleToggle}>
+          <button
+            type='button'
+            className='sidebar-org__button'
+            onClick={handleToggle}
+          >
             {Icon}
           </button>
         )}

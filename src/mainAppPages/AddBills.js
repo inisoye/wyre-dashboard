@@ -461,7 +461,10 @@ function AddBills({ match }) {
               </div>
             </div>
 
-            <button className='generic-submit-button cost-tracker-form-submit-button'>
+            <button
+              type='submit'
+              className='generic-submit-button cost-tracker-form-submit-button'
+            >
               Submit
             </button>
           </form>

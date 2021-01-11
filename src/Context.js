@@ -23,7 +23,7 @@ const CompleteDataProvider = (props) => {
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
 
-  const [isUserAdmin, setIsUserAdmin] = useState(true);
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
   const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });

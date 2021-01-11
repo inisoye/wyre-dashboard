@@ -83,6 +83,7 @@ function Header() {
         {' '}
         <div className='header-group-1'>
           <button
+            type='button'
             className='headerMenu-button dotmenu-button h-hidden-medium-up'
             onClick={toggleSidebar}
           >
@@ -94,6 +95,7 @@ function Header() {
           </Link>
 
           <button
+            type='button'
             className='headerMenu-button hamburger-button h-hidden-1296-up'
             onClick={toggleNav}
           >
@@ -117,6 +119,7 @@ function Header() {
               setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
             >
               <button
+                type='button'
                 className='header-link-dropdown-button'
                 onClick={toggleNavLinkDropdown}
               >
@@ -200,6 +203,7 @@ function Header() {
               setIsMobileAvatarMenuOpen={setIsMobileAvatarMenuOpen}
             >
               <button
+                type='button'
                 onClick={toggleMobileAvatarMenu}
                 className='header-avatar'
               >
@@ -291,7 +295,11 @@ function Header() {
         <HeaderDesktopAvatarWithDropdown
           setIsDesktopAvatarMenuOpen={setIsDesktopAvatarMenuOpen}
         >
-          <button onClick={toggleDesktopAvatarMenu} className='header-avatar'>
+          <button
+            type='button'
+            onClick={toggleDesktopAvatarMenu}
+            className='header-avatar'
+          >
             <img src={avatar} alt='' />
           </button>
 

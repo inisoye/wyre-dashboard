@@ -42,13 +42,20 @@ function Overview({ match }) {
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>
           <div className='h-hidden-medium-down'>
-            <button className='table-header__left-button'>PDF</button>
-            <button className='table-header__left-button'>CSV</button>
+            <button type='button' className='table-header__left-button'>
+              PDF
+            </button>
+            <button type='button' className='table-header__left-button'>
+              CSV
+            </button>
           </div>
 
           <h3 className='table-header__heading'>Admin Overview</h3>
 
-          <button className='table-header__right-button h-hidden-medium-down'>
+          <button
+            type='button'
+            className='table-header__right-button h-hidden-medium-down'
+          >
             <ExcelIcon />
             <span>Download in Excel</span>
           </button>
