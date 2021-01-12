@@ -157,6 +157,13 @@ class PowerQualityTable extends React.Component {
         ...this.getColumnSearchProps('frequency'),
         sorter: (a, b) => a.frequency - b.frequency,
       },
+      {
+        title: 'Power Factor',
+        dataIndex: 'power_factor',
+        key: 'power_factor',
+        ...this.getColumnSearchProps('power_factor'),
+        sorter: (a, b) => a.power_factor - b.power_factor,
+      },
     ];
 
     return (
