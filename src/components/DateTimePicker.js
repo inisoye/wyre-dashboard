@@ -36,9 +36,16 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
             ],
             'Past Week': [moment().subtract(7, 'days'), moment()],
             'Past Month': [moment().subtract(1, 'months'), moment()],
-            'Past Quarter': [moment().subtract(3, 'months'), moment()],
+            'Past Three Months': [moment().subtract(3, 'months'), moment()],
             'Past Half Year': [moment().subtract(6, 'months'), moment()],
             'Past Year': [moment().subtract(1, 'years'), moment()],
+            'This Week': [moment().startOf('week'), moment()],
+            'This Month': [moment().startOf('month'), moment()],
+            'This Quarter': [
+              moment().quarter(moment().quarter()).startOf('quarter'),
+              moment(),
+            ],
+            'This Year': [moment().startOf('year'), moment()],
           }}
         />
       </Space>
