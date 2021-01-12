@@ -126,7 +126,7 @@ class TimeOfUseTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Active Gen 2 (Hrs)',
+        title: 'Active Gen (Hrs)',
         dataIndex: 'active_gen',
         key: 'active_gen',
         ...this.getColumnSearchProps('active_gen'),

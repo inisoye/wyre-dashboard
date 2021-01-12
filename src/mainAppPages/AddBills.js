@@ -52,6 +52,7 @@ function AddBills({ match }) {
 
   const fuelPurchaseDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input'
       id='fuel-purchase-date'
       onChange={(e) =>
@@ -81,6 +82,7 @@ function AddBills({ match }) {
 
   const utilityPaymentPreDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input'
       id='utility-payment-pre-date'
       onChange={(e) =>
@@ -91,6 +93,7 @@ function AddBills({ match }) {
 
   const utilityPaymentPostDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input'
       id='utility-payment-post-date'
       onChange={(e) =>
@@ -293,7 +296,7 @@ function AddBills({ match }) {
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-date'
                 >
-                  Date
+                  Date of Purchase
                 </label>
                 <Controller
                   as={utilityPaymentPreDatePicker}
@@ -342,7 +345,7 @@ function AddBills({ match }) {
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-pre-value'
                 >
-                  Value (Kwatt/hr)
+                  Value (kWh)
                 </label>
                 <input
                   className='generic-input'
@@ -447,7 +450,7 @@ function AddBills({ match }) {
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-value'
                 >
-                  Value (Kwatt/hr)
+                  Value (kWh)
                 </label>
                 <input
                   className='generic-input'

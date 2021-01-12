@@ -26,6 +26,7 @@ function BranchesUserForm({ match }) {
 
   const dateAddedPicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input user-form-input'
       id='date-added'
       onChange={(e) => setValue('nextMaintDate', e.target.value, true)}

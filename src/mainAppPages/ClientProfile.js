@@ -78,6 +78,7 @@ function ClientProfile({ match }) {
 
   const nextMaintDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input client-info-input'
       id='next-maint-date'
       onChange={(e) => setValue('nextMaintDate', e.target.value, true)}

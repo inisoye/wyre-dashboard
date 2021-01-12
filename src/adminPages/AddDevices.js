@@ -31,6 +31,7 @@ function AddDevices({ match }) {
 
   const dateAddedPicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input'
       id='equipment-purchase-date'
       onChange={(e) => setValue('dateAdded', e.target.value, true)}
