@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
 
 import equipmentHttpServices from '../services/equipment';
@@ -20,7 +21,14 @@ function AddEquipment({ match }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allEquipment, setAllEquipment] = useState([]);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    errors,
+  } = useForm();
 
   useEffect(() => {
     if (match && match.url) {
@@ -29,11 +37,15 @@ function AddEquipment({ match }) {
 
     equipmentHttpServices
       .getAll()
-      .then((returnedEquipment) => setAllEquipment(returnedEquipment));
+      .then((returnedEquipment) => setAllEquipment(returnedEquipment))
+      .catch((error) => {
+        console.log(error.response);
+      });
   }, [match, setCurrentUrl]);
 
   const equipmentPurchaseDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input'
       id='equipment-purchase-date'
       onChange={(e) => setValue('equipmentPurchaseDate', e.target.value, true)}
@@ -46,12 +58,25 @@ function AddEquipment({ match }) {
     equipmentPurchaseDate,
     equipmentQuantity,
   }) => {
-    console.log(
-      equipmentName,
-      equipmentWattage,
-      equipmentPurchaseDate,
-      equipmentQuantity
-    );
+    const newEquipmentData = {
+      id: uuidv4(),
+      name: equipmentName,
+      wattage: equipmentWattage,
+      date_purchased: equipmentPurchaseDate.format('DD/MM/YYYY'),
+      quantity: equipmentQuantity,
+    };
+
+    equipmentHttpServices
+      .add(newEquipmentData)
+      .then((returnedEquipment) => {
+        console.log(returnedEquipment);
+        setAllEquipment(allEquipment.concat(returnedEquipment));
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+
+    reset();
   };
 
   return (
@@ -108,9 +133,15 @@ function AddEquipment({ match }) {
                   name='equipmentWattage'
                   id='equipment-wattage'
                   placeholder='200'
-                  ref={register}
+                  ref={register({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className='input-error-message'>
+                  {errors.equipmentWattage && 'Please enter a number'}
+                </p>
               </div>
 
               <div className='cost-tracker-input-container'>
@@ -129,14 +160,14 @@ function AddEquipment({ match }) {
                     required: true,
                   }}
                   validateStatus={
-                    errors.equipmentPurchaseDate && 'Please enter a date'
+                    errors.equipmentPurchaseDate && 'Please select a date'
                       ? 'error'
                       : ''
                   }
-                  help={errors.equipmentPurchaseDate && 'Please enter a date'}
+                  help={errors.equipmentPurchaseDate && 'Please select a date'}
                 />
                 <p className='input-error-message'>
-                  {errors.equipmentPurchaseDate && 'Please enter a date'}
+                  {errors.equipmentPurchaseDate && 'Please select a date'}
                 </p>
               </div>
 
@@ -154,9 +185,15 @@ function AddEquipment({ match }) {
                   name='equipmentQuantity'
                   id='equipment-quantity'
                   placeholder='1'
-                  ref={register}
+                  ref={register({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className='input-error-message'>
+                  {errors.equipmentQuantity && 'Please enter a number'}
+                </p>
               </div>
             </div>
 
@@ -173,7 +210,7 @@ function AddEquipment({ match }) {
         </h2>
 
         <div className='equipment-table-wrapper'>
-          <ListOfEquipmentTable listOfEquipmentData={allEquipment} />
+          {<ListOfEquipmentTable listOfEquipmentData={allEquipment} />}
         </div>
       </article>
     </>
