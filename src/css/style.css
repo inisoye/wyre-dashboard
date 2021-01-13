@@ -2826,6 +2826,12 @@ thead.ant-table-thead tr th {
   }
 }
 
+@media (max-width: 1085px) {
+  .user-form-input-container.h-hidden-1086-down {
+    display: none;
+  }
+}
+
 .user-form-input {
   border-radius: 4px !important;
 }
