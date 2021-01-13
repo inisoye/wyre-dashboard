@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
-import { useHistory } from 'react-router';
 
 import HeaderLink from '../smallComponents/HeaderLink';
 import HeaderIcon from '../smallComponents/HeaderIcon';
@@ -32,13 +31,12 @@ function Header() {
     setIsNavOpen,
     isSidebarOpen,
     setIsSidebarOpen,
+    setUserData,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
-
-  const history = useHistory();
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -70,11 +68,7 @@ function Header() {
 
   const logOut = () => {
     window.localStorage.removeItem('loggedWyreUser');
-
-    // Go home
-    history.push('/');
-    // Refresh page
-    history.go(0);
+    setUserData(undefined);
   };
 
   return (

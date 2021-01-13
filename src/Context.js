@@ -61,7 +61,10 @@ const CompleteDataProvider = (props) => {
             setRefinedRenderedData(getRenderedData(renderedDataArray));
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          window.localStorage.removeItem('loggedWyreUser');
+          setUserData(undefined);
+        });
     };
 
     if (userData) {
