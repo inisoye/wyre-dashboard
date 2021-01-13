@@ -20,10 +20,6 @@ import HeaderLinkWithDropdown from './groups/HeaderLinkWithDropdown';
 import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropdown';
 import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
 import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
-import ProfileIcon from '../icons/ProfileIcon';
-import OverviewIcon from '../icons/OverviewIcon';
-import PadlockIcon from '../icons/PadlockIcon';
-import SettingsIcon from '../icons/SettingsIcon';
 import LogoutIcon from '../icons/LogoutIcon';
 
 function Header() {

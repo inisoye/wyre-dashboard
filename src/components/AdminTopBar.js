@@ -1,13 +1,6 @@
 import React, { useContext } from 'react';
 import CompleteDataContext from '../Context';
 import { Link } from 'react-router-dom';
-import { Select } from 'antd';
-
-import DateTimePicker from './DateTimePicker';
-
-import { CaretDownFilled } from '@ant-design/icons';
-
-const { Option } = Select;
 
 function TopBar() {
   const { isSidebarOpen, currentUrl } = useContext(CompleteDataContext);

@@ -2,7 +2,13 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
-  const { name, size, diesel_usage, time_used, hours_to_maintenance } = data
+  const {
+    name,
+    size,
+    diesel_usage,
+    time_used,
+    // hours_to_maintenance
+  } = data
     ? data
     : {
         name: '',
