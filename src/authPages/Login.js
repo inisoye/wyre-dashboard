@@ -16,10 +16,10 @@ function Login() {
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async ({ username, password }) => {
     try {
       const user = await loginHttpServices.login({
-        username: email,
+        username: username,
         password: password,
       });
 
