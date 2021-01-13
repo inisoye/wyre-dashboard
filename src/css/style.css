@@ -2636,7 +2636,7 @@ thead.ant-table-thead tr th {
 }
 
 @media (min-width: 1086px) {
-  .client-info-form {
+  .all-client-info-forms {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2647,9 +2647,21 @@ thead.ant-table-thead tr th {
   }
 }
 
-.client-info-form-inputs-wrapper {
+.client-info-form {
   padding: 0;
   margin-top: 90px;
+}
+
+@media (min-width: 1086px) {
+  .client-info-form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
 }
 
 @media (min-width: 1086px) {
