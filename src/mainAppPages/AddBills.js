@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, Select } from 'antd';
+import moment from 'moment';
 import CompleteDataContext from '../Context';
 
 import { CaretDownFilled } from '@ant-design/icons';
@@ -16,6 +17,7 @@ const breadCrumbRoutes = [
 ];
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 function AddBills({ match }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
@@ -92,13 +94,20 @@ function AddBills({ match }) {
   );
 
   const utilityPaymentPostDatePicker = (
-    <DatePicker
+    <RangePicker
       format='DD-MM-YYYY'
-      className='generic-input'
+      className='post-date-range-picker'
       id='utility-payment-post-date'
       onChange={(e) =>
         setValuePaymentTrackerPost('utilityPaymentDate', e.target.value, true)
       }
+      ranges={{
+        Today: [moment(), moment()],
+        Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Past Week': [moment().subtract(7, 'days'), moment()],
+        'Past Month': [moment().subtract(1, 'months'), moment()],
+        'Past Year': [moment().subtract(1, 'years'), moment()],
+      }}
     />
   );
 
@@ -401,7 +410,7 @@ function AddBills({ match }) {
                   className='generic-input-label cost-tracker-input-label'
                   htmlFor='utility-payment-post-date'
                 >
-                  Date
+                  Period Covered
                 </label>
                 <Controller
                   as={utilityPaymentPostDatePicker}

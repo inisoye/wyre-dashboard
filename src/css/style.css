@@ -2589,6 +2589,13 @@ thead.ant-table-thead tr th {
   display: block;
 }
 
+.post-date-range-picker {
+  height: 40px;
+  width: 100%;
+  color: #595959;
+  border-radius: 4px !important;
+}
+
 /*--------------------------------------------------------------
 # Add Equipment
 --------------------------------------------------------------*/
