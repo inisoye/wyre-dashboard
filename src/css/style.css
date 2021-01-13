@@ -963,6 +963,10 @@ thead.ant-table-thead tr th {
   color: #a3a3a3;
 }
 
+.table-row-button.table-row-button--link {
+  display: inline-block;
+}
+
 .table-row-button svg {
   margin-left: 5px;
 }

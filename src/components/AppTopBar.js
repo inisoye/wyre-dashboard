@@ -87,11 +87,11 @@ function TopBar() {
             <Option className='time-interval-option' value='Daily'>
               Daily
             </Option>
-            <Option className='time-interval-option' value='Weeks'>
-              Weeks
+            <Option className='time-interval-option' value='Weekly'>
+              Weekly
             </Option>
-            <Option className='time-interval-option' value='Months'>
-              Months
+            <Option className='time-interval-option' value='Monthly'>
+              Monthly
             </Option>
           </Select>
         </div>
@@ -156,7 +156,10 @@ function TopBar() {
             : 'top-bar__right h-hide'
         }
       >
-        <Link className='top-bar-right__button h-extra-padding' to='#'>
+        <Link
+          className='top-bar-right__button h-extra-padding'
+          to='/client-profile'
+        >
           Edit Client
         </Link>
       </div>

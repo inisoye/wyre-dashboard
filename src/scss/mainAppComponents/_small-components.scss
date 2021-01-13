@@ -157,6 +157,10 @@
     color: $grey4;
   }
 
+  &.table-row-button--link {
+    display: inline-block;
+  }
+
   svg {
     margin-left: 5px;
   }

@@ -15,7 +15,7 @@ import ExcelIcon from '../icons/ExcelIcon';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
-  { url: '#', name: 'Branches', id: 2 },
+  { url: '#', name: 'Overview', id: 2 },
 ];
 
 function BranchesDevicesAndUsers({ match }) {
@@ -42,7 +42,6 @@ function BranchesDevicesAndUsers({ match }) {
     });
   }, []);
 
-  console.log(allBranches);
 
   return (
     <>

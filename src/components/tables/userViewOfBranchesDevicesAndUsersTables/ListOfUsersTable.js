@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 class ListOfUsersTable extends React.Component {
   state = {
@@ -149,12 +150,13 @@ class ListOfUsersTable extends React.Component {
         key: 'key',
         dataIndex: 'key',
         render: (_, record) => (
-          <button
-            className='table-row-button'
+          <Link
+            to='/branches/user-form'
+            className='table-row-button table-row-button--link'
             onClick={() => console.log(record)}
           >
             Edit
-          </button>
+          </Link>
         ),
       },
     ];

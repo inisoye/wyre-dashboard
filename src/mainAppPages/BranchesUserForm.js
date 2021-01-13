@@ -139,7 +139,7 @@ function BranchesUserForm({ match }) {
               />
             </div>
 
-            <div className='user-form-input-container'>
+            <div className='user-form-input-container h-not-visible'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='branch'
@@ -152,12 +152,11 @@ function BranchesUserForm({ match }) {
                 name='branch'
                 id='branch'
                 ref={register}
-                required
                 autoFocus
               />
             </div>
 
-            <div className='user-form-input-container h-no-mr'>
+            <div className='user-form-input-container h-no-mr h-not-visible'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='date-added'
@@ -169,9 +168,6 @@ function BranchesUserForm({ match }) {
                 name='dateAdded'
                 control={control}
                 defaultValue=''
-                rules={{
-                  required: true,
-                }}
                 validateStatus={
                   errors.dateAdded && 'Please enter a date' ? 'error' : ''
                 }

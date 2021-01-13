@@ -194,46 +194,6 @@ function Header() {
                 <li className='header-sublinks-list__item avatar-sublink-item'>
                   <Link
                     className='header-sublink avatar-sublink'
-                    onClick={toggleNavAndDropdown}
-                    to='/client-profile'
-                  >
-                    <ProfileIcon /> <span>Personal Data</span>
-                  </Link>
-                </li>
-
-                <li className='header-sublinks-list__item avatar-sublink-item'>
-                  <Link
-                    className='header-sublink avatar-sublink'
-                    onClick={toggleNavAndDropdown}
-                    to='#'
-                  >
-                    <OverviewIcon /> <span>Overview</span>
-                  </Link>
-                </li>
-
-                <li className='header-sublinks-list__item avatar-sublink-item'>
-                  <Link
-                    className='header-sublink avatar-sublink'
-                    onClick={toggleNavAndDropdown}
-                    to='/password'
-                  >
-                    <PadlockIcon /> <span>Password</span>
-                  </Link>
-                </li>
-
-                <li className='header-sublinks-list__item avatar-sublink-item'>
-                  <Link
-                    className='header-sublink avatar-sublink'
-                    onClick={toggleNavAndDropdown}
-                    to='#'
-                  >
-                    <SettingsIcon /> <span>Settings</span>
-                  </Link>
-                </li>
-
-                <li className='header-sublinks-list__item avatar-sublink-item'>
-                  <Link
-                    className='header-sublink avatar-sublink'
                     onClick={() => {
                       logOut();
                       toggleNavAndDropdown();
@@ -284,33 +244,6 @@ function Header() {
                 : 'header-sublinks-list avatar-sublinks-list h-hide'
             }
           >
-            <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link
-                className='header-sublink avatar-sublink'
-                to='/client-profile'
-              >
-                <ProfileIcon /> <span>Personal Data</span>
-              </Link>
-            </li>
-
-            <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='#'>
-                <OverviewIcon /> <span>Overview</span>
-              </Link>
-            </li>
-
-            <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='/password'>
-                <PadlockIcon /> <span>Password</span>
-              </Link>
-            </li>
-
-            <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='#'>
-                <SettingsIcon /> <span>Settings</span>
-              </Link>
-            </li>
-
             <li className='header-sublinks-list__item avatar-sublink-item'>
               <Link
                 onClick={logOut}

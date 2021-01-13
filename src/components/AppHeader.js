@@ -221,7 +221,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='/client-profile'
+                    to='/branches/user-form'
                   >
                     <ProfileIcon /> <span>Personal Data</span>
                   </Link>
@@ -231,7 +231,7 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='#'
+                    to='/branches'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
@@ -251,9 +251,9 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='#'
+                    to='/alerts-and-alarms'
                   >
-                    <SettingsIcon /> <span>Settings</span>
+                    <SettingsIcon /> <span>Alerts and Alarms</span>
                   </Link>
                 </li>
 
@@ -313,14 +313,14 @@ function Header() {
             <li className='header-sublinks-list__item avatar-sublink-item'>
               <Link
                 className='header-sublink avatar-sublink'
-                to='/client-profile'
+                to='/branches/user-form'
               >
                 <ProfileIcon /> <span>Personal Data</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='#'>
+              <Link className='header-sublink avatar-sublink' to='/branches'>
                 <OverviewIcon /> <span>Overview</span>
               </Link>
             </li>
@@ -332,8 +332,11 @@ function Header() {
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='#'>
-                <SettingsIcon /> <span>Settings</span>
+              <Link
+                className='header-sublink avatar-sublink'
+                to='/alerts-and-alarms'
+              >
+                <SettingsIcon /> <span>Alerts and Alarms</span>
               </Link>
             </li>
 
