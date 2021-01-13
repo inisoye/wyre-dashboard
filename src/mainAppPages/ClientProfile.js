@@ -73,6 +73,7 @@ function ClientProfile({ match }) {
     <RangePicker
       className='client-info-time-picker'
       id='site-operating-hours'
+      format={'HH:mm'}
       onChange={(e) =>
         setValueSiteDetails('siteOperatingHours', e.target.value, true)
       }

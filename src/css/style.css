@@ -956,6 +956,7 @@ thead.ant-table-thead tr th {
   display: flex;
   font-weight: 500;
   padding: 6px 16px;
+  line-height: 1.15;
 }
 
 .table-row-button.h-greyed-out {
