@@ -139,7 +139,7 @@ function BranchesUserForm({ match }) {
               />
             </div>
 
-            <div className='user-form-input-container h-not-visible'>
+            <div className='user-form-input-container h-not-visible h-hidden-1086-down'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='branch'
@@ -156,7 +156,7 @@ function BranchesUserForm({ match }) {
               />
             </div>
 
-            <div className='user-form-input-container h-no-mr h-not-visible'>
+            <div className='user-form-input-container h-no-mr h-not-visible h-hidden-1086-down'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='date-added'
