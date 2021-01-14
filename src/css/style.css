@@ -225,13 +225,7 @@ a:hover {
 a:focus {
   border-radius: 4px;
   outline: 5px auto -webkit-focus-ring-color;
-  outline: 2px solid transparent;
-  -webkit-box-shadow: 0 0 0 2px #e1cbff;
-          box-shadow: 0 0 0 2px #e1cbff;
-  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;
-  transition: border 0.3s, -webkit-box-shadow 0.3s;
-  transition: border 0.3s, box-shadow 0.3s;
-  transition: border 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  outline: 2px auto #e1cbff;
 }
 
 hr {
@@ -1085,21 +1079,31 @@ thead.ant-table-thead tr th {
   }
 }
 
-.header-logo {
-  line-height: 1;
+.header-logo-container {
   /* Make logo width match sidebar */
 }
 
 @media (min-width: 768px) {
-  .header-logo {
+  .header-logo-container {
     display: block;
     width: 278.45px;
   }
 }
 
 @media (min-width: 1012px) {
-  .header-logo {
+  .header-logo-container {
     width: 260.45px;
+  }
+}
+
+.header-logo {
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  .header-logo {
+    display: block;
+    width: 122px;
   }
 }
 

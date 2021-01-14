@@ -51,9 +51,7 @@
   }
 }
 
-.header-logo {
-  line-height: 1;
-
+.header-logo-container {
   /* Make logo width match sidebar */
   @include media('>=medium') {
     display: block;
@@ -62,6 +60,15 @@
 
   @include media('>=large') {
     width: 260.45px;
+  }
+}
+
+.header-logo {
+  line-height: 1;
+
+  @include media('>=medium') {
+    display: block;
+    width: 122px;
   }
 }
 

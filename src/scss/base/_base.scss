@@ -28,10 +28,7 @@ a {
   &:focus {
     border-radius: 4px;
     outline: 5px auto -webkit-focus-ring-color;
-    outline: 2px solid transparent;
-    // Emulate Antd Stlyes
-    box-shadow: 0 0 0 2px $light-purple-2;
-    transition: border 0.3s, box-shadow 0.3s;
+    outline: 2px auto $light-purple-2;
   }
 }
 
