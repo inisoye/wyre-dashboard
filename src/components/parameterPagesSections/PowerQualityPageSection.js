@@ -103,10 +103,12 @@ function PowerQualityPageSection({ pqData }) {
           </button>
         </div>
 
-        <PowerQualityTable
-          powerQualityUnit={plottedData && plottedData.units}
-          powerQualityData={formattedTableData}
-        />
+        <div className='h-overflow-auto'>
+          <PowerQualityTable
+            powerQualityUnit={plottedData && plottedData.units}
+            powerQualityData={formattedTableData}
+          />
+        </div>
       </article>
     </section>
   );
