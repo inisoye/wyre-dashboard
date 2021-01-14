@@ -84,6 +84,10 @@
 
 .hamburger-button {
   padding: 4px 0px 4px 20px;
+
+  @include media('>medium') {
+    padding: 3px 0px 0;
+  }
 }
 
 .headerMenu-button__image {

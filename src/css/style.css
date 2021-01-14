@@ -1126,6 +1126,12 @@ thead.ant-table-thead tr th {
   padding: 4px 0px 4px 20px;
 }
 
+@media (min-width: 769px) {
+  .hamburger-button {
+    padding: 3px 0px 0;
+  }
+}
+
 .headerMenu-button__image {
   height: 24px;
   stroke: #000000;
