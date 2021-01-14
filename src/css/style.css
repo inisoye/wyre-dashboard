@@ -326,11 +326,14 @@ textarea {
 
 input:focus {
   border-color: #6c00fa;
-  -webkit-box-shadow: 0 0 10px #f0e5ff;
-          box-shadow: 0 0 10px #f0e5ff;
   outline: 5px auto -webkit-focus-ring-color;
-  outline: 2px solid #f0e5ff;
-  outline-offset: 0.5px;
+  outline: 2px solid transparent;
+  -webkit-box-shadow: 0 0 0 2px #e1cbff;
+          box-shadow: 0 0 0 2px #e1cbff;
+  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
 
 header,
@@ -611,7 +614,8 @@ p {
 
 @media (min-width: 768px) {
   .date-range-picker-containers {
-    max-width: 285px;
+    max-width: 289px;
+    padding-left: 2px;
   }
 }
 
@@ -1559,10 +1563,10 @@ thead.ant-table-thead tr th {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
+    min-height: 62px;
     overflow: auto;
     padding-bottom: 12px;
     padding-top: 10px;
-    min-height: 62px;
   }
 }
 
@@ -1583,6 +1587,11 @@ thead.ant-table-thead tr th {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    min-height: 44px;
+    min-width: 291px;
     overflow: auto;
   }
 }
@@ -1633,10 +1642,6 @@ thead.ant-table-thead tr th {
   text-align: center;
 }
 
-.top-bar-right__button.h-extra-padding {
-  padding: 12px 30px;
-}
-
 @media (max-width: 767px) {
   .top-bar-right__button {
     display: block;
@@ -1663,6 +1668,10 @@ thead.ant-table-thead tr th {
   .top-bar-right__button:last-of-type {
     margin-bottom: 0;
   }
+}
+
+.top-bar-right__button.h-extra-padding {
+  padding: 12px 30px;
 }
 
 .top-bar-right__button:hover {

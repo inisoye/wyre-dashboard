@@ -9,10 +9,10 @@
   @include media('>=medium') {
     display: flex;
     justify-content: space-between;
+    min-height: 62px;
     overflow: auto;
     padding-bottom: 12px;
     padding-top: 10px;
-    min-height: 62px;
   }
 
   &.h-hidden-medium-down {
@@ -27,6 +27,9 @@
 
   @include media('>=medium') {
     display: flex;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 291px;
     overflow: auto;
   }
 }
@@ -69,10 +72,6 @@
   padding: 12px 13px;
   text-align: center;
 
-  &.h-extra-padding {
-    padding: 12px 30px;
-  }
-
   @include media('<medium') {
     display: block;
     margin-top: 30px;
@@ -95,6 +94,10 @@
     &:last-of-type {
       margin-bottom: 0;
     }
+  }
+
+  &.h-extra-padding {
+    padding: 12px 30px;
   }
 
   &:hover {

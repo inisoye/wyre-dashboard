@@ -9,7 +9,8 @@
   width: 100%;
 
   @include media('>=medium') {
-    max-width: 285px;
+    max-width: 289px;
+    padding-left: 2px;
   }
 }
 
