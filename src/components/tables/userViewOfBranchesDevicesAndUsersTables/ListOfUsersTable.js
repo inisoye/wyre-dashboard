@@ -4,6 +4,8 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
+import CompleteDataContext from '../../../Context';
+
 class ListOfUsersTable extends React.Component {
   state = {
     searchText: '',
@@ -93,6 +95,8 @@ class ListOfUsersTable extends React.Component {
     this.setState({ searchText: '' });
   };
 
+  static contextType = CompleteDataContext;
+
   render() {
     const data = this.props.listOfUsersData;
 
@@ -153,7 +157,16 @@ class ListOfUsersTable extends React.Component {
           <Link
             to='/branches/user-form'
             className='table-row-button table-row-button--link'
-            onClick={() => console.log(record)}
+            onClick={() => {
+              const formattedRowData = {
+                name: record.name,
+                phoneNumber: record.phone,
+                emailAddress: record.email,
+                organisation: record.organisation,
+              };
+
+              this.context.setPreloadedUserFormData(formattedRowData);
+            }}
           >
             Edit
           </Link>

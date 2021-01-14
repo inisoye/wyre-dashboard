@@ -14,7 +14,9 @@ const breadCrumbRoutes = [
 ];
 
 function BranchesUserForm({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { preloadedUserFormData, setCurrentUrl } = useContext(
+    CompleteDataContext
+  );
 
   useEffect(() => {
     if (match && match.url) {
@@ -22,7 +24,11 @@ function BranchesUserForm({ match }) {
     }
   }, [match, setCurrentUrl]);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  const { register, handleSubmit, setValue, control, errors } = useForm(
+    preloadedUserFormData
+      ? { defaultValues: preloadedUserFormData }
+      : 'preloadedUserFormData'
+  );
 
   const dateAddedPicker = (
     <DatePicker
@@ -135,7 +141,6 @@ function BranchesUserForm({ match }) {
                 id='organisation'
                 ref={register}
                 required
-                autoFocus
               />
             </div>
 
@@ -152,7 +157,6 @@ function BranchesUserForm({ match }) {
                 name='branch'
                 id='branch'
                 ref={register}
-                autoFocus
               />
             </div>
 
