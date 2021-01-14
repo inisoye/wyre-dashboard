@@ -223,8 +223,15 @@ a:hover {
 }
 
 a:focus {
-  outline: 1px dotted #212121;
+  border-radius: 4px;
   outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px solid transparent;
+  -webkit-box-shadow: 0 0 0 2px #e1cbff;
+          box-shadow: 0 0 0 2px #e1cbff;
+  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
 
 hr {
@@ -309,7 +316,15 @@ button {
 }
 
 button:focus, button:focus-visible {
-  outline: 5px auto #6c00fa;
+  border-color: #6c00fa;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px solid transparent;
+  -webkit-box-shadow: 0 0 0 2px #e1cbff;
+          box-shadow: 0 0 0 2px #e1cbff;
+  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s;
+  transition: border 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
 
 /* Remove IOS input style */
@@ -686,6 +701,15 @@ p {
 
 .ant-checkbox-checked .ant-checkbox-inner::after:hover {
   border-color: #ffffff !important;
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  -webkit-box-shadow: 0 0 0 2px #e1cbff !important;
+          box-shadow: 0 0 0 2px #e1cbff !important;
+  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s !important;
+  transition: border 0.3s, -webkit-box-shadow 0.3s !important;
+  transition: border 0.3s, box-shadow 0.3s !important;
+  transition: border 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s !important;
 }
 
 /*--------------------------------------------------------------
