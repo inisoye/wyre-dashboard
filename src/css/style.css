@@ -1508,7 +1508,7 @@ thead.ant-table-thead tr th {
 @media (min-width: 768px) {
   .sidebar-org__button,
   .sidebar-branch__button {
-    padding: 8px 0 8px 8px;
+    padding: 8px 4px 8px 4px;
   }
 }
 
