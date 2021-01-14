@@ -76,6 +76,8 @@ function AddEquipment({ match }) {
         console.log(error.response);
       });
 
+    // Reset form fields. Controller value is set manually
+    setValue('equipmentPurchaseDate', undefined);
     reset();
   };
 
