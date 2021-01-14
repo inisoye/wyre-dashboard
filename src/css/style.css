@@ -333,7 +333,8 @@ textarea {
   appearance: none;
 }
 
-input:focus {
+input:focus,
+textarea:focus {
   border-color: #6c00fa;
   outline: 5px auto -webkit-focus-ring-color;
   outline: 2px solid transparent;
@@ -1728,11 +1729,31 @@ thead.ant-table-thead tr th {
           justify-content: space-between;
 }
 
+@media (min-width: 768px) {
+  .breadcrumb-and-print-buttons {
+    width: 100%;
+    overflow: auto;
+  }
+}
+
 .breadcrumb {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding: 20px 0;
+}
+
+@media (max-width: 767px) {
+  .breadcrumb {
+    width: 100%;
+    overflow: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .breadcrumb {
+    margin-right: 50px;
+  }
 }
 
 .breadcrumb-item {
@@ -3049,6 +3070,12 @@ thead.ant-table-thead tr th {
   overflow: auto;
   padding-bottom: 52px;
   width: 100%;
+}
+
+@media (min-width: 458px) {
+  .billing-bill-table-container {
+    overflow: hidden;
+  }
 }
 
 @media (min-width: 1248px) {

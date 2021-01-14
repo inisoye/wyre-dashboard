@@ -2,11 +2,25 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  @include media('>=medium') {
+    width: 100%;
+    overflow: auto;
+  }
 }
 
 .breadcrumb {
   display: flex;
   padding: 20px 0;
+
+  @include media('<medium') {
+    width: 100%;
+    overflow: auto;
+  }
+
+  @include media('>=medium') {
+    margin-right: 50px;
+  }
 }
 
 .breadcrumb-item {

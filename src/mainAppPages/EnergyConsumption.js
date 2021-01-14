@@ -110,7 +110,7 @@ function EnergyConsumption({ match }) {
             Previous
           </span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_previous}KwH
+            {energy_consumption_previous}kWh
           </span>
         </p>
         <p className='energy-consumption-middle-card'>
@@ -118,13 +118,13 @@ function EnergyConsumption({ match }) {
             Current
           </span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_current}KwH
+            {energy_consumption_current}kWh
           </span>
         </p>
         <p className='energy-consumption-middle-card'>
           <span className='energy-consumption-middle-card-heading'>Usage</span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_usage}KwH
+            {energy_consumption_usage}kWh
           </span>
         </p>
       </div>
