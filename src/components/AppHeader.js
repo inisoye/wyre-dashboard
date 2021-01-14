@@ -86,7 +86,7 @@ function Header() {
 
           <div className='header-logo-container'>
             <Link className='header-logo' to='/'>
-              <Logo className='header- h-white-fill-medium-up' />
+              <Logo className='header-logo__image header- h-white-fill-medium-up' />
             </Link>
           </div>
 

@@ -52,10 +52,13 @@
 }
 
 .header-logo-container {
+  height: 40px;
+
   /* Make logo width match sidebar */
   @include media('>=medium') {
     display: block;
     width: 278.45px;
+    height: 50px;
   }
 
   @include media('>=large') {
