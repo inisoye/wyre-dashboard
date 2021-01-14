@@ -38,10 +38,6 @@ const CompleteDataProvider = (props) => {
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
-  // console.log(userData);
-  // console.log(token);
-  // console.log(preloadedUserFormData)
-
   useEffect(() => {
     const getData = () => {
       dataHttpServices
@@ -116,6 +112,8 @@ const CompleteDataProvider = (props) => {
         isLargeScreen: isLargeScreen,
         isXLargeScreen: isXLargeScreen,
         isLessThan1296: isLessThan1296,
+
+        useMediaQuery: useMediaQuery,
 
         username: username,
         setUsername: setUsername,
