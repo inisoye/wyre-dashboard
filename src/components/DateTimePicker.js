@@ -2,11 +2,14 @@ import React from 'react';
 import { DatePicker, Space } from 'antd';
 import moment from 'moment';
 
+import dataHttpServices from '../services/devices';
+
 const { RangePicker } = DatePicker;
 
 function onChange(value, dateString) {
   console.log('Selected Time: ', value);
   console.log('Formatted Selected Time: ', dateString);
+  dataHttpServices.updateEndpointDateRange(value);
 }
 
 function onOk(value) {

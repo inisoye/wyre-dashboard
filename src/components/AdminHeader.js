@@ -86,9 +86,11 @@ function Header() {
             <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
           </button>
 
-          <Link className='header-logo' to='/'>
-            <Logo className='header-logo__image' />
-          </Link>
+          <div className='header-logo-container'>
+            <Link className='header-logo' to='/'>
+              <Logo className='header-logo__image' />
+            </Link>
+          </div>
 
           <button
             type='button'
