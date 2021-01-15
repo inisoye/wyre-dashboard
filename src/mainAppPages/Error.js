@@ -11,7 +11,7 @@ function Error() {
           We are unable to find the page you just requested.
         </p>
 
-        <Link className='error-cta' to='/log-in'>
+        <Link className='error-cta' to='/'>
           Go to Dashboard
         </Link>
       </div>
