@@ -14,13 +14,13 @@ function TopBar() {
     CompleteDataContext
   );
 
-  const pagesWithoutDateTimePickers = [
-    'add-bills',
-    'add-equipment',
-    'client-profile',
-    'password',
-    'alerts-and-alarms',
-    'branches',
+  const pagesWithDateTimePickers = [
+    'dashboard',
+    'score-card',
+    'parameters',
+    'report',
+    'cost-tracker',
+    'billing',
   ];
 
   const pagesWithTimeIntervalSelector = [
@@ -30,8 +30,8 @@ function TopBar() {
     'time-of-use',
   ];
 
-  const isDateTimePickerNotDisplayed = pagesWithoutDateTimePickers.some(
-    (page) => currentUrl.includes(page)
+  const isDateTimePickerDisplayed = pagesWithDateTimePickers.some((page) =>
+    currentUrl.includes(page)
   );
 
   const isTimeIntervalSelectorDisplayed = pagesWithTimeIntervalSelector.some(
@@ -58,7 +58,7 @@ function TopBar() {
   return (
     <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
       <div className='top-bar__left'>
-        <div className={isDateTimePickerNotDisplayed ? 'h-hide' : ''}>
+        <div className={isDateTimePickerDisplayed ? '' : 'h-hide'}>
           <DateTimePicker isDateTimePickerDisabled={isDateTimePickerDisabled} />
         </div>
 
