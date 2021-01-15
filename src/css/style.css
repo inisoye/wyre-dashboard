@@ -3221,18 +3221,22 @@ thead.ant-table-thead tr th {
 # Generic 404 Page Styles
 --------------------------------------------------------------*/
 .error-page {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 70vh;
-  min-height: 365px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   text-align: center;
+  padding-bottom: 120px;
+  padding-top: 70px;
+}
+
+@media (min-width: 769px) {
+  .error-page {
+    padding-bottom: 190px;
+    padding-top: 111px;
+  }
 }
 
 .error-card {
