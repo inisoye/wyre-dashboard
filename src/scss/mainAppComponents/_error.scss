@@ -1,0 +1,44 @@
+.error-page {
+  align-items: center;
+  display: flex;
+  height: 70vh;
+  min-height: 365px;
+  justify-content: center;
+  text-align: center;
+}
+
+.error-card {
+  max-width: 450px;
+}
+
+.error-heading,
+.error-paragraph {
+  color: $dark-blue;
+}
+
+.error-heading {
+  font-weight: $medium;
+}
+
+.error-paragraph {
+  margin-top: 20px;
+}
+
+.error-cta {
+  background: $purple;
+  border: 0;
+  border-radius: 6px;
+  color: $white;
+  cursor: pointer;
+  display: block;
+  font-size: 1.4rem;
+  font-weight: $bold;
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+  padding: 17px 0;
+
+  &:hover {
+    color: white;
+  }
+}

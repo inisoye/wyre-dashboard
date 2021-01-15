@@ -3218,6 +3218,60 @@ thead.ant-table-thead tr th {
 }
 
 /*--------------------------------------------------------------
+# Generic 404 Page Styles
+--------------------------------------------------------------*/
+.error-page {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 70vh;
+  min-height: 365px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+.error-card {
+  max-width: 450px;
+}
+
+.error-heading,
+.error-paragraph {
+  color: #143861;
+}
+
+.error-heading {
+  font-weight: 500;
+}
+
+.error-paragraph {
+  margin-top: 20px;
+}
+
+.error-cta {
+  background: #6c00fa;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  margin-top: 40px;
+  padding: 17px 0;
+}
+
+.error-cta:hover {
+  color: white;
+}
+
+/*--------------------------------------------------------------
 /*--------------------------------------------------------------
 /*--------------------------------------------------------------
 ***** AUTH APP COMPONENTS STYLES *****
