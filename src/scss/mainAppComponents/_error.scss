@@ -9,7 +9,7 @@
 
 .error-card {
   max-width: 450px;
-  padding: 0 23px;
+  padding: 0 30px;
 }
 
 .error-heading,
@@ -19,6 +19,11 @@
 
 .error-heading {
   font-weight: $medium;
+  font-size: 26px;
+
+  @include media('>medium') {
+    font-size: 32px;
+  }
 }
 
 .error-paragraph {
@@ -36,11 +41,16 @@
   font-size: 1.4rem;
   font-weight: $bold;
   text-align: center;
-  width: 100%;
-  margin-top: 40px;
-  padding: 17px 0;
+  padding: 13px 0;
+  max-width: 350px;
+  margin: 40px auto 0;
 
   &:hover {
     color: white;
+  }
+
+  @include media('>medium') {
+    font-size: 1.6rem;
+    padding: 17px 0;
   }
 }

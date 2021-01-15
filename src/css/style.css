@@ -3237,7 +3237,7 @@ thead.ant-table-thead tr th {
 
 .error-card {
   max-width: 450px;
-  padding: 0 23px;
+  padding: 0 30px;
 }
 
 .error-heading,
@@ -3247,6 +3247,13 @@ thead.ant-table-thead tr th {
 
 .error-heading {
   font-weight: 500;
+  font-size: 26px;
+}
+
+@media (min-width: 769px) {
+  .error-heading {
+    font-size: 32px;
+  }
 }
 
 .error-paragraph {
@@ -3264,13 +3271,20 @@ thead.ant-table-thead tr th {
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
-  width: 100%;
-  margin-top: 40px;
-  padding: 17px 0;
+  padding: 13px 0;
+  max-width: 350px;
+  margin: 40px auto 0;
 }
 
 .error-cta:hover {
   color: white;
+}
+
+@media (min-width: 769px) {
+  .error-cta {
+    font-size: 1.6rem;
+    padding: 17px 0;
+  }
 }
 
 /*--------------------------------------------------------------
