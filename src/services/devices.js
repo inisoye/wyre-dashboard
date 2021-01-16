@@ -1,7 +1,7 @@
 import axios from 'axios';
 const baseUrl = 'http://localhost:3001/authenticatedData';
 const baseUrlNew =
-  'https://wyre22.pythonanywhere.com//api/v1/dashboard/2/01-12-2020%2000:00/20-12-2020%2000:00';
+  'https://wyre22.pythonanywhere.com/api/v1/dashboard/2/01-12-2020%2000:00/20-12-2020%2000:00';
 
 let token = undefined;
 
