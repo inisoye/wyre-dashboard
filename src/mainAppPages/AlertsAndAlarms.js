@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
@@ -7,6 +7,7 @@ import CompleteDataContext from '../Context';
 import BreadCrumb from '../components/BreadCrumb';
 
 import PrintButtons from '../smallComponents/PrintButtons';
+import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -22,7 +23,53 @@ function AlertsAndAlarms({ match }) {
     }
   }, [match, setCurrentUrl]);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  const { register, handleSubmit, control, errors } = useForm();
+
+  const isThereANumberInputError =
+    errors.highPowerFactor ||
+    errors.lowPowerFactor ||
+    errors.frequencyVariance ||
+    errors.highVoltage ||
+    errors.lowVoltage ||
+    errors.loadExcess;
+
+  const onSubmit = ({
+    highPowerFactor,
+    lowPowerFactor,
+    powerFactorChecked,
+    loadBalanceIssuesChecked,
+    frequencyVariance,
+    frequencyVarianceChecked,
+    highVoltage,
+    lowVoltage,
+    voltageChecked,
+    eliminatedCo2Checked,
+    setCo2Checked,
+    generatorOnChecked,
+    loadExcess,
+    LoadExcessChecked,
+    priorityPowerUnusedChecked,
+    generatorMaintenanceTimeChecked,
+  }) => {
+    console.log(
+      highPowerFactor,
+      lowPowerFactor,
+      powerFactorChecked,
+      loadBalanceIssuesChecked,
+      frequencyVariance,
+      frequencyVarianceChecked,
+      highVoltage,
+      lowVoltage,
+      voltageChecked,
+      eliminatedCo2Checked,
+      setCo2Checked,
+      generatorOnChecked,
+      loadExcess,
+      LoadExcessChecked,
+      priorityPowerUnusedChecked,
+      generatorMaintenanceTimeChecked
+    );
+  };
 
   return (
     <>
@@ -39,7 +86,7 @@ function AlertsAndAlarms({ match }) {
         <form
           action='#'
           className='alerts-and-alarms-form'
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <fieldset className='alerts-and-alarms-form-inputs-wrapper'>
             <legend className='alerts-and-alarms-form-section-heading'>
@@ -63,7 +110,9 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='highPowerFactor'
                       id='high-power-factor'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                       autoFocus
                     />{' '}
                     or goes below{' '}
@@ -79,15 +128,29 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='lowPowerFactor'
                       id='low-power-factor'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                     />
                   </p>
 
                   <div>
-                    <Checkbox
-                      className='power-factor-checkbox alerts-and-alarms-checkbox'
+                    <HiddenInputLabel
+                      htmlFor='power-factor-checkbox'
+                      labelText='Power Factor'
+                    />
+                    <Controller
                       name='powerFactorChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='power-factor-checkbox alerts-and-alarms-checkbox'
+                          id='power-factor-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -96,16 +159,25 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='load-balance-issues-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     Load balance issues detected
-                  </p>{' '}
-                  <div>
-                    <Checkbox
-                      className='load-balance-issues-checkbox alerts-and-alarms-checkbox'
-                      name='loadBalanceIssuesChecked'
-                      // onChange={handlePowerFactorCheck}
-                    />
-                  </div>
+                  </label>{' '}
+                  <Controller
+                    name='loadBalanceIssuesChecked'
+                    defaultValue={false}
+                    control={control}
+                    render={(props) => (
+                      <Checkbox
+                        onChange={(e) => props.onChange(e.target.checked)}
+                        checked={props.value}
+                        className='load-balance-issues-checkbox alerts-and-alarms-checkbox'
+                        id='load-balance-issues-checkbox'
+                      />
+                    )}
+                  />
                 </div>
               </li>
 
@@ -122,15 +194,29 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='frequencyVariance'
                       id='frequency-variance-factor'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                     />
                   </p>
 
                   <div>
-                    <Checkbox
-                      className='frequency-variance-checkbox alerts-and-alarms-checkbox'
+                    <HiddenInputLabel
+                      htmlFor='frequency-variance-checkbox'
+                      labelText='Frequency Variance'
+                    />
+                    <Controller
                       name='frequencyVarianceChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='frequency-variance-checkbox alerts-and-alarms-checkbox'
+                          id='frequency-variance-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -152,7 +238,9 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='highVoltage'
                       id='high-voltage'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                     />{' '}
                     <span className='alerts-and-alarms-unit'>volts</span> or
                     goes below{' '}
@@ -168,16 +256,31 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='lowVoltage'
                       id='low-voltage'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                     />{' '}
                     <span className='alerts-and-alarms-unit'>volts</span>
                   </p>
 
                   <div>
-                    <Checkbox
-                      className='voltage-checkbox alerts-and-alarms-checkbox'
+                    <HiddenInputLabel
+                      htmlFor='voltage-checkbox'
+                      labelText='Voltage'
+                    />
+
+                    <Controller
                       name='voltageChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='voltage-checkbox alerts-and-alarms-checkbox'
+                          id='voltage-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -194,14 +297,25 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='eliminated-co2-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     When eliminated CO<sub>2</sub> is reached
-                  </p>{' '}
+                  </label>{' '}
                   <div>
-                    <Checkbox
-                      className='eliminated-co2-checkbox alerts-and-alarms-checkbox'
+                    <Controller
                       name='eliminatedCo2Checked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='eliminated-co2-checkbox alerts-and-alarms-checkbox'
+                          id='eliminated-co2-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -210,14 +324,25 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='set-co2-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     When set CO<sub>2</sub> is reached
-                  </p>{' '}
+                  </label>{' '}
                   <div>
-                    <Checkbox
-                      className='set-co2-checkbox alerts-and-alarms-checkbox'
+                    <Controller
                       name='setCo2Checked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='set-co2-checkbox alerts-and-alarms-checkbox'
+                          id='set-co2-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -226,14 +351,25 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='generator-on-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     When any generator is turned on outside operating hours
-                  </p>{' '}
+                  </label>{' '}
                   <div>
-                    <Checkbox
-                      className='generator-on-checkbox alerts-and-alarms-checkbox'
+                    <Controller
                       name='generatorOnChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='generator-on-checkbox alerts-and-alarms-checkbox'
+                          id='generator-on-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -249,16 +385,31 @@ function AlertsAndAlarms({ match }) {
                       inputMode='decimal'
                       name='loadExcess'
                       id='load-excess'
-                      ref={register}
+                      ref={register({
+                        pattern: /^-?\d+\.?\d*$/,
+                      })}
                     />{' '}
                     <span className='alerts-and-alarms-unit'>kW</span>
                   </p>
 
                   <div>
-                    <Checkbox
-                      className='frequency-variance-checkbox alerts-and-alarms-checkbox'
-                      name='frequencyVarianceChecked'
-                      // onChange={handlePowerFactorCheck}
+                    <HiddenInputLabel
+                      htmlFor='load-excess-checkbox'
+                      labelText='Load Excess'
+                    />
+
+                    <Controller
+                      name='LoadExcessChecked'
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='load-excess-checkbox alerts-and-alarms-checkbox'
+                          id='load-excess-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -267,15 +418,26 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='priority-power-unused-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     When priority power is available and generator is still
                     being used
-                  </p>{' '}
+                  </label>{' '}
                   <div>
-                    <Checkbox
-                      className='priority-power-unused-checkbox alerts-and-alarms-checkbox'
+                    <Controller
                       name='priorityPowerUnusedChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='priority-power-unused-checkbox alerts-and-alarms-checkbox'
+                          id='priority-power-unused-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
@@ -284,20 +446,45 @@ function AlertsAndAlarms({ match }) {
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
                   {' '}
-                  <p className='alerts-and-alarms-question'>
+                  <label
+                    htmlFor='generator-maintenance-time-checkbox'
+                    className='alerts-and-alarms-question'
+                  >
                     When set generator maintenance time is drawing close
-                  </p>{' '}
+                  </label>{' '}
                   <div>
-                    <Checkbox
-                      className='generator-maintenance-time-checkbox alerts-and-alarms-checkbox'
+                    <Controller
                       name='generatorMaintenanceTimeChecked'
-                      // onChange={handlePowerFactorCheck}
+                      defaultValue={false}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => props.onChange(e.target.checked)}
+                          checked={props.value}
+                          className='generator-maintenance-time-checkbox alerts-and-alarms-checkbox'
+                          id='generator-maintenance-time-checkbox'
+                        />
+                      )}
                     />
                   </div>
                 </div>
               </li>
             </ol>
           </fieldset>
+
+          <div className='alert-and-alarms-button-container'>
+            <button
+              type='submit'
+              className='generic-submit-button alert-and-alarms-button'
+            >
+              Save Updates
+            </button>
+
+            <p className='input-error-message'>
+              {isThereANumberInputError &&
+                'Please ensure all input fields above are numbers'}
+            </p>
+          </div>
         </form>
       </div>
     </>

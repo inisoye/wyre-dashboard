@@ -2951,20 +2951,23 @@ thead.ant-table-thead tr th {
 }
 
 .alerts-and-alarms-form-section-heading,
-.alerts-and-alarms-list {
+.alerts-and-alarms-list,
+.alert-and-alarms-button-container {
   padding: 0 48px;
 }
 
 @media (min-width: 1100px) {
   .alerts-and-alarms-form-section-heading,
-  .alerts-and-alarms-list {
+  .alerts-and-alarms-list,
+  .alert-and-alarms-button-container {
     padding: 0 11.5%;
   }
 }
 
 @media (min-width: 1500px) {
   .alerts-and-alarms-form-section-heading,
-  .alerts-and-alarms-list {
+  .alerts-and-alarms-list,
+  .alert-and-alarms-button-container {
     padding: 0 20%;
   }
 }
@@ -3035,6 +3038,35 @@ thead.ant-table-thead tr th {
 .alerts-and-alarms-checkbox {
   -webkit-transform: scale(1.35);
           transform: scale(1.35);
+}
+
+.alert-and-alarms-button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: white;
+  width: 100%;
+  margin-top: 30px;
+  padding-bottom: 30px;
+}
+
+@media (min-width: 1086px) {
+  .alert-and-alarms-button-container {
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
+}
+
+.alert-and-alarms-button-container .input-error-message {
+  margin-top: 20px;
 }
 
 /*--------------------------------------------------------------

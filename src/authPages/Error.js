@@ -5,11 +5,11 @@ function Error() {
   return (
     <div className='error-page'>
       <div className='error-card'>
-        <h1 className='error-heading'>Page not found</h1>
+        <h1 className='error-heading'>Access Denied</h1>
 
         <p className='error-paragraph'>
-          We are unable to find the page you just requested. This may be because
-          you were logged out due to inactivity.
+          You are not authorised to view the page you just requested. This may
+          be because you were logged out due to inactivity.
         </p>
 
         <Link className='error-cta' to='/log-in'>
