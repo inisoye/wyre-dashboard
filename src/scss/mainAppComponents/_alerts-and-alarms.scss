@@ -92,17 +92,9 @@
 .alert-and-alarms-button-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-end;
   background-color: white;
   width: 100%;
   margin-top: 30px;
   padding-bottom: 30px;
-
-  @include media('>=1086px') {
-    align-items: flex-end;
-  }
-
-  .input-error-message {
-    margin-top: 20px;
-  }
 }

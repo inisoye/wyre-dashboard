@@ -25,14 +25,6 @@ function AlertsAndAlarms({ match }) {
 
   const { register, handleSubmit, control, errors } = useForm();
 
-  const isThereANumberInputError =
-    errors.highPowerFactor ||
-    errors.lowPowerFactor ||
-    errors.frequencyVariance ||
-    errors.highVoltage ||
-    errors.lowVoltage ||
-    errors.loadExcess;
-
   const onSubmit = ({
     highPowerFactor,
     lowPowerFactor,
@@ -96,43 +88,49 @@ function AlertsAndAlarms({ match }) {
             <ol className='alerts-and-alarms-list'>
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
-                  <p className='alerts-and-alarms-question'>
-                    Power factor exceeds{' '}
-                    <label
-                      className='h-screen-reader-text'
-                      htmlFor='high-power-factor'
-                    >
-                      a high power factor of
-                    </label>
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='highPowerFactor'
-                      id='high-power-factor'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                      autoFocus
-                    />{' '}
-                    or goes below{' '}
-                    <label
-                      className='h-screen-reader-text'
-                      htmlFor='high-power-factor'
-                    >
-                      a low power factor of
-                    </label>
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='lowPowerFactor'
-                      id='low-power-factor'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                    />
-                  </p>
+                  <div>
+                    <p className='alerts-and-alarms-question'>
+                      Power factor exceeds{' '}
+                      <label
+                        className='h-screen-reader-text'
+                        htmlFor='high-power-factor'
+                      >
+                        a high power factor of
+                      </label>
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='highPowerFactor'
+                        id='high-power-factor'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                        autoFocus
+                      />{' '}
+                      or goes below{' '}
+                      <label
+                        className='h-screen-reader-text'
+                        htmlFor='high-power-factor'
+                      >
+                        a low power factor of
+                      </label>
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='lowPowerFactor'
+                        id='low-power-factor'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />
+                    </p>
+                    <p className='input-error-message'>
+                      {(errors.highPowerFactor || errors.lowPowerFactor) &&
+                        'Power factor values must be numbers'}
+                    </p>
+                  </div>
 
                   <div>
                     <HiddenInputLabel
@@ -183,22 +181,28 @@ function AlertsAndAlarms({ match }) {
 
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
-                  <p className='alerts-and-alarms-question'>
-                    <label htmlFor='frequency-variance-factor'>
-                      {' '}
-                      Frequency variance between threshold ±
-                    </label>{' '}
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='frequencyVariance'
-                      id='frequency-variance-factor'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                    />
-                  </p>
+                  <div>
+                    <p className='alerts-and-alarms-question'>
+                      <label htmlFor='frequency-variance-factor'>
+                        {' '}
+                        Frequency variance between threshold ±
+                      </label>{' '}
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='frequencyVariance'
+                        id='frequency-variance-factor'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />
+                    </p>
+                    <p className='input-error-message'>
+                      {errors.frequencyVariance &&
+                        'Frequency variance must be a number'}
+                    </p>
+                  </div>
 
                   <div>
                     <HiddenInputLabel
@@ -224,44 +228,50 @@ function AlertsAndAlarms({ match }) {
 
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
-                  <p className='alerts-and-alarms-question'>
-                    Voltage exceeds{' '}
-                    <label
-                      className='h-screen-reader-text'
-                      htmlFor='high-voltage'
-                    >
-                      a high voltage of
-                    </label>
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='highVoltage'
-                      id='high-voltage'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                    />{' '}
-                    <span className='alerts-and-alarms-unit'>volts</span> or
-                    goes below{' '}
-                    <label
-                      className='h-screen-reader-text'
-                      htmlFor='low-voltage'
-                    >
-                      a low power factor of
-                    </label>
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='lowVoltage'
-                      id='low-voltage'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                    />{' '}
-                    <span className='alerts-and-alarms-unit'>volts</span>
-                  </p>
+                  <div>
+                    <p className='alerts-and-alarms-question'>
+                      Voltage exceeds{' '}
+                      <label
+                        className='h-screen-reader-text'
+                        htmlFor='high-voltage'
+                      >
+                        a high voltage of
+                      </label>
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='highVoltage'
+                        id='high-voltage'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />{' '}
+                      <span className='alerts-and-alarms-unit'>volts</span> or
+                      goes below{' '}
+                      <label
+                        className='h-screen-reader-text'
+                        htmlFor='low-voltage'
+                      >
+                        a low power factor of
+                      </label>
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='lowVoltage'
+                        id='low-voltage'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />{' '}
+                      <span className='alerts-and-alarms-unit'>volts</span>
+                    </p>
+                    <p className='input-error-message'>
+                      {(errors.highVoltage || errors.lowVoltage) &&
+                        'Voltage values must be numbers'}
+                    </p>
+                  </div>
 
                   <div>
                     <HiddenInputLabel
@@ -377,20 +387,26 @@ function AlertsAndAlarms({ match }) {
 
               <li className='alerts-and-alarms-list-item'>
                 <div className='alerts-and-alarms-question-container'>
-                  <p className='alerts-and-alarms-question'>
-                    When <label htmlFor='load-excess'>load</label> exceeds{' '}
-                    <input
-                      className='alerts-and-alarms-input'
-                      type='text'
-                      inputMode='decimal'
-                      name='loadExcess'
-                      id='load-excess'
-                      ref={register({
-                        pattern: /^-?\d+\.?\d*$/,
-                      })}
-                    />{' '}
-                    <span className='alerts-and-alarms-unit'>kW</span>
-                  </p>
+                  <div>
+                    <p className='alerts-and-alarms-question'>
+                      When <label htmlFor='load-excess'>load</label> exceeds{' '}
+                      <input
+                        className='alerts-and-alarms-input'
+                        type='text'
+                        inputMode='decimal'
+                        name='loadExcess'
+                        id='load-excess'
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />{' '}
+                      <span className='alerts-and-alarms-unit'>kW</span>
+                    </p>
+                    <p className='input-error-message'>
+                      {errors.loadExcess &&
+                        'Load excess value must be a number'}
+                    </p>
+                  </div>
 
                   <div>
                     <HiddenInputLabel
@@ -479,11 +495,6 @@ function AlertsAndAlarms({ match }) {
             >
               Save Updates
             </button>
-
-            <p className='input-error-message'>
-              {isThereANumberInputError &&
-                'Please ensure all input fields above are numbers'}
-            </p>
           </div>
         </form>
       </div>

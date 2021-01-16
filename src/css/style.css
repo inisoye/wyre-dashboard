@@ -3048,25 +3048,13 @@ thead.ant-table-thead tr th {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
   background-color: white;
   width: 100%;
   margin-top: 30px;
   padding-bottom: 30px;
-}
-
-@media (min-width: 1086px) {
-  .alert-and-alarms-button-container {
-    -webkit-box-align: end;
-        -ms-flex-align: end;
-            align-items: flex-end;
-  }
-}
-
-.alert-and-alarms-button-container .input-error-message {
-  margin-top: 20px;
 }
 
 /*--------------------------------------------------------------
