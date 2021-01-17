@@ -22,8 +22,6 @@ function BranchesUserForm({ match }) {
   );
   const [allUsers, setAllUsers] = useState([]);
 
-  console.log(allUsers);
-
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -65,8 +63,6 @@ function BranchesUserForm({ match }) {
       (eachUser) => eachUser.id === preloadedUserFormData.id
     );
 
-    console.log(userAlreadyExists);
-
     /* 
     If form is not prefilled add new data
     Otherwise, replace data
@@ -80,13 +76,9 @@ function BranchesUserForm({ match }) {
         .catch((error) => {
           console.log(error.response);
         });
-
-      console.log('uya');
     } else {
       const id = preloadedUserFormData.id;
       const updatedUser = { ...preloadedUserFormData, ...newUserData };
-
-      console.log(updatedUser);
 
       branchesHttpServices
         .update(updatedUser, 'users', id)
@@ -98,8 +90,6 @@ function BranchesUserForm({ match }) {
             )
           );
         });
-
-      console.log('uma');
     }
   };
 
