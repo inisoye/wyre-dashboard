@@ -20,6 +20,12 @@ const CompleteDataProvider = (props) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  /*
+   ** For main app-wide datetime-picker.
+   ** New requests fired when datetime range is changed.
+   */
+  const [userDateRange, setUserDateRange] = useState([]);
+
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
 
@@ -69,7 +75,7 @@ const CompleteDataProvider = (props) => {
     if (userData) {
       getData();
     }
-  }, [checkedItems, renderedDataObjects, userData]);
+  }, [checkedItems, renderedDataObjects, userData, userDateRange]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
@@ -98,6 +104,8 @@ const CompleteDataProvider = (props) => {
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+
+        setUserDateRange: setUserDateRange,
 
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,
