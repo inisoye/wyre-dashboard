@@ -10,7 +10,13 @@ function App() {
 
   return (
     <>
-      {isUserAdmin ? <AdminPages /> : true ? <MainAppPages /> : <AuthPages />}
+      {isUserAdmin ? (
+        <AdminPages />
+      ) : userData ? (
+        <MainAppPages />
+      ) : (
+        <AuthPages />
+      )}
     </>
   );
 }

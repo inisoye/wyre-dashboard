@@ -37,7 +37,6 @@
       "total_consumption": "400"
     }
   ],
-
   "devices": [
     {
       "id": 1,
@@ -88,7 +87,6 @@
       "consumption": "400"
     }
   ],
-
   "users": [
     {
       "id": 1,

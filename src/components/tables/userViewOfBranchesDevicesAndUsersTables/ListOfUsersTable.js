@@ -159,6 +159,7 @@ class ListOfUsersTable extends React.Component {
             className='table-row-button table-row-button--link'
             onClick={() => {
               const formattedRowData = {
+                id: record.id,
                 name: record.name,
                 phoneNumber: record.phone,
                 emailAddress: record.email,

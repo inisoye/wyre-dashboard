@@ -1,7 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
+
+import branchesHttpServices from '../services/userBranches';
 
 import BreadCrumb from '../components/BreadCrumb';
 
@@ -17,6 +20,9 @@ function BranchesUserForm({ match }) {
   const { preloadedUserFormData, setCurrentUrl } = useContext(
     CompleteDataContext
   );
+  const [allUsers, setAllUsers] = useState([]);
+
+  console.log(allUsers);
 
   useEffect(() => {
     if (match && match.url) {
@@ -24,10 +30,15 @@ function BranchesUserForm({ match }) {
     }
   }, [match, setCurrentUrl]);
 
+  // Get all users
+  useEffect(() => {
+    branchesHttpServices.getAll('users').then((returnedData) => {
+      setAllUsers(returnedData);
+    });
+  }, []);
+
   const { register, handleSubmit, setValue, control, errors } = useForm(
-    preloadedUserFormData
-      ? { defaultValues: preloadedUserFormData }
-      : 'preloadedUserFormData'
+    preloadedUserFormData ? { defaultValues: preloadedUserFormData } : ''
   );
 
   const dateAddedPicker = (
@@ -39,23 +50,57 @@ function BranchesUserForm({ match }) {
     />
   );
 
-  const onSubmit = ({
-    name,
-    phoneNumber,
-    emailAddress,
-    organisation,
-    branch,
-    dateAdded,
-  }) => {
+  const onSubmit = ({ name, phoneNumber, emailAddress, organisation }) => {
     // obtain form inputs here
-    console.log(
-      name,
-      phoneNumber,
-      emailAddress,
-      organisation,
-      branch,
-      dateAdded
+    console.log(name, phoneNumber, emailAddress, organisation);
+
+    const newUserData = {
+      name: name,
+      email: emailAddress,
+      phone: phoneNumber,
+      organisation: organisation,
+    };
+
+    const userAlreadyExists = allUsers.some(
+      (eachUser) => eachUser.id === preloadedUserFormData.id
     );
+
+    console.log(userAlreadyExists);
+
+    /* 
+    If form is not prefilled add new data
+    Otherwise, replace data
+    */
+    if (!userAlreadyExists) {
+      branchesHttpServices
+        .add({ ...newUserData, id: uuidv4() }, 'users')
+        .then((returnedUser) => {
+          setAllUsers(allUsers.concat(returnedUser));
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+
+      console.log('uya');
+    } else {
+      const id = preloadedUserFormData.id;
+      const updatedUser = { ...preloadedUserFormData, ...newUserData };
+
+      console.log(updatedUser);
+
+      branchesHttpServices
+        .update(updatedUser, 'users', id)
+        .then((returnedUser) => {
+          console.log(returnedUser);
+          setAllUsers(
+            allUsers.map((eachUser) =>
+              eachUser.id !== returnedUser.id ? eachUser : returnedUser
+            )
+          );
+        });
+
+      console.log('uma');
+    }
   };
 
   return (
@@ -122,9 +167,15 @@ function BranchesUserForm({ match }) {
                 inputMode='decimal'
                 name='phoneNumber'
                 id='phone-number'
-                ref={register}
+                ref={register({
+                  required: true,
+                  pattern: /^-?\d+\.?\d*$/,
+                })}
                 required
               />
+              <p className='input-error-message'>
+                {errors.phoneNumber && 'Please enter a number'}
+              </p>
             </div>
 
             <div className='user-form-input-container'>
