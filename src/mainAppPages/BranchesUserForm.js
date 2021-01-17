@@ -48,14 +48,11 @@ function BranchesUserForm({ match }) {
     />
   );
 
-  const onSubmit = ({ name, phoneNumber, emailAddress, organisation }) => {
-    // obtain form inputs here
-    console.log(name, phoneNumber, emailAddress, organisation);
-
+  const onSubmit = ({ name, phone, email, organisation }) => {
     const newUserData = {
       name: name,
-      email: emailAddress,
-      phone: phoneNumber,
+      email: email,
+      phone: phone,
       organisation: organisation,
     };
 
@@ -83,7 +80,6 @@ function BranchesUserForm({ match }) {
       branchesHttpServices
         .update(updatedUser, 'users', id)
         .then((returnedUser) => {
-          console.log(returnedUser);
           setAllUsers(
             allUsers.map((eachUser) =>
               eachUser.id !== returnedUser.id ? eachUser : returnedUser
@@ -137,7 +133,7 @@ function BranchesUserForm({ match }) {
               <input
                 className='generic-input'
                 type='email'
-                name='emailAddress'
+                name='email'
                 id='email-address'
                 ref={register}
                 required
@@ -155,7 +151,7 @@ function BranchesUserForm({ match }) {
                 className='generic-input'
                 type='text'
                 inputMode='decimal'
-                name='phoneNumber'
+                name='phone'
                 id='phone-number'
                 ref={register({
                   required: true,
@@ -164,7 +160,7 @@ function BranchesUserForm({ match }) {
                 required
               />
               <p className='input-error-message'>
-                {errors.phoneNumber && 'Please enter a number'}
+                {errors.phone && 'Please enter a number'}
               </p>
             </div>
 

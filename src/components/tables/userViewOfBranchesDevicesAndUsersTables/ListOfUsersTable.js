@@ -161,8 +161,8 @@ class ListOfUsersTable extends React.Component {
               const formattedRowData = {
                 id: record.id,
                 name: record.name,
-                phoneNumber: record.phone,
-                emailAddress: record.email,
+                phone: record.phone,
+                email: record.email,
                 organisation: record.organisation,
               };
 
