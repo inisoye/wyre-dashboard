@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
-import CompleteDataContext from '../Context';
 import { Link } from 'react-router-dom';
 import { Select } from 'antd';
+
+import CompleteDataContext from '../Context';
+
+import dataHttpServices from '../services/devices';
 
 import DateTimePicker from './DateTimePicker';
 
@@ -10,9 +13,12 @@ import { CaretDownFilled } from '@ant-design/icons';
 const { Option } = Select;
 
 function TopBar() {
-  const { isSidebarOpen, currentUrl, setPowerQualityUnit } = useContext(
-    CompleteDataContext
-  );
+  const {
+    isSidebarOpen,
+    currentUrl,
+    setPowerQualityUnit,
+    setParametersDataTimeInterval,
+  } = useContext(CompleteDataContext);
 
   const pagesWithDateTimePickers = [
     'dashboard',
@@ -48,7 +54,8 @@ function TopBar() {
     currentUrl.includes('branches') && !currentUrl.includes('user-form');
 
   const handleIntervalChange = (interval) => {
-    console.log(interval);
+    setParametersDataTimeInterval(interval);
+    dataHttpServices.updateUserDefinedParametersDataTimeInterval(interval);
   };
 
   const handleUnitChange = (unit) => {
@@ -71,26 +78,26 @@ function TopBar() {
         >
           <Select
             className='time-interval-selector h-8-br'
-            defaultValue='15Mins'
+            defaultValue='hourly'
             onChange={handleIntervalChange}
             suffixIcon={<CaretDownFilled />}
           >
-            <Option className='time-interval-option' value='15Mins'>
+            <Option className='time-interval-option' value='15mins'>
               15Mins
             </Option>
-            <Option className='time-interval-option' value='30Mins'>
+            <Option className='time-interval-option' value='30mins'>
               30Mins
             </Option>
-            <Option className='time-interval-option' value='1Hour'>
-              1Hour
+            <Option className='time-interval-option' value='hourly'>
+              Hourly
             </Option>
-            <Option className='time-interval-option' value='Daily'>
+            <Option className='time-interval-option' value='daily'>
               Daily
             </Option>
-            <Option className='time-interval-option' value='Weekly'>
+            <Option className='time-interval-option' value='weekly'>
               Weekly
             </Option>
-            <Option className='time-interval-option' value='Monthly'>
+            <Option className='time-interval-option' value='monthly'>
               Monthly
             </Option>
           </Select>

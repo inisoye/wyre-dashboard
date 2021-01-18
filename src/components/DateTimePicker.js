@@ -12,14 +12,13 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
   const { setUserDateRange } = useContext(CompleteDataContext);
 
   function onChange(value, dateString) {
-    // console.log('Selected Time: ', value);
-    // console.log('Formatted Selected Time: ', dateString);
     setUserDateRange(value);
     dataHttpServices.updateUserDefinedEndpointDateRange(value);
   }
 
   function onOk(value) {
-    console.log('onOk: ', value);
+    setUserDateRange(value);
+    dataHttpServices.updateUserDefinedEndpointDateRange(value);
   }
 
   return (
