@@ -158,7 +158,12 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            <HeaderLink onClick={toggleNav} url='/report' linkText='Report' />
+            <HeaderLink
+              onClick={toggleNav}
+              url='/dashboard'
+              // url='/report'
+              linkText='Report'
+            />
 
             <HeaderLink
               onClick={toggleNav}
@@ -170,7 +175,8 @@ function Header() {
 
             <HeaderLink
               onClick={toggleNav}
-              url='/messages'
+              url='/dashboard'
+              // url='/messages'
               linkText='Messages'
             />
 
@@ -227,7 +233,8 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='/branches'
+                    to='/dashboard'
+                    // to='/branches'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
@@ -237,7 +244,8 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='/password'
+                    to='/dashboard'
+                    // to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
@@ -316,13 +324,21 @@ function Header() {
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='/branches'>
+              <Link
+                className='header-sublink avatar-sublink'
+                to='/dashboard'
+                // to='/branches'
+              >
                 <OverviewIcon /> <span>Overview</span>
               </Link>
             </li>
 
             <li className='header-sublinks-list__item avatar-sublink-item'>
-              <Link className='header-sublink avatar-sublink' to='/password'>
+              <Link
+                className='header-sublink avatar-sublink'
+                to='/dashboard'
+                // to='/password'
+              >
                 <PadlockIcon /> <span>Password</span>
               </Link>
             </li>
