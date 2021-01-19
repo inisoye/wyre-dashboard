@@ -1,7 +1,35 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/authenticatedData';
-const baseUrlNew =
-  'https://wyre22.pythonanywhere.com/api/v1/dashboard/2/01-12-2020%2000:00/20-12-2020%2000:00';
+import dayjs from 'dayjs';
+
+let parametersDataTimeInterval = 'hourly';
+
+const updateUserDefinedParametersDataTimeInterval = (
+  userDefinedParametersDataTimeInterval
+) => {
+  parametersDataTimeInterval = userDefinedParametersDataTimeInterval;
+};
+
+const convertDateRangeToEndpointFormat = (dateObjects) =>
+  dateObjects
+    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
+    .join('/');
+
+const defaultEndpointDateRange = convertDateRangeToEndpointFormat([
+  dayjs().subtract(1, 'months'),
+  dayjs(),
+]);
+
+let baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${defaultEndpointDateRange}`;
+
+let userDefinedEndpointDateRange = undefined;
+
+const updateUserDefinedEndpointDateRange = (userInputtedDateRange) => {
+  userDefinedEndpointDateRange = convertDateRangeToEndpointFormat(
+    userInputtedDateRange
+  );
+
+  baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
+};
 
 let token = undefined;
 
@@ -9,18 +37,23 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`;
 };
 
-const getAuthenticated = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
-};
-
 const getAllData = async () => {
+  // Add interval to url
+  // baseUrl = `${baseUrl}/${parametersDataTimeInterval}`;
+
+  console.log(`${baseUrl}/${parametersDataTimeInterval}`);
+
   const config = {
     headers: { Authorization: token },
   };
 
-  const response = await axios.get(baseUrlNew, config);
+  const response = await axios.get(baseUrl, config);
   return response.data.authenticatedData;
 };
 
-export default { getAuthenticated, getAllData, setToken };
+export default {
+  getAllData,
+  setToken,
+  updateUserDefinedEndpointDateRange,
+  updateUserDefinedParametersDataTimeInterval,
+};

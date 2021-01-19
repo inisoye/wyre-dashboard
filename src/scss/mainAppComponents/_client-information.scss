@@ -12,7 +12,17 @@
   }
 }
 
+.all-client-info-forms {
+  @include media('>=1086px') {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .client-info-form {
+  padding: 0;
+  margin-top: 90px;
+
   @include media('>=1086px') {
     display: flex;
     flex-direction: column;
@@ -20,9 +30,6 @@
 }
 
 .client-info-form-inputs-wrapper {
-  padding: 0;
-  margin-top: 90px;
-
   @include media('>=1086px') {
     display: flex;
     align-items: flex-start;

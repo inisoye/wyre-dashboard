@@ -26,7 +26,29 @@ function ClientProfile({ match }) {
     }
   }, [match, setCurrentUrl]);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  const {
+    register: registerClientDetails,
+    handleSubmit: handleSubmitClientDetails,
+    setValue: setValueClientDetails,
+    control: controlClientDetails,
+    errors: errorsClientDetails,
+  } = useForm();
+
+  const {
+    register: registerSiteDetails,
+    handleSubmit: handleSubmitSiteDetails,
+    setValue: setValueSiteDetails,
+    control: controlSiteDetails,
+    errors: errorsSiteDetails,
+  } = useForm();
+
+  const {
+    register: registerDevice,
+    handleSubmit: handleSubmitDevice,
+    setValue: setValueDevice,
+    control: controlDevice,
+    errors: errorsDevice,
+  } = useForm();
 
   const customerTypeSelector = (
     <Select
@@ -34,7 +56,9 @@ function ClientProfile({ match }) {
       id='customer-type'
       defaultValue='multi-site'
       suffixIcon={<CaretDownFilled />}
-      onChange={(e) => setValue('customerType', e.target.value, true)}
+      onChange={(e) =>
+        setValueClientDetails('customerType', e.target.value, true)
+      }
     >
       <Option className='customer-type-option' value='multi-site'>
         Multi site
@@ -49,7 +73,10 @@ function ClientProfile({ match }) {
     <RangePicker
       className='client-info-time-picker'
       id='site-operating-hours'
-      onChange={(e) => setValue('siteOperatingHours', e.target.value, true)}
+      format={'HH:mm'}
+      onChange={(e) =>
+        setValueSiteDetails('siteOperatingHours', e.target.value, true)
+      }
     />
   );
 
@@ -59,7 +86,7 @@ function ClientProfile({ match }) {
       id='source-type'
       defaultValue='utility'
       suffixIcon={<CaretDownFilled />}
-      onChange={(e) => setValue('sourceType', e.target.value, true)}
+      onChange={(e) => setValueDevice('sourceType', e.target.value, true)}
     >
       <Option className='source-type-option' value='utility'>
         Utility
@@ -78,9 +105,10 @@ function ClientProfile({ match }) {
 
   const nextMaintDatePicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input client-info-input'
       id='next-maint-date'
-      onChange={(e) => setValue('nextMaintDate', e.target.value, true)}
+      onChange={(e) => setValueDevice('nextMaintDate', e.target.value, true)}
     />
   );
 
@@ -90,7 +118,7 @@ function ClientProfile({ match }) {
       id='device-type'
       defaultValue='1260331 - EM 137'
       suffixIcon={<CaretDownFilled />}
-      onChange={(e) => setValue('deviceType', e.target.value, true)}
+      onChange={(e) => setValueDevice('deviceType', e.target.value, true)}
     >
       <Option className='device-type-option' value='1260331 - EM 137'>
         1260331 - EM 137
@@ -107,35 +135,41 @@ function ClientProfile({ match }) {
     </Select>
   );
 
-  const onSubmit = ({
+  const onClientDetailsSubmit = ({
     clientName,
     phoneNumber,
     emailAddress,
     clientAddress,
     customerType,
     clientPhoto,
-    siteName,
-    siteAddress,
-    contactPerson,
-    siteOperatingHours,
-    sourceName,
-    sourceType,
-    maintSchedule,
-    nextMaintDate,
-    deviceType,
   }) => {
-    // obtain form inputs here
     console.log(
       clientName,
       phoneNumber,
       emailAddress,
       clientAddress,
       customerType,
-      clientPhoto,
-      siteName,
-      siteAddress,
-      contactPerson,
-      siteOperatingHours,
+      clientPhoto
+    );
+  };
+
+  const onSiteDetailsSubmit = ({
+    siteName,
+    siteAddress,
+    contactPerson,
+    siteOperatingHours,
+  }) => {
+    console.log(siteName, siteAddress, contactPerson, siteOperatingHours);
+  };
+
+  const onDeviceSubmit = ({
+    sourceName,
+    sourceType,
+    maintSchedule,
+    nextMaintDate,
+    deviceType,
+  }) => {
+    console.log(
       sourceName,
       sourceType,
       maintSchedule,
@@ -154,319 +188,349 @@ function ClientProfile({ match }) {
       <div className='client-info-forms-content-wrapper'>
         <h1 className='center-main-heading'>Client Information</h1>
 
-        <form
-          action='#'
-          className='client-info-form'
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <fieldset className='client-info-form-inputs-wrapper'>
+        <div className='all-client-info-forms'>
+          <form
+            action='#'
+            className='client-info-form'
+            onSubmit={handleSubmitClientDetails(onClientDetailsSubmit)}
+          >
             <legend className='form-section-heading client-info-form-section-heading'>
               Client Details:
             </legend>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='client-name'
-              >
-                Client Name
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='clientName'
-                id='client-name'
-                ref={register}
-                required
-                autoFocus
-              />
+            <div className='client-info-form-inputs-wrapper'>
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='client-name'
+                >
+                  Client Name
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='clientName'
+                  id='client-name'
+                  ref={registerClientDetails}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='phone-number'
+                >
+                  Phone Number
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  inputMode='decimal'
+                  name='phoneNumber'
+                  id='phone-number'
+                  ref={registerClientDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container h-no-mr'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='email-address'
+                >
+                  Email Address
+                </label>
+                <input
+                  className='generic-input'
+                  type='email'
+                  name='emailAddress'
+                  id='email-address'
+                  ref={registerClientDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='client-address'
+                >
+                  Address
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='clientAddress'
+                  id='client-address'
+                  ref={registerClientDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='customer-type'
+                >
+                  Customer Type
+                </label>
+
+                <Controller
+                  as={customerTypeSelector}
+                  name='customerType'
+                  control={controlClientDetails}
+                  defaultValue=''
+                  rules={{
+                    required: true,
+                  }}
+                  help={
+                    errorsClientDetails.customerType && 'Please select a value'
+                  }
+                />
+                <p className='input-error-message'>
+                  {errorsClientDetails.customerType && 'Please select a value'}
+                </p>
+              </div>
+
+              <div className='client-info-input-container h-no-mr'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='client-photo'
+                >
+                  Upload Photo
+                </label>
+                <input
+                  className='generic-input client-info-photo-picker'
+                  type='file'
+                  name='clientPhoto'
+                  id='client-photo'
+                  ref={registerClientDetails}
+                  required
+                />
+              </div>
             </div>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='phone-number'
-              >
-                Phone Number
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                inputMode='decimal'
-                name='phoneNumber'
-                id='phone-number'
-                ref={register}
-                required
-              />
-            </div>
+            <button className='generic-submit-button client-info-form-submit-button'>
+              Save
+            </button>
+          </form>
 
-            <div className='client-info-input-container h-no-mr'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='email-address'
-              >
-                Email Address
-              </label>
-              <input
-                className='generic-input'
-                type='email'
-                name='emailAddress'
-                id='email-address'
-                ref={register}
-                required
-              />
-            </div>
-
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='client-address'
-              >
-                Address
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='clientAddress'
-                id='client-address'
-                ref={register}
-                required
-              />
-            </div>
-
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='customer-type'
-              >
-                Customer Type
-              </label>
-
-              <Controller
-                as={customerTypeSelector}
-                name='customerType'
-                control={control}
-                defaultValue=''
-                rules={{
-                  required: true,
-                }}
-                help={errors.customerType && 'Please select a value'}
-              />
-              <p className='input-error-message'>
-                {errors.customerType && 'Please select a value'}
-              </p>
-            </div>
-
-            <div className='client-info-input-container h-no-mr'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='client-photo'
-              >
-                Upload Photo
-              </label>
-              <input
-                className='generic-input client-info-photo-picker'
-                type='file'
-                name='clientPhoto'
-                id='client-photo'
-                ref={register}
-                required
-              />
-            </div>
-          </fieldset>
-
-          <fieldset className='client-info-form-inputs-wrapper'>
+          <form
+            action='#'
+            className='client-info-form'
+            onSubmit={handleSubmitSiteDetails(onSiteDetailsSubmit)}
+          >
             <legend className='form-section-heading client-info-form-section-heading'>
               Site Details:
             </legend>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='site-name'
-              >
-                Site Name
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='siteName'
-                id='site-name'
-                ref={register}
-                required
-              />
+            <div className='client-info-form-inputs-wrapper'>
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='site-name'
+                >
+                  Site Name
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='siteName'
+                  id='site-name'
+                  ref={registerSiteDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='site-address'
+                >
+                  Site Address
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='siteAddress'
+                  id='site-address'
+                  ref={registerSiteDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container h-no-mr'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='contact-person'
+                >
+                  Contact Person
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='contactPerson'
+                  id='contact-person'
+                  ref={registerSiteDetails}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container h-no-growth'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='site-operating-hours'
+                >
+                  Operating Hours
+                </label>
+                <Controller
+                  as={operatingHoursTimePicker}
+                  name='siteOperatingHours'
+                  control={controlSiteDetails}
+                  defaultValue=''
+                  rules={{
+                    required: true,
+                  }}
+                  help={
+                    errorsSiteDetails.siteOperatingHours &&
+                    'Please enter a time range'
+                  }
+                />
+                <p className='input-error-message'>
+                  {errorsSiteDetails.siteOperatingHours &&
+                    'Please enter a time range'}
+                </p>
+              </div>
             </div>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='site-address'
-              >
-                Site Address
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='siteAddress'
-                id='site-address'
-                ref={register}
-                required
-              />
-            </div>
+            <button className='generic-submit-button client-info-form-submit-button'>
+              Save
+            </button>
+          </form>
 
-            <div className='client-info-input-container h-no-mr'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='contact-person'
-              >
-                Contact Person
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='contactPerson'
-                id='contact-person'
-                ref={register}
-                required
-              />
-            </div>
-
-            <div className='client-info-input-container h-no-growth'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='site-operating-hours'
-              >
-                Operating Hours
-              </label>
-              <Controller
-                as={operatingHoursTimePicker}
-                name='siteOperatingHours'
-                control={control}
-                defaultValue=''
-                rules={{
-                  required: true,
-                }}
-                help={errors.siteOperatingHours && 'Please enter a time range'}
-              />
-              <p className='input-error-message'>
-                {errors.siteOperatingHours && 'Please enter a time range'}
-              </p>
-            </div>
-          </fieldset>
-
-          <fieldset className='client-info-form-inputs-wrapper'>
+          <form
+            action='#'
+            className='client-info-form'
+            onSubmit={handleSubmitDevice(onDeviceSubmit)}
+          >
             <legend className='form-section-heading client-info-form-section-heading'>
               Device:
             </legend>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='source-name'
-              >
-                Source Name
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='sourceName'
-                id='source-name'
-                ref={register}
-                required
-              />
+            <div className='client-info-form-inputs-wrapper'>
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='source-name'
+                >
+                  Source Name
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='sourceName'
+                  id='source-name'
+                  ref={registerDevice}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='source-type'
+                >
+                  Source Type
+                </label>
+                <Controller
+                  as={sourceTypeSelector}
+                  name='sourceType'
+                  control={controlDevice}
+                  defaultValue=''
+                  rules={{
+                    required: true,
+                  }}
+                  help={errorsDevice.sourceType && 'Please select a value'}
+                />
+                <p className='input-error-message'>
+                  {errorsDevice.sourceType && 'Please select a value'}
+                </p>
+              </div>
+
+              <div className='client-info-input-container h-no-mr'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='maint-schedule'
+                >
+                  Maint. Schedule
+                </label>
+                <input
+                  className='generic-input'
+                  type='text'
+                  name='maintSchedule'
+                  id='maint-schedule'
+                  ref={registerDevice}
+                  required
+                />
+              </div>
+
+              <div className='client-info-input-container h-no-growth'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='next-maint-date'
+                >
+                  Next Maint. Date
+                </label>
+                <Controller
+                  as={nextMaintDatePicker}
+                  name='nextMaintDate'
+                  control={controlDevice}
+                  defaultValue=''
+                  rules={{
+                    required: true,
+                  }}
+                  validateStatus={
+                    errorsDevice.nextMaintDate && 'Please enter a date'
+                      ? 'error'
+                      : ''
+                  }
+                  help={errorsDevice.nextMaintDate && 'Please enter a date'}
+                />
+                <p className='input-error-message'>
+                  {errorsDevice.nextMaintDate && 'Please enter a date'}
+                </p>
+              </div>
+
+              <div className='client-info-input-container h-no-growth'>
+                <label
+                  className='generic-input-label client-info-input-label'
+                  htmlFor='device-type'
+                >
+                  Device
+                </label>
+                <Controller
+                  as={deviceTypeSelector}
+                  name='deviceType'
+                  control={controlDevice}
+                  defaultValue=''
+                  rules={{
+                    required: true,
+                  }}
+                  help={errorsDevice.deviceType && 'Please select a value'}
+                />
+                <p className='input-error-message'>
+                  {errorsDevice.deviceType && 'Please select a value'}
+                </p>
+              </div>
             </div>
 
-            <div className='client-info-input-container'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='source-type'
-              >
-                Source Type
-              </label>
-              <Controller
-                as={sourceTypeSelector}
-                name='sourceType'
-                control={control}
-                defaultValue=''
-                rules={{
-                  required: true,
-                }}
-                help={errors.sourceType && 'Please select a value'}
-              />
-              <p className='input-error-message'>
-                {errors.sourceType && 'Please select a value'}
-              </p>
-            </div>
-
-            <div className='client-info-input-container h-no-mr'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='maint-schedule'
-              >
-                Maint. Schedule
-              </label>
-              <input
-                className='generic-input'
-                type='text'
-                name='maintSchedule'
-                id='maint-schedule'
-                ref={register}
-                required
-              />
-            </div>
-
-            <div className='client-info-input-container h-no-growth'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='next-maint-date'
-              >
-                Next Maint. Date
-              </label>
-              <Controller
-                as={nextMaintDatePicker}
-                name='nextMaintDate'
-                control={control}
-                defaultValue=''
-                rules={{
-                  required: true,
-                }}
-                validateStatus={
-                  errors.nextMaintDate && 'Please enter a date' ? 'error' : ''
-                }
-                help={errors.nextMaintDate && 'Please enter a date'}
-              />
-              <p className='input-error-message'>
-                {errors.nextMaintDate && 'Please enter a date'}
-              </p>
-            </div>
-
-            <div className='client-info-input-container h-no-growth'>
-              <label
-                className='generic-input-label client-info-input-label'
-                htmlFor='device-type'
-              >
-                Device
-              </label>
-              <Controller
-                as={deviceTypeSelector}
-                name='deviceType'
-                control={control}
-                defaultValue=''
-                rules={{
-                  required: true,
-                }}
-                help={errors.deviceType && 'Please select a value'}
-              />
-              <p className='input-error-message'>
-                {errors.deviceType && 'Please select a value'}
-              </p>
-            </div>
-          </fieldset>
-
-          <button className='generic-submit-button client-info-form-submit-button'>
-            Save
-          </button>
-        </form>
+            <button className='generic-submit-button client-info-form-submit-button'>
+              Save
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

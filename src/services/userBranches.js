@@ -6,18 +6,18 @@ const getAll = (dataType) => {
   return request.then((response) => response.data);
 };
 
-const add = (newObject) => {
-  const request = axios.post(baseUrl, newObject);
+const add = (newObject, dataType) => {
+  const request = axios.post(`${baseUrl}/${dataType}`, newObject);
   return request.then((response) => response.data);
 };
 
-const del = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`);
+const del = (dataType, id) => {
+  const request = axios.delete(`${baseUrl}/${dataType}/${id}`);
   return request.then((response) => response);
 };
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
+const update = (newObject, dataType, id) => {
+  const request = axios.put(`${baseUrl}/${dataType}/${id}`, newObject);
   return request.then((response) => response.data);
 };
 

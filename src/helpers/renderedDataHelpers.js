@@ -432,13 +432,6 @@ const getSelectionBillingTotals = (data) => {
     allSelectionsMetricsBlendedCostPerKwh.reduce((acc, curr) => acc + curr, 0) /
     allSelectionsMetricsBlendedCostPerKwh.length;
 
-  console.log(
-    extractSingleSelectionValueType(
-      allSelectionsMetricsValues,
-      'diesel_per_kwh'
-    ).filter((val) => val !== 0)
-  );
-
   return {
     present_total: {
       usage_kwh: selectionPresentTotalKwh,

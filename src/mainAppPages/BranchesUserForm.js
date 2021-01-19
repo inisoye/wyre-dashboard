@@ -1,7 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
+
+import branchesHttpServices from '../services/userBranches';
 
 import BreadCrumb from '../components/BreadCrumb';
 
@@ -14,7 +17,10 @@ const breadCrumbRoutes = [
 ];
 
 function BranchesUserForm({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { preloadedUserFormData, setCurrentUrl } = useContext(
+    CompleteDataContext
+  );
+  const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
     if (match && match.url) {
@@ -22,33 +28,65 @@ function BranchesUserForm({ match }) {
     }
   }, [match, setCurrentUrl]);
 
-  const { register, handleSubmit, setValue, control, errors } = useForm();
+  // Get all users
+  useEffect(() => {
+    branchesHttpServices.getAll('users').then((returnedData) => {
+      setAllUsers(returnedData);
+    });
+  }, []);
+
+  const { register, handleSubmit, setValue, control, errors } = useForm(
+    preloadedUserFormData ? { defaultValues: preloadedUserFormData } : ''
+  );
 
   const dateAddedPicker = (
     <DatePicker
+      format='DD-MM-YYYY'
       className='generic-input user-form-input'
       id='date-added'
       onChange={(e) => setValue('nextMaintDate', e.target.value, true)}
     />
   );
 
-  const onSubmit = ({
-    name,
-    phoneNumber,
-    emailAddress,
-    organisation,
-    branch,
-    dateAdded,
-  }) => {
-    // obtain form inputs here
-    console.log(
-      name,
-      phoneNumber,
-      emailAddress,
-      organisation,
-      branch,
-      dateAdded
+  const onSubmit = ({ name, phone, email, organisation }) => {
+    const newUserData = {
+      name: name,
+      email: email,
+      phone: phone,
+      organisation: organisation,
+    };
+
+    const userAlreadyExists = allUsers.some(
+      (eachUser) => eachUser.id === preloadedUserFormData.id
     );
+
+    /* 
+    If form is not prefilled add new data
+    Otherwise, replace data
+    */
+    if (!userAlreadyExists) {
+      branchesHttpServices
+        .add({ ...newUserData, id: uuidv4() }, 'users')
+        .then((returnedUser) => {
+          setAllUsers(allUsers.concat(returnedUser));
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    } else {
+      const id = preloadedUserFormData.id;
+      const updatedUser = { ...preloadedUserFormData, ...newUserData };
+
+      branchesHttpServices
+        .update(updatedUser, 'users', id)
+        .then((returnedUser) => {
+          setAllUsers(
+            allUsers.map((eachUser) =>
+              eachUser.id !== returnedUser.id ? eachUser : returnedUser
+            )
+          );
+        });
+    }
   };
 
   return (
@@ -95,7 +133,7 @@ function BranchesUserForm({ match }) {
               <input
                 className='generic-input'
                 type='email'
-                name='emailAddress'
+                name='email'
                 id='email-address'
                 ref={register}
                 required
@@ -113,11 +151,17 @@ function BranchesUserForm({ match }) {
                 className='generic-input'
                 type='text'
                 inputMode='decimal'
-                name='phoneNumber'
+                name='phone'
                 id='phone-number'
-                ref={register}
+                ref={register({
+                  required: true,
+                  pattern: /^-?\d+\.?\d*$/,
+                })}
                 required
               />
+              <p className='input-error-message'>
+                {errors.phone && 'Please enter a number'}
+              </p>
             </div>
 
             <div className='user-form-input-container'>
@@ -134,11 +178,10 @@ function BranchesUserForm({ match }) {
                 id='organisation'
                 ref={register}
                 required
-                autoFocus
               />
             </div>
 
-            <div className='user-form-input-container'>
+            <div className='user-form-input-container h-not-visible h-hidden-1086-down'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='branch'
@@ -151,12 +194,10 @@ function BranchesUserForm({ match }) {
                 name='branch'
                 id='branch'
                 ref={register}
-                required
-                autoFocus
               />
             </div>
 
-            <div className='user-form-input-container h-no-mr'>
+            <div className='user-form-input-container h-no-mr h-not-visible h-hidden-1086-down'>
               <label
                 className='generic-input-label user-form-input-label'
                 htmlFor='date-added'
@@ -168,9 +209,6 @@ function BranchesUserForm({ match }) {
                 name='dateAdded'
                 control={control}
                 defaultValue=''
-                rules={{
-                  required: true,
-                }}
                 validateStatus={
                   errors.dateAdded && 'Please enter a date' ? 'error' : ''
                 }

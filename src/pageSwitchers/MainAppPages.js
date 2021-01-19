@@ -41,7 +41,10 @@ function MainAppPages() {
           <ScrollToTop>
             <div className='page-content'>
               <Switch>
-                <Route exact path='/' component={Dashboard} />
+                <Route exact path='/'>
+                  <Redirect to='/dashboard' />
+                </Route>
+                <Route path='/dashboard' component={Dashboard} />
                 <Route exact path='/log-in'>
                   <Redirect to='/' />
                 </Route>

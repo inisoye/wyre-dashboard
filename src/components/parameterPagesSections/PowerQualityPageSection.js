@@ -36,9 +36,14 @@ function PowerQualityPageSection({ pqData }) {
   const tableDates = pqData && formatParametersDates(pqData.dates);
   const tableTimes = pqData && formatParametersTimes(pqData.dates);
 
-  const { frequency } = pqData ? pqData : { frequency: ['Empty'] };
+  const { frequency } = pqData || { frequency: ['Empty'] };
   if (frequency) {
     delete frequency.units;
+  }
+
+  const { power_factor } = pqData || { power_factor: ['Empty'] };
+  if (power_factor) {
+    delete power_factor.units;
   }
 
   const tableHeadings = Object.keys({
@@ -46,6 +51,7 @@ function PowerQualityPageSection({ pqData }) {
     time: tableTimes,
     ...tableData,
     frequency: frequency && frequency.average,
+    power_factor: power_factor && power_factor.l1_l2_l3,
   });
 
   const tableValues = Object.values({
@@ -53,6 +59,7 @@ function PowerQualityPageSection({ pqData }) {
     time: tableTimes,
     ...tableData,
     frequency: frequency && frequency.average,
+    power_factor: power_factor && power_factor.l1_l2_l3,
   });
 
   const formattedTableData = formatParameterTableData(
@@ -96,10 +103,12 @@ function PowerQualityPageSection({ pqData }) {
           </button>
         </div>
 
-        <PowerQualityTable
-          powerQualityUnit={plottedData && plottedData.units}
-          powerQualityData={formattedTableData}
-        />
+        <div className='h-overflow-auto'>
+          <PowerQualityTable
+            powerQualityUnit={plottedData && plottedData.units}
+            powerQualityData={formattedTableData}
+          />
+        </div>
       </article>
     </section>
   );

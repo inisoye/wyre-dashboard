@@ -151,10 +151,15 @@
   display: flex;
   font-weight: $medium;
   padding: 6px 16px;
+  line-height: 1.15;
 
   &.h-greyed-out {
     border: 1px solid $grey4;
     color: $grey4;
+  }
+
+  &.table-row-button--link {
+    display: inline-block;
   }
 
   svg {

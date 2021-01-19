@@ -57,7 +57,9 @@ function LastReadingPageSections({ lrData }) {
 
         <div className='last-reading-table-total-and-history first'>
           <h3 className='last-reading-table-total'>Phase Basic Measurements</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>
@@ -68,7 +70,9 @@ function LastReadingPageSections({ lrData }) {
       <article className='last-reading-table-container'>
         <div className='last-reading-table-total-and-history'>
           <h3 className='last-reading-table-total'>Total</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>
@@ -79,7 +83,9 @@ function LastReadingPageSections({ lrData }) {
       <article className='last-reading-table-container'>
         <div className='last-reading-table-total-and-history'>
           <h3 className='last-reading-table-total'>Harmonic Distortion</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>
@@ -90,7 +96,9 @@ function LastReadingPageSections({ lrData }) {
       <article className='last-reading-table-container'>
         <div className='last-reading-table-total-and-history'>
           <h3 className='last-reading-table-total'>Energy</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>
@@ -101,7 +109,9 @@ function LastReadingPageSections({ lrData }) {
       <article className='last-reading-table-container'>
         <div className='last-reading-table-total-and-history'>
           <h3 className='last-reading-table-total'>Demands</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>
@@ -112,7 +122,9 @@ function LastReadingPageSections({ lrData }) {
       <article className='last-reading-table-container'>
         <div className='last-reading-table-total-and-history'>
           <h3 className='last-reading-table-total'>Total Demand</h3>
-          <button className='last-reading-table-history-button'>History</button>
+          <button type='button' className='last-reading-table-history-button'>
+            History
+          </button>
         </div>
 
         <div className='last-reading-table-wrapper'>

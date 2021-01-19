@@ -4,7 +4,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import CompleteDataContext from '../../Context';
 
 const DashboardDoughnutChart = ({ data }) => {
-  const { isMediumScreen } = useContext(CompleteDataContext);
+  const { isMediumScreen, useMediaQuery } = useContext(CompleteDataContext);
+
+  const isLessThan481 = useMediaQuery({ query: '(max-width: 481px)' });
 
   const { devices, hours } = data
     ? data
@@ -62,7 +64,7 @@ const DashboardDoughnutChart = ({ data }) => {
         fontColor: 'black',
         padding: 10,
       },
-      position: 'right',
+      position: isLessThan481 ? 'top' : 'right',
     },
     maintainAspectRatio: false,
     plugins: {

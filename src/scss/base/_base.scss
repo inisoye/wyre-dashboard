@@ -26,8 +26,9 @@ a {
 
   /* Force tab focus state outlines. Seems Ant Design disables them. */
   &:focus {
-    outline: 1px dotted #212121;
+    border-radius: 4px;
     outline: 5px auto -webkit-focus-ring-color;
+    outline: 2px auto $light-purple-2;
   }
 }
 
@@ -95,7 +96,12 @@ button {
 
   &:focus,
   &:focus-visible {
-    outline: 5px auto $purple;
+    border-color: $purple;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline: 2px solid transparent;
+    // Emulate Antd Stlyes
+    box-shadow: 0 0 0 2px $light-purple-2;
+    transition: border 0.3s, box-shadow 0.3s;
   }
 }
 
@@ -111,13 +117,16 @@ textarea {
   appearance: none;
 }
 
-input {
+input,
+textarea {
   &:focus {
     border-color: $purple;
-    box-shadow: 0 0 10px $light-purple;
     outline: 5px auto -webkit-focus-ring-color;
-    outline: 2px solid $light-purple;
-    outline-offset: 0.5px;
+    outline: 2px solid transparent;
+
+    // Emulate Antd Stlyes
+    box-shadow: 0 0 0 2px $light-purple-2;
+    transition: border 0.3s, box-shadow 0.3s;
   }
 }
 

@@ -19,7 +19,8 @@
 }
 
 .alerts-and-alarms-form-section-heading,
-.alerts-and-alarms-list {
+.alerts-and-alarms-list,
+.alert-and-alarms-button-container {
   padding: 0 48px;
 
   @include media('>=1100px') {
@@ -86,4 +87,14 @@
 
 .alerts-and-alarms-checkbox {
   transform: scale(1.35);
+}
+
+.alert-and-alarms-button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: white;
+  width: 100%;
+  margin-top: 30px;
+  padding-bottom: 30px;
 }

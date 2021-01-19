@@ -47,6 +47,12 @@
   @include media('>=1455px') {
     margin-right: 30px;
   }
+
+  &.h-hidden-1086-down {
+    @include media('<1086px') {
+      display: none;
+    }
+  }
 }
 
 .user-form-input {

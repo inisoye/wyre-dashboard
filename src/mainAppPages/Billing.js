@@ -182,13 +182,13 @@ function Billing({ match }) {
             <tr>
               <td>
                 <span className='metric-name'>Diesel Set:</span>{' '}
-                {metrics && metrics.diesel_per_kwh}/Litre
+                {metrics && metrics.diesel_per_kwh}/kWh
               </td>
             </tr>
             <tr>
               <td>
                 <span className='metric-name'>Utility:</span>{' '}
-                {metrics && metrics.utility_per_kwh}/Litre
+                {metrics && metrics.utility_per_kwh}/kWh
               </td>
             </tr>
             <tr>

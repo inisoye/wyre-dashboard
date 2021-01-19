@@ -9,7 +9,8 @@
   width: 100%;
 
   @include media('>=medium') {
-    max-width: 285px;
+    max-width: 289px;
+    padding-left: 2px;
   }
 }
 
@@ -86,6 +87,12 @@
   &:hover {
     border-color: $white !important;
   }
+}
+
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  // Emulate Antd Stlyes
+  box-shadow: 0 0 0 2px $light-purple-2 !important;
+  transition: border 0.3s, box-shadow 0.3s !important;
 }
 
 /*--------------------------------------------------------------

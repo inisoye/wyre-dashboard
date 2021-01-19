@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
-import CompleteDataContext from '../Context';
 import { Link } from 'react-router-dom';
 import { Select } from 'antd';
+
+import CompleteDataContext from '../Context';
+
+import dataHttpServices from '../services/devices';
 
 import DateTimePicker from './DateTimePicker';
 
@@ -10,17 +13,20 @@ import { CaretDownFilled } from '@ant-design/icons';
 const { Option } = Select;
 
 function TopBar() {
-  const { isSidebarOpen, currentUrl, setPowerQualityUnit } = useContext(
-    CompleteDataContext
-  );
+  const {
+    isSidebarOpen,
+    currentUrl,
+    setPowerQualityUnit,
+    setParametersDataTimeInterval,
+  } = useContext(CompleteDataContext);
 
-  const pagesWithoutDateTimePickers = [
-    'add-bills',
-    'add-equipment',
-    'client-profile',
-    'password',
-    'alerts-and-alarms',
-    'branches',
+  const pagesWithDateTimePickers = [
+    'dashboard',
+    'score-card',
+    'parameters',
+    'report',
+    'cost-tracker',
+    'billing',
   ];
 
   const pagesWithTimeIntervalSelector = [
@@ -30,8 +36,8 @@ function TopBar() {
     'time-of-use',
   ];
 
-  const isDateTimePickerNotDisplayed = pagesWithoutDateTimePickers.some(
-    (page) => currentUrl.includes(page)
+  const isDateTimePickerDisplayed = pagesWithDateTimePickers.some((page) =>
+    currentUrl.includes(page)
   );
 
   const isTimeIntervalSelectorDisplayed = pagesWithTimeIntervalSelector.some(
@@ -48,7 +54,8 @@ function TopBar() {
     currentUrl.includes('branches') && !currentUrl.includes('user-form');
 
   const handleIntervalChange = (interval) => {
-    console.log(interval);
+    setParametersDataTimeInterval(interval);
+    dataHttpServices.updateUserDefinedParametersDataTimeInterval(interval);
   };
 
   const handleUnitChange = (unit) => {
@@ -58,7 +65,7 @@ function TopBar() {
   return (
     <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
       <div className='top-bar__left'>
-        <div className={isDateTimePickerNotDisplayed ? 'h-hide' : ''}>
+        <div className={isDateTimePickerDisplayed ? '' : 'h-hide'}>
           <DateTimePicker isDateTimePickerDisabled={isDateTimePickerDisabled} />
         </div>
 
@@ -71,27 +78,27 @@ function TopBar() {
         >
           <Select
             className='time-interval-selector h-8-br'
-            defaultValue='15Mins'
+            defaultValue='hourly'
             onChange={handleIntervalChange}
             suffixIcon={<CaretDownFilled />}
           >
-            <Option className='time-interval-option' value='15Mins'>
+            <Option className='time-interval-option' value='15mins'>
               15Mins
             </Option>
-            <Option className='time-interval-option' value='30Mins'>
+            <Option className='time-interval-option' value='30mins'>
               30Mins
             </Option>
-            <Option className='time-interval-option' value='1Hour'>
-              1Hour
+            <Option className='time-interval-option' value='hourly'>
+              Hourly
             </Option>
-            <Option className='time-interval-option' value='Daily'>
+            <Option className='time-interval-option' value='daily'>
               Daily
             </Option>
-            <Option className='time-interval-option' value='Weeks'>
-              Weeks
+            <Option className='time-interval-option' value='weekly'>
+              Weekly
             </Option>
-            <Option className='time-interval-option' value='Months'>
-              Months
+            <Option className='time-interval-option' value='monthly'>
+              Monthly
             </Option>
           </Select>
         </div>
@@ -156,7 +163,10 @@ function TopBar() {
             : 'top-bar__right h-hide'
         }
       >
-        <Link className='top-bar-right__button h-extra-padding' to='#'>
+        <Link
+          className='top-bar-right__button h-extra-padding'
+          to='/client-profile'
+        >
           Edit Client
         </Link>
       </div>

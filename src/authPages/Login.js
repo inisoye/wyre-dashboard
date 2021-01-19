@@ -16,10 +16,10 @@ function Login() {
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async ({ username, password }) => {
     try {
       const user = await loginHttpServices.login({
-        username: email,
+        username: username,
         password: password,
       });
 
@@ -48,13 +48,13 @@ function Login() {
         </h1>
 
         <p className='outlined-input-container'>
-          <HiddenInputLabel htmlFor='login-email' labelText='Email' />
+          <HiddenInputLabel htmlFor='username' labelText='Username' />
           <OutlinedInput
             className='signup-login-contact-input'
             type='text'
-            name='email'
-            id='login-email'
-            placeholder='Username or email'
+            name='username'
+            id='username'
+            placeholder='Username'
             autoComplete='username'
             required={true}
             autoFocus={true}

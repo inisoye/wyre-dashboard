@@ -84,7 +84,7 @@ function Dashboard({ match }) {
             unit={dashboard_carbon_emissions && dashboard_carbon_emissions.unit}
           />
           <DashboardSmallBannerSection
-            name='Cost of Energy'
+            name='Blended Cost of Energy'
             value={cost_of_energy && cost_of_energy.value}
             unit={cost_of_energy && cost_of_energy.unit}
           />

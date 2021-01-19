@@ -26,6 +26,10 @@
   padding-bottom: 52px;
   width: 100%;
 
+  @include media('>=458px') {
+    overflow: hidden;
+  }
+
   @include media('>=1248px') {
     width: 50%;
   }

@@ -2,6 +2,9 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+import CompleteDataContext from '../../../Context';
 
 class ListOfUsersTable extends React.Component {
   state = {
@@ -92,6 +95,8 @@ class ListOfUsersTable extends React.Component {
     this.setState({ searchText: '' });
   };
 
+  static contextType = CompleteDataContext;
+
   render() {
     const data = this.props.listOfUsersData;
 
@@ -149,12 +154,23 @@ class ListOfUsersTable extends React.Component {
         key: 'key',
         dataIndex: 'key',
         render: (_, record) => (
-          <button
-            className='table-row-button'
-            onClick={() => console.log(record)}
+          <Link
+            to='/branches/user-form'
+            className='table-row-button table-row-button--link'
+            onClick={() => {
+              const formattedRowData = {
+                id: record.id,
+                name: record.name,
+                phone: record.phone,
+                email: record.email,
+                organisation: record.organisation,
+              };
+
+              this.context.setPreloadedUserFormData(formattedRowData);
+            }}
           >
             Edit
-          </button>
+          </Link>
         ),
       },
     ];

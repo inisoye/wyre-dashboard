@@ -22,6 +22,14 @@ const CompleteDataProvider = (props) => {
 
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
+  /*
+   ** For main app-wide datetime-picker.
+   ** New requests fired when datetime range is changed.
+   */
+  const [userDateRange, setUserDateRange] = useState([]);
+  const [parametersDataTimeInterval, setParametersDataTimeInterval] = useState(
+    ''
+  );
 
   const [isUserAdmin, setIsUserAdmin] = useState(false);
 
@@ -36,8 +44,7 @@ const CompleteDataProvider = (props) => {
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
 
-  // console.log(userData);
-  // console.log(token);
+  const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
   useEffect(() => {
     const getData = () => {
@@ -61,13 +68,22 @@ const CompleteDataProvider = (props) => {
             setRefinedRenderedData(getRenderedData(renderedDataArray));
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          window.localStorage.removeItem('loggedWyreUser');
+          setUserData(undefined);
+        });
     };
 
     if (userData) {
       getData();
     }
-  }, [checkedItems, renderedDataObjects, userData]);
+  }, [
+    checkedItems,
+    renderedDataObjects,
+    userData,
+    userDateRange,
+    parametersDataTimeInterval,
+  ]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
@@ -101,6 +117,8 @@ const CompleteDataProvider = (props) => {
         setCurrentUrl: setCurrentUrl,
         powerQualityUnit: powerQualityUnit,
         setPowerQualityUnit: setPowerQualityUnit,
+        setUserDateRange: setUserDateRange,
+        setParametersDataTimeInterval: setParametersDataTimeInterval,
 
         isUserAdmin: isUserAdmin,
         setIsUserAdmin: setIsUserAdmin,
@@ -111,6 +129,8 @@ const CompleteDataProvider = (props) => {
         isXLargeScreen: isXLargeScreen,
         isLessThan1296: isLessThan1296,
 
+        useMediaQuery: useMediaQuery,
+
         username: username,
         setUsername: setUsername,
         password: password,
@@ -119,6 +139,9 @@ const CompleteDataProvider = (props) => {
         setUserData: setUserData,
         token: token,
         setToken: setToken,
+
+        preloadedUserFormData: preloadedUserFormData,
+        setPreloadedUserFormData: setPreloadedUserFormData,
       }}
     >
       {props.children}

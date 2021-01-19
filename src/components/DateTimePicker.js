@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DatePicker, Space } from 'antd';
 import moment from 'moment';
 
+import CompleteDataContext from '../Context';
+
+import dataHttpServices from '../services/devices';
+
 const { RangePicker } = DatePicker;
 
-function onChange(value, dateString) {
-  console.log('Selected Time: ', value);
-  console.log('Formatted Selected Time: ', dateString);
-}
-
-function onOk(value) {
-  console.log('onOk: ', value);
-}
-
 function DateTimePicker({ isDateTimePickerDisabled }) {
+  const { setUserDateRange } = useContext(CompleteDataContext);
+
+  function onChange(value, dateString) {
+    setUserDateRange(value);
+    dataHttpServices.updateUserDefinedEndpointDateRange(value);
+  }
+
+  function onOk(value) {
+    setUserDateRange(value);
+    dataHttpServices.updateUserDefinedEndpointDateRange(value);
+  }
+
   return (
     <>
       <Space
@@ -29,18 +36,20 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
           onOk={onOk}
           disabled={isDateTimePickerDisabled}
           ranges={{
-            Today: [moment(), moment()],
-            Yesterday: [
-              moment().subtract(1, 'days'),
-              moment().subtract(1, 'days'),
-            ],
-            'This Week': [moment().startOf('week'), moment().endOf('week')],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            Today: [moment().startOf('day'), moment()],
+            'Past 24 Hours': [moment().subtract(1, 'days'), moment()],
+            'Past Week': [moment().subtract(7, 'days'), moment()],
+            'Past Month': [moment().subtract(1, 'months'), moment()],
+            'Past Three Months': [moment().subtract(3, 'months'), moment()],
+            'Past Half Year': [moment().subtract(6, 'months'), moment()],
+            'Past Year': [moment().subtract(1, 'years'), moment()],
+            'This Week': [moment().startOf('week'), moment()],
+            'This Month': [moment().startOf('month'), moment()],
             'This Quarter': [
               moment().quarter(moment().quarter()).startOf('quarter'),
-              moment().quarter(moment().quarter()).endOf('quarter'),
+              moment(),
             ],
-            'This Year': [moment().startOf('year'), moment().endOf('year')],
+            'This Year': [moment().startOf('year'), moment()],
           }}
         />
       </Space>

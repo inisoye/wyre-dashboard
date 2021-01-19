@@ -136,19 +136,6 @@ class UserDevicesTable extends React.Component {
         sorter: (a, b) => a.consumption - b.consumption,
         sortDirections: ['descend', 'ascend'],
       },
-      {
-        title: 'Action',
-        key: 'key',
-        dataIndex: 'key',
-        render: (_, record) => (
-          <button
-            className='table-row-button h-greyed-out'
-            onClick={() => console.log(record)}
-          >
-            Edit
-          </button>
-        ),
-      },
     ];
 
     return (
