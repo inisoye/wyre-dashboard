@@ -43,6 +43,7 @@ const CompleteDataProvider = (props) => {
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
+  const [userId, setUserId] = useState();
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
@@ -90,6 +91,7 @@ const CompleteDataProvider = (props) => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setToken(user.data.token);
+      dataHttpServices.setUserId(user.data.id);
       setUserData(user);
     }
   }, []);
@@ -139,6 +141,7 @@ const CompleteDataProvider = (props) => {
         setUserData: setUserData,
         token: token,
         setToken: setToken,
+        setUserId: setUserId,
 
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,

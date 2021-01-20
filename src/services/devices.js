@@ -19,7 +19,9 @@ const defaultEndpointDateRange = convertDateRangeToEndpointFormat([
   dayjs(),
 ]);
 
-let baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${defaultEndpointDateRange}`;
+// let baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${defaultEndpointDateRange}`;
+let baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${defaultEndpointDateRange}`;
+// let baseUrl = `http://localhost:8000/api/v1/dashboard/2/${defaultEndpointDateRange}`;
 
 let userDefinedEndpointDateRange = undefined;
 
@@ -28,13 +30,19 @@ const updateUserDefinedEndpointDateRange = (userInputtedDateRange) => {
     userInputtedDateRange
   );
 
-  baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
+  baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
+  // baseUrl = `http://localhost:8000/api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
 };
 
 let token = undefined;
+let userId = undefined;
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`;
+};
+
+const setUserId = (newUserId) => {
+  userId = `${newUserId}`;
 };
 
 const getAllData = async () => {
@@ -54,6 +62,7 @@ const getAllData = async () => {
 export default {
   getAllData,
   setToken,
+  setUserId,
   updateUserDefinedEndpointDateRange,
   updateUserDefinedParametersDataTimeInterval,
 };
