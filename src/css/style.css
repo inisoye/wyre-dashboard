@@ -1545,6 +1545,12 @@ thead.ant-table-thead tr th {
   padding-top: 10px;
 }
 
+@media (min-width: 769px) {
+  .sidebar-branch__details {
+    padding-top: 25px;
+  }
+}
+
 .sidebar-branch__button {
   opacity: 0.75;
 }

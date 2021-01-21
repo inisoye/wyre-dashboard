@@ -65,6 +65,10 @@
   font-weight: $medium;
   justify-content: space-between;
   padding-top: 10px;
+
+  @include media('>medium') {
+    padding-top: 25px;
+  }
 }
 
 .sidebar-branch__button {
