@@ -1527,7 +1527,7 @@ thead.ant-table-thead tr th {
 
 .sidebar-branch,
 .sidebar-device {
-  padding-left: 4%;
+  padding-left: 6%;
 }
 
 .sidebar-branch__details {
@@ -1553,6 +1553,7 @@ thead.ant-table-thead tr th {
 .sidebar-device__checkbox {
   border-radius: 2px;
   margin-right: 15px;
+  text-align: left;
 }
 
 @media (min-width: 768px) {
