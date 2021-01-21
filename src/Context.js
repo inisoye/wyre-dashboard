@@ -11,7 +11,7 @@ const CompleteDataContext = React.createContext();
 
 // create provider
 const CompleteDataProvider = (props) => {
-  const [organization, setOrganization] = useState([]);
+  const [organization, setOrganization] = useState({});
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
   // Note: the rendered data objects state exludes data for the whole organisation
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
@@ -46,46 +46,48 @@ const CompleteDataProvider = (props) => {
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
+  console.log(refinedRenderedData);
+
+  // Obtain 'authenticated' date that is fed around the application
   useEffect(() => {
     const getData = () => {
       dataHttpServices
         .getAllData()
         .then((returnedData) => {
           setOrganization(returnedData);
-          const refinedOrganizationData = getRefinedOrganizationData(
-            returnedData
-          );
-
-          // If nothing is checked, render organization's data
-          // Otherwise, render data from checked items
-          if (
-            Object.keys(checkedItems).length === 0 &&
-            checkedItems.constructor === Object
-          ) {
-            setRefinedRenderedData(refinedOrganizationData);
-          } else {
-            const renderedDataArray = Object.values(renderedDataObjects);
-            setRefinedRenderedData(getRenderedData(renderedDataArray));
-          }
         })
         .catch((error) => {
           console.log(error);
-          // window.localStorage.removeItem('loggedWyreUser');
-          // setUserData(undefined);
         });
     };
 
     if (userData) {
       getData();
     }
-  }, [
-    checkedItems,
-    renderedDataObjects,
-    userData,
-    userDateRange,
-    parametersDataTimeInterval,
-  ]);
+  }, [userData, userDateRange, parametersDataTimeInterval]);
 
+  // Feed authenticated data into application
+  useEffect(() => {
+    // Ensure organization object is not empty
+    if (
+      Object.keys(organization).length > 0 &&
+      organization.constructor === Object
+    ) {
+      // If nothing is checked, render organization's data
+      // Otherwise, render data from checked items
+      if (
+        Object.keys(checkedItems).length === 0 &&
+        checkedItems.constructor === Object
+      ) {
+        setRefinedRenderedData(getRefinedOrganizationData(organization));
+      } else {
+        const renderedDataArray = Object.values(renderedDataObjects);
+        setRefinedRenderedData(getRenderedData(renderedDataArray));
+      }
+    }
+  }, [organization, checkedItems, renderedDataObjects]);
+
+  // Authenticate user based on login details saved to localstorage
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
     if (loggedUserJSON) {
