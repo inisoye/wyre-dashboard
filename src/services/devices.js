@@ -1,47 +1,58 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-let parametersDataTimeInterval = 'hourly';
+// Base URL prefix
+let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
 
-const updateUserDefinedParametersDataTimeInterval = (
-  userDefinedParametersDataTimeInterval
-) => {
-  parametersDataTimeInterval = userDefinedParametersDataTimeInterval;
-};
-
-const convertDateRangeToEndpointFormat = (dateObjects) =>
-  dateObjects
-    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
-    .join('/');
-
-const defaultEndpointDateRange = convertDateRangeToEndpointFormat([
-  dayjs().subtract(1, 'months'),
-  dayjs(),
-]);
-
-let baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${defaultEndpointDateRange}`;
-
-let userDefinedEndpointDateRange = undefined;
-
-const updateUserDefinedEndpointDateRange = (userInputtedDateRange) => {
-  userDefinedEndpointDateRange = convertDateRangeToEndpointFormat(
-    userInputtedDateRange
-  );
-
-  baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
-};
-
+// Handle determination of token
 let token = undefined;
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`;
 };
 
+// Handle determination of userID
+let userId = '';
+
+const setUserId = (newUserId) => {
+  userId = newUserId;
+};
+
+// Method for converting dates to endpoint format
+const convertDateRangeToEndpointFormat = (dateObjects) =>
+  dateObjects
+    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
+    .join('/');
+
+// Handle determination of date range for url
+let endpointDateRange = convertDateRangeToEndpointFormat([
+  dayjs().subtract(1, 'months'),
+  dayjs(),
+]);
+
+const setEndpointDateRange = (newEndpointDateRange) => {
+  // Update endpoint if available
+  endpointDateRange = newEndpointDateRange
+    ? convertDateRangeToEndpointFormat(newEndpointDateRange)
+    : (endpointDateRange = convertDateRangeToEndpointFormat([
+        dayjs().subtract(1, 'months'),
+        dayjs(),
+      ]));
+};
+
+// Handle Manipulation of time interval for url
+let endpointDataTimeInterval = 'hourly';
+
+const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
+  endpointDataTimeInterval = newEndpointDataTimeInterval;
+};
+
 const getAllData = async () => {
   // Add interval to url
-  // baseUrl = `${baseUrl}/${parametersDataTimeInterval}`;
+  // const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
+  const baseUrl = `${baseUrlPrefix}/2/${endpointDateRange}/${endpointDataTimeInterval}`;
 
-  console.log(`${baseUrl}/${parametersDataTimeInterval}`);
+  console.log(baseUrl);
 
   const config = {
     headers: { Authorization: token },
@@ -51,9 +62,11 @@ const getAllData = async () => {
   return response.data.authenticatedData;
 };
 
+// eslint-disable-next-line
 export default {
   getAllData,
   setToken,
-  updateUserDefinedEndpointDateRange,
-  updateUserDefinedParametersDataTimeInterval,
+  setUserId,
+  setEndpointDateRange,
+  setEndpointDataTimeInterval,
 };

@@ -25,6 +25,7 @@ function Login() {
 
       window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
 
+      dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
       setUserData(user);
     } catch (exception) {

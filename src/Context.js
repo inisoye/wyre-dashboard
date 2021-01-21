@@ -69,8 +69,9 @@ const CompleteDataProvider = (props) => {
           }
         })
         .catch((error) => {
-          window.localStorage.removeItem('loggedWyreUser');
-          setUserData(undefined);
+          console.log(error);
+          // window.localStorage.removeItem('loggedWyreUser');
+          // setUserData(undefined);
         });
     };
 
@@ -89,6 +90,7 @@ const CompleteDataProvider = (props) => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
+      dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
       setUserData(user);
     }
