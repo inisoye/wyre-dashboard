@@ -14,14 +14,19 @@ const convertDateRangeToEndpointFormat = (dateObjects) =>
     .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
     .join('/');
 
+let today = dayjs()
+let day_of_the_month = today.get('date')
+let start_date = today.subtract(day_of_the_month, 'days')
+
 const defaultEndpointDateRange = convertDateRangeToEndpointFormat([
-  dayjs().subtract(1, 'months'),
-  dayjs(),
+  
+  start_date,
+  today,
 ]);
 
 // let baseUrl = `https://wyre22.pythonanywhere.com//api/v1/dashboard/2/${defaultEndpointDateRange}`;
-let baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${defaultEndpointDateRange}`;
-// let baseUrl = `http://localhost:8000/api/v1/dashboard/2/${defaultEndpointDateRange}`;
+let baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${defaultEndpointDateRange}/hourly`;
+// let baseUrl = `http://localhost:8000/api/v1/dashboard/2/${defaultEndpointDateRange}/hourly`;
 
 let userDefinedEndpointDateRange = undefined;
 
@@ -30,8 +35,8 @@ const updateUserDefinedEndpointDateRange = (userInputtedDateRange) => {
     userInputtedDateRange
   );
 
-  baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
-  // baseUrl = `http://localhost:8000/api/v1/dashboard/2/${userDefinedEndpointDateRange}`;
+  baseUrl = `https://wyreng.xyz/api/v1/dashboard/2/${userDefinedEndpointDateRange}/hourly`;
+  // baseUrl = `http://localhost:8000/api/v1/dashboard/2/${userDefinedEndpointDateRange}/hourly`;
 };
 
 let token = undefined;
