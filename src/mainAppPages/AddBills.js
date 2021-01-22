@@ -7,6 +7,7 @@ import CompleteDataContext from '../Context';
 import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../components/BreadCrumb';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -20,7 +21,9 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 function AddBills({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { setCurrentUrl, isAuthenticatedDataLoading } = useContext(
+    CompleteDataContext
+  );
 
   useEffect(() => {
     if (match && match.url) {
@@ -147,6 +150,10 @@ function AddBills({ match }) {
       utilityPaymentPostValue
     );
   };
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

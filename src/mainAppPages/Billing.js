@@ -5,6 +5,7 @@ import CompleteDataContext from '../Context';
 import BreadCrumb from '../components/BreadCrumb';
 import BillingConsumptionKwhBarChart from '../components/barCharts/BillingConsumptionKwhBarChart';
 import BillingConsumptionNairaBarChart from '../components/barCharts/BillingConsumptionNairaBarChart';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 import ThinArrowRight from '../icons/ThinArrowRight';
@@ -17,9 +18,11 @@ const breadCrumbRoutes = [
 ];
 
 function Billing({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -82,6 +85,10 @@ function Billing({ match }) {
     formatParametersDatetimes(billing_consumption_naira.dates);
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

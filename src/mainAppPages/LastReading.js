@@ -4,6 +4,7 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 import LastReadingPageSection from '../components/parameterPagesSections/LastReadingPageSection';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -14,9 +15,11 @@ const breadCrumbRoutes = [
 ];
 
 function LastReading({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -31,6 +34,10 @@ function LastReading({ match }) {
     last_reading.map((eachDevice) => (
       <LastReadingPageSection key={eachDevice.deviceName} lrData={eachDevice} />
     ));
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

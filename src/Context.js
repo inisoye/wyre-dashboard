@@ -19,6 +19,9 @@ const CompleteDataProvider = (props) => {
   const [checkedBranches, setCheckedBranches] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
+    true
+  );
 
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
@@ -48,11 +51,13 @@ const CompleteDataProvider = (props) => {
 
   // Obtain 'authenticated' date that is fed around the application
   useEffect(() => {
+    setIsAuthenticatedDataLoading(true);
     const getData = () => {
       dataHttpServices
         .getAllData()
         .then((returnedData) => {
           setOrganization(returnedData);
+          setIsAuthenticatedDataLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -114,6 +119,8 @@ const CompleteDataProvider = (props) => {
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+
+        isAuthenticatedDataLoading: isAuthenticatedDataLoading,
 
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,

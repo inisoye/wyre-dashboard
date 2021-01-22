@@ -11,11 +11,12 @@ import {
 
 import BreadCrumb from '../components/BreadCrumb';
 import EnergyConsumptionBarChart from '../components/barCharts/EnergyConsumptionBarChart';
+import EnergyConsumptionTable from '../components/tables/EnergyConsumptionTable';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
-import EnergyConsumptionTable from '../components/tables/EnergyConsumptionTable';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -24,9 +25,11 @@ const breadCrumbRoutes = [
 ];
 
 function EnergyConsumption({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -87,6 +90,10 @@ function EnergyConsumption({ match }) {
     tableHeadings,
     tableValues
   );
+
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

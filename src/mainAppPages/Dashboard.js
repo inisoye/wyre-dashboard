@@ -5,6 +5,7 @@ import CompleteDataContext from '../Context';
 import BreadCrumb from '../components/BreadCrumb';
 import DashboardStackedBarChart from '../components/barCharts/DashboardStackedBarChart';
 import DashboardDoughnutChart from '../components/pieCharts/DashboardDoughnutChart';
+import Loader from '../components/Loader';
 
 import DashboardSmallBannerSection from '../smallComponents/DashboardSmallBannerSection';
 import PrintButtons from '../smallComponents/PrintButtons';
@@ -18,7 +19,9 @@ const breadCrumbRoutes = [
 ];
 
 function Dashboard({ match }) {
-  let { refinedRenderedData } = useContext(CompleteDataContext);
+  let { refinedRenderedData, isAuthenticatedDataLoading } = useContext(
+    CompleteDataContext
+  );
 
   const { setCurrentUrl } = useContext(CompleteDataContext);
 
@@ -45,6 +48,10 @@ function Dashboard({ match }) {
   const todaysValue = today && today.value;
   const yesterdaysValue = yesterday && yesterday.value;
   const isTodaysValueLessThanYesterdays = todaysValue < yesterdaysValue;
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
