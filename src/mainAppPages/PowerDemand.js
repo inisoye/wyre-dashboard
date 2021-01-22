@@ -9,11 +9,11 @@ import {
 } from '../helpers/genericHelpers';
 
 import BreadCrumb from '../components/BreadCrumb';
-
-import PrintButtons from '../smallComponents/PrintButtons';
-
 import PowerDemandStackedBarChart from '../components/barCharts/PowerDemandStackedBarChart';
 import PowerDemandTable from '../components/tables/PowerDemandTable';
+import Loader from '../components/Loader';
+
+import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -24,9 +24,11 @@ const breadCrumbRoutes = [
 ];
 
 function PowerDemand({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -104,6 +106,10 @@ function PowerDemand({ match }) {
       currentValue.index = index + 1;
       return currentValue;
     });
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

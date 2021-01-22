@@ -3,12 +3,12 @@ import React, { useEffect, useContext } from 'react';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-
-import PrintButtons from '../smallComponents/PrintButtons';
-
 import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrackerDieselQuantityBarChart';
 import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
+import Loader from '../components/Loader';
+
+import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -16,9 +16,11 @@ const breadCrumbRoutes = [
 ];
 
 function CostTracker({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -79,6 +81,10 @@ function CostTracker({ match }) {
         </div>
       </article>
     ));
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

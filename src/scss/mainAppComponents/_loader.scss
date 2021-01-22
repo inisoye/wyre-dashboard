@@ -1,0 +1,32 @@
+.loader-wrapper {
+  min-height: 90vh;
+  padding-top: 130px;
+  text-align: center;
+  width: 100%;
+
+  @include media('>medium') {
+    padding-top: 160px;
+  }
+}
+
+.loader {
+  transform: scale(2);
+
+  path {
+    animation: loaderPulse 2s ease infinite;
+  }
+
+  @keyframes loaderPulse {
+    0% {
+      fill: #c5d4e9;
+    }
+
+    50% {
+      fill: #9db6d9;
+    }
+
+    100% {
+      fill: #c5d4e9;
+    }
+  }
+}

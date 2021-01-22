@@ -13,12 +13,12 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
 
   function onChange(value, dateString) {
     setUserDateRange(value);
-    dataHttpServices.updateUserDefinedEndpointDateRange(value);
+    dataHttpServices.setEndpointDateRange(value);
   }
 
   function onOk(value) {
     setUserDateRange(value);
-    dataHttpServices.updateUserDefinedEndpointDateRange(value);
+    dataHttpServices.setEndpointDateRange(value);
   }
 
   return (

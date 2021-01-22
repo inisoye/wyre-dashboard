@@ -55,7 +55,7 @@ function TopBar() {
 
   const handleIntervalChange = (interval) => {
     setParametersDataTimeInterval(interval);
-    dataHttpServices.updateUserDefinedParametersDataTimeInterval(interval);
+    dataHttpServices.setEndpointDataTimeInterval(interval);
   };
 
   const handleUnitChange = (unit) => {

@@ -8,6 +8,7 @@ import ScoreCardTable from '../components/tables/ScoreCardTable';
 import ScoreCardBarChart from '../components/barCharts/ScoreCardBarChart';
 import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGenEfficiencyDoughnut';
 import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -21,9 +22,11 @@ const breadCrumbRoutes = [
 ];
 
 function ScoreCard({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -64,6 +67,10 @@ function ScoreCard({ match }) {
         key={eachGenerator.name}
       />
     ));
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

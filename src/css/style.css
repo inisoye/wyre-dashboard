@@ -1527,7 +1527,7 @@ thead.ant-table-thead tr th {
 
 .sidebar-branch,
 .sidebar-device {
-  padding-left: 4%;
+  padding-left: 6%;
 }
 
 .sidebar-branch__details {
@@ -1545,6 +1545,12 @@ thead.ant-table-thead tr th {
   padding-top: 10px;
 }
 
+@media (min-width: 769px) {
+  .sidebar-branch__details {
+    padding-top: 25px;
+  }
+}
+
 .sidebar-branch__button {
   opacity: 0.75;
 }
@@ -1553,6 +1559,7 @@ thead.ant-table-thead tr th {
 .sidebar-device__checkbox {
   border-radius: 2px;
   margin-right: 15px;
+  text-align: left;
 }
 
 @media (min-width: 768px) {
@@ -3308,6 +3315,56 @@ thead.ant-table-thead tr th {
   .error-cta {
     font-size: 1.6rem;
     padding: 17px 0;
+  }
+}
+
+/*--------------------------------------------------------------
+# Generic Loader Styles
+--------------------------------------------------------------*/
+.loader-wrapper {
+  min-height: 90vh;
+  padding-top: 130px;
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .loader-wrapper {
+    padding-top: 160px;
+  }
+}
+
+.loader {
+  -webkit-transform: scale(2);
+          transform: scale(2);
+}
+
+.loader path {
+  -webkit-animation: loaderPulse 2s ease infinite;
+          animation: loaderPulse 2s ease infinite;
+}
+
+@-webkit-keyframes loaderPulse {
+  0% {
+    fill: #c5d4e9;
+  }
+  50% {
+    fill: #9db6d9;
+  }
+  100% {
+    fill: #c5d4e9;
+  }
+}
+
+@keyframes loaderPulse {
+  0% {
+    fill: #c5d4e9;
+  }
+  50% {
+    fill: #9db6d9;
+  }
+  100% {
+    fill: #c5d4e9;
   }
 }
 

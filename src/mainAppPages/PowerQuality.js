@@ -4,6 +4,7 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 import PowerQualityPageSection from '../components/parameterPagesSections/PowerQualityPageSection';
+import Loader from '../components/Loader';
 
 import PrintButtons from '../smallComponents/PrintButtons';
 
@@ -14,9 +15,11 @@ const breadCrumbRoutes = [
 ];
 
 function PowerQuality({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -34,6 +37,10 @@ function PowerQuality({ match }) {
         pqData={eachDevice}
       />
     ));
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>

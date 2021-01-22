@@ -11,7 +11,7 @@ const CompleteDataContext = React.createContext();
 
 // create provider
 const CompleteDataProvider = (props) => {
-  const [organization, setOrganization] = useState([]);
+  const [organization, setOrganization] = useState({});
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
   // Note: the rendered data objects state exludes data for the whole organisation
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
@@ -19,6 +19,9 @@ const CompleteDataProvider = (props) => {
   const [checkedBranches, setCheckedBranches] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
+    true
+  );
 
   const [currentUrl, setCurrentUrl] = useState('/');
   const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
@@ -43,55 +46,57 @@ const CompleteDataProvider = (props) => {
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
-  const [userId, setUserId] = useState();
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
+  // Obtain 'authenticated' date that is fed around the application
   useEffect(() => {
+    setIsAuthenticatedDataLoading(true);
     const getData = () => {
       dataHttpServices
         .getAllData()
         .then((returnedData) => {
           setOrganization(returnedData);
-          const refinedOrganizationData = getRefinedOrganizationData(
-            returnedData
-          );
-
-          // If nothing is checked, render organization's data
-          // Otherwise, render data from checked items
-          if (
-            Object.keys(checkedItems).length === 0 &&
-            checkedItems.constructor === Object
-          ) {
-            setRefinedRenderedData(refinedOrganizationData);
-          } else {
-            const renderedDataArray = Object.values(renderedDataObjects);
-            setRefinedRenderedData(getRenderedData(renderedDataArray));
-          }
+          setIsAuthenticatedDataLoading(false);
         })
         .catch((error) => {
-          window.localStorage.removeItem('loggedWyreUser');
-          setUserData(undefined);
+          console.log(error);
         });
     };
 
     if (userData) {
       getData();
     }
-  }, [
-    checkedItems,
-    renderedDataObjects,
-    userData,
-    userDateRange,
-    parametersDataTimeInterval,
-  ]);
+  }, [userData, userDateRange, parametersDataTimeInterval]);
 
+  // Feed authenticated data into application
+  useEffect(() => {
+    // Ensure organization object is not empty
+    if (
+      Object.keys(organization).length > 0 &&
+      organization.constructor === Object
+    ) {
+      // If nothing is checked, render organization's data
+      // Otherwise, render data from checked items
+      if (
+        Object.keys(checkedItems).length === 0 &&
+        checkedItems.constructor === Object
+      ) {
+        setRefinedRenderedData(getRefinedOrganizationData(organization));
+      } else {
+        const renderedDataArray = Object.values(renderedDataObjects);
+        setRefinedRenderedData(getRenderedData(renderedDataArray));
+      }
+    }
+  }, [organization, checkedItems, renderedDataObjects]);
+
+  // Authenticate user based on login details saved to localstorage
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      dataHttpServices.setToken(user.data.token);
       dataHttpServices.setUserId(user.data.id);
+      dataHttpServices.setToken(user.data.token);
       setUserData(user);
     }
   }, []);
@@ -114,6 +119,8 @@ const CompleteDataProvider = (props) => {
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
+
+        isAuthenticatedDataLoading: isAuthenticatedDataLoading,
 
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,
@@ -141,7 +148,6 @@ const CompleteDataProvider = (props) => {
         setUserData: setUserData,
         token: token,
         setToken: setToken,
-        setUserId: setUserId,
 
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,

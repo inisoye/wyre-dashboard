@@ -10,11 +10,11 @@ import {
 } from '../helpers/genericHelpers';
 
 import BreadCrumb from '../components/BreadCrumb';
-
-import PrintButtons from '../smallComponents/PrintButtons';
-
 import TimeOfUseStackedBarChart from '../components/barCharts/TimeOfUseStackedBarChart';
 import TimeOfUseTable from '../components/tables/TimeOfUseTable';
+import Loader from '../components/Loader';
+
+import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -25,9 +25,11 @@ const breadCrumbRoutes = [
 ];
 
 function TimeOfUse({ match }) {
-  const { refinedRenderedData, setCurrentUrl } = useContext(
-    CompleteDataContext
-  );
+  const {
+    refinedRenderedData,
+    setCurrentUrl,
+    isAuthenticatedDataLoading,
+  } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
@@ -114,6 +116,10 @@ function TimeOfUse({ match }) {
         </div>
       </article>
     ));
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
