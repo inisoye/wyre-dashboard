@@ -148,6 +148,15 @@
       "plan_months": "10",
       "plan_expiry": "07/09/2021",
       "branches": "14"
+    }, 
+    {
+      "id": 5,
+      "name": "qPL",
+      "phone": "07092315485",
+      "contact_person": "Adam Isong",
+      "plan_months": "10",
+      "plan_expiry": "01/09/2021",
+      "branches": "10"
     }
   ]
 }
