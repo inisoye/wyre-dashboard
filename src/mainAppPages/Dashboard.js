@@ -60,17 +60,17 @@ function Dashboard({ match }) {
         <article className='dashboard__demand-banner dashboard__banner--small'>
           <DashboardSmallBannerSection
             name='Max. Demand'
-            value={max_demand && max_demand.value}
+            value={max_demand && max_demand.value.toFixed(2)}
             unit={max_demand && max_demand.unit}
           />
           <DashboardSmallBannerSection
             name='Min. Demand'
-            value={min_demand && min_demand.value}
+            value={min_demand && min_demand.value.toFixed(2)}
             unit={min_demand && min_demand.unit}
           />
           <DashboardSmallBannerSection
             name='Avg. Demand'
-            value={avg_demand && avg_demand.value}
+            value={avg_demand && avg_demand.value.toFixed(2)}
             unit={avg_demand && avg_demand.unit}
           />
         </article>
@@ -79,13 +79,14 @@ function Dashboard({ match }) {
           <DashboardSmallBannerSection
             name='Carbon Emissions'
             value={
-              dashboard_carbon_emissions && dashboard_carbon_emissions.value
+              dashboard_carbon_emissions &&
+              dashboard_carbon_emissions.value.toFixed(2)
             }
             unit={dashboard_carbon_emissions && dashboard_carbon_emissions.unit}
           />
           <DashboardSmallBannerSection
             name='Blended Cost of Energy'
-            value={cost_of_energy && cost_of_energy.value}
+            value={cost_of_energy && cost_of_energy.value.toFixed(2)}
             unit={cost_of_energy && cost_of_energy.unit}
           />
         </article>
