@@ -46,8 +46,6 @@ const CompleteDataProvider = (props) => {
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
-  console.log(refinedRenderedData);
-
   // Obtain 'authenticated' date that is fed around the application
   useEffect(() => {
     const getData = () => {

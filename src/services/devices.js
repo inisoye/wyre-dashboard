@@ -52,7 +52,7 @@ const getAllData = async () => {
   // const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
   const baseUrl = `${baseUrlPrefix}/2/${endpointDateRange}/${endpointDataTimeInterval}`;
 
-  console.log(baseUrl);
+  // console.log(baseUrl);
 
   const config = {
     headers: { Authorization: token },

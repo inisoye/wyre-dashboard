@@ -9,7 +9,8 @@ import DashboardDoughnutChart from '../components/pieCharts/DashboardDoughnutCha
 import DashboardSmallBannerSection from '../smallComponents/DashboardSmallBannerSection';
 import PrintButtons from '../smallComponents/PrintButtons';
 
-import UpAndDownArrows from '../icons/UpAndDownArrows';
+import DashboardUpArrow from '../icons/DashboardUpArrow';
+import DashboardDownArrow from '../icons/DashboardDownArrow';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -40,6 +41,10 @@ function Dashboard({ match }) {
     yesterday,
     daily_kwh,
   } = refinedRenderedData;
+
+  const todaysValue = today && today.value;
+  const yesterdaysValue = yesterday && yesterday.value;
+  const isTodaysValueLessThanYesterdays = todaysValue < yesterdaysValue;
 
   return (
     <>
@@ -109,8 +114,12 @@ function Dashboard({ match }) {
           <div className='today-usage'>
             <h3 className='today-usage__heading'>Today's Usage (KWh)</h3>
             <div className='usage-value-and-arrow'>
-              <p className='today-usage__value'>{today && today.value}</p>
-              <UpAndDownArrows />
+              <p className='today-usage__value'>{todaysValue}</p>
+              {isTodaysValueLessThanYesterdays ? (
+                <DashboardDownArrow />
+              ) : (
+                <DashboardUpArrow />
+              )}
             </div>
           </div>
           <div className='yesterday-usage'>
@@ -118,10 +127,12 @@ function Dashboard({ match }) {
               Yesterday's Usage (KWh)
             </h3>
             <div className='usage-value-and-arrow'>
-              <p className='yesterday-usage__value'>
-                {yesterday && yesterday.value}
-              </p>
-              <UpAndDownArrows />
+              <p className='yesterday-usage__value'>{yesterdaysValue}</p>
+              {isTodaysValueLessThanYesterdays ? (
+                <DashboardUpArrow />
+              ) : (
+                <DashboardDownArrow />
+              )}
             </div>
           </div>
         </article>
