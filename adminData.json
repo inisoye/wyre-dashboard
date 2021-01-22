@@ -157,6 +157,15 @@
       "plan_months": "10",
       "plan_expiry": "01/09/2021",
       "branches": "10"
+    },
+     {
+      "id": 6,
+      "name": "PL",
+      "phone": "0709231545",
+      "contact_person": "Ben Isong",
+      "plan_months": "10",
+      "plan_expiry": "01/09/2021",
+      "branches": "10"
     }
   ]
 }
