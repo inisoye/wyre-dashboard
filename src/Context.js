@@ -44,8 +44,8 @@ const CompleteDataProvider = (props) => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setUserData] = useState({ name: "John Doe" }); // testing purposes
-  const [token, setToken] = useState("hjhkjkkj"); // testing purposes
+  const [userData, setUserData] = useState({});
+  const [token, setToken] = useState(); 
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
