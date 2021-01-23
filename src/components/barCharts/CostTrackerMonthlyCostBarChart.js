@@ -3,6 +3,8 @@ import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
+// import { numberFormatter } from '../../helpers/numberFormatter';
+
 
 const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -11,6 +13,7 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
 
   const monthlyCostValues = monthlyCostData && monthlyCostData.values;
   const monthlyCostUnit = monthlyCostData && monthlyCostData.units;
+
 
   const options = {
     layout: {

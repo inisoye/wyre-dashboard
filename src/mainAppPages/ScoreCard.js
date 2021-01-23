@@ -15,6 +15,7 @@ import PrintButtons from '../smallComponents/PrintButtons';
 import UpArrowIcon from '../icons/UpArrowIcon';
 
 import { calculateRatio, calculatePercentage } from '../helpers/genericHelpers';
+import { numberFormatter } from "../helpers/numberFormatter";
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -107,12 +108,12 @@ function ScoreCard({ match }) {
           </div>
 
           <p className='score-card-bottom-text'>
-            Baseline Forecast: {baseline_energy && baseline_energy.forecast}
+            Baseline Forecast: {baseline_energy && numberFormatter(baseline_energy.forecast)}
             {baseline_energy && baseline_energy.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
-            So far (Days): {baseline_energy && baseline_energy.used}
+            So far (Days): {baseline_energy && numberFormatter(baseline_energy.used)}
             {baseline_energy && baseline_energy.unit}
           </p>
 
@@ -120,7 +121,7 @@ function ScoreCard({ match }) {
             Saving Inbound of{' '}
             <span className='h-green-text'>
               {baseline_energy &&
-                baseline_energy.forecast - baseline_energy.used}
+                numberFormatter(baseline_energy.forecast - baseline_energy.used)}
               {baseline_energy && baseline_energy.unit}
             </span>
           </p>
@@ -154,12 +155,12 @@ function ScoreCard({ match }) {
 
           <p className='score-card-bottom-text'>
             Average Load:{' '}
-            {peak_to_avg_power_ratio && peak_to_avg_power_ratio.avg}
+            {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.avg)}
             {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
-            Peak Load: {peak_to_avg_power_ratio && peak_to_avg_power_ratio.peak}
+            Peak Load: {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.peak)}
             {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
           </p>
 
@@ -200,14 +201,14 @@ function ScoreCard({ match }) {
           <p className='score-card-bottom-text'>
             Grid Supplied:{' '}
             {score_card_carbon_emissions &&
-              score_card_carbon_emissions.estimated_value}{' '}
+              numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
             Generator:{' '}
             {score_card_carbon_emissions &&
-              score_card_carbon_emissions.actual_value}{' '}
+              numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 

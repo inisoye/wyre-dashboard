@@ -3,6 +3,9 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
+import { numberFormatter } from "../../../helpers/numberFormatter";
+
+
 class TotalDemandTable extends React.Component {
   state = {
     searchText: '',
@@ -93,7 +96,14 @@ class TotalDemandTable extends React.Component {
   };
 
   render() {
-    const data = this.props.data;
+     const data = this.props.data.map((dataItem) => {
+      const { value } = dataItem
+
+      return {
+        ...dataItem,
+        value: numberFormatter(value.toFixed(2))
+      }
+    });
 
     const columns = [
       {
