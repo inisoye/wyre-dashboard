@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
-import dataHttpServices from './services/devices';
+import dataHttpServices from "./services/devices";
 
-import { getRefinedOrganizationData } from './helpers/organizationDataHelpers';
-import { getRenderedData } from './helpers/renderedDataHelpers';
+import { getRefinedOrganizationData } from "./helpers/organizationDataHelpers";
+import { getRenderedData } from "./helpers/renderedDataHelpers";
 
 // create context
 const CompleteDataContext = React.createContext();
@@ -23,29 +23,29 @@ const CompleteDataProvider = (props) => {
     true
   );
 
-  const [currentUrl, setCurrentUrl] = useState('/');
-  const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
+  const [currentUrl, setCurrentUrl] = useState("/");
+  const [powerQualityUnit, setPowerQualityUnit] = useState("Current (Amps)");
   /*
    ** For main app-wide datetime-picker.
    ** New requests fired when datetime range is changed.
    */
   const [userDateRange, setUserDateRange] = useState([]);
   const [parametersDataTimeInterval, setParametersDataTimeInterval] = useState(
-    ''
+    ""
   );
 
   const [isUserAdmin, setIsUserAdmin] = useState(false);
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
-  const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
-  const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
-  const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
-  const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 544px)" });
+  const isMediumScreen = useMediaQuery({ query: "(max-width: 768px)" });
+  const isLargeScreen = useMediaQuery({ query: "(max-width: 1012px)" });
+  const isXLargeScreen = useMediaQuery({ query: "(max-width: 1280px)" });
+  const isLessThan1296 = useMediaQuery({ query: "(max-width: 1296px)" });
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [userData, setUserData] = useState(undefined);
-  const [token, setToken] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({ name: "John Doe" }); // testing purposes
+  const [token, setToken] = useState("hjhkjkkj"); // testing purposes
 
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
 
@@ -92,7 +92,7 @@ const CompleteDataProvider = (props) => {
 
   // Authenticate user based on login details saved to localstorage
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
+    const loggedUserJSON = window.localStorage.getItem("loggedWyreUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setUserId(user.data.id);

@@ -7,7 +7,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
     "antd": "^4.8.5",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "dayjs": "^1.9.7",
