@@ -3,6 +3,8 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
+import { numberFormatter } from "../../../helpers/numberFormatter";
+
 class PhaseBasicMeasurementsTable extends React.Component {
   state = {
     searchText: '',
@@ -93,7 +95,16 @@ class PhaseBasicMeasurementsTable extends React.Component {
   };
 
   render() {
-    const data = this.props.data;
+    const data = this.props.data.map((dataItem) => {
+      const { l1, l2, l3 } = dataItem 
+      
+      return {
+        ...dataItem,
+        l1: numberFormatter(l1.toFixed(2)),
+        l2: numberFormatter(l2.toFixed(2)),
+        l3: numberFormatter(l3.toFixed(2)),
+      }
+    });
 
     const columns = [
       {

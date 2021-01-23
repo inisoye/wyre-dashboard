@@ -3,6 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
+import { numberFormatter } from '../../helpers/numberFormatter';
 
 const VerticalBar = ({ operatingTimeData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -100,15 +101,16 @@ const VerticalBar = ({ operatingTimeData }) => {
   };
 
   return (
-    <div className='score-card-bar-chart-container'>
-      <div className='h-flex'>
-        <h2 className='score-card-heading'>Operating Time</h2>
-        <div className='score-card-bar-chart__text-wrapper'>
+    <div className="score-card-bar-chart-container">
+      <div className="h-flex">
+        <h2 className="score-card-heading">Operating Time</h2>
+        <div className="score-card-bar-chart__text-wrapper">
           <p>
             Total Waste: <strong>{dieselWasted}</strong>
           </p>
           <p>
-            Total Cost: <strong>{`₦ ${estimated_cost.value}`}</strong>
+            Total Cost:{' '}
+            <strong>{`₦ ${numberFormatter(estimated_cost.value)}`}</strong>
           </p>
           <p>
             Total Time: <strong>{timeWasted}</strong>
@@ -116,7 +118,7 @@ const VerticalBar = ({ operatingTimeData }) => {
         </div>
       </div>
 
-      <div className='score-card-bar-chart__chart-wrapper'>
+      <div className="score-card-bar-chart__chart-wrapper">
         <Bar redraw data={data} options={options} />
       </div>
     </div>

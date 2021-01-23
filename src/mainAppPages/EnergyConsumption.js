@@ -8,6 +8,7 @@ import {
   formatParametersTimes,
   formatParameterTableData,
 } from '../helpers/genericHelpers';
+import { numberFormatter} from "../helpers/numberFormatter"
 
 import BreadCrumb from '../components/BreadCrumb';
 import EnergyConsumptionBarChart from '../components/barCharts/EnergyConsumptionBarChart';
@@ -117,7 +118,7 @@ function EnergyConsumption({ match }) {
             Previous
           </span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_previous}kWh
+            {numberFormatter(energy_consumption_previous)}kWh
           </span>
         </p>
         <p className='energy-consumption-middle-card'>
@@ -125,13 +126,13 @@ function EnergyConsumption({ match }) {
             Current
           </span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_current}kWh
+            {numberFormatter(energy_consumption_current)}kWh
           </span>
         </p>
         <p className='energy-consumption-middle-card'>
           <span className='energy-consumption-middle-card-heading'>Usage</span>
           <span className='energy-consumption-middle-card-body'>
-            {energy_consumption_usage}kWh
+            {numberFormatter(energy_consumption_usage)}kWh
           </span>
         </p>
       </div>
