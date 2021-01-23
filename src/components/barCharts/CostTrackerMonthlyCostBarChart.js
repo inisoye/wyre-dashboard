@@ -98,7 +98,7 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
 
   return (
     <>
-      <Bar data={data} options={options} />
+      <Bar redraw data={data} options={options} />
     </>
   );
 };
