@@ -150,6 +150,7 @@ const PowerDemandStackedBarChart = ({
   return (
     <>
       <Bar
+        redraw
         data={plottedData || { datasets: [], labels: [] }}
         options={options}
         plugins={[VerticalLinePlugin]}

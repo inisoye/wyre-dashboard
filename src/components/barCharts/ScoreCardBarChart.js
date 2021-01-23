@@ -119,7 +119,7 @@ const VerticalBar = ({ operatingTimeData }) => {
       </div>
 
       <div className="score-card-bar-chart__chart-wrapper">
-        <Bar data={data} options={options} />
+        <Bar redraw data={data} options={options} />
       </div>
     </div>
   );

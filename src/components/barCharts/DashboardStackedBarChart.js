@@ -122,7 +122,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
 
   return (
     <>
-      <Bar data={plottedData} options={options} />
+      <Bar redraw data={plottedData} options={options} />
     </>
   );
 };
