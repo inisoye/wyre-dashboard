@@ -136,6 +136,7 @@ const CostTrackerConsumptionGroupedBarChart = ({
   return (
     <>
       <Bar
+        redraw
         data={plottedData || { datasets: [], labels: [] }}
         options={options}
       />

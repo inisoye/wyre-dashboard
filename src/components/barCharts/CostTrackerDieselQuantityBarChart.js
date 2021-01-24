@@ -108,7 +108,7 @@ const CostTrackerDieselQuantityBarChart = ({ dieselQuantityData }) => {
 
   return (
     <>
-      <Bar data={data} options={options} />
+      <Bar redraw data={data} options={options} />
     </>
   );
 };

@@ -50,10 +50,10 @@ function BranchesUserForm({ match }) {
 
   const onSubmit = ({ name, phone, email, organisation }) => {
     const newUserData = {
-      name: name,
-      email: email,
-      phone: phone,
-      organisation: organisation,
+      name,
+      email,
+      phone,
+      organisation,
     };
 
     const userAlreadyExists = allUsers.some(

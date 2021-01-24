@@ -1,55 +1,101 @@
-import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
+import React, { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
-import dataHttpServices from "./services/devices";
+import dataHttpServices from './services/devices';
 
-import { getRefinedOrganizationData } from "./helpers/organizationDataHelpers";
-import { getRenderedData } from "./helpers/renderedDataHelpers";
+import { getRefinedOrganizationData } from './helpers/organizationDataHelpers';
+import { getRenderedData } from './helpers/renderedDataHelpers';
 
 // create context
 const CompleteDataContext = React.createContext();
 
 // create provider
 const CompleteDataProvider = (props) => {
+  /* -------------------------------------------------------------------
+  /* Data Control ------------------------------------------------------
+  --------------------------------------------------------------------*/
   const [organization, setOrganization] = useState({});
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
   // Note: the rendered data objects state exludes data for the whole organisation
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
   const [checkedBranches, setCheckedBranches] = useState({});
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
+  /*--------------------------------------------------------------------
 
-  const [currentUrl, setCurrentUrl] = useState("/");
-  const [powerQualityUnit, setPowerQualityUnit] = useState("Current (Amps)");
-  /*
-   ** For main app-wide datetime-picker.
-   ** New requests fired when datetime range is changed.
-   */
+
+
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Nav and Sidebar Controls ------------------------------------------
+  --------------------------------------------------------------------*/
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  /*--------------------------------------------------------------------
+
+
+  
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Topbar Controls ---------------------------------------------------
+  --------------------------------------------------------------------*/
+  const [currentUrl, setCurrentUrl] = useState('/');
+  const [powerQualityUnit, setPowerQualityUnit] = useState('Current (Amps)');
+  // For main app-wide datetime-picker.
+  // New requests fired when datetime range is changed.
   const [userDateRange, setUserDateRange] = useState([]);
   const [parametersDataTimeInterval, setParametersDataTimeInterval] = useState(
-    ""
+    ''
   );
+  /*--------------------------------------------------------------------
 
+
+  
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Authentication ----------------------------------------------------
+  --------------------------------------------------------------------*/
   const [isUserAdmin, setIsUserAdmin] = useState(false);
-
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 544px)" });
-  const isMediumScreen = useMediaQuery({ query: "(max-width: 768px)" });
-  const isLargeScreen = useMediaQuery({ query: "(max-width: 1012px)" });
-  const isXLargeScreen = useMediaQuery({ query: "(max-width: 1280px)" });
-  const isLessThan1296 = useMediaQuery({ query: "(max-width: 1296px)" });
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
+  /*--------------------------------------------------------------------
 
+
+  
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Media Queries -----------------------------------------------------
+  --------------------------------------------------------------------*/
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 544px)' });
+  const isMediumScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const isLargeScreen = useMediaQuery({ query: '(max-width: 1012px)' });
+  const isXLargeScreen = useMediaQuery({ query: '(max-width: 1280px)' });
+  const isLessThan1296 = useMediaQuery({ query: '(max-width: 1296px)' });
+  /*--------------------------------------------------------------------
+
+
+  
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Preloaded Form Data -----------------------------------------------
+  --------------------------------------------------------------------*/
   const [preloadedUserFormData, setPreloadedUserFormData] = useState([]);
+  /*--------------------------------------------------------------------
 
-  // Obtain 'authenticated' date that is fed around the application
+
+  
+
+  --------------------------------------------------------------------*/
+  // Obtain 'authenticated' data that is fed around the application
   useEffect(() => {
     setIsAuthenticatedDataLoading(true);
     const getData = () => {
@@ -68,7 +114,12 @@ const CompleteDataProvider = (props) => {
       getData();
     }
   }, [userData, userDateRange, parametersDataTimeInterval]);
+  /*--------------------------------------------------------------------
 
+
+  
+
+  --------------------------------------------------------------------*/
   // Feed authenticated data into application
   useEffect(() => {
     // Ensure organization object is not empty
@@ -89,10 +140,15 @@ const CompleteDataProvider = (props) => {
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
+  /*--------------------------------------------------------------------
 
+
+  
+
+  --------------------------------------------------------------------*/
   // Authenticate user based on login details saved to localstorage
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedWyreUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setUserId(user.data.id);
@@ -104,6 +160,7 @@ const CompleteDataProvider = (props) => {
   return (
     <CompleteDataContext.Provider
       value={{
+        // Data Control
         organization: organization,
         refinedRenderedData: refinedRenderedData,
         renderedDataObjects: renderedDataObjects,
@@ -114,14 +171,15 @@ const CompleteDataProvider = (props) => {
         setCheckedBranches: setCheckedBranches,
         numberOfCheckedItems: Object.keys(checkedItems).length,
         numberOfCheckedBranches: Object.keys(checkedBranches).length,
+        isAuthenticatedDataLoading: isAuthenticatedDataLoading,
 
+        // Nav and Sidebar Controls
         isNavOpen: isNavOpen,
         setIsNavOpen: setIsNavOpen,
         isSidebarOpen: isSidebarOpen,
         setIsSidebarOpen: setIsSidebarOpen,
 
-        isAuthenticatedDataLoading: isAuthenticatedDataLoading,
-
+        // Topbar Controls
         currentUrl: currentUrl,
         setCurrentUrl: setCurrentUrl,
         powerQualityUnit: powerQualityUnit,
@@ -129,17 +187,9 @@ const CompleteDataProvider = (props) => {
         setUserDateRange: setUserDateRange,
         setParametersDataTimeInterval: setParametersDataTimeInterval,
 
+        // Authentication
         isUserAdmin: isUserAdmin,
         setIsUserAdmin: setIsUserAdmin,
-
-        isSmallScreen: isSmallScreen,
-        isMediumScreen: isMediumScreen,
-        isLargeScreen: isLargeScreen,
-        isXLargeScreen: isXLargeScreen,
-        isLessThan1296: isLessThan1296,
-
-        useMediaQuery: useMediaQuery,
-
         username: username,
         setUsername: setUsername,
         password: password,
@@ -149,6 +199,15 @@ const CompleteDataProvider = (props) => {
         token: token,
         setToken: setToken,
 
+        // Media Queries
+        useMediaQuery: useMediaQuery,
+        isSmallScreen: isSmallScreen,
+        isMediumScreen: isMediumScreen,
+        isLargeScreen: isLargeScreen,
+        isXLargeScreen: isXLargeScreen,
+        isLessThan1296: isLessThan1296,
+
+        // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
       }}
