@@ -8,6 +8,7 @@ import DemandsTable from '../tables/lastReadingsTables/DemandsTable';
 import TotalDemandTable from '../tables/lastReadingsTables/TotalDemandTable';
 
 import ExcelIcon from '../../icons/ExcelIcon';
+import ExportToCsv from '../ExportToCsv';
 
 function LastReadingPageSections({ lrData }) {
   const formattedDate =
@@ -19,6 +20,16 @@ function LastReadingPageSections({ lrData }) {
   const demandData = lrData && lrData.data.demands;
   const totalDemandData = lrData && lrData.data.total_demands;
   const harmonicDistortionData = lrData && lrData.data.harmonic_distortion;
+
+
+  const csvHeaders = [
+    { label: "Phase", key: "name" },
+    { label: "Line 1", key: "l1" },
+    { label: "Line 2", key: "l2" },
+    { label: "Line 3", key: "l3" },
+    { label: "Unit", key: "unit" },
+  ]
+
 
   return (
     <section className='parameter-section'>
@@ -33,9 +44,11 @@ function LastReadingPageSections({ lrData }) {
               <button type='button' className='table-header__left-button'>
                 PDF
               </button>
-              <button type='button' className='table-header__left-button'>
-                CSV
-              </button>
+              <ExportToCsv filename={`${lrData && lrData.deviceName} last-reading.csv`} csvHeaders={csvHeaders} csvData={phaseMeasuresData}>
+                <button type='button' className='table-header__left-button'>
+                  CSV
+                </button>
+              </ExportToCsv>
             </div>
 
             <h2 className='table-header__heading'>Last Reading Raw Logs</h2>

@@ -1,5 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import CompleteDataContext from '../Context';
+import { CSVLink } from "react-csv";
+import { notification } from "antd"
 
 import {
   formatParametersDatetimes,
@@ -16,6 +18,7 @@ import Loader from '../components/Loader';
 import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
+import ExportToCsv from '../components/ExportToCsv';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -106,10 +109,20 @@ function PowerDemand({ match }) {
       currentValue.index = index + 1;
       return currentValue;
     });
-  
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+
+  const csvHeaders = [
+    { label: "Index", key: "index" },
+    { label: "Date", key: "date" },
+    { label: "Time", key: "time" },
+    { label: "Source", key: "source" },
+    { label: `Minimum ${powerDemandUnit}`, key: "min" },
+    { label: `Maximum ${powerDemandUnit}`, key: "max" },
+    { label: `Average ${powerDemandUnit}`, key: "avg" },
+  ]
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -134,9 +147,11 @@ function PowerDemand({ match }) {
             <button type='button' className='table-header__left-button'>
               PDF
             </button>
-            <button type='button' className='table-header__left-button'>
-              CSV
-            </button>
+            <ExportToCsv filename={"power-demand.csv"} csvHeaders={csvHeaders} csvData={formattedTableDataWithIndex}>
+              <button type='button' className='table-header__left-button'>
+                CSV
+              </button>
+            </ExportToCsv>
           </div>
 
           <h3 className='table-header__heading'>Raw Logs</h3>

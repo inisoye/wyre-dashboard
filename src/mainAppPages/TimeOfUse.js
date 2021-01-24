@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-
 import CompleteDataContext from '../Context';
 
 import {
@@ -17,6 +16,7 @@ import Loader from '../components/Loader';
 import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
+import ExportToCsv from '../components/ExportToCsv';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -84,6 +84,17 @@ function TimeOfUse({ match }) {
       formatParameterTableData(tableHeadings, eachBranchTableValues)
     );
 
+  const csvHeaders = [
+    { label: "Index", key: "index" },
+    { label: "Date", key: "date" },
+    { label: "Gen 1", key: "gen1" },
+    { label: "Gen 2", key: "gen2" },
+    { label: "Active Gen", key: "active_gen" },
+    { label: "First Time ON", key: "time_on" },
+    { label: "Last Time OFF", key: "time_off" },
+    { label: "Hours of Use", key: "hours_of_use" },
+  ]
+
   const timeOfUseTables =
     arrayOfFormattedTableData &&
     arrayOfFormattedTableData.map((eachBranch) => (
@@ -93,9 +104,11 @@ function TimeOfUse({ match }) {
             <button type='button' className='table-header__left-button'>
               PDF
             </button>
-            <button type='button' className='table-header__left-button'>
-              CSV
+            <ExportToCsv filename={`${eachBranch[0].branchName} time-of-use.csv`} csvHeaders={csvHeaders} csvData={eachBranch}>
+              <button type='button' className='table-header__left-button'>
+                CSV
             </button>
+            </ExportToCsv>
           </div>
 
           <h3 className='table-header__heading'>
