@@ -108,6 +108,7 @@ class PowerQualityTable extends React.Component {
         power_factor: numberFormatter(power_factor.toFixed(2))
       }
     });
+    
     const unit = this.props.powerQualityUnit;
 
     const columns = [

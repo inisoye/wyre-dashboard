@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 
+
 import CompleteDataContext from '../Context';
 
 import {
@@ -7,8 +8,9 @@ import {
   formatParametersDates,
   formatParametersTimes,
   formatParameterTableData,
+  toCamelCase,
 } from '../helpers/genericHelpers';
-import { numberFormatter} from "../helpers/numberFormatter"
+import { numberFormatter } from "../helpers/numberFormatter"
 
 import BreadCrumb from '../components/BreadCrumb';
 import EnergyConsumptionBarChart from '../components/barCharts/EnergyConsumptionBarChart';
@@ -18,6 +20,7 @@ import Loader from '../components/Loader';
 import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
+import ExportToCsv from '../components/ExportToCsv';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -92,9 +95,25 @@ function EnergyConsumption({ match }) {
     tableValues
   );
 
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+
+  // const csvHeaders = formattedTableData && Object.keys(formattedTableData[0]).map(key => {
+  //   return {
+  //     label: key,
+  //     key: key
+  //   }
+  // })
+
+  const csvHeaders = [
+    { label: "Index", key: "index" },
+    { label: "Date", key: "date" },
+    { label: "time", key: "time" },
+    { label: "Richmond Gate IPP", key: "Richmond Gate IPP" },
+    { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
+  ]
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -143,9 +162,11 @@ function EnergyConsumption({ match }) {
             <button type='button' className='table-header__left-button'>
               PDF
             </button>
-            <button type='button' className='table-header__left-button'>
-              CSV
-            </button>
+            <ExportToCsv filename={"energy-consumption-logs.csv"} csvData={formattedTableData} csvHeaders={csvHeaders}>
+              <button type='button' className='table-header__left-button'>
+                CSV
+              </button>
+            </ExportToCsv>
           </div>
 
           <h3 className='table-header__heading'>Raw Logs</h3>
