@@ -33,17 +33,17 @@ class EnergyConsumptionTable extends React.Component {
         />
         <Space>
           <Button
-            type='primary'
+            type="primary"
             onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size='small'
+            size="small"
             style={{ width: 90 }}
           >
             Search
           </Button>
           <Button
             onClick={() => this.handleReset(clearFilters)}
-            size='small'
+            size="small"
             style={{ width: 90 }}
           >
             Reset
@@ -104,7 +104,7 @@ class EnergyConsumptionTable extends React.Component {
       });
 
     const deviceNames =
-      dataForEnergyConsumptionColumns &&
+      dataForEnergyConsumptionColumns.length &&
       Object.keys(dataForEnergyConsumptionColumns[0]);
 
     const energyConsumptionColumns =
@@ -148,7 +148,7 @@ class EnergyConsumptionTable extends React.Component {
     return (
       <>
         <Table
-          className='table-striped-rows'
+          className="table-striped-rows"
           columns={columns}
           dataSource={data}
           rowKey={(record) => record.id}
