@@ -26,17 +26,24 @@ function SidebarBranch({ branchData }) {
     setCheckedItems,
     checkedBranches,
     setCheckedBranches,
+    checkedDevices,
   } = useContext(CompleteDataContext);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
+  // Check if checkedDevices is empty
+  const isAnyDeviceChecked =
+    Object.keys(checkedDevices).length > 0 &&
+    checkedDevices.constructor === Object;
+
   const Icon = isOpen ? (
-    <ChevronUp className='h-white-fill-medium-up' />
+    <ChevronUp className="h-white-fill-medium-up" />
   ) : (
-    <ChevronDown className='h-white-fill-medium-up' />
+    <ChevronDown className="h-white-fill-medium-up" />
   );
+
   const checkBoxName = toCamelCase(branchData.name);
 
   const deviceComponents =
@@ -184,21 +191,22 @@ function SidebarBranch({ branchData }) {
   };
 
   return (
-    <li className='sidebar-branch'>
-      <div className='sidebar-branch__details'>
+    <li className="sidebar-branch">
+      <div className="sidebar-branch__details">
         <div>
           <Checkbox
-            className='sidebar-branch__checkbox sidebar-checkbox'
+            className="sidebar-branch__checkbox sidebar-checkbox"
             name={checkBoxName}
             onChange={handleCheck}
+            disabled={isAnyDeviceChecked}
           >
             {branchData.name}
           </Checkbox>
         </div>
         {branchData.devices ? (
           <button
-            type='button'
-            className='sidebar-branch__button'
+            type="button"
+            className="sidebar-branch__button"
             onClick={handleToggle}
           >
             {Icon}
@@ -208,7 +216,7 @@ function SidebarBranch({ branchData }) {
         )}
       </div>
 
-      <ul className='sidebar-branch__devices'>{deviceComponents}</ul>
+      <ul className="sidebar-branch__devices">{deviceComponents}</ul>
     </li>
   );
 }

@@ -29,7 +29,15 @@ function SidebarDevice({
     setRenderedDataObjects,
     checkedItems,
     setCheckedItems,
+    checkedDevices,
+    setCheckedDevices,
+    checkedBranches,
   } = useContext(CompleteDataContext);
+
+  // Check if checkedBranches is empty
+  const isAnyBranchChecked =
+    Object.keys(checkedBranches).length > 0 &&
+    checkedBranches.constructor === Object;
 
   const checkBoxName = toCamelCase(modifiedDeviceName);
 
@@ -247,6 +255,11 @@ function SidebarDevice({
         ...checkedItems,
         [modifiedDeviceName]: true,
       });
+
+      setCheckedDevices({
+        ...checkedDevices,
+        [modifiedDeviceName]: true,
+      });
     } else {
       const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
       delete modifiedRenderedDataObjects[modifiedDeviceName];
@@ -259,16 +272,23 @@ function SidebarDevice({
       setCheckedItems({
         ...modifiedCheckedItems,
       });
+
+      const modifiedCheckedDevices = cloneObject(checkedDevices);
+      delete modifiedCheckedDevices[modifiedDeviceName];
+      setCheckedDevices({
+        ...modifiedCheckedDevices,
+      });
     }
   };
 
   return (
-    <li className='sidebar-device'>
-      <div className='sidebar-device__details'>
+    <li className="sidebar-device">
+      <div className="sidebar-device__details">
         <Checkbox
-          className='sidebar-device__checkbox sidebar-checkbox'
+          className="sidebar-device__checkbox sidebar-checkbox"
           name={checkBoxName}
           onChange={handleCheck}
+          disabled={isAnyBranchChecked}
         >
           {originalDeviceName}
         </Checkbox>
