@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { DatePicker } from 'antd';
+import { DatePicker, notification } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
 
@@ -16,6 +16,13 @@ const breadCrumbRoutes = [
   { url: '/cost-tracker', name: 'Cost Tracker', id: 2 },
   { url: '#', name: 'Add Equipment', id: 3 },
 ];
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Submission Successful',
+    description: `Equipment list successfully updated`,
+  });
+};
 
 function AddEquipment({ match }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
@@ -45,9 +52,9 @@ function AddEquipment({ match }) {
 
   const equipmentPurchaseDatePicker = (
     <DatePicker
-      format='DD-MM-YYYY'
-      className='generic-input'
-      id='equipment-purchase-date'
+      format="DD-MM-YYYY"
+      className="generic-input"
+      id="equipment-purchase-date"
       onChange={(e) => setValue('equipmentPurchaseDate', e.target.value, true)}
     />
   );
@@ -71,6 +78,7 @@ function AddEquipment({ match }) {
       .then((returnedEquipment) => {
         console.log(returnedEquipment);
         setAllEquipment(allEquipment.concat(returnedEquipment));
+        openNotificationWithIcon('success');
       })
       .catch((error) => {
         console.log(error.response);
@@ -83,81 +91,81 @@ function AddEquipment({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
 
-      <div className='cost-tracker-forms-content-wrapper'>
-        <h1 className='center-main-heading'>Equipment</h1>
+      <div className="cost-tracker-forms-content-wrapper">
+        <h1 className="center-main-heading">Equipment</h1>
 
-        <section className='cost-tracker-form-section'>
-          <h2 className='form-section-heading cost-tracker-form-section__heading'>
+        <section className="cost-tracker-form-section">
+          <h2 className="form-section-heading cost-tracker-form-section__heading">
             Add Equipment
           </h2>
 
           <form
-            className='cost-tracker-form'
-            action='#'
+            className="cost-tracker-form"
+            action="#"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className='cost-tracker-form-inputs-wrapper'>
-              <div className='cost-tracker-input-container'>
+            <div className="cost-tracker-form-inputs-wrapper">
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='equipment-name'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="equipment-name"
                 >
                   Equipment Name
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  name='equipmentName'
-                  id='equipment-name'
-                  placeholder='Television'
+                  className="generic-input"
+                  type="text"
+                  name="equipmentName"
+                  id="equipment-name"
+                  placeholder="Television"
                   ref={register}
                   required
                   autoFocus
                 />
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='equipment-wattage'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="equipment-wattage"
                 >
                   Wattage (watts)
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='equipmentWattage'
-                  id='equipment-wattage'
-                  placeholder='200'
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="equipmentWattage"
+                  id="equipment-wattage"
+                  placeholder="200"
                   ref={register({
                     required: true,
                     pattern: /^-?\d+\.?\d*$/,
                   })}
                   required
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errors.equipmentWattage && 'Please enter a number'}
                 </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='equipment-purchase-date'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="equipment-purchase-date"
                 >
                   Date Purchased
                 </label>
                 <Controller
                   as={equipmentPurchaseDatePicker}
-                  name='equipmentPurchaseDate'
+                  name="equipmentPurchaseDate"
                   control={control}
-                  defaultValue=''
+                  defaultValue=""
                   rules={{
                     required: true,
                   }}
@@ -168,50 +176,50 @@ function AddEquipment({ match }) {
                   }
                   help={errors.equipmentPurchaseDate && 'Please select a date'}
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errors.equipmentPurchaseDate && 'Please select a date'}
                 </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='equipment-quantity'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="equipment-quantity"
                 >
                   Quantity
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='equipmentQuantity'
-                  id='equipment-quantity'
-                  placeholder='1'
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="equipmentQuantity"
+                  id="equipment-quantity"
+                  placeholder="1"
                   ref={register({
                     required: true,
                     pattern: /^-?\d+\.?\d*$/,
                   })}
                   required
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errors.equipmentQuantity && 'Please enter a number'}
                 </p>
               </div>
             </div>
 
-            <button className='generic-submit-button cost-tracker-form-submit-button'>
+            <button className="generic-submit-button cost-tracker-form-submit-button">
               Add
             </button>
           </form>
         </section>
       </div>
 
-      <article className='equipment-table-container'>
-        <h2 className='equipment-table-container__heading form-section-heading cost-tracker-form-section__heading'>
+      <article className="equipment-table-container">
+        <h2 className="equipment-table-container__heading form-section-heading cost-tracker-form-section__heading">
           List of Equipment
         </h2>
 
-        <div className='equipment-table-wrapper'>
+        <div className="equipment-table-wrapper">
           {<ListOfEquipmentTable listOfEquipmentData={allEquipment} />}
         </div>
       </article>

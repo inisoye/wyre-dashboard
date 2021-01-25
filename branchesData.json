@@ -91,11 +91,9 @@
     {
       "id": 1,
       "name": "Bolaji Thomas",
-      "email": "Bolaji@gmail.com",
       "phone": "08063214578",
-      "organisation": "Alphamead",
-      "branch": "Yaba",
-      "added": "10/11/2019"
+      "email": "Bolaji@gmail.com",
+      "organisation": "Alphamead"
     },
     {
       "id": 2,

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { notification } from 'antd';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
@@ -12,6 +13,13 @@ const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '/password', name: 'Password', id: 2 },
 ];
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Password Updated',
+    description: `Your password has been successfully updated`,
+  });
+};
 
 function Password({ match }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
@@ -26,6 +34,9 @@ function Password({ match }) {
 
   const onSubmit = ({ oldPassword, newPassword1, newPassword2 }) => {
     console.log(oldPassword, newPassword1, newPassword2);
+
+    openNotificationWithIcon('success');
+
     reset();
   };
 
