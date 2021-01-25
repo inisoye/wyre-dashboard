@@ -369,8 +369,20 @@
   height: 44px;
   padding: 4px;
   width: 44px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     border-color: $purple;
   }
+}
+
+.header-avatar__image {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  max-width: 40px;
+  font-size: 12px;
 }

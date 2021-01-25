@@ -95,7 +95,7 @@ const CompleteDataProvider = (props) => {
   
 
   --------------------------------------------------------------------*/
-  // Obtain 'authenticated' date that is fed around the application
+  // Obtain 'authenticated' data that is fed around the application
   useEffect(() => {
     setIsAuthenticatedDataLoading(true);
     const getData = () => {

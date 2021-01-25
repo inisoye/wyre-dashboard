@@ -1,0 +1,20 @@
+{
+  "alertsAndAlarms": {
+    "highPowerFactor": "2.5",
+    "lowPowerFactor": "1",
+    "powerFactorChecked": true,
+    "loadBalanceIssuesChecked": false,
+    "frequencyVariance": "",
+    "frequencyVarianceChecked": false,
+    "highVoltage": "",
+    "lowVoltage": "",
+    "voltageChecked": false,
+    "eliminatedCo2Checked": true,
+    "setCo2Checked": false,
+    "generatorOnChecked": false,
+    "loadExcess": "30",
+    "loadExcessChecked": true,
+    "priorityPowerUnusedChecked": false,
+    "generatorMaintenanceTimeChecked": true
+  }
+}

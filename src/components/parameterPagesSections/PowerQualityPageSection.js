@@ -13,6 +13,7 @@ import PowerQualityLineChart from '../lineCharts/PowerQualityLineChart';
 import PowerQualityTable from '../tables/PowerQualityTable';
 
 import ExcelIcon from '../../icons/ExcelIcon';
+import ExportToCsv from '../ExportToCsv';
 
 function PowerQualityPageSection({ pqData }) {
   // Obtain selected unit from context API
@@ -67,6 +68,24 @@ function PowerQualityPageSection({ pqData }) {
     tableValues
   );
 
+
+  // const csvHeaders = formattedTableData && Object.keys(formattedTableData[0]).map(key => ({
+  //   label: "",
+  //   key: key
+  // }))
+
+  const csvHeaders = [
+    { label: "Index", key: "index" },
+    { label: "Date", key: "date" },
+    { label: "Time", key: "time" },
+    { label: "Line 1", key: "l1" },
+    { label: "Line 2", key: "l2" },
+    { label: "Line 3", key: "l3" },
+    { label: "Neutral", key: "neutral" },
+    { label: "Frequency", key: "frequency" },
+    { label: "Power Factor", key: "power_factor" }
+  ]
+
   return (
     <section className='parameter-section'>
       <h2 className='parameter-section__heading'>
@@ -87,9 +106,11 @@ function PowerQualityPageSection({ pqData }) {
             <button type='button' className='table-header__left-button'>
               PDF
             </button>
-            <button type='button' className='table-header__left-button'>
-              CSV
+            <ExportToCsv filename={`${pqData && pqData.deviceName} power-quality.csv`} csvHeaders={csvHeaders} csvData={formattedTableData}>
+              <button type='button' className='table-header__left-button'>
+                CSV
             </button>
+            </ExportToCsv>
           </div>
 
           <h3 className='table-header__heading'>Raw Logs</h3>
