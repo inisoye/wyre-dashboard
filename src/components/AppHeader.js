@@ -212,7 +212,9 @@ function Header() {
               >
                 <img
                   className="header-avatar__image"
-                  src={`https://wyreng.xyz${avatarImage}`}
+                  src={
+                    organisationName ? `https://wyreng.xyz${avatarImage}` : ''
+                  }
                   alt={
                     organisationName
                       ? `Avatar for ${organisationName}`
@@ -315,7 +317,7 @@ function Header() {
           >
             <img
               className="header-avatar__image"
-              src={`https://wyreng.xyz${avatarImage}`}
+              src={organisationName ? `https://wyreng.xyz${avatarImage}` : ''}
               alt={
                 organisationName ? `Avatar for ${organisationName}` : 'Avatar'
               }
