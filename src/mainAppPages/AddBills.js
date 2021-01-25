@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { DatePicker, Select } from 'antd';
+import { DatePicker, Select, notification } from 'antd';
 import moment from 'moment';
 import CompleteDataContext from '../Context';
 
@@ -20,6 +20,13 @@ const breadCrumbRoutes = [
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
+const openNotificationWithIcon = (type, formName) => {
+  notification[type]({
+    message: 'Bill Updated',
+    description: `Your addition to the ${formName} has been successfully submitted`,
+  });
+};
+
 function AddBills({ match }) {
   const { setCurrentUrl, isAuthenticatedDataLoading } = useContext(
     CompleteDataContext
@@ -34,6 +41,7 @@ function AddBills({ match }) {
   const {
     register: registerPurchaseTracker,
     handleSubmit: handleSubmitPurchaseTracker,
+    reset: resetPurchaseTracker,
     setValue: setValuePurchaseTracker,
     control: controlPurchaseTracker,
     errors: errorsPurchaseTracker,
@@ -42,6 +50,7 @@ function AddBills({ match }) {
   const {
     register: registerPaymentTrackerPre,
     handleSubmit: handleSubmitPaymentTrackerPre,
+    reset: resetPaymentTrackerPre,
     setValue: setValuePaymentTrackerPre,
     control: controlPaymentTrackerPre,
     errors: errorsPaymentTrackerPre,
@@ -50,6 +59,7 @@ function AddBills({ match }) {
   const {
     register: registerPaymentTrackerPost,
     handleSubmit: handleSubmitPaymentTrackerPost,
+    reset: resetPaymentTrackerPost,
     setValue: setValuePaymentTrackerPost,
     control: controlPaymentTrackerPost,
     errors: errorsPaymentTrackerPost,
@@ -57,9 +67,9 @@ function AddBills({ match }) {
 
   const fuelPurchaseDatePicker = (
     <DatePicker
-      format='DD-MM-YYYY'
-      className='generic-input'
-      id='fuel-purchase-date'
+      format="DD-MM-YYYY"
+      className="generic-input"
+      id="fuel-purchase-date"
       onChange={(e) =>
         setValuePurchaseTracker('fuelPurchaseDate', e.target.value, true)
       }
@@ -68,18 +78,18 @@ function AddBills({ match }) {
 
   const fuelTypeSelector = (
     <Select
-      className='cost-tracker-select h-4-br fuel-type-selector'
-      id='fuel-type'
-      defaultValue='diesel'
+      className="cost-tracker-select h-4-br fuel-type-selector"
+      id="fuel-type"
+      defaultValue="diesel"
       suffixIcon={<CaretDownFilled />}
       onChange={(e) =>
         setValuePurchaseTracker('fuelType', e.target.value, true)
       }
     >
-      <Option className='fuel-type-option' value='diesel'>
+      <Option className="fuel-type-option" value="diesel">
         Diesel
       </Option>
-      <Option className='fuel-type-option' value='petrol'>
+      <Option className="fuel-type-option" value="petrol">
         Petrol
       </Option>
     </Select>
@@ -87,9 +97,9 @@ function AddBills({ match }) {
 
   const utilityPaymentPreDatePicker = (
     <DatePicker
-      format='DD-MM-YYYY'
-      className='generic-input'
-      id='utility-payment-pre-date'
+      format="DD-MM-YYYY"
+      className="generic-input"
+      id="utility-payment-pre-date"
       onChange={(e) =>
         setValuePaymentTrackerPre('utilityPaymentDate', e.target.value, true)
       }
@@ -98,9 +108,9 @@ function AddBills({ match }) {
 
   const utilityPaymentPostDatePicker = (
     <RangePicker
-      format='DD-MM-YYYY'
-      className='post-date-range-picker'
-      id='utility-payment-post-date'
+      format="DD-MM-YYYY"
+      className="post-date-range-picker"
+      id="utility-payment-post-date"
       onChange={(e) =>
         setValuePaymentTrackerPost('utilityPaymentDate', e.target.value, true)
       }
@@ -121,6 +131,13 @@ function AddBills({ match }) {
     fuelType,
   }) => {
     console.log(fuelQuantity, fuelPricePerLitre, fuelPurchaseDate, fuelType);
+
+    openNotificationWithIcon('success', 'fuel purchase tracker');
+
+    // Reset form fields. Controller value is set manually
+    setValuePurchaseTracker('fuelPurchaseDate', undefined);
+    setValuePurchaseTracker('fuelType', undefined);
+    resetPurchaseTracker();
   };
 
   const onUtilityPaymentTrackerPreSubmit = ({
@@ -135,6 +152,12 @@ function AddBills({ match }) {
       utilityPaymentPreTariff,
       utilityPaymentPreValue
     );
+
+    openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+
+    // Reset form fields. Controller value is set manually
+    setValuePurchaseTracker('utilityPaymentPreDate', undefined);
+    resetPaymentTrackerPre();
   };
 
   const onUtilityPaymentTrackerPostSubmit = ({
@@ -149,6 +172,12 @@ function AddBills({ match }) {
       utilityPaymentPostTariff,
       utilityPaymentPostValue
     );
+
+    openNotificationWithIcon('success', 'post-paid utility payment tracker');
+
+    // Reset form fields. Controller value is set manually
+    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {
@@ -157,74 +186,88 @@ function AddBills({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
 
-      <div className='cost-tracker-forms-content-wrapper'>
-        <h1 className='center-main-heading'>Add Bills</h1>
+      <div className="cost-tracker-forms-content-wrapper">
+        <h1 className="center-main-heading">Add Bills</h1>
 
-        <section className='cost-tracker-form-section add-bills-section'>
-          <h2 className='form-section-heading add-bills-section__heading'>
+        <section className="cost-tracker-form-section add-bills-section">
+          <h2 className="form-section-heading add-bills-section__heading">
             Diesel/Petrol Purchase Tracker
           </h2>
 
           <form
-            className='cost-tracker-form'
-            action='#'
+            className="cost-tracker-form"
+            action="#"
             onSubmit={handleSubmitPurchaseTracker(onPurchaseTrackerSubmit)}
           >
-            <div className='cost-tracker-form-inputs-wrapper'>
-              <div className='cost-tracker-input-container'>
+            <div className="cost-tracker-form-inputs-wrapper">
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='fuel-quantity'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-quantity"
                 >
                   Quantity
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='fuelQuantity'
-                  id='fuel-quantity'
-                  ref={registerPurchaseTracker}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelQuantity"
+                  id="fuel-quantity"
+                  ref={registerPurchaseTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                   autoFocus
                 />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelQuantity &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='fuel-price-per-litre'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-price-per-litre"
                 >
                   Price/Litre
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='fuelPricePerLitre'
-                  id='fuel-price-per-litre'
-                  ref={registerPurchaseTracker}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelPricePerLitre"
+                  id="fuel-price-per-litre"
+                  ref={registerPurchaseTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelPricePerLitre &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='fuel-purchase-date'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-purchase-date"
                 >
                   Date
                 </label>
                 <Controller
                   as={fuelPurchaseDatePicker}
-                  name='fuelPurchaseDate'
+                  name="fuelPurchaseDate"
                   control={controlPurchaseTracker}
-                  defaultValue=''
+                  defaultValue=""
                   rules={{
                     required: true,
                   }}
@@ -239,25 +282,25 @@ function AddBills({ match }) {
                     'Please enter a date'
                   }
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errorsPurchaseTracker.fuelPurchaseDate &&
                     'Please enter a date'}
                 </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='fuel-type'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-type"
                 >
                   Diesel/Petrol
                 </label>
 
                 <Controller
                   as={fuelTypeSelector}
-                  name='fuelType'
+                  name="fuelType"
                   control={controlPurchaseTracker}
-                  defaultValue=''
+                  defaultValue=""
                   rules={{
                     required: true,
                   }}
@@ -265,60 +308,67 @@ function AddBills({ match }) {
                     errorsPurchaseTracker.fuelType && 'Please enter a fuel type'
                   }
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errorsPurchaseTracker.fuelType && 'Please enter a fuel type'}
                 </p>
               </div>
             </div>
-            <button className='generic-submit-button cost-tracker-form-submit-button'>
+            <button className="generic-submit-button cost-tracker-form-submit-button">
               Submit
             </button>
           </form>
         </section>
 
-        <section className='cost-tracker-form-section'>
-          <h2 className='form-section-heading'>
+        <section className="cost-tracker-form-section">
+          <h2 className="form-section-heading">
             Utility Payment Tracker (Pre-paid)
           </h2>
 
           <form
-            className='cost-tracker-form'
-            action='#'
+            className="cost-tracker-form"
+            action="#"
             onSubmit={handleSubmitPaymentTrackerPre(
               onUtilityPaymentTrackerPreSubmit
             )}
           >
-            <div className='cost-tracker-form-inputs-wrapper'>
-              <div className='cost-tracker-input-container'>
+            <div className="cost-tracker-form-inputs-wrapper">
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-pre-amount'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-pre-amount"
                 >
                   Amount
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPreAmount'
-                  id='utility-payment-pre-amount'
-                  ref={registerPaymentTrackerPre}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPreAmount"
+                  id="utility-payment-pre-amount"
+                  ref={registerPaymentTrackerPre({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPre.utilityPaymentPreAmount &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-pre-date'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-pre-date"
                 >
                   Date of Purchase
                 </label>
                 <Controller
                   as={utilityPaymentPreDatePicker}
-                  name='utilityPaymentPreDate'
+                  name="utilityPaymentPreDate"
                   control={controlPaymentTrackerPre}
-                  defaultValue=''
+                  defaultValue=""
                   rules={{
                     required: true,
                   }}
@@ -333,156 +383,189 @@ function AddBills({ match }) {
                     'Please enter a date'
                   }
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errorsPaymentTrackerPre.utilityPaymentPreDate &&
                     'Please enter a date'}
                 </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-pre-tariff'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-pre-tariff"
                 >
                   Tariff (if applicable)
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPreTariff'
-                  id='utility-payment-pre-tariff'
-                  ref={registerPaymentTrackerPre}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPreTariff"
+                  id="utility-payment-pre-tariff"
+                  ref={registerPaymentTrackerPre({
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPre.utilityPaymentPreTariff &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-pre-value'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-pre-value"
                 >
                   Value (kWh)
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPreValue'
-                  id='utility-payment-pre-value'
-                  ref={registerPaymentTrackerPre}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPreValue"
+                  id="utility-payment-pre-value"
+                  ref={registerPaymentTrackerPre({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPre.utilityPaymentPreValue &&
+                    'Please enter a number'}
+                </p>
               </div>
             </div>
 
-            <button className='generic-submit-button cost-tracker-form-submit-button'>
+            <button className="generic-submit-button cost-tracker-form-submit-button">
               Submit
             </button>
           </form>
         </section>
 
-        <section className='cost-tracker-form-section'>
-          <h2 className='form-section-heading'>
+        <section className="cost-tracker-form-section">
+          <h2 className="form-section-heading">
             Utility Payment Tracker (Post-paid)
           </h2>
 
           <form
-            className='cost-tracker-form'
-            action='#'
+            className="cost-tracker-form"
+            action="#"
             onSubmit={handleSubmitPaymentTrackerPost(
               onUtilityPaymentTrackerPostSubmit
             )}
           >
-            <div className='cost-tracker-form-inputs-wrapper'>
-              <div className='cost-tracker-input-container'>
+            <div className="cost-tracker-form-inputs-wrapper">
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-post-amount'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-post-amount"
                 >
                   Amount
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPostAmount'
-                  id='utility-payment-post-amount'
-                  ref={registerPaymentTrackerPost}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPostAmount"
+                  id="utility-payment-post-amount"
+                  ref={registerPaymentTrackerPost({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPost.utilityPaymentPostAmount &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-post-date'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-post-date"
                 >
                   Period Covered
                 </label>
                 <Controller
                   as={utilityPaymentPostDatePicker}
-                  name='utilityPaymentPostDate'
+                  name="utilityPaymentPostDate"
                   control={controlPaymentTrackerPost}
-                  defaultValue=''
+                  defaultValue=""
                   rules={{
                     required: true,
                   }}
                   validateStatus={
                     errorsPaymentTrackerPost.utilityPaymentPostDate &&
-                    'Please enter a date'
+                    'Please enter a date range'
                       ? 'error'
                       : ''
                   }
                   help={
                     errorsPaymentTrackerPost.utilityPaymentPostDate &&
-                    'Please enter a date'
+                    'Please enter a date range'
                   }
                 />
-                <p className='input-error-message'>
+                <p className="input-error-message">
                   {errorsPaymentTrackerPost.utilityPaymentPostDate &&
-                    'Please enter a date'}
+                    'Please enter a date range'}
                 </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-post-tariff'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-post-tariff"
                 >
                   Tariff (if applicable)
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPostTariff'
-                  id='utility-payment-post-tariff'
-                  ref={registerPaymentTrackerPost}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPostTariff"
+                  id="utility-payment-post-tariff"
+                  ref={registerPaymentTrackerPost({
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPost.utilityPaymentPostTariff &&
+                    'Please enter a number'}
+                </p>
               </div>
 
-              <div className='cost-tracker-input-container'>
+              <div className="cost-tracker-input-container">
                 <label
-                  className='generic-input-label cost-tracker-input-label'
-                  htmlFor='utility-payment-post-value'
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="utility-payment-post-value"
                 >
                   Value (kWh)
                 </label>
                 <input
-                  className='generic-input'
-                  type='text'
-                  inputMode='decimal'
-                  name='utilityPaymentPostValue'
-                  id='utility-payment-post-value'
-                  ref={registerPaymentTrackerPost}
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="utilityPaymentPostValue"
+                  id="utility-payment-post-value"
+                  ref={registerPaymentTrackerPost({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
                   required
                 />
+                <p className="input-error-message">
+                  {errorsPaymentTrackerPost.utilityPaymentPostValue &&
+                    'Please enter a number'}
+                </p>
               </div>
             </div>
 
             <button
-              type='submit'
-              className='generic-submit-button cost-tracker-form-submit-button'
+              type="submit"
+              className="generic-submit-button cost-tracker-form-submit-button"
             >
               Submit
             </button>
