@@ -13,8 +13,6 @@ import MessageIcon from '../icons/MessageIcon';
 import NotificationIcon from '../icons/NotificationIcon';
 import ChevronDown from '../icons/ChevronDown';
 
-import avatar from '../images/avatar.png';
-
 import HeaderLinkWithDropdown from './groups/HeaderLinkWithDropdown';
 import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropdown';
 import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
@@ -32,11 +30,14 @@ function Header() {
     isSidebarOpen,
     setIsSidebarOpen,
     setUserData,
+    organization,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
+
+  const { image: avatarImage, name: organisationName } = organization;
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -72,55 +73,55 @@ function Header() {
   };
 
   return (
-    <header className='header'>
-      <HeaderGroup1AndNav className='header-group-1-and-nav'>
+    <header className="header">
+      <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
-        <div className='header-group-1'>
+        <div className="header-group-1">
           <button
-            type='button'
-            className='headerMenu-button dotmenu-button h-hidden-medium-up'
+            type="button"
+            className="headerMenu-button dotmenu-button h-hidden-medium-up"
             onClick={toggleSidebar}
           >
-            <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
+            <VerticalDots className="headerMenu-button__image dotmenu-button__image" />
           </button>
 
-          <div className='header-logo-container'>
-            <Link className='header-logo' to='/'>
-              <Logo className='header-logo__image header- h-white-fill-medium-up' />
+          <div className="header-logo-container">
+            <Link className="header-logo" to="/">
+              <Logo className="header-logo__image header- h-white-fill-medium-up" />
             </Link>
           </div>
 
           <button
-            type='button'
-            className='headerMenu-button hamburger-button h-hidden-1296-up'
+            type="button"
+            className="headerMenu-button hamburger-button h-hidden-1296-up"
             onClick={toggleNav}
           >
-            <Hamburger className='headerMenu-button__image hamburger-button__image' />
+            <Hamburger className="headerMenu-button__image hamburger-button__image" />
           </button>
         </div>
         <nav
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
-          <ul className='header-nav-list'>
-            <HeaderLink onClick={toggleNav} url='/' linkText='Dashboard' />
+          <ul className="header-nav-list">
+            <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
             <HeaderLink
               onClick={toggleNav}
-              url='/score-card'
-              linkText='Score Card'
+              url="/score-card"
+              linkText="Score Card"
             />
 
             <HeaderLinkWithDropdown
-              className='header-nav-list__item header-link-with-dropdown'
+              className="header-nav-list__item header-link-with-dropdown"
               setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
             >
               <button
-                type='button'
-                className='header-link-dropdown-button'
+                type="button"
+                className="header-link-dropdown-button"
                 onClick={toggleNavLinkDropdown}
               >
                 Parameters
-                <ChevronDown className='header-link-dropdown-icon' />
+                <ChevronDown className="header-link-dropdown-icon" />
               </button>
 
               <ul
@@ -132,84 +133,92 @@ function Header() {
               >
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/energy-consumption'
-                  linkText='Energy Consumption'
+                  url="/parameters/energy-consumption"
+                  linkText="Energy Consumption"
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/power-quality'
-                  linkText='Power Quality'
+                  url="/parameters/power-quality"
+                  linkText="Power Quality"
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/power-demand'
-                  linkText='Power Demand'
+                  url="/parameters/power-demand"
+                  linkText="Power Demand"
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/time-of-use'
-                  linkText='Time of Use'
+                  url="/parameters/time-of-use"
+                  linkText="Time of Use"
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/parameters/last-reading'
-                  linkText='Last Reading'
+                  url="/parameters/last-reading"
+                  linkText="Last Reading"
                 />
               </ul>
             </HeaderLinkWithDropdown>
 
             <HeaderLink
               onClick={toggleNav}
-              url='/dashboard'
+              url="/dashboard"
               // url='/report'
-              linkText='Report'
+              linkText="Report"
             />
 
             <HeaderLink
               onClick={toggleNav}
-              url='/cost-tracker'
-              linkText='Cost Tracker'
+              url="/cost-tracker"
+              linkText="Cost Tracker"
             />
 
-            <HeaderLink onClick={toggleNav} url='/billing' linkText='Billing' />
+            <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
 
             <HeaderLink
               onClick={toggleNav}
-              url='/dashboard'
+              url="/dashboard"
               // url='/messages'
-              linkText='Messages'
+              linkText="Messages"
             />
 
-            <li className='header-nav-list__item h-hidden-1296-up'>
+            <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}
-                count={4}
-                countClassName='header-icon__count'
+                count={0}
+                countClassName="header-icon__count"
               >
-                <MessageIcon className='header-icon__image' />
+                <MessageIcon className="header-icon__image" />
               </HeaderIcon>
             </li>
 
-            <li className='header-nav-list__item h-hidden-1296-up'>
+            <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}
-                count={2}
-                countClassName='header-icon__count'
+                count={0}
+                countClassName="header-icon__count"
               >
-                <NotificationIcon className='header-icon__image' />
+                <NotificationIcon className="header-icon__image" />
               </HeaderIcon>
             </li>
 
             <HeaderMobileAvatarWithDropdown
-              className='header-nav-list__item header-avater-container h-hidden-1296-up'
+              className="header-nav-list__item header-avater-container h-hidden-1296-up"
               setIsMobileAvatarMenuOpen={setIsMobileAvatarMenuOpen}
             >
               <button
-                type='button'
+                type="button"
                 onClick={toggleMobileAvatarMenu}
-                className='header-avatar'
+                className="header-avatar"
               >
-                <img src={avatar} alt='' />
+                <img
+                  className="header-avatar__image"
+                  src={`https://wyreng.xyz${avatarImage}`}
+                  alt={
+                    organisationName
+                      ? `Avatar for ${organisationName}`
+                      : 'Avatar'
+                  }
+                />
               </button>
 
               <ul
@@ -219,56 +228,56 @@ function Header() {
                     : 'header-sublinks-list h-hide'
                 }
               >
-                <li className='header-sublinks-list__item avatar-sublink-item'>
+                <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
-                    className='header-sublink avatar-sublink'
+                    className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
-                    to='/branches/user-form'
+                    to="/branches/user-form"
                   >
                     <ProfileIcon /> <span>Personal Data</span>
                   </Link>
                 </li>
 
-                <li className='header-sublinks-list__item avatar-sublink-item'>
+                <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
-                    className='header-sublink avatar-sublink'
+                    className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
-                    to='/dashboard'
+                    to="/dashboard"
                     // to='/branches'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
                 </li>
 
-                <li className='header-sublinks-list__item avatar-sublink-item'>
+                <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
-                    className='header-sublink avatar-sublink'
+                    className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
-                    to='/dashboard'
+                    to="/dashboard"
                     // to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
                 </li>
 
-                <li className='header-sublinks-list__item avatar-sublink-item'>
+                <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
-                    className='header-sublink avatar-sublink'
+                    className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
-                    to='/alerts-and-alarms'
+                    to="/alerts-and-alarms"
                   >
                     <SettingsIcon /> <span>Alerts and Alarms</span>
                   </Link>
                 </li>
 
-                <li className='header-sublinks-list__item avatar-sublink-item'>
+                <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
-                    className='header-sublink avatar-sublink'
+                    className="header-sublink avatar-sublink"
                     onClick={() => {
                       logOut();
                       toggleNavAndDropdown();
                     }}
-                    to='/'
+                    to="/"
                   >
                     <LogoutIcon /> <span>Log Out</span>
                   </Link>
@@ -279,32 +288,38 @@ function Header() {
         </nav>
       </HeaderGroup1AndNav>
 
-      <div className='all-header-icons h-hidden-1296-down'>
+      <div className="all-header-icons h-hidden-1296-down">
         <HeaderIcon
-          count={4}
-          iconClassName='message-icon'
-          countClassName='header-icon__count'
+          count={0}
+          iconClassName="message-icon"
+          countClassName="header-icon__count"
         >
-          <MessageIcon className='header-icon__image' />
+          <MessageIcon className="header-icon__image" />
         </HeaderIcon>
 
         <HeaderIcon
-          count={2}
-          iconClassName='notification-icon'
-          countClassName='header-icon__count'
+          count={0}
+          iconClassName="notification-icon"
+          countClassName="header-icon__count"
         >
-          <NotificationIcon className='header-icon__image' />
+          <NotificationIcon className="header-icon__image" />
         </HeaderIcon>
 
         <HeaderDesktopAvatarWithDropdown
           setIsDesktopAvatarMenuOpen={setIsDesktopAvatarMenuOpen}
         >
           <button
-            type='button'
+            type="button"
             onClick={toggleDesktopAvatarMenu}
-            className='header-avatar'
+            className="header-avatar"
           >
-            <img src={avatar} alt='' />
+            <img
+              className="header-avatar__image"
+              src={`https://wyreng.xyz${avatarImage}`}
+              alt={
+                organisationName ? `Avatar for ${organisationName}` : 'Avatar'
+              }
+            />
           </button>
 
           <ul
@@ -314,49 +329,49 @@ function Header() {
                 : 'header-sublinks-list avatar-sublinks-list h-hide'
             }
           >
-            <li className='header-sublinks-list__item avatar-sublink-item'>
+            <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
-                className='header-sublink avatar-sublink'
-                to='/branches/user-form'
+                className="header-sublink avatar-sublink"
+                to="/branches/user-form"
               >
                 <ProfileIcon /> <span>Personal Data</span>
               </Link>
             </li>
 
-            <li className='header-sublinks-list__item avatar-sublink-item'>
+            <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
-                className='header-sublink avatar-sublink'
-                to='/dashboard'
+                className="header-sublink avatar-sublink"
+                to="/dashboard"
                 // to='/branches'
               >
                 <OverviewIcon /> <span>Overview</span>
               </Link>
             </li>
 
-            <li className='header-sublinks-list__item avatar-sublink-item'>
+            <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
-                className='header-sublink avatar-sublink'
-                to='/dashboard'
+                className="header-sublink avatar-sublink"
+                to="/dashboard"
                 // to='/password'
               >
                 <PadlockIcon /> <span>Password</span>
               </Link>
             </li>
 
-            <li className='header-sublinks-list__item avatar-sublink-item'>
+            <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
-                className='header-sublink avatar-sublink'
-                to='/alerts-and-alarms'
+                className="header-sublink avatar-sublink"
+                to="/alerts-and-alarms"
               >
                 <SettingsIcon /> <span>Alerts and Alarms</span>
               </Link>
             </li>
 
-            <li className='header-sublinks-list__item avatar-sublink-item'>
+            <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
                 onClick={logOut}
-                className='header-sublink avatar-sublink'
-                to='/'
+                className="header-sublink avatar-sublink"
+                to="/"
               >
                 <LogoutIcon /> <span>Log Out</span>
               </Link>
