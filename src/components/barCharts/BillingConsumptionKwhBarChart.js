@@ -132,9 +132,15 @@ const BillingConsumptionKwhBarChart = ({
     datasets: plottedDataSet,
   };
 
+  /**
+   * Redraw added as prop to all bar charts.
+   * Prevents cannot find _meta in undefined dataset bug/error
+   * https://stackoverflow.com/a/44006464/15063835
+   */
   return (
     <>
       <Bar
+        redraw
         data={plottedData || { datasets: [], labels: [] }}
         options={options}
       />

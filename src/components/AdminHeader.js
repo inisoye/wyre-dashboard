@@ -28,6 +28,7 @@ function Header() {
     setIsNavOpen,
     isSidebarOpen,
     setIsSidebarOpen,
+    organization
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -72,6 +73,8 @@ function Header() {
     // Refresh page
     history.go(0);
   };
+
+  const { image: orgImage } = organization
 
   return (
     <header className='header h-no-linear-gradient'>
@@ -179,7 +182,7 @@ function Header() {
                 onClick={toggleMobileAvatarMenu}
                 className='header-avatar'
               >
-                <img src={avatar} alt='' />
+                <img src={orgImage} alt='' />
               </button>
 
               <ul
