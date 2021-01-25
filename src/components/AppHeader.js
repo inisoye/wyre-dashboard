@@ -183,7 +183,7 @@ function Header() {
             <li className='header-nav-list__item h-hidden-1296-up'>
               <HeaderIcon
                 onClick={toggleNav}
-                count={4}
+                count={0}
                 countClassName='header-icon__count'
               >
                 <MessageIcon className='header-icon__image' />
@@ -193,7 +193,7 @@ function Header() {
             <li className='header-nav-list__item h-hidden-1296-up'>
               <HeaderIcon
                 onClick={toggleNav}
-                count={2}
+                count={0}
                 countClassName='header-icon__count'
               >
                 <NotificationIcon className='header-icon__image' />
@@ -244,8 +244,8 @@ function Header() {
                   <Link
                     className='header-sublink avatar-sublink'
                     onClick={toggleNavAndDropdown}
-                    to='/dashboard'
-                    // to='/password'
+                    // to='/dashboard'
+                    to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
@@ -281,7 +281,7 @@ function Header() {
 
       <div className='all-header-icons h-hidden-1296-down'>
         <HeaderIcon
-          count={4}
+          count={0}
           iconClassName='message-icon'
           countClassName='header-icon__count'
         >
@@ -289,7 +289,7 @@ function Header() {
         </HeaderIcon>
 
         <HeaderIcon
-          count={2}
+          count={0}
           iconClassName='notification-icon'
           countClassName='header-icon__count'
         >
@@ -336,8 +336,8 @@ function Header() {
             <li className='header-sublinks-list__item avatar-sublink-item'>
               <Link
                 className='header-sublink avatar-sublink'
-                to='/dashboard'
-                // to='/password'
+                // to='/dashboard'
+                to='/password'
               >
                 <PadlockIcon /> <span>Password</span>
               </Link>

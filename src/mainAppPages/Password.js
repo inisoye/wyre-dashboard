@@ -29,48 +29,48 @@ function Password({ match }) {
     reset();
   };
 
-  const showErrorMessage = errors.newPassword2 || errors.newPassword2;
+  const isDefaultErrorMessageRed = errors.newPassword2 || errors.newPassword2;
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
 
-      <div>
-        <h1 className='center-main-heading'>Password</h1>
+      <div className="password-page-container">
+        <h1 className="center-main-heading">Password</h1>
 
         <form
-          action='#'
-          className='password-form'
+          action="#"
+          className="password-form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className='password-input-container'>
-            <label className='generic-input-label' htmlFor='old-password'>
+          <div className="password-input-container old-password-container">
+            <label className="generic-input-label" htmlFor="old-password">
               Old Password
             </label>
             <input
-              className='generic-input'
-              type='password'
-              name='oldPassword'
-              id='old-password'
+              className="generic-input old-password-input"
+              type="password"
+              name="oldPassword"
+              id="old-password"
               ref={register}
               required
               autoFocus
             />
           </div>
 
-          <div className='new-passwords-container'>
-            <div className='password-input-container'>
-              <label className='generic-input-label' htmlFor='new-password-1'>
+          <div className="new-passwords-container">
+            <div className="password-input-container new-password-container h-first">
+              <label className="generic-input-label" htmlFor="new-password-1">
                 New Password
               </label>
               <input
-                className='generic-input'
-                type='password'
-                name='newPassword1'
-                id='new-password-1'
+                className="generic-input"
+                type="password"
+                name="newPassword1"
+                id="new-password-1"
                 ref={register({
                   required: true,
                   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
@@ -78,15 +78,15 @@ function Password({ match }) {
                 required
               />
             </div>
-            <div className='password-input-container'>
-              <label className='generic-input-label' htmlFor='new-password-2'>
+            <div className="password-input-container new-password-container">
+              <label className="generic-input-label" htmlFor="new-password-2">
                 Re-enter New Password
               </label>
               <input
-                className='generic-input'
-                type='password'
-                name='newPassword2'
-                id='new-password-2'
+                className="generic-input"
+                type="password"
+                name="newPassword2"
+                id="new-password-2"
                 ref={register({
                   required: true,
                   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
@@ -96,18 +96,30 @@ function Password({ match }) {
             </div>
           </div>
 
-          {showErrorMessage && (
-            <p>
-              <ErrorIcon />
+          <p className="password-error-message">
+            <ErrorIcon
+              className={
+                isDefaultErrorMessageRed
+                  ? 'password-error-icon h-red-icon'
+                  : 'password-error-icon'
+              }
+            />
 
-              <span>
-                Passwords must include a number, a lowercase and uppercase
-                letter. They should be a minimum of 8 characters
-              </span>
-            </p>
-          )}
+            <span
+              className={
+                isDefaultErrorMessageRed
+                  ? 'password-error-text h-red-text'
+                  : 'password-error-text'
+              }
+            >
+              Passwords must include a number, a lowercase and uppercase letter.
+              They should also be a minimum of 8 characters.
+            </span>
+          </p>
 
-          <button className='generic-submit-button'>Change Password</button>
+          <button className="generic-submit-button change-password-button">
+            Change Password
+          </button>
         </form>
       </div>
     </>
