@@ -7,6 +7,8 @@ import {
   convertDateStringsToObjects,
   formatParametersDatetimes,
 } from '../../helpers/genericHelpers';
+// import { numberFormatter } from '../../helpers/numberFormatter';
+
 
 const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -24,7 +26,11 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
   const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
 
   const consumptionValues = actualData && Object.values(actualData);
+  // map(arr => 
+  //   arr.map(value => numberFormatter(value))
+  // );
   const deviceNames = actualData && Object.keys(actualData);
+
 
   const options = {
     layout: {
@@ -137,6 +143,7 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
   return (
     <>
       <Bar
+        redraw
         data={plottedData || { datasets: [], labels: [] }}
         options={options}
       />

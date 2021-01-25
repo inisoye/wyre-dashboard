@@ -12,6 +12,7 @@ import PrintButtons from '../smallComponents/PrintButtons';
 
 import DashboardUpArrow from '../icons/DashboardUpArrow';
 import DashboardDownArrow from '../icons/DashboardDownArrow';
+import { numberFormatter } from '../helpers/numberFormatter';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -55,73 +56,73 @@ function Dashboard({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
 
-      <div className='dashboard-row-1'>
-        <article className='dashboard__total-energy dashboard__banner--small'>
-          <h2 className='total-energy__heading'>Total Energy</h2>
-          <p className='total-energy_value'>
-            <span>{total_kwh && total_kwh.value}</span>
+      <div className="dashboard-row-1">
+        <article className="dashboard__total-energy dashboard__banner--small">
+          <h2 className="total-energy__heading">Total Energy</h2>
+          <p className="total-energy_value">
+            <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
             <span>{total_kwh && total_kwh.unit}</span>
           </p>
         </article>
 
-        <article className='dashboard__demand-banner dashboard__banner--small'>
+        <article className="dashboard__demand-banner dashboard__banner--small">
           <DashboardSmallBannerSection
-            name='Max. Demand'
-            value={max_demand && max_demand.value.toFixed(2)}
+            name="Max. Demand"
+            value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
             unit={max_demand && max_demand.unit}
           />
           <DashboardSmallBannerSection
-            name='Min. Demand'
-            value={min_demand && min_demand.value.toFixed(2)}
+            name="Min. Demand"
+            value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
             unit={min_demand && min_demand.unit}
           />
           <DashboardSmallBannerSection
-            name='Avg. Demand'
-            value={avg_demand && avg_demand.value.toFixed(2)}
+            name="Avg. Demand"
+            value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
             unit={avg_demand && avg_demand.unit}
           />
         </article>
 
-        <article className='dashboard__cost-emissions-banner dashboard__banner--small'>
+        <article className="dashboard__cost-emissions-banner dashboard__banner--small">
           <DashboardSmallBannerSection
-            name='Carbon Emissions'
+            name="Carbon Emissions"
             value={
               dashboard_carbon_emissions &&
-              dashboard_carbon_emissions.value.toFixed(2)
+              numberFormatter(dashboard_carbon_emissions.value.toFixed(2))
             }
             unit={dashboard_carbon_emissions && dashboard_carbon_emissions.unit}
           />
           <DashboardSmallBannerSection
-            name='Blended Cost of Energy'
-            value={cost_of_energy && cost_of_energy.value.toFixed(2)}
+            name="Blended Cost of Energy"
+            value={cost_of_energy && numberFormatter(cost_of_energy.value.toFixed(2))}
             unit={cost_of_energy && cost_of_energy.unit}
           />
         </article>
       </div>
 
-      <article className='dashboard-row-2 dashboard-bar-container'>
+      <article className="dashboard-row-2 dashboard-bar-container">
         <DashboardStackedBarChart
-          className=''
+          className=""
           data={daily_kwh}
           organization={name}
         />
       </article>
 
-      <div className='dashboard-row-3'>
-        <article className='dashboard-pie-container'>
+      <div className="dashboard-row-3">
+        <article className="dashboard-pie-container">
           <DashboardDoughnutChart data={usage_hours} />
         </article>
 
-        <article className='dashboard-today-and-yesterday'>
-          <div className='today-usage'>
-            <h3 className='today-usage__heading'>Today's Usage (KWh)</h3>
-            <div className='usage-value-and-arrow'>
-              <p className='today-usage__value'>{todaysValue}</p>
+        <article className="dashboard-today-and-yesterday">
+          <div className="today-usage">
+            <h3 className="today-usage__heading">Today's Usage (KWh)</h3>
+            <div className="usage-value-and-arrow">
+              <p className="today-usage__value">{numberFormatter(todaysValue)}</p>
               {isTodaysValueLessThanYesterdays ? (
                 <DashboardDownArrow />
               ) : (
@@ -129,12 +130,12 @@ function Dashboard({ match }) {
               )}
             </div>
           </div>
-          <div className='yesterday-usage'>
-            <h3 className='yesterday-usage__heading'>
+          <div className="yesterday-usage">
+            <h3 className="yesterday-usage__heading">
               Yesterday's Usage (KWh)
             </h3>
-            <div className='usage-value-and-arrow'>
-              <p className='yesterday-usage__value'>{yesterdaysValue}</p>
+            <div className="usage-value-and-arrow">
+              <p className="yesterday-usage__value">{numberFormatter(yesterdaysValue)}</p>
               {isTodaysValueLessThanYesterdays ? (
                 <DashboardUpArrow />
               ) : (

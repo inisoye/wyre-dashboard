@@ -7,6 +7,8 @@ import {
   convertDateStringsToObjects,
   formatParametersDatetimes,
 } from '../../helpers/genericHelpers';
+// import { numberFormatter } from '../../helpers/numberFormatter';
+
 
 const CostTrackerDieselQuantityBarChart = ({ dieselQuantityData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -16,7 +18,9 @@ const CostTrackerDieselQuantityBarChart = ({ dieselQuantityData }) => {
   const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
 
   const dieselQuantityValues = dieselQuantityData && dieselQuantityData.values;
+  // .map(value => numberFormatter(value));
   const dieselQuantityUnit = dieselQuantityData && dieselQuantityData.units;
+
 
   const options = {
     layout: {
@@ -104,7 +108,7 @@ const CostTrackerDieselQuantityBarChart = ({ dieselQuantityData }) => {
 
   return (
     <>
-      <Bar data={data} options={options} />
+      <Bar redraw data={data} options={options} />
     </>
   );
 };

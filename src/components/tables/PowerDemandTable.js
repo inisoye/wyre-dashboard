@@ -3,6 +3,8 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
+import { numberFormatter } from "../../helpers/numberFormatter"
+
 class PowerDemandTable extends React.Component {
   state = {
     searchText: '',
@@ -93,7 +95,16 @@ class PowerDemandTable extends React.Component {
   };
 
   render() {
-    const data = this.props.powerDemandData;
+    const data = this.props.powerDemandData.map((dataItem) => {
+      const { min, max, avg } = dataItem
+
+      return {
+        ...dataItem,
+        min: numberFormatter(min.toFixed(2)),
+        max: numberFormatter(max.toFixed(2)),
+        avg: numberFormatter(avg.toFixed(2))
+      }
+    });
     const unit = this.props.powerDemandUnit;
 
     const columns = [
