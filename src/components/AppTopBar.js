@@ -131,9 +131,9 @@ function TopBar() {
             >
               Reactive-Power (kVar)
             </Option>
-            <Option className='plotted-unit-option' value='Energy (kWh)'>
+            {/* <Option className='plotted-unit-option' value='Energy (kWh)'>
               Energy (kWh)
-            </Option>
+            </Option> */}
           </Select>
         </div>
       </div>
