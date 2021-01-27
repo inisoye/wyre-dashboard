@@ -107,7 +107,10 @@ const CompleteDataProvider = (props) => {
           setIsAuthenticatedDataLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response.data.message === 'UserId might not exist') {
+            window.localStorage.removeItem('loggedWyreUser');
+            setUserData(undefined);
+          }
         });
     };
 
