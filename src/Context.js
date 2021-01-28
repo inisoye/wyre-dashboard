@@ -20,6 +20,7 @@ const CompleteDataProvider = (props) => {
   const [refinedRenderedData, setRefinedRenderedData] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
   const [checkedBranches, setCheckedBranches] = useState({});
+  const [checkedDevices, setCheckedDevices] = useState({});
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
@@ -106,7 +107,10 @@ const CompleteDataProvider = (props) => {
           setIsAuthenticatedDataLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response.data.message === 'UserId might not exist') {
+            window.localStorage.removeItem('loggedWyreUser');
+            setUserData(undefined);
+          }
         });
     };
 
@@ -169,6 +173,8 @@ const CompleteDataProvider = (props) => {
         setCheckedItems: setCheckedItems,
         checkedBranches: checkedBranches,
         setCheckedBranches: setCheckedBranches,
+        checkedDevices: checkedDevices,
+        setCheckedDevices: setCheckedDevices,
         numberOfCheckedItems: Object.keys(checkedItems).length,
         numberOfCheckedBranches: Object.keys(checkedBranches).length,
         isAuthenticatedDataLoading: isAuthenticatedDataLoading,

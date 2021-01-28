@@ -26,7 +26,7 @@ const convertDateRangeToEndpointFormat = (dateObjects) =>
 
 // Handle determination of date range for url
 let endpointDateRange = convertDateRangeToEndpointFormat([
-  dayjs().subtract(1, 'months'),
+  dayjs().startOf('month'),
   dayjs(),
 ]);
 
@@ -35,7 +35,7 @@ const setEndpointDateRange = (newEndpointDateRange) => {
   endpointDateRange = newEndpointDateRange
     ? convertDateRangeToEndpointFormat(newEndpointDateRange)
     : (endpointDateRange = convertDateRangeToEndpointFormat([
-        dayjs().subtract(1, 'months'),
+        dayjs().startOf('month'),
         dayjs(),
       ]));
 };
