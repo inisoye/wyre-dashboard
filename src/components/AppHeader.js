@@ -72,6 +72,9 @@ function Header() {
     setUserData(undefined);
   };
 
+  const isOrganisationSapio =
+    organisationName && organisationName.includes('Sapio');
+
   return (
     <header className="header">
       <HeaderGroup1AndNav className="header-group-1-and-nav">
@@ -105,11 +108,13 @@ function Header() {
           <ul className="header-nav-list">
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/score-card"
-              linkText="Score Card"
-            />
+            {!isOrganisationSapio && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/score-card"
+                linkText="Score Card"
+              />
+            )}
 
             <HeaderLinkWithDropdown
               className="header-nav-list__item header-link-with-dropdown"
