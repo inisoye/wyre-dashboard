@@ -2547,13 +2547,6 @@ thead.ant-table-thead tr th {
   }
 }
 
-.last-reading-table-history-button {
-  border: 0.5px solid #6c00fa;
-  color: #6c00fa;
-  font-weight: 500;
-  padding: 9px 13px;
-}
-
 /*--------------------------------------------------------------
 # Cost Tracker
 --------------------------------------------------------------*/
