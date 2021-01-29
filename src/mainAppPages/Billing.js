@@ -188,7 +188,7 @@ function Billing({ match }) {
           <tbody>
             <tr>
               <td>
-                <span className='metric-name'>Diesel Set:</span>{' '}
+                <span className='metric-name'>Generator:</span>{' '}
                 {metrics && metrics.diesel_per_kwh}/kWh
               </td>
             </tr>
