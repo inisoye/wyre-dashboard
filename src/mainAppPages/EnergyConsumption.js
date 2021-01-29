@@ -138,7 +138,7 @@ function EnergyConsumption({ match }) {
           </span>
           <span className='energy-consumption-middle-card-body'>
             {numberFormatter(energy_consumption_previous)}kWh
-          </span> 
+          </span>
         </p>
         <p className='energy-consumption-middle-card'>
           <span className='energy-consumption-middle-card-heading'>

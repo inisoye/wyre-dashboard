@@ -3,16 +3,31 @@ import { Link } from 'react-router-dom';
 
 function Error() {
   return (
-    <div className='error-page'>
-      <div className='error-card'>
-        <h1 className='error-heading'>Access Denied</h1>
+    <div className="error-page">
+      <div className="error-card">
+        <h1 className="error-heading">Access Denied</h1>
 
-        <p className='error-paragraph'>
+        <p className="error-paragraph">
           You are not authorised to view the page you just requested. This may
-          be because you were logged out due to inactivity.
+          be due to any of the following:
         </p>
 
-        <Link className='error-cta' to='/log-in'>
+        <ul className="error-list">
+          <li className="error-list-item">
+            You have been logged out due to inactivity.
+          </li>
+          <li className="error-list-item">
+            No branches have been assigned to you yet.
+          </li>
+          <li className="error-list-item">
+            Organisation does not have any branches yet.
+          </li>
+          <li className="error-list-item">
+            Organisation's configuration is still in progress.
+          </li>
+        </ul>
+
+        <Link className="error-cta" to="/log-in">
           Login
         </Link>
       </div>

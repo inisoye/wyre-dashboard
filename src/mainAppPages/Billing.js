@@ -188,7 +188,7 @@ function Billing({ match }) {
           <tbody>
             <tr>
               <td>
-                <span className='metric-name'>Diesel Set:</span>{' '}
+                <span className='metric-name'>Generator:</span>{' '}
                 {metrics && metrics.diesel_per_kwh}/kWh
               </td>
             </tr>
@@ -218,7 +218,7 @@ function Billing({ match }) {
           </tfoot>
         </table>
 
-        <div hidden className='billing-usage-table-container'>
+        <div className='billing-usage-table-container'>
           <table className='billing-table billing-usage-table'>
             <caption className='billing-table-caption h-caption-up'>
               Usage
