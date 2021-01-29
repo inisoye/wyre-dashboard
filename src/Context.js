@@ -103,11 +103,20 @@ const CompleteDataProvider = (props) => {
       dataHttpServices
         .getAllData()
         .then((returnedData) => {
-          setOrganization(returnedData);
           setIsAuthenticatedDataLoading(false);
+
+          if (returnedData.branches.length === 0) {
+            console.log('yeahh');
+            throw new Error('No branches');
+          }
+
+          setOrganization(returnedData);
         })
         .catch((error) => {
-          if (error.response.data.message === 'UserId might not exist') {
+          if (error.message === 'No branches') {
+            window.localStorage.removeItem('loggedWyreUser');
+            setUserData(undefined);
+          } else if (error.response.data.message === 'UserId might not exist') {
             window.localStorage.removeItem('loggedWyreUser');
             setUserData(undefined);
           }
