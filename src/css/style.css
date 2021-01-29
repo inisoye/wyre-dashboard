@@ -2547,13 +2547,6 @@ thead.ant-table-thead tr th {
   }
 }
 
-.last-reading-table-history-button {
-  border: 0.5px solid #6c00fa;
-  color: #6c00fa;
-  font-weight: 500;
-  padding: 9px 13px;
-}
-
 /*--------------------------------------------------------------
 # Cost Tracker
 --------------------------------------------------------------*/
@@ -3383,6 +3376,104 @@ thead.ant-table-thead tr th {
   }
   100% {
     fill: #c5d4e9;
+  }
+}
+
+/*--------------------------------------------------------------
+# Password Page Styles
+--------------------------------------------------------------*/
+.password-page-container {
+  background-color: #ffffff;
+  padding: 16px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .password-page-container {
+    padding: 24px 50px 80px;
+  }
+}
+
+@media (min-width: 1455px) {
+  .password-page-container {
+    padding: 24px 86px 80px;
+  }
+}
+
+.password-form {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.password-input-container {
+  margin-top: 30px;
+}
+
+@media (min-width: 1086px) {
+  .old-password-container {
+    width: 100%;
+    margin-top: 96px;
+  }
+}
+
+@media (min-width: 1086px) {
+  .old-password-input {
+    width: 47.4%;
+  }
+}
+
+@media (min-width: 1086px) {
+  .new-passwords-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    margin-top: 50px;
+  }
+}
+
+@media (min-width: 1086px) {
+  .new-password-container {
+    width: 50%;
+  }
+  .new-password-container.h-first {
+    margin-right: 5%;
+  }
+}
+
+.password-error-message {
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.password-error-icon {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+
+.password-error-icon.h-red-icon path {
+  fill: #fa0303;
+}
+
+.password-error-text {
+  margin-left: 8px;
+  color: #6c00fa;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.password-error-text.h-red-text {
+  color: #fa0303;
+}
+
+@media (min-width: 1086px) {
+  .change-password-button {
+    margin-top: 60px;
   }
 }
 

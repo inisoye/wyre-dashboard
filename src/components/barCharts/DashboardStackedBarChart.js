@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
+import {
+  getLastArrayItems,
+  convertDateStringsToObjects,
+  formatParametersDatetimes,
+} from '../../helpers/genericHelpers';
 
 const DashboardStackedBarChart = ({ data, organization }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -83,7 +87,11 @@ const DashboardStackedBarChart = ({ data, organization }) => {
   }
 
   // Destructure data conditionally
-  const { dates, ...values } = data ? data : { dates: [] };
+  const { dates: dateStrings, ...values } = data ? data : { dates: [] };
+
+  const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
+  const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
+
   const dataNames = Object.keys(values);
   const dataValues = Object.values(values);
   const colorsArray = [
@@ -113,10 +121,10 @@ const DashboardStackedBarChart = ({ data, organization }) => {
 
   const plottedData = {
     labels: isMediumScreen
-      ? getLastArrayItems(dates, 7)
+      ? getLastArrayItems(formattedDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(dates, 14)
-      : dates,
+      ? getLastArrayItems(formattedDates, 14)
+      : formattedDates,
     datasets: plottedDataSet,
   };
 
