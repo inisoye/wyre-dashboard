@@ -218,7 +218,7 @@ function Billing({ match }) {
           </tfoot>
         </table>
 
-        <div className='billing-usage-table-container'>
+        <div hidden className='billing-usage-table-container'>
           <table className='billing-table billing-usage-table'>
             <caption className='billing-table-caption h-caption-up'>
               Usage
