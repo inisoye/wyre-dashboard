@@ -195,7 +195,7 @@ function Billing({ match }) {
             <tr>
               <td>
                 <span className='metric-name'>IPP:</span>{' '}
-                ₦0/kWh
+                ₦{metrics && metrics.ipp_per_kwh}/kWh
               </td>
             </tr>
             <tr>

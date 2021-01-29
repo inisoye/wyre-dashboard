@@ -133,6 +133,7 @@ function SidebarBranch({ branchData }) {
                   total_usage_kwh: 0,
                 },
                 metrics: {
+                  ipp_per_kwh: 0,
                   diesel_per_kwh: 0,
                   utility_per_kwh: 0,
                   blended_cost_per_kwh: 0,
