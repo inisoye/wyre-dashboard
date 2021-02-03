@@ -31,11 +31,14 @@ function Header() {
     setIsSidebarOpen,
     setUserData,
     organization,
+    currentUrl,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
+
+  const isReportPageOpen = currentUrl.includes('report');
 
   const { image: avatarImage, name: organisationName } = organization;
 
@@ -76,7 +79,9 @@ function Header() {
     organisationName && organisationName.includes('Sapio');
 
   return (
-    <header className="header">
+    <header
+      className={isReportPageOpen ? 'header report-page-header' : 'header'}
+    >
       <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
         <div className="header-group-1">
@@ -90,7 +95,13 @@ function Header() {
 
           <div className="header-logo-container">
             <Link className="header-logo" to="/">
-              <Logo className="header-logo__image header- h-white-fill-medium-up" />
+              <Logo
+                className={
+                  isReportPageOpen
+                    ? 'header-logo__image'
+                    : 'header-logo__image header- h-white-fill-medium-up'
+                }
+              />
             </Link>
           </div>
 
@@ -167,7 +178,7 @@ function Header() {
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
-              // url='/report'
+              // url="/report"
               linkText="Report"
             />
 

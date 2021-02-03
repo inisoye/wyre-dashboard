@@ -1,0 +1,289 @@
+.report-row-heading {
+  font-size: 2.4rem;
+  font-weight: $medium;
+  margin-bottom: 20px;
+
+  &.h-first {
+    margin-bottom: 30px;
+  }
+}
+
+.report-card {
+  background-color: $white;
+  border-radius: 10px;
+}
+
+.report-row-1__content {
+  @include media('>=792px') {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+.report-row-1-card {
+  margin-bottom: 30px;
+  height: 250px;
+
+  @include media('>=792px') {
+    width: 32%;
+  }
+
+  &.report-card-2 {
+    height: auto;
+
+    @include media('>=792px') {
+      height: 250px;
+    }
+  }
+
+  @include media('>=792px', '<970px') {
+    height: 300px;
+
+    &.report-card-2 {
+      height: 300px;
+    }
+  }
+}
+
+.report-card-1 {
+  text-align: center;
+  padding: 16px 16px 40px;
+}
+
+.report-card-1-heading {
+  font-weight: $regular;
+  font-size: 1.8rem;
+}
+
+.report-card-1-percentage {
+  margin-top: 24px;
+  font-size: 4rem;
+  font-weight: $medium;
+}
+
+.report-card-1-rating {
+  margin-top: 21px;
+}
+
+.report-card-1-paragraph {
+  margin-top: 24px;
+  font-size: 1.4rem;
+
+  @include media('>=792px', '<1166px') {
+    max-width: 190px;
+    margin: 24px auto 0;
+  }
+}
+
+.report-card-2 {
+  padding: 16px;
+
+  @include media('<380px') {
+    text-align: center;
+  }
+}
+
+.report-card-2__top {
+  display: flex;
+  justify-content: space-between;
+
+  @include media('<380px') {
+    flex-direction: column;
+  }
+}
+
+.report-card-2__topleft,
+.report-card-2__topright {
+  max-width: 49%;
+
+  @include media('<380px') {
+    margin: auto;
+  }
+}
+
+.report-card-2__topleft {
+  @include media('>=792px', '<970px') {
+    margin-right: 20px;
+  }
+}
+
+.report-card-2__topright {
+  @include media('<380px') {
+    flex-direction: column;
+    margin-top: 29px;
+  }
+}
+
+.report-energy-consumed-value {
+  font-size: 4rem;
+  font-weight: $medium;
+  line-height: 49px;
+
+  @include media('>=792px', '<970px') {
+    font-size: 3rem;
+  }
+
+  @include media('>=970px', '<1166px') {
+    font-size: 3.5rem;
+  }
+}
+
+.report-card-2-decr {
+  font-size: 1.8rem;
+  max-width: 156px;
+  line-height: 22px;
+
+  @include media('>=792px', '<970px') {
+    font-size: 1.3rem;
+  }
+
+  @include media('>=970px', '<1166px') {
+    font-size: 1.4rem;
+  }
+}
+
+.report-energy-consumed-decr {
+  margin-top: 11px;
+}
+
+.report-card-2-topright__second {
+  margin-top: 29px;
+
+  @include media('<970px') {
+    margin-top: 15px;
+  }
+}
+
+.report-card-2-topright__value {
+  font-size: 2.4rem;
+  font-weight: $medium;
+  line-height: 29px;
+  margin-top: 8px;
+  display: block;
+
+  @include media('>=792px', '<970px') {
+    font-size: 1.6rem;
+  }
+
+  @include media('>=970px', '<1166px') {
+    font-size: 2rem;
+  }
+}
+
+.report-card-2__bottom {
+  font-size: 14px;
+  margin-top: 14px;
+}
+
+.report-card-2-bottom__value {
+  font-weight: $medium;
+}
+
+.report-card-3 {
+  padding: 16px;
+}
+
+.report-card-3__heading {
+  font-weight: $regular;
+  font-size: 1.8rem;
+  line-height: 22px;
+}
+
+.report-card-3__content {
+  max-width: 80%;
+  margin: auto;
+}
+
+.report-card-3__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 1.4rem;
+  font-weight: $medium;
+}
+
+.report-card-3__total {
+  font-size: 1.8rem;
+  line-height: 22px;
+  margin-top: 24px;
+}
+
+.report-row-2,
+.report-row-3,
+.report-row-4,
+.report-row-5,
+.report-row-6,
+.report-row-7,
+.report-row-8 {
+  margin-top: 40px;
+}
+
+.report-row-4__bar {
+  height: 360px;
+
+  @include media('>medium') {
+    min-height: 547px;
+  }
+}
+
+.report-row-6-list__container {
+  padding: 24px;
+  padding-bottom: 53px;
+}
+
+.report-row-6__list {
+  list-style-type: disc;
+}
+
+.report-row-6__item {
+  line-height: 22px;
+  margin-top: 24px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+
+  @include media('>=medium') {
+    font-size: 1.8rem;
+  }
+}
+
+.report-row-7__content {
+  @include media('>=medium') {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.report-row-7-card {
+  height: 353px;
+
+  @include media('>=medium') {
+    width: 49%;
+  }
+}
+
+.report-row-7__bar {
+  margin-bottom: 30px;
+}
+
+.report-row-7__pie {
+  height: 298px;
+}
+
+.report-row-7-pie__text {
+  font-size: 1.4rem;
+  max-width: 120px;
+  margin: auto;
+
+  span {
+    margin-bottom: 6px;
+  }
+
+  .h-bolder {
+    font-weight: $medium;
+  }
+}

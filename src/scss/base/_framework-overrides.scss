@@ -166,3 +166,14 @@ thead.ant-table-thead {
 .ant-pagination.ant-table-pagination {
   align-items: center;
 }
+
+/*--------------------------------------------------------------
+# Star Rating
+--------------------------------------------------------------*/
+.ant-rate-star-first {
+  color: #ffd400 !important;
+}
+
+.ant-rate-star-second {
+  color: $border-grey1;
+}
