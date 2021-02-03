@@ -177,8 +177,8 @@ function Header() {
 
             <HeaderLink
               onClick={toggleNav}
-              // url="/dashboard"
-              url="/report"
+              url="/dashboard"
+              // url="/report"
               linkText="Report"
             />
 
