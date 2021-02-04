@@ -2,8 +2,8 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 // Base URL prefix
-let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
-// let baseUrlPrefix = `http://localhost:8000/api/v1/dashboard`;
+// let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
+let baseUrlPrefix = `http://localhost:8000/api/v1/dashboard`;
 
 // Handle determination of token
 let token = undefined;
