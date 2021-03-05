@@ -2,27 +2,26 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
+import {
+  getLastArrayItems,
+  convertDateStringToObject,
+} from '../../helpers/genericHelpers';
 
-const BillingConsumptionKwhBarChart = ({
-  chartConsumptionValues,
-  chartDeviceNames,
-  chartDates,
-}) => {
-  const {
-    isMediumScreen,
-    isLessThan1296,
-    numberOfCheckedItems,
-    numberOfCheckedBranches,
-  } = useContext(CompleteDataContext);
+const ReportEnergyConsumedGroupedBarChart = ({ data }) => {
+  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
-  const isChartStacked =
-    numberOfCheckedItems < 1 ||
-    numberOfCheckedBranches > 0 ||
-    numberOfCheckedItems > 3 ||
-    false;
+  const chartBranchNames = data && data.map((eachBranch) => eachBranch.branch);
 
-  console.log(chartConsumptionValues);
+  const chartConsumptionValues =
+    data && data.map((eachBranch) => eachBranch.values);
+
+  const rawBranchDates =
+    data &&
+    data[0].dates.map((eachDate) => convertDateStringToObject(eachDate));
+
+  const chartDates =
+    rawBranchDates &&
+    rawBranchDates.map((eachDate) => eachDate.format('MMM YYYY'));
 
   const options = {
     layout: {
@@ -46,7 +45,7 @@ const BillingConsumptionKwhBarChart = ({
     scales: {
       yAxes: [
         {
-          stacked: isChartStacked,
+          stacked: false,
           display: true,
           gridLines: {
             color: '#f0f0f0',
@@ -64,7 +63,7 @@ const BillingConsumptionKwhBarChart = ({
           },
           scaleLabel: {
             display: true,
-            labelString: `Monthly Consumption (kWh)`,
+            labelString: `Energy Consumption (${'kWh'})`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -73,7 +72,7 @@ const BillingConsumptionKwhBarChart = ({
       ],
       xAxes: [
         {
-          stacked: isChartStacked,
+          stacked: false,
           ticks: {
             fontFamily: 'Roboto',
             fontSize: 10,
@@ -88,7 +87,7 @@ const BillingConsumptionKwhBarChart = ({
           },
           scaleLabel: {
             display: true,
-            labelString: 'Date and Time',
+            labelString: 'Date',
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -99,9 +98,9 @@ const BillingConsumptionKwhBarChart = ({
   };
 
   const colorsArray = [
+    '#6C00FA',
     '#FF3DA1',
     '#00C7E6',
-    '#6C00FA',
     '#82ca9d',
     '#ff9b3d',
     '#360259',
@@ -112,11 +111,11 @@ const BillingConsumptionKwhBarChart = ({
   ];
 
   const plottedDataSet =
-    chartDeviceNames &&
-    chartDeviceNames.map((_, index) => {
+    chartBranchNames &&
+    chartBranchNames.map((_, index) => {
       return {
         maxBarThickness: 50,
-        label: chartDeviceNames[index],
+        label: chartBranchNames[index],
         // Pick data for last week if screen is a medium screen or less
         data: isMediumScreen
           ? getLastArrayItems(chartConsumptionValues[index])
@@ -134,11 +133,6 @@ const BillingConsumptionKwhBarChart = ({
     datasets: plottedDataSet,
   };
 
-  /**
-   * Redraw added as prop to all bar charts.
-   * Prevents cannot find _meta in undefined dataset bug/error
-   * https://stackoverflow.com/a/44006464/15063835
-   */
   return (
     <>
       <Bar
@@ -150,4 +144,4 @@ const BillingConsumptionKwhBarChart = ({
   );
 };
 
-export default BillingConsumptionKwhBarChart;
+export default ReportEnergyConsumedGroupedBarChart;

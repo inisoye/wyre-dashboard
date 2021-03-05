@@ -8,7 +8,6 @@ import {
   formatParametersDates,
   formatParametersTimes,
   formatParameterTableData,
-  toCamelCase,
 } from '../helpers/genericHelpers';
 import { numberFormatter } from "../helpers/numberFormatter"
 
