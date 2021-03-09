@@ -12,7 +12,6 @@ import ThinArrowRight from '../icons/ThinArrowRight';
 
 import { formatParametersDatetimes } from '../helpers/genericHelpers';
 
-import BillingToCSVBtn from '../components/BillingToCSVBtn';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -96,7 +95,6 @@ function Billing({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <BillingToCSVBtn />
         <PrintButtons />
       </div>
 
