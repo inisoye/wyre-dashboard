@@ -54,7 +54,6 @@ const CompleteDataProvider = (props) => {
   );
   /*--------------------------------------------------------------------
 
-
   
 
   --------------------------------------------------------------------*/
@@ -170,6 +169,10 @@ const CompleteDataProvider = (props) => {
     }
   }, []);
 
+
+  // State for Schedule Email Modal
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
   return (
     <CompleteDataContext.Provider
       value={{
@@ -221,6 +224,10 @@ const CompleteDataProvider = (props) => {
         isLargeScreen: isLargeScreen,
         isXLargeScreen: isXLargeScreen,
         isLessThan1296: isLessThan1296,
+
+        //Schedule Email Modal
+        isModalVisible :isModalVisible,
+        setIsModalVisible : setIsModalVisible,
 
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
