@@ -195,19 +195,19 @@ function Billing({ match }) {
             <tr>
               <td>
                 <span className='metric-name'>IPP:</span>{' '}
-                ₦{(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString())|| 0}/kWh
+                ₦{(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) || 0}/kWh
               </td>
             </tr>
             <tr>
               <td>
                 <span className='metric-name'>Generator:</span>{' '}
-                ₦{(metrics && metrics.diesel_per_kwh.toFixed(2).toLocaleString())|| 0}/kWh
+                ₦{(metrics && metrics.diesel_per_kwh.toFixed(2).toLocaleString()) || 0}/kWh
               </td>
             </tr>
             <tr>
               <td>
                 <span className='metric-name'>Blended Cost of Energy:</span>
-                ₦{(metrics && metrics.blended_cost_per_kwh.toFixed(2).toLocaleString())|| 0}
+                ₦{(metrics && metrics.blended_cost_per_kwh.toFixed(2).toLocaleString()) || 0}
                 /kWh
               </td>
             </tr>
