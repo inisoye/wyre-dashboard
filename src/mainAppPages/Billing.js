@@ -12,6 +12,7 @@ import ThinArrowRight from "../icons/ThinArrowRight";
 
 import { formatParametersDatetimes } from "../helpers/genericHelpers";
 
+
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
   { url: "#", name: "Billing", id: 2 },
@@ -85,12 +86,6 @@ function Billing({ match }) {
     formatParametersDatetimes(billing_consumption_naira.dates);
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
-
-  const generatePdf = () => {
-    const input = document.getElementById("page");
-    const page = document.querySelector(".page-content");
-    html2pdf(input);
-  };
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
@@ -218,12 +213,15 @@ function Billing({ match }) {
             : 'usage-and-metrics-tables h-hide'
         }
       >
-        <table className='billing-table billing-metrics-table'>
+        <table className="billing-table billing-metrics-table">
           <tbody>
             <tr>
               <td>
-                <span className='metric-name'>Utility:</span>{' '}
-                ₦{(metrics && metrics.utility_per_kwh.toFixed(2).toLocaleString())|| 0}/kWh
+                <span className="metric-name">Utility:</span> ₦
+                {(metrics &&
+                  metrics.utility_per_kwh.toFixed(2).toLocaleString()) ||
+                  0}
+                /kWh
               </td>
             </tr>
             <tr>
@@ -258,9 +256,9 @@ function Billing({ match }) {
           </tfoot>
         </table>
 
-        <div hidden className='billing-usage-table-container'>
-          <table className='billing-table billing-usage-table'>
-            <caption className='billing-table-caption h-caption-up'>
+        <div hidden className="billing-usage-table-container">
+          <table className="billing-table billing-usage-table">
+            <caption className="billing-table-caption h-caption-up">
               Usage
             </caption>
             <thead>
