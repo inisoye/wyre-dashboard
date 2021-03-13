@@ -4,33 +4,20 @@ import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const BillingConsumptionKwhBarChart = ({
-  chartConsumptionValues,
-  chartDeviceNames,
-  chartDates,
-}) => {
-  const {
-    isMediumScreen,
-    isLessThan1296,
-    numberOfCheckedItems,
-    numberOfCheckedBranches,
-  } = useContext(CompleteDataContext);
+const ReportPowerDemandGroupedBarChart = ({ data }) => {
+  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
-  const isChartStacked =
-    numberOfCheckedItems < 1 ||
-    numberOfCheckedBranches > 0 ||
-    numberOfCheckedItems > 3 ||
-    false;
-
-  console.log(chartConsumptionValues);
+  const chartPeriodTypes = data && data.map((eachItem) => eachItem.period_type);
+  const chartDataLabels = data && data[0].data_labels;
+  const chartDemandValues = data && data.map((eachItem) => eachItem.data);
 
   const options = {
     layout: {
       padding: {
-        left: isMediumScreen ? 5 : 25,
-        right: isMediumScreen ? 20 : 50,
-        top: isMediumScreen ? 20 : 25,
-        bottom: isMediumScreen ? 10 : 25,
+        left: 10,
+        right: 20,
+        top: 20,
+        bottom: 10,
       },
     },
     legend: {
@@ -46,7 +33,7 @@ const BillingConsumptionKwhBarChart = ({
     scales: {
       yAxes: [
         {
-          stacked: isChartStacked,
+          stacked: false,
           display: true,
           gridLines: {
             color: '#f0f0f0',
@@ -63,8 +50,8 @@ const BillingConsumptionKwhBarChart = ({
             fontColor: '#A3A3A3',
           },
           scaleLabel: {
-            display: true,
-            labelString: `Monthly Consumption (kWh)`,
+            display: false,
+            labelString: `Power Demand`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -73,7 +60,7 @@ const BillingConsumptionKwhBarChart = ({
       ],
       xAxes: [
         {
-          stacked: isChartStacked,
+          stacked: false,
           ticks: {
             fontFamily: 'Roboto',
             fontSize: 10,
@@ -87,8 +74,7 @@ const BillingConsumptionKwhBarChart = ({
             zeroLineColor: '#f0f0f0',
           },
           scaleLabel: {
-            display: true,
-            labelString: 'Date and Time',
+            display: false,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -99,8 +85,8 @@ const BillingConsumptionKwhBarChart = ({
   };
 
   const colorsArray = [
-    '#FF3DA1',
     '#00C7E6',
+    '#FF3DA1',
     '#6C00FA',
     '#82ca9d',
     '#ff9b3d',
@@ -112,33 +98,28 @@ const BillingConsumptionKwhBarChart = ({
   ];
 
   const plottedDataSet =
-    chartDeviceNames &&
-    chartDeviceNames.map((_, index) => {
+    chartPeriodTypes &&
+    chartPeriodTypes.map((_, index) => {
       return {
         maxBarThickness: 50,
-        label: chartDeviceNames[index],
+        label: chartPeriodTypes[index],
         // Pick data for last week if screen is a medium screen or less
         data: isMediumScreen
-          ? getLastArrayItems(chartConsumptionValues[index])
-          : chartConsumptionValues[index],
+          ? getLastArrayItems(chartDemandValues[index])
+          : chartDemandValues[index],
         backgroundColor: colorsArray[index],
       };
     });
 
-  const plottedData = chartDates && {
+  const plottedData = chartDataLabels && {
     labels: isMediumScreen
-      ? getLastArrayItems(chartDates, 7)
+      ? getLastArrayItems(chartDataLabels, 7)
       : isLessThan1296
-      ? getLastArrayItems(chartDates, 14)
-      : chartDates,
+      ? getLastArrayItems(chartDataLabels, 14)
+      : chartDataLabels,
     datasets: plottedDataSet,
   };
 
-  /**
-   * Redraw added as prop to all bar charts.
-   * Prevents cannot find _meta in undefined dataset bug/error
-   * https://stackoverflow.com/a/44006464/15063835
-   */
   return (
     <>
       <Bar
@@ -150,4 +131,4 @@ const BillingConsumptionKwhBarChart = ({
   );
 };
 
-export default BillingConsumptionKwhBarChart;
+export default ReportPowerDemandGroupedBarChart;

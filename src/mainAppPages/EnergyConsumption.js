@@ -8,7 +8,6 @@ import {
   formatParametersDates,
   formatParametersTimes,
   formatParameterTableData,
-  toCamelCase,
 } from '../helpers/genericHelpers';
 import { numberFormatter } from "../helpers/numberFormatter"
 
@@ -95,21 +94,37 @@ function EnergyConsumption({ match }) {
     tableValues
   );
 
+  const dataForEnergyConsumptionColumns =
+      formattedTableData &&
+      formattedTableData.map((eachRow) => {
 
-  // const csvHeaders = formattedTableData && Object.keys(formattedTableData[0]).map(key => {
-  //   return {
-  //     label: key,
-  //     key: key
-  //   }
-  // })
+        return eachRow;
+      });
 
-  const csvHeaders = [
-    { label: "Index", key: "index" },
-    { label: "Date", key: "date" },
-    { label: "time", key: "time" },
-    { label: "Richmond Gate IPP", key: "Richmond Gate IPP" },
-    { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
-  ]
+    const deviceNames =
+      dataForEnergyConsumptionColumns.length &&
+      Object.keys(dataForEnergyConsumptionColumns[0]);
+
+    const energyConsumptionColumns =
+      deviceNames &&
+      deviceNames.map((eachName) => {
+        return {
+          label: `${eachName}`,
+          key: `${eachName}`,
+        };
+      });
+
+  // console.log(energyConsumptionColumns)
+
+  // const csvHeaders = [
+  //   { label: "Index", key: "index" },
+  //   { label: "Date", key: "date" },
+  //   { label: "time", key: "time" },
+  //   { label: "Richmond Gate IPP", key: "Richmond Gate IPP" },
+  //   { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
+  // ]
+
+  const csvHeaders = energyConsumptionColumns
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
