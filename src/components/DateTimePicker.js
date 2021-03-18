@@ -9,11 +9,14 @@ import dataHttpServices from '../services/devices';
 const { RangePicker } = DatePicker;
 
 function DateTimePicker({ isDateTimePickerDisabled }) {
-  const { setUserDateRange } = useContext(CompleteDataContext);
+  const {   setUserDateRange } = useContext(CompleteDataContext);
+  const {  SelectedDateRange, setSelectedDateRange } = useContext(CompleteDataContext)
 
   function onChange(value, dateString) {
     setUserDateRange(value);
+    setSelectedDateRange(dateString);
     dataHttpServices.setEndpointDateRange(value);
+    dataHttpServices.billingPdfEndpointDateRange(dateString)
   }
 
   function onOk(value) {
@@ -24,14 +27,14 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
   return (
     <>
       <Space
-        className='date-range-picker-containers'
-        direction='vertical'
+        className="date-range-picker-containers"
+        direction="vertical"
         size={12}
       >
         <RangePicker
-          className='date-range-picker'
+          className="date-range-picker"
           showTime={{ format: 'HH:mm' }}
-          format='DD-MM-YYYY HH:mm'
+          format="DD-MM-YYYY HH:mm"
           onChange={onChange}
           onOk={onOk}
           disabled={isDateTimePickerDisabled}

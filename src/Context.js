@@ -49,6 +49,7 @@ const CompleteDataProvider = (props) => {
   // For main app-wide datetime-picker.
   // New requests fired when datetime range is changed.
   const [userDateRange, setUserDateRange] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState([])
   const [parametersDataTimeInterval, setParametersDataTimeInterval] = useState(
     ''
   );
@@ -125,7 +126,7 @@ const CompleteDataProvider = (props) => {
     if (userData) {
       getData();
     }
-  }, [userData, userDateRange, parametersDataTimeInterval]);
+  }, [userData, userDateRange, selectedDateRange, parametersDataTimeInterval]);
   /*--------------------------------------------------------------------
 
 
@@ -169,9 +170,17 @@ const CompleteDataProvider = (props) => {
     }
   }, []);
 
-
   // State for Schedule Email Modal
-    const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  //Getting user Id and Token from LocalStorage
+  let getUserData = localStorage.getItem('loggedWyreUser');
+  let parsedData = JSON.parse(getUserData);
+  let userId = parsedData.data.id;
+  let userToken = parsedData.data.token;
+
+  const allDevices = []
+
 
   return (
     <CompleteDataContext.Provider
@@ -202,7 +211,10 @@ const CompleteDataProvider = (props) => {
         setCurrentUrl: setCurrentUrl,
         powerQualityUnit: powerQualityUnit,
         setPowerQualityUnit: setPowerQualityUnit,
+        userDateRange: userDateRange,
         setUserDateRange: setUserDateRange,
+        selectedDateRange : selectedDateRange,
+        setSelectedDateRange: setSelectedDateRange,
         setParametersDataTimeInterval: setParametersDataTimeInterval,
 
         // Authentication
@@ -226,12 +238,17 @@ const CompleteDataProvider = (props) => {
         isLessThan1296: isLessThan1296,
 
         //Schedule Email Modal
-        isModalVisible :isModalVisible,
-        setIsModalVisible : setIsModalVisible,
+        isModalVisible: isModalVisible,
+        setIsModalVisible: setIsModalVisible,
 
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
+
+        userId: userId,
+        userToken: userToken,
+        
+       allDevices: allDevices
       }}
     >
       {props.children}

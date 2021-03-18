@@ -278,6 +278,7 @@ function SidebarDevice({
       setCheckedDevices({
         ...modifiedCheckedDevices,
       });
+      console.log('checkedDevices = ',checkedDevices)
     }
   };
 
