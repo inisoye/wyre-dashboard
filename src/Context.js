@@ -66,6 +66,7 @@ const CompleteDataProvider = (props) => {
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
+  const [userId, setUserId] = useState()
   /*--------------------------------------------------------------------
 
 
@@ -126,7 +127,7 @@ const CompleteDataProvider = (props) => {
     if (userData) {
       getData();
     }
-  }, [userData, userDateRange, selectedDateRange, parametersDataTimeInterval]);
+  }, [userData, userDateRange, parametersDataTimeInterval]);
   /*--------------------------------------------------------------------
 
 
@@ -167,17 +168,16 @@ const CompleteDataProvider = (props) => {
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
       setUserData(user);
+      setToken(user.data.token);
+      setUserId(user.data.id);
     }
   }, []);
 
   // State for Schedule Email Modal
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  //Getting user Id and Token from LocalStorage
-  let getUserData = localStorage.getItem('loggedWyreUser');
-  let parsedData = JSON.parse(getUserData);
-  let userId = parsedData.data.id;
-  let userToken = parsedData.data.token;
+
+  const [scheduledData, setScheduledData] = useState([]);
 
   const allDevices = []
 
@@ -228,6 +228,8 @@ const CompleteDataProvider = (props) => {
         setUserData: setUserData,
         token: token,
         setToken: setToken,
+        userId: userId,
+        setUserId: setUserId,
 
         // Media Queries
         useMediaQuery: useMediaQuery,
@@ -244,11 +246,11 @@ const CompleteDataProvider = (props) => {
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
-
-        userId: userId,
-        userToken: userToken,
         
-       allDevices: allDevices
+       allDevices: allDevices,
+
+       scheduledData:scheduledData,
+       setScheduledData:setScheduledData
       }}
     >
       {props.children}

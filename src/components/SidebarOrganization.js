@@ -25,13 +25,12 @@ function SidebarOrganization({ orgData }) {
           return <SidebarBranch branchData={eachBranch} key={eachBranch.id} />;
         }): '';
         // allDevices.length =0
-    let deviceNameFilter = orgData.branches.forEach((branch)=> {
+  
+        let deviceNameFilter = orgData.branches.forEach((branch)=> {
         branch.devices.forEach((device)=>{
         allDevices.push({"name": device.name, "id":device.device_id})
         })
-      }) 
-    console.log(allDevices)
-
+      })
   return (
     <li className="sidebar-org">
       <div className="sidebar-org__details">

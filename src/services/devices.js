@@ -43,17 +43,6 @@ const setEndpointDateRange = (newEndpointDateRange) => {
       ]));
 };
 
-const billingPdfEndpointDateRange = (PdfEndpointDateRange) => {
-  if (PdfEndpointDateRange === null) {
-    PdfEndpointDateRange = [moment.startof('month')]
-    console.log('EndPoint is:', PdfEndpointDateRange)
-  }
-  else{
-    console.log('Pdf range point:', PdfEndpointDateRange)
-   return PdfEndpointDateRange
-  }
-};
-
 // Handle Manipulation of time interval for url
 let endpointDataTimeInterval = 'hourly';
 
@@ -63,8 +52,6 @@ const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
 
 const getAllData = async () => {
   // Add interval to url
-  localStorage.setItem('DateEndPointRange', JSON.stringify(endpointDateRange))
-
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
 
   const config = {
@@ -82,5 +69,5 @@ export default {
   setUserId,
   setEndpointDateRange,
   setEndpointDataTimeInterval,
-  billingPdfEndpointDateRange,
+  endpointDateRange,
 };

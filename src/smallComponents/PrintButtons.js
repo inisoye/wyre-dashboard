@@ -1,47 +1,54 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import PdfIcon from '../icons/PdfIcon';
 import PrintIcon from '../icons/PrintIcon';
 
 import CompleteDataContext from '../Context';
+import dataHttpServices from '../services/devices';
 
 import axios from 'axios';
 
 import { ScheduleEmailModal } from '../components/ScheduleEmailModal';
 
 function PrintButtons() {
+  const { token, userId, allDevices, checkedDevices } = useContext(
+    CompleteDataContext
+  );
+
+  const [pdfLink, setPdflink] = useState();
+
+  const dateRange = dataHttpServices.endpointDateRange;
+
   const PdfDownloadLink = async () => {
-    const { checkedItems, allDevices, checkedDevices } = useContext(
-      CompleteDataContext
-    );
+    const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
 
-    console.log(allDevices);
+    let selectedDevicesIds = [];
 
-    // let filterAllDevices = allDevices.forEach((devicesId)=>{
-    //   return
-    // })
+    for (const prop in checkedDevices) {
+      let listOfDeviceId = allDevices.filter((e) => {
+        return e.name === prop;
+      });
+      selectedDevicesIds.push(listOfDeviceId[0].id);
+    }
+    const data = { selected_devices: selectedDevicesIds };
 
-    let getUserData = localStorage.getItem('loggedWyreUser');
-    let parsedData = JSON.parse(getUserData);
-    let DateEndPointRange = localStorage.getItem('DateEndPointRange');
-    let parsedDateEndpointRange = JSON.parse(DateEndPointRange);
-    let userId = parsedData.data.id;
-    let token = parsedData.data.token;
+    const response = axios
+      .post(staticUrl, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data
+      })
+      .catch((error) => console.log('Error downloading report:', error));
 
-    const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${parsedDateEndpointRange}/`;
-
-    const data = {
-      selectedDevices: checkedItems,
-    };
-
-    const response = axios.post(staticUrl, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${token}`,
-      },
-    });
-    console.log(response.data);
+    return response;
   };
+
+  const downloadUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
 
   const modal = <ScheduleEmailModal />;
 
@@ -54,10 +61,11 @@ function PrintButtons() {
       </li>
       <li className="print-button-container">
         <a
-          // href={staticUrl}
+          // href={pdfLink}
           onClick={PdfDownloadLink}
           target="_blank"
           className="print-button"
+          rel="noreferrer"
         >
           <PdfIcon />
         </a>
