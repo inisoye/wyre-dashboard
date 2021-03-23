@@ -76,31 +76,31 @@ export const ScheduleEmailModal = () => {
   }
 
 
-  const availableDevicesDropdownList = [emailModalData.data].map((availableDevices) => {
-    [availableDevices.personal_data].map((personalData) => {      
-      [personalData.personal_data].map((assignedDevices) =>{
-        [assignedDevices.assigned_devices].map((datas) =>(  
-        <Menu onClick={handleDevicesMenuClick} selectedkeys={[ ExternalRecieverAvailableDevices ]}>
-          <Menu.Item key= { availableDevices.device_id}>
-            {availableDevices.device_name}
-            <Checkbox style={{marginLeft:"20px"}}/>
-          </Menu.Item> 
-        </Menu>
-        ))
-      })
-    })
-  })
+  // const personalDataDevices = [emailModalData.data].map((assignedDevices) => {
+  //     [assignedDevices.personal_data].map((getDevices) =>{
+  //       [getDevices.assigned_devices].map((device) =>(  
+  //       <Menu onClick={handleDevicesMenuClick} selectedkeys={[ ExternalRecieverAvailableDevices ]}>
+  //         <Menu.Item key= { device.device_id}>
+  //           {device.device_name}
+  //           <Checkbox style={{marginLeft:"20px"}}/>
+  //         </Menu.Item> 
+  //       </Menu>
+  //       ))
+  //     })
+  // })
 
 
 
-  const personalDataDevices =  [emailModalData].map(assignedDevices => (
-     <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
-      {/* <Menu.Item key= {assignedDevices.data.personal_data.assigned_devices.id}>
-        {assignedDevices.data.personal_data.assigned_devices.name}
-        <Checkbox style={{marginLeft:"20px"}}/>
-      </Menu.Item> */}
-    </Menu>
-  ))
+  // const availableDevicesDropdownList =  [emailModalData].map(availableDevices => {
+  //   [availableDevices.available_devices].map((devicesavailable) => (
+  //   <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
+  //       <Menu.Item key= {devicesavailable.device_id}>
+  //         {devicesavailable.device_name}
+  //         <Checkbox style={{marginLeft:"20px"}}/>
+  //       </Menu.Item>
+  //     </Menu>
+  //   ))
+  // })
 
 
   const frequencyDropDownList = (
