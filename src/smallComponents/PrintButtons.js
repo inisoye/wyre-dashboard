@@ -14,9 +14,6 @@ function PrintButtons() {
   const { token, userId, allDevices, checkedDevices } = useContext(
     CompleteDataContext
   );
-
-  const [pdfLink, setPdflink] = useState();
-
   const dateRange = dataHttpServices.endpointDateRange;
 
   const PdfDownloadLink = async () => {
@@ -30,7 +27,7 @@ function PrintButtons() {
       });
       selectedDevicesIds.push(listOfDeviceId[0].id);
     }
-    const data = { selected_devices: selectedDevicesIds };
+    const data = JSON.stringify({ selected_devices: selectedDevicesIds})
 
     const response = axios
       .post(staticUrl, data, {
@@ -40,15 +37,18 @@ function PrintButtons() {
         },
       })
       .then((res) => {
-        console.log(res);
-        return res.data
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Billing${dateRange}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        return res.data;
       })
       .catch((error) => console.log('Error downloading report:', error));
 
     return response;
   };
-
-  const downloadUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
 
   const modal = <ScheduleEmailModal />;
 
@@ -61,7 +61,6 @@ function PrintButtons() {
       </li>
       <li className="print-button-container">
         <a
-          // href={pdfLink}
           onClick={PdfDownloadLink}
           target="_blank"
           className="print-button"

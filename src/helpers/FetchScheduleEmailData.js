@@ -28,17 +28,21 @@ function useFetchScheduleEmailData(URL, setData) {
 function usePostScheduleEmailData(url, data, ) {
     const { token } = useContext( CompleteDataContext );
 
-    axios.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log('data', response);
-      // changeData(response.data)
-    })
-    .catch((error) => console.log('Error posting data =', error));
+    const postData = () =>{ 
+      axios.post(url, data, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              console.log('data', response);
+              // changeData(response.data)
+            })
+            .catch((error) => console.log('Error posting data =', error));
+    }
+
+    postData();
 };
 
 

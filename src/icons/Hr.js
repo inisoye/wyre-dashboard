@@ -15,7 +15,7 @@ export const Hr = () => {
             x2="585"
             y2="0.75"
             stroke="#C4C4C4"
-            stroke-width="0.5"
+            strokeWidth="0.5"
           />
         </svg>
       </div>

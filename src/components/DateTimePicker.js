@@ -10,13 +10,10 @@ const { RangePicker } = DatePicker;
 
 function DateTimePicker({ isDateTimePickerDisabled }) {
   const {   setUserDateRange } = useContext(CompleteDataContext);
-  const {  SelectedDateRange, setSelectedDateRange } = useContext(CompleteDataContext)
 
   function onChange(value, dateString) {
     setUserDateRange(value);
-    setSelectedDateRange(dateString);
     dataHttpServices.setEndpointDateRange(value);
-    dataHttpServices.billingPdfEndpointDateRange(dateString)
   }
 
   function onOk(value) {
