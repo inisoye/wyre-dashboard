@@ -40,7 +40,7 @@ function PrintButtons() {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `Billing${dateRange}.pdf`);
+        link.setAttribute('download', `Billing_for_${dateRange}.pdf`);
         document.body.appendChild(link);
         link.click();
         return res.data;

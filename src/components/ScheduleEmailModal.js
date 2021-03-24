@@ -45,11 +45,28 @@ export const ScheduleEmailModal = () => {
   const deleteBillReceiver = `https://wyreng.xyz/api/v1/delete_mail_reciever/${userId}/`
   const sendBillUrl = `https://wyreng.xyz/api/v1/send_report/${userId}/${dateRange}`
 
-  useFetchScheduleEmailData(getemailModalDataUrl, setEmailModalData)
+  // useFetchScheduleEmailData(getemailModalDataUrl, setEmailModalData)
+
+  const getData =  () =>{        
+           axios.get(getemailModalDataUrl, {
+              headers: {
+                Authorization: `bearer ${token}`,
+              },
+            })
+            .then((resp) => {
+              const parsedData = resp.data;
+              setEmailModalData(parsedData)
+            })
+            .catch((error) => console.log('An error occured:', error));
+          }
+
+    useEffect(() => {
+          getData()
+            }, [URL])
 
   const ShowModal = () => { 
-    console.log('The data:', emailModalData) 
-    console.log(emailModalData.data.personal_data.assigned_devices[0].name)
+    // const { data: {personal_data: {assigned_devices: {id}}} } = 
+    console.log(emailModalData)
     setIsModalVisible(true);
   };
 
@@ -72,9 +89,8 @@ export const ScheduleEmailModal = () => {
     console.log('Devices selected', personalDataAvailableDevices)
   }
 
-
-  // const personalDataDevices = [emailModalData.data].map((assignedDevices) => {
-  //     [assignedDevices.personal_data].map((getDevices) =>{
+  //  const personalDataDevices = [emailModalData.data].map((assignedDevices) => {
+  //     [assignedDevices['personal_data']].map((getDevices) =>{
   //       [getDevices.assigned_devices].map((device) =>(  
   //       <Menu onClick={handleDevicesMenuClick} selectedkeys={[ ExternalRecieverAvailableDevices ]}>
   //         <Menu.Item key= { device.device_id}>
@@ -99,15 +115,15 @@ export const ScheduleEmailModal = () => {
   //   ))
   // })
 
-// const availableDevicesDropdownList = [emailModalData.data].forEach(product => {
-//   product.available_devices.forEach(brand => {
+  // const {data:{available_devices} } = emailModalData
+  //   console.log(available_devices)
+//   const availableDevicesDropdownList = available_devices.map(brand => {
 //     <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
 //         <Menu.Item key= {brand.device_id}>
 //           {brand.device_name}
 //           <Checkbox style={{marginLeft:"20px"}}/>
 //         </Menu.Item>
 //       </Menu>
-//   });
 // });
 
   const frequencyDropDownList = (
@@ -169,6 +185,8 @@ export const ScheduleEmailModal = () => {
       url:sendBillUrl,
       method: 'POST',
       data : sendAQuickBiillData,
+      headers : { 'Content-Type': 'application/json',
+                   Authorization: `bearer ${token}`},
       validateStatus: (status) => {
         return true;
       },
@@ -226,6 +244,7 @@ export const ScheduleEmailModal = () => {
         <Hr/>
         <br/>
         { data.external_recievers > 0 ?
+          
         <Row key={data.external_recievers.id}>
           <Col span={10} style={emailStyles}>
             {data.external_recievers.email}
