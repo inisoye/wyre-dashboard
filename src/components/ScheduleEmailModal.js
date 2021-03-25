@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 
 import {
   Modal,
@@ -55,9 +55,9 @@ export const ScheduleEmailModal = () => {
               },
             })
             .then((resp) => {
-              const parsedData = resp.data;
+              const parsedData = resp.data.data;
               setEmailModalData(parsedData)
-              fetchedModalData.push(resp.data.data)
+              fetchedModalData.push(emailModalData)
             })
             .catch((error) => console.log('An error occured:', error));
           }
@@ -77,8 +77,8 @@ export const ScheduleEmailModal = () => {
   };
 
   const handleFrequencyMenuClick = (e) => {
-    setFrequencyDropdown(e.key)
-    console.log('click', e.key);
+    setFrequencyDropdown(e.item.props.children[1])
+    console.log(frequencyDropdown)
   };
 
   const handleDevicesMenuClick = (v)=>{
@@ -91,9 +91,9 @@ export const ScheduleEmailModal = () => {
     console.log('Devices selected', personalDataAvailableDevices)
   }
 
-  //  const personalDataDevices = [emailModalData.data].map((assignedDevices) => {
-  //     [assignedDevices['personal_data']].map((getDevices) =>{
-  //       [getDevices.assigned_devices].map((device) =>(  
+  //  const personalDataDevices = [fetchedModalData].forEach((assignedDevices) => {
+  //     // return [assignedDevices.personal_data].map((getDevices) =>{
+  //       [assignedDevices.assigned_devices].map((device) =>(  
   //       <Menu onClick={handleDevicesMenuClick} selectedkeys={[ ExternalRecieverAvailableDevices ]}>
   //         <Menu.Item key= { device.device_id}>
   //           {device.device_name}
@@ -101,27 +101,31 @@ export const ScheduleEmailModal = () => {
   //         </Menu.Item> 
   //       </Menu>
   //       ))
-  //     })
+  //     // })
   // })
 
 
   // const {data:{available_devices} } = emailModalData
   //   console.log(available_devices)
 
-  const availableDevicesDropdownList = allDevices.map(brand => {
-    return <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
-        <Menu.Item key= {brand.name}>
-          {brand.id}
-          <Checkbox style={{marginLeft:"20px"}}/>
-        </Menu.Item>
-      </Menu>
-});
+  const AvailableDevicesDropdownList =(
+    <React.Fragment>
+      {/* {allDevices.map(device => { */}
+      <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
+          <Menu.Item key= '1'>  
+            {/* {device.name} */} device
+            <Checkbox style={{marginLeft:"20px"}}/>
+          </Menu.Item>
+        </Menu>
+      
+    </React.Fragment>
+  )
 
   const frequencyDropDownList = (
     <Menu onClick={handleFrequencyMenuClick} selectedKeys={[ frequencyDropdown ]}>
-      <Menu.Item key="1" >Weekly</Menu.Item>
-      <Menu.Item key="2">Bi-Weekly</Menu.Item>
-      <Menu.Item key="3">Monthly</Menu.Item>
+      <Menu.Item key="1" >WEEKLY</Menu.Item>
+      <Menu.Item key="2">BI-WEEKLY</Menu.Item>
+      <Menu.Item key="3">MONTHLY</Menu.Item>
     </Menu>
   );
   
@@ -172,20 +176,16 @@ export const ScheduleEmailModal = () => {
       'email': sendBill, 
       'selected_devices': selectedDevicesIds})
 
-    axios({
-      url:sendBillUrl,
-      method: 'POST',
-      data : sendAQuickBiillData,
+    console.log('Quick Bill data', sendAQuickBiillData)
+
+    axios.post(sendBillUrl, sendAQuickBiillData, {
       headers : { 'Content-Type': 'application/json',
                    Authorization: `bearer ${token}`},
-      validateStatus: (status) => {
-        return true;
-      },
     })
     .then((res) => {
-    console.log('Successfully sent data to server:',res)
+      console.log('Successfully sent data to server:', res)
     })
-    .catch(error => console.log('Error posting data:', error))
+    .catch(error => console.log('Error posting data', error))
    }
 
 
@@ -205,7 +205,7 @@ export const ScheduleEmailModal = () => {
         console.log(res)
         setEmailModalData(res)
       })
-      .catch(error => console.log('Erro deleting and posting data:', error))
+      .catch(error => console.log('Error deleting and posting data:', error))
    }
   // Styles
   const emailStyles = {
@@ -239,7 +239,7 @@ export const ScheduleEmailModal = () => {
       <button type="button" className="print-button" onClick={ShowModal} >
         <ScheduleEmailBtn />
       </button>
-      {emailModalData.length >= 0 ? [emailModalData].map((getdata)=> (
+      {fetchedModalData.length >= 0 ? [fetchedModalData].map((datas)=> (
       <Modal
         visible={isModalVisible}
         style={{ top: 20 }}
@@ -253,21 +253,21 @@ export const ScheduleEmailModal = () => {
         </Row>
         <Hr/>
         <br/>
-        { getdata.data.external_recievers > 0 ?
+        { datas.external_recievers > 0 ?
           
-        <Row key={getdata.data.external_recievers.id}>
+        <Row key={1}>
           <Col span={10} style={emailStyles}>
-            {getdata.data.external_recievers.email}
+            {datas.data.external_recievers.email}
+            display@email.com
           </Col>
           <Col span={10}>
-            <ModalDropdownBtn dropDownList={availableDevicesDropdownList}  text="Assigned Devices"/>
+            <ModalDropdownBtn dropDownList= {AvailableDevicesDropdownList}  text="Assigned Devices"/>
           </Col>
           <Col span={4}>
             <ModalBtns action="delete" onClick={deleteBillReceiver}/>
           </Col>
         </Row>
-      : <Row justify="center"><Col><p>No External Receiver added</p></Col></Row> }
-
+       : <Row justify="center"><Col><p>No External Receiver added</p></Col></Row> }
         <br />
         <Hr />
 
@@ -312,7 +312,7 @@ export const ScheduleEmailModal = () => {
           </Col>
         </Row>
       </Modal>
-      )): console.log('An error Ocurred try again') }
+       )): console.log('An error Ocurred try again') }
       </>
   );
 };
