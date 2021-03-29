@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ModalBtns = ({ action, onClick,}) => {
+export const ModalBtns = ({ action, onClick, onMouseOver}) => {
     const BtnStyle = {
       width: '80px',
       height: '34px',
@@ -17,7 +17,7 @@ export const ModalBtns = ({ action, onClick,}) => {
       color: '#FFFFFF',
     };
     return (
-        <button onClick={onClick} style={BtnStyle}>
+        <button onClick={onClick} style={BtnStyle} onMouseOver={onMouseOver}>
             {action}
         </button>
     )

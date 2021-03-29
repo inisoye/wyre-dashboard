@@ -6,14 +6,14 @@ import {
   Col,
   Menu,
   Checkbox,
-  Input
+  Input,
+  Alert
 } from 'antd';
 
 import axios from 'axios'
 
 import CompleteDataContext from '../Context';
 import ScheduleEmailBtn from '../icons/ScheduleEmailBtn';
-
 
 import dataHttpServices from '../services/devices';
 
@@ -22,53 +22,53 @@ import { Hr } from '../icons/Hr';
 import { ModalBtns } from '../smallComponents/ModalBtns'
 import { ModalDropdownBtn } from '../smallComponents/ModalDropdownBtn'
 
-import  { useFetchScheduleEmailData, usePostScheduleEmailData} from '../helpers/FetchScheduleEmailData'
-
 export const ScheduleEmailModal = () => {
   const { isModalVisible, setIsModalVisible, token, userId, allDevices, checkedDevices  } = useContext(
     CompleteDataContext
   );
 
-  const [emailModalData, setEmailModalData] = useState([])
-  const [addEmail, setAddEmail] = useState('')
-  const [sendBill, setSendBill] = useState('')
-  const [ExternalRecieverAvailableDevices,setExternalRecieverAvailableDevices ] = useState([])
-  const [frequencyDropdown, setFrequencyDropdown] = useState([])
-  const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState([])
+  const [emailModalData, setEmailModalData] = useState( [ ] )
 
-  const fetchedModalData = []
+  const [addEmail, setAddEmail] = useState('')
+
+  const [sendBill, setSendBill] = useState('')
+  const [isSendingBill, setIsSendingBill] = useState(true)
+  const [sentBillStatus, setSentBillStatus] = useState()
+
+  const [externalRecieverAssignedDeviceIds,setexternalRecieverAssignedDeviceIds ] = useState([])
+  const [frequencyDropdown, setFrequencyDropdown] = useState('')
+  const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState([])
   
+  const [currentRecieverId, setcurrentRecieverId] = useState()
+
   const dateRange = dataHttpServices.endpointDateRange;
 
   const getemailModalDataUrl = `https://wyreng.xyz/api/v1/mail_schedules_data/${userId}/`;
   const addNewExternalReceiverUrl = `https://wyreng.xyz/api/v1/add_external_bill_reciever/${userId}/` 
   const addavailableDevicesToBillReceiver = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`
   const deleteBillReceiverUrl = `https://wyreng.xyz/api/v1/delete_mail_reciever/${userId}/`
-  const sendBillUrl = `https://wyreng.xyz/api/v1/send_report/${userId}/${dateRange}`
+  const sendBillUrl = `https://wyreng.xyz/api/v1/send_report/${userId}/${dateRange}/`
 
-  // useFetchScheduleEmailData(getemailModalDataUrl, setEmailModalData)
+  
+  useEffect(() => {
+      getData()
+        }, [emailModalData])
 
   const getData =  () =>{        
-           axios.get(getemailModalDataUrl, {
-              headers: {
-                Authorization: `bearer ${token}`,
-              },
-            })
-            .then((resp) => {
-              const parsedData = resp.data.data;
-              setEmailModalData(parsedData)
-              fetchedModalData.push(emailModalData)
-            })
-            .catch((error) => console.log('An error occured:', error));
-          }
+      axios.get(getemailModalDataUrl, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then((resp) => {
+          const parsedData = Object.values(resp.data.data);
+          setEmailModalData(parsedData)
+        })
+        .catch((error) => console.log('An error occured:', error));
+      }
 
-    useEffect(() => {
-          getData()
-            }, [getemailModalDataUrl, addNewExternalReceiverUrl,deleteBillReceiverUrl, sendBillUrl])
 
-  const ShowModal = () => { 
-    // const { data: {personal_data: {assigned_devices: {id}}} } = 
-    console.log(fetchedModalData)
+  const ShowModal = () => {
     setIsModalVisible(true);
   };
 
@@ -78,56 +78,52 @@ export const ScheduleEmailModal = () => {
 
   const handleFrequencyMenuClick = (e) => {
     setFrequencyDropdown(e.item.props.children[1])
-    console.log(frequencyDropdown)
+
+    let data = JSON.stringify({
+      frequency : frequencyDropdown,
+      selected_devices  : personalDataAvailableDevices
+    })
+
+    axios.post(addavailableDevicesToBillReceiver, data, {
+    headers:{
+                'Content-Type': 'application/json',
+                Authorization: `bearer ${token}`,
+    }
+    })
+    .then((response)=>{
+      setEmailModalData(Object.values(response.data.data))
+    })
+    .catch(err => console.log('Error setting Personal Data', err))
   };
 
-  const handleDevicesMenuClick = (v)=>{
-    setExternalRecieverAvailableDevices(v.key)
-    console.log('Devices selected', ExternalRecieverAvailableDevices)
+  const addDevicetoExternalReciever = () =>{
+    const data = JSON.stringify({
+      reciever_id: currentRecieverId,
+      selected_devices : externalRecieverAssignedDeviceIds
+    })
+
+    console.log(data)
+    axios.post(addavailableDevicesToBillReceiver, data, {
+      headers:{
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+      }
+    })
+    .then((res)=>{
+      setEmailModalData( Object.values(res.data.data) )
+      console.log(res)
+    })
+    .catch((error) => console.log("Error adding assigned devices to external Receiver", error) )
+  }
+
+  const handleExternalRecieversDevicesMenuClick = (v)=>{
+    setexternalRecieverAssignedDeviceIds(v.key)
+    addDevicetoExternalReciever()
   }
 
   const handlePersonalDataDevicesMenuClick = (Devices)=>{
     setPersonalDataAvailableDevices(Devices.key)
-    console.log('Devices selected', personalDataAvailableDevices)
   }
-
-  //  const personalDataDevices = [fetchedModalData].forEach((assignedDevices) => {
-  //     // return [assignedDevices.personal_data].map((getDevices) =>{
-  //       [assignedDevices.assigned_devices].map((device) =>(  
-  //       <Menu onClick={handleDevicesMenuClick} selectedkeys={[ ExternalRecieverAvailableDevices ]}>
-  //         <Menu.Item key= { device.device_id}>
-  //           {device.device_name}
-  //           <Checkbox style={{marginLeft:"20px"}}/>
-  //         </Menu.Item> 
-  //       </Menu>
-  //       ))
-  //     // })
-  // })
-
-
-  // const {data:{available_devices} } = emailModalData
-  //   console.log(available_devices)
-
-  const AvailableDevicesDropdownList =(
-    <React.Fragment>
-      {/* {allDevices.map(device => { */}
-      <Menu onClick={handlePersonalDataDevicesMenuClick} selectedkeys={[ personalDataAvailableDevices ]}>
-          <Menu.Item key= '1'>  
-            {/* {device.name} */} device
-            <Checkbox style={{marginLeft:"20px"}}/>
-          </Menu.Item>
-        </Menu>
-      
-    </React.Fragment>
-  )
-
-  const frequencyDropDownList = (
-    <Menu onClick={handleFrequencyMenuClick} selectedKeys={[ frequencyDropdown ]}>
-      <Menu.Item key="1" >WEEKLY</Menu.Item>
-      <Menu.Item key="2">BI-WEEKLY</Menu.Item>
-      <Menu.Item key="3">MONTHLY</Menu.Item>
-    </Menu>
-  );
   
   const handleChangForAddExternalReceiever = (e) =>{
       let externalReceiver = e.target.value;
@@ -144,16 +140,12 @@ export const ScheduleEmailModal = () => {
         headers:{
                 'Content-Type': 'application/json',
                 Authorization: `bearer ${token}`,
-        },
-        validateStatus: (status) => {
-        return true;
-      },
+        }
       })
       .then((response) => {
-        console.log(response.data)
-        setEmailModalData(response.data)
+        setEmailModalData(Object.values(response.data.data))
       })
-      .catch(err => console.log("Couldn't add external Reciever", err))
+      .catch(err => alert("Couldn't add external Reciever, Please try again."))
   }
 
   let selectedDevicesIds = []
@@ -171,28 +163,27 @@ export const ScheduleEmailModal = () => {
    }
 
    const submitEmailTargetForSendAQuickBill = (event) => {
-     event.preventDefault();
+    event.preventDefault();
     let sendAQuickBiillData = JSON.stringify({
       'email': sendBill, 
-      'selected_devices': selectedDevicesIds})
+      selected_devices: selectedDevicesIds})
 
-    console.log('Quick Bill data', sendAQuickBiillData)
-
+    setIsSendingBill(true) 
     axios.post(sendBillUrl, sendAQuickBiillData, {
       headers : { 'Content-Type': 'application/json',
                    Authorization: `bearer ${token}`},
     })
     .then((res) => {
-      console.log('Successfully sent data to server:', res)
+      setSentBillStatus(res.status)
     })
     .catch(error => console.log('Error posting data', error))
+    setIsSendingBill(false)
    }
-
 
    const deleteBillReceiver = () =>{
      let deleteBillReceiverdata = JSON.stringify({
-       'reciever_id ' : '',
-       selected_devices: selectedDevicesIds
+       receiver_id  : currentRecieverId,
+       selected_devices: externalRecieverAssignedDeviceIds
       })
 
       axios.post(deleteBillReceiverUrl, deleteBillReceiverdata, {
@@ -202,17 +193,18 @@ export const ScheduleEmailModal = () => {
         }
       })
       .then(res =>{
-        console.log(res)
-        setEmailModalData(res)
+        setEmailModalData(Object.values(res.data.data))
       })
       .catch(error => console.log('Error deleting and posting data:', error))
    }
+
+
   // Styles
   const emailStyles = {
     fontFamily: 'Montserrat',
     fontStyle: 'normal',
     fontWeight: 'normal',
-    fontSize: '16px',
+    fontSize: '12px',
     color: '#000000',
   };
 
@@ -234,12 +226,48 @@ export const ScheduleEmailModal = () => {
     color: '#000000',
   };
    
+// STYLING ENDS HERE
+
+  const assignedDevicesForPersonalData = emailModalData[1]
+  const personalDataAssignedDevices = (
+    <Menu onClick={handlePersonalDataDevicesMenuClick} selectedKeys={[ personalDataAvailableDevices ]} multiple="true">
+      {assignedDevicesForPersonalData && assignedDevicesForPersonalData.assigned_devices.map((data) => (
+        <Menu.Item key={data.id}>
+          {data.name}
+          <Checkbox  style={{marginLeft:'20px'}}/>
+        </Menu.Item>
+      ))
+      }
+    </Menu>
+  )
+
+  const frequencyDropDownList = (
+    <Menu onClick={handleFrequencyMenuClick} selectedKeys={[ frequencyDropdown ]}>
+      <Menu.Item key="WEEKLY" >WEEKLY</Menu.Item>
+      <Menu.Item key="BI-WEEKLY">BI-WEEKLY</Menu.Item>
+      <Menu.Item key="MONTHLY">MONTHLY</Menu.Item>
+    </Menu>
+  );
+
+    const externalRecieversAssignedDevices= emailModalData[2]
+      const assignedDevicesForExternalRecievers = (
+            <Menu onClick={handleExternalRecieversDevicesMenuClick} selectedKeys={[ externalRecieverAssignedDeviceIds ]} mutiple="true">
+              {externalRecieversAssignedDevices && externalRecieversAssignedDevices.map((item) => (
+                <Menu.Item key={item.device_id}>
+                   {item.device_name}
+                    <Checkbox  style={{marginLeft:'20px'}}/>
+                </Menu.Item>
+                ))}
+            </Menu>
+      )
+
+  const external_recievers = emailModalData[0]
+
   return (
     <>
       <button type="button" className="print-button" onClick={ShowModal} >
         <ScheduleEmailBtn />
       </button>
-      {fetchedModalData.length >= 0 ? [fetchedModalData].map((datas)=> (
       <Modal
         visible={isModalVisible}
         style={{ top: 20 }}
@@ -253,21 +281,25 @@ export const ScheduleEmailModal = () => {
         </Row>
         <Hr/>
         <br/>
-        { datas.external_recievers > 0 ?
-          
-        <Row key={1}>
-          <Col span={10} style={emailStyles}>
-            {datas.data.external_recievers.email}
-            display@email.com
-          </Col>
-          <Col span={10}>
-            <ModalDropdownBtn dropDownList= {AvailableDevicesDropdownList}  text="Assigned Devices"/>
-          </Col>
-          <Col span={4}>
-            <ModalBtns action="delete" onClick={deleteBillReceiver}/>
-          </Col>
-        </Row>
-       : <Row justify="center"><Col><p>No External Receiver added</p></Col></Row> }
+            { 
+             external_recievers && external_recievers.length > 0 ? external_recievers &&  external_recievers.map((recievers)=>( 
+                  <Row key={recievers.id} style={{marginBottom:'15px'}}>
+                    <Col span={10} style={emailStyles}>
+                      {recievers.email}
+                    </Col>
+                    <Col span={10}>
+                      <ModalDropdownBtn dropDownList= {assignedDevicesForExternalRecievers}  text="Assigned Devices"/>
+                    </Col>
+                    <Col span={4}>
+                      <ModalBtns action="delete" onClick={deleteBillReceiver} 
+                      onMouseOver={ () => {setcurrentRecieverId(recievers.id)
+                      } 
+                      }/>
+                    </Col>
+                  </Row>
+                ))
+            : <Row justify="center"><Col><p>No External Receiver added</p></Col></Row> }
+
         <br />
         <Hr />
 
@@ -291,7 +323,7 @@ export const ScheduleEmailModal = () => {
           style={rowStyles}
         >
           <Col span={12}>
-              <ModalDropdownBtn  text="Assigned Devices" />
+              <ModalDropdownBtn text="Assigned Devices" dropDownList={personalDataAssignedDevices}/>
           </Col>
           <Col>
             <ModalDropdownBtn dropDownList={frequencyDropDownList} text="Frequency"/>
@@ -304,15 +336,26 @@ export const ScheduleEmailModal = () => {
         </Row>
         <Hr />
         <Row justify="center" style={rowStyles}>
+          {
+           isSendingBill === false && sentBillStatus === 200 ? <Alert message="Successfully sent Bill to email" type="success" closable={true} style={{marginBottom:"20px"}}/>
+                            : sentBillStatus < 200 || sentBillStatus > 299 ? 
+                            <Alert 
+                            message="Error,Couldn't send Bill to Email. Please try again" 
+                            closable={true} 
+                            type="error" 
+                            style={{marginBottom:"20px"}
+                          }/>
+         : '' }
+          <br/>
           <Col span={12} style={{marginRight:"20px"}}>
             <Input placeholder="Enter email address" value={sendBill} onChange={handleChangeForSendAQuickBill}/>
           </Col>
           <Col>
             <ModalBtns action="send" onClick={submitEmailTargetForSendAQuickBill}/>
           </Col>
+          
         </Row>
       </Modal>
-       )): console.log('An error Ocurred try again') }
       </>
   );
 };
