@@ -288,7 +288,7 @@ export const ScheduleEmailModal = () => {
                       {recievers.email}
                     </Col>
                     <Col span={10}>
-                      <ModalDropdownBtn dropDownList= {assignedDevicesForExternalRecievers}  text="Assigned Devices"/>
+                      <ModalDropdownBtn dropDownList= {assignedDevicesForExternalRecievers}  text="Assigned Devices" onTouch={() => {setcurrentRecieverId(recievers.id)} } />
                     </Col>
                     <Col span={4}>
                       <ModalBtns action="delete" onClick={deleteBillReceiver} 

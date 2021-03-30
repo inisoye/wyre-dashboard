@@ -3,11 +3,11 @@ import { Dropdown, Button} from 'antd';
 
 import { DownOutlined } from '@ant-design/icons';
 
-export const ModalDropdownBtn = ({ dropDownList, text }) => {
+export const ModalDropdownBtn = ({ dropDownList, text, onTouch }) => {
 
   return (
     <Dropdown overlay={dropDownList} size="large">
-      <Button>
+      <Button onMouseOver={onTouch}>
         {text} <DownOutlined />
       </Button>
     </Dropdown>
