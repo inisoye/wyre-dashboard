@@ -17,8 +17,6 @@ import EnergyConsumptionBarChart from '../components/barCharts/EnergyConsumption
 import EnergyConsumptionTable from '../components/tables/EnergyConsumptionTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
-
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
 
@@ -119,7 +117,6 @@ function EnergyConsumption({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='parameters-stacked-bar-container'>

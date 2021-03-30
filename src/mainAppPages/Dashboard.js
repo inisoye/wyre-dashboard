@@ -8,7 +8,6 @@ import DashboardDoughnutChart from '../components/pieCharts/DashboardDoughnutCha
 import Loader from '../components/Loader';
 
 import DashboardSmallBannerSection from '../smallComponents/DashboardSmallBannerSection';
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import DashboardUpArrow from '../icons/DashboardUpArrow';
 import DashboardDownArrow from '../icons/DashboardDownArrow';
@@ -58,7 +57,6 @@ function Dashboard({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="dashboard-row-1">
