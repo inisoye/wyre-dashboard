@@ -6,7 +6,7 @@ function DashboardSmallBannerSection({ name, value, unit }) {
       <h3 className='small-banner-section__heading'>
         {name}{' '}
         {/* <span className='small-banner-section__subheading'>This Month</span> */}
-      </h3>
+      </h3> 
       <p className='small-banner-section__value'>
         <span className='value'>{value}</span>
         <span className='unit'>{unit}</span>

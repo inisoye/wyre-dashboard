@@ -177,8 +177,6 @@ const CompleteDataProvider = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
 
-  const [scheduledData, setScheduledData] = useState([]);
-
   const allDevices = []
 
 
@@ -248,9 +246,6 @@ const CompleteDataProvider = (props) => {
         setPreloadedUserFormData: setPreloadedUserFormData,
         
        allDevices: allDevices,
-
-       scheduledData:scheduledData,
-       setScheduledData:setScheduledData
       }}
     >
       {props.children}

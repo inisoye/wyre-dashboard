@@ -9,11 +9,12 @@ import dataHttpServices from '../services/devices';
 const { RangePicker } = DatePicker;
 
 function DateTimePicker({ isDateTimePickerDisabled }) {
-  const {   setUserDateRange } = useContext(CompleteDataContext);
+  const { setUserDateRange } = useContext(CompleteDataContext);
 
   function onChange(value, dateString) {
     setUserDateRange(value);
     dataHttpServices.setEndpointDateRange(value);
+    console.log('Formatted Date', dateString)
   }
 
   function onOk(value) {
@@ -51,6 +52,7 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
             ],
             'This Year': [moment().startOf('year'), moment()],
           }}
+          showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
         />
       </Space>
     </>

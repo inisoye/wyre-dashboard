@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom'
 
 import BreadCrumbItem from '../smallComponents/BreadCrumbItem';
 
@@ -10,7 +11,9 @@ function BreadCrumb({ routesArray }) {
   const reversedDate = Date[1].split('').reverse().join('');
   const NewEndDate = reversedDate.toString().split('', 10).reverse().join('');
 
-  console.log(NewEndDate);
+  //eslint-disable-line
+  const Displaylocation = useLocation().pathname;
+
   const dateRangeStyles = {
     fontSize: 'small',
     marginLeft: '10px',
@@ -26,11 +29,14 @@ function BreadCrumb({ routesArray }) {
   return (
     <>
       <ol className="breadcrumb">{breadCrumbItems}</ol>
-      <div>
-        <span style={dateRangeStyles}>{Date[0]}</span>
-        <span style={dateRangeStyles}> — </span>
-        <span style={dateRangeStyles}>{NewEndDate}</span>
-      </div>
+      { Displaylocation === '/dashboard' && (
+          <div>
+            <span style={dateRangeStyles}>{Date[0]}</span>
+            <span style={dateRangeStyles}> — </span>
+            <span style={dateRangeStyles}>{NewEndDate}</span>
+          </div>
+        )
+      }
     </>
   );
 }
