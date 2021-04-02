@@ -13,6 +13,9 @@ import DashboardUpArrow from '../icons/DashboardUpArrow';
 import DashboardDownArrow from '../icons/DashboardDownArrow';
 import { numberFormatter } from '../helpers/numberFormatter';
 
+import DateRange from '../smallComponents/DateRange';
+
+
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '/', name: 'Dashboard', id: 2 },
@@ -58,6 +61,8 @@ function Dashboard({ match }) {
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
+      
+      <DateRange />
 
       <div className="dashboard-row-1">
         <article className="dashboard__total-energy dashboard__banner--small">
