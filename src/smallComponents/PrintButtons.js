@@ -61,14 +61,13 @@ function PrintButtons() {
         </button>
       </li>
       <li className="print-button-container">
-        <a
+        <button
           onClick={PdfDownloadLink}
-          target="_blank"
           className="print-button"
-          rel="noreferrer"
+          type="button"
         >
           <PdfIcon />
-        </a>
+        </button>
       </li>
       <li className="print-button-container">
         <button type="button" className="print-button">

@@ -1,6 +1,4 @@
 import axios from 'axios';
-import moment from 'moment';
-
 import dayjs from 'dayjs';
 
 // Base URL prefix
