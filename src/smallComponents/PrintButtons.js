@@ -20,7 +20,6 @@ function PrintButtons() {
     const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
 
     let selectedDevicesIds = [];
-    console.log(allDevices)
     
     for (const prop in checkedDevices) {
       let listOfDeviceId = allDevices.filter((e) => {
