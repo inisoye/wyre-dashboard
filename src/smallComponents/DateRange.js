@@ -27,15 +27,19 @@ const DateRange = () => {
       {Displaylocation === '/dashboard' &&
         (selectedDateRange && selectedDateRange.length > 0 ? (
           <div style={rangeStyles}>
+            <span>(</span>
             <span>{selectedDateRange[0]}</span>
             <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{selectedDateRange[1]}</span>
+            <span>)</span>
           </div>
         ) : (
           <div style={rangeStyles}>
+            <span>(</span>
             <span>{defaultStartDate[0]}</span>
             <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{defaultEndDate}</span>
+            <span>)</span>
           </div>
         ))}
     </div>
