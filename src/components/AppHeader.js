@@ -176,11 +176,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/time-of-use"
-                  linkText="Time of Use"
-                />
+                {!doesUserHaveAccess && (
+                  <HeaderSublink
+                    onClick={toggleNavAndDropdown}
+                    url="/parameters/time-of-use"
+                    linkText="Time of Use"
+                    />
+                  )}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"
@@ -189,12 +191,14 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/dashboard"
-              // url="/report"
-              linkText="Report"
-            />
+            {!doesUserHaveAccess && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/dashboard"
+                // url="/report"
+                linkText="Report"
+              />
+            )}
 
             {!doesUserHaveAccess && (
               <HeaderLink
