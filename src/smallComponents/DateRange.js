@@ -15,7 +15,7 @@ const DateRange = () => {
 
 
    const dateRangeStyles = {
-    marginLeft:'2em'
+    color: '#646464'
    };
 
    const rangeStyles = {
@@ -23,19 +23,19 @@ const DateRange = () => {
    }
 
   return (
-    <div>
+    <div style={dateRangeStyles}>
       {Displaylocation === '/dashboard' &&
         (selectedDateRange && selectedDateRange.length > 0 ? (
           <div style={rangeStyles}>
             <span>{selectedDateRange[0]}</span>
-            <span> — </span>
+            <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{selectedDateRange[1]}</span>
           </div>
         ) : (
           <div style={rangeStyles}>
             <span>{defaultStartDate[0]}</span>
-            <span> — </span>
-            <span style={{ marginLeft: '10px'}}>{defaultEndDate}</span>
+            <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
+            <span>{defaultEndDate}</span>
           </div>
         ))}
     </div>
