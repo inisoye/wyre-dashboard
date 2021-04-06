@@ -1768,6 +1768,7 @@ thead.ant-table-thead tr th {
   display: -ms-flexbox;
   display: flex;
   padding: 20px 0;
+  width:100%;
 }
 
 @media (max-width: 767px) {
