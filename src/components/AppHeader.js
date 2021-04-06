@@ -75,8 +75,22 @@ function Header() {
     setUserData(undefined);
   };
 
-  const isOrganisationSapio =
-    organisationName && organisationName.includes('Sapio');
+  // const isOrganisationSapio =
+  //   organisationName && organisationName.includes('Sapio');
+  
+  var restricted_devices = ["Sapio", "Durosinmi", "Alpha"];
+
+  const checkOrganizationHasAccess = ((organization)=>{
+
+      // run the tests against every element in the array
+      if (organization){
+        return restricted_devices.some(el => organization.includes(el));
+      }
+      
+  });
+
+  const doesUserHaveAccess =
+    organisationName && checkOrganizationHasAccess(organisationName);
 
   return (
     <header
@@ -119,7 +133,7 @@ function Header() {
           <ul className="header-nav-list">
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
-            {!isOrganisationSapio && (
+            {!doesUserHaveAccess && (
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
@@ -182,11 +196,14 @@ function Header() {
               linkText="Report"
             />
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/cost-tracker"
-              linkText="Cost Tracker"
-            />
+            {!doesUserHaveAccess && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/cost-tracker"
+                linkText="Cost Tracker"
+              />
+            )}
+
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
 
