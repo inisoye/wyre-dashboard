@@ -110,7 +110,6 @@ const CompleteDataProvider = (props) => {
             console.log('yeahh');
             throw new Error('No branches');
           }
-
           setOrganization(returnedData);
         })
         .catch((error) => {

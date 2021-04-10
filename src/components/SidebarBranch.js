@@ -150,7 +150,7 @@ function SidebarBranch({ branchData }) {
 
   const handleCheck = (event) => {
     setIsChecked(!isChecked);
-
+    console.log(isChecked)
     if (!isChecked) {
       // Add this branch to list of rendered objects when checked
       setRenderedDataObjects({
