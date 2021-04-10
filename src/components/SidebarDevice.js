@@ -260,8 +260,6 @@ function SidebarDevice({
         [modifiedDeviceName]: true,
       });
       
-      console.log(renderedDataObjects);
-      console.log(checkedItems);
     } else {
       const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
       delete modifiedRenderedDataObjects[modifiedDeviceName];
