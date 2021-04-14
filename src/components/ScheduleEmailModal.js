@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Modal, Row, Col, Menu, Checkbox, Input, Alert } from 'antd';
@@ -76,8 +77,10 @@ export const ScheduleEmailModal = () => {
   };
 
   const handleFrequencyMenuClick = (e) => {
-    setFrequencyDropdown(e.item.props.children[1]);
+    setFrequencyDropdown(e.key);
+  };
 
+  useEffect(() => {
     let data = JSON.stringify({
       frequency: frequencyDropdown,
       selected_devices: personalDataAvailableDevices,
@@ -94,7 +97,7 @@ export const ScheduleEmailModal = () => {
         setEmailModalData(Object.values(response.data.data));
       })
       .catch((err) => console.log('Error setting Personal Data', err));
-  };
+  }, [frequencyDropdown])
 
   const addDevicetoExternalReciever = () => {
     const data = JSON.stringify({
