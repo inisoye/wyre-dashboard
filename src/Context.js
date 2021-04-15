@@ -114,12 +114,18 @@ const CompleteDataProvider = (props) => {
           setOrganization(returnedData);
         })
         .catch((error) => {
-          if (error.message === 'No branches') {
+          const logUserOut = () => {
             window.localStorage.removeItem('loggedWyreUser');
             setUserData(undefined);
-          } else if (error.response.data.message === 'UserId might not exist') {
-            window.localStorage.removeItem('loggedWyreUser');
-            setUserData(undefined);
+          };
+
+          if (error && error.message === 'No branches') {
+            logUserOut();
+          } else if (
+            error &&
+            error.response.data.message === 'UserId might not exist'
+          ) {
+            logUserOut();
           }
         });
     };

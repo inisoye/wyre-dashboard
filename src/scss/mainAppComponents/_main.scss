@@ -1,6 +1,10 @@
 .main-container {
   @include media('>=medium') {
     width: calc(100% - 300.45px);
+
+    &.h-full-width {
+      width: 100%;
+    }
   }
 }
 

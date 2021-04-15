@@ -12,7 +12,6 @@ import ThinArrowRight from '../icons/ThinArrowRight';
 
 import { formatParametersDatetimes } from '../helpers/genericHelpers';
 
-
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Billing', id: 2 },
@@ -94,19 +93,19 @@ function Billing({ match }) {
     formatParametersDatetimes(billing_consumption_naira.dates);
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
-
-  if (isAuthenticatedDataLoading) {
-    return <Loader />;
-  }
+  
+   if (isAuthenticatedDataLoading) {
+     return <Loader />;
+   }
 
   return (
     <>
-      <div className="breadcrumb-and-print-buttons">
+      <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
 
-      <article className="billing-bar-container">
+      <article className='billing-bar-container'>
         <BillingConsumptionKwhBarChart
           chartConsumptionValues={chartConsumptionKwhValues}
           chartDeviceNames={allDeviceNames}
@@ -114,17 +113,17 @@ function Billing({ match }) {
         />
       </article>
 
-      <article className="billing-bar-container h-mt">
+      <article className='billing-bar-container h-mt'>
         <BillingConsumptionNairaBarChart
           chartValues={chartConsumptionNairaValues}
           chartDates={chartConsumptionNairaDates}
         />
       </article>
 
-      <div className="billing-bill-tables">
-        <div className="billing-bill-table-container">
-          <table className="billing-table billing-bill-table">
-            <caption className="billing-table-caption h-caption-up">
+      <div className='billing-bill-tables'>
+        <div className='billing-bill-table-container'>
+          <table className='billing-table billing-bill-table'>
+            <caption className='billing-table-caption h-caption-up'>
               Previous Bill
             </caption>
             <tbody>
@@ -154,9 +153,9 @@ function Billing({ match }) {
           </table>
         </div>
 
-        <div className="billing-bill-table-container">
-          <table className="billing-table billing-bill-table">
-            <caption className="billing-table-caption h-caption-up">
+        <div className='billing-bill-table-container'>
+          <table className='billing-table billing-bill-table'>
+            <caption className='billing-table-caption h-caption-up'>
               Present Bill
             </caption>
             <tbody>
@@ -193,40 +192,30 @@ function Billing({ match }) {
             : 'usage-and-metrics-tables h-hide'
         }
       >
-        <table className="billing-table billing-metrics-table">
+        <table className='billing-table billing-metrics-table'>
           <tbody>
             {/* <tr>
               <td>
-                <span className="metric-name">Utility:</span> ₦
-                {(metrics &&
-                  metrics.utility_per_kwh.toFixed(2).toLocaleString()) ||
-                  0}
-                /kWh
+                <span className='metric-name'>Utility:</span>{' '}
+                ₦{(metrics && metrics.utility_per_kwh.toFixed(2).toLocaleString())|| 0}/kWh
               </td>
             </tr>
             <tr>
               <td>
-                <span className="metric-name">IPP:</span> ₦
-                {(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) ||
-                  0}
-                /kWh
+                <span className='metric-name'>IPP:</span>{' '}
+                ₦{(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) || 0}/kWh
               </td>
             </tr>
             <tr>
               <td>
-                <span className="metric-name">Generator:</span> ₦
-                {(metrics &&
-                  metrics.diesel_per_kwh.toFixed(2).toLocaleString()) ||
-                  0}
-                /kWh
+                <span className='metric-name'>Generator:</span>{' '}
+                ₦{(metrics && metrics.diesel_per_kwh.toFixed(2).toLocaleString()) || 0}/kWh
               </td>
             </tr>
             <tr>
               <td>
-                <span className="metric-name">Blended Cost of Energy:</span>₦
-                {(metrics &&
-                  metrics.blended_cost_per_kwh.toFixed(2).toLocaleString()) ||
-                  0}
+                <span className='metric-name'>Blended Cost of Energy:</span>
+                ₦{(metrics && metrics.blended_cost_per_kwh.toFixed(2).toLocaleString()) || 0}
                 /kWh
               </td>
             </tr> */}
@@ -243,16 +232,16 @@ function Billing({ match }) {
           </tfoot>
         </table>
 
-        <div hidden className="billing-usage-table-container">
-          <table className="billing-table billing-usage-table">
-            <caption className="billing-table-caption h-caption-up">
+        <div hidden className='billing-usage-table-container'>
+          <table className='billing-table billing-usage-table'>
+            <caption className='billing-table-caption h-caption-up'>
               Usage
             </caption>
             <thead>
               <tr>
-                <th scope="col">Previous Usage (kWh)</th>
-                <th scope="col">Present Usage (kWh)</th>
-                <th scope="col">Total Usage (kWh)</th>
+                <th scope='col'>Previous Usage (kWh)</th>
+                <th scope='col'>Present Usage (kWh)</th>
+                <th scope='col'>Total Usage (kWh)</th>
               </tr>
             </thead>
             <tbody>
@@ -265,7 +254,7 @@ function Billing({ match }) {
           </table>
         </div>
       </div>
-    </>
+  </>
   );
 }
 

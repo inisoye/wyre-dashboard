@@ -31,11 +31,14 @@ function Header() {
     setIsSidebarOpen,
     setUserData,
     organization,
+    currentUrl,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
+
+  const isReportPageOpen = currentUrl.includes('report');
 
   const { image: avatarImage, name: organisationName } = organization;
 
@@ -72,11 +75,27 @@ function Header() {
     setUserData(undefined);
   };
 
-  const isOrganisationSapio =
-    organisationName && organisationName.includes('Sapio');
+  // const isOrganisationSapio =
+  //   organisationName && organisationName.includes('Sapio');
+  
+  var restricted_devices = ["Sapio", "Durosinmi", "Alpha"];
+
+  const checkOrganizationHasAccess = ((organization)=>{
+
+      // run the tests against every element in the array
+      if (organization){
+        return restricted_devices.some(el => organization.includes(el));
+      }
+      
+  });
+
+  const doesUserHaveAccess =
+    organisationName && checkOrganizationHasAccess(organisationName);
 
   return (
-    <header className="header">
+    <header
+      className={isReportPageOpen ? 'header report-page-header' : 'header'}
+    >
       <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
         <div className="header-group-1">
@@ -90,7 +109,13 @@ function Header() {
 
           <div className="header-logo-container">
             <Link className="header-logo" to="/">
-              <Logo className="header-logo__image header- h-white-fill-medium-up" />
+              <Logo
+                className={
+                  isReportPageOpen
+                    ? 'header-logo__image'
+                    : 'header-logo__image header- h-white-fill-medium-up'
+                }
+              />
             </Link>
           </div>
 
@@ -108,7 +133,7 @@ function Header() {
           <ul className="header-nav-list">
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
-            {!isOrganisationSapio && (
+            {!doesUserHaveAccess && (
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
@@ -151,11 +176,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/time-of-use"
-                  linkText="Time of Use"
-                />
+                {!doesUserHaveAccess && (
+                  <HeaderSublink
+                    onClick={toggleNavAndDropdown}
+                    url="/parameters/time-of-use"
+                    linkText="Time of Use"
+                    />
+                  )}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"
@@ -164,18 +191,23 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/dashboard"
-              // url='/report'
-              linkText="Report"
-            />
+            {!doesUserHaveAccess && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/dashboard"
+                // url="/report"
+                linkText="Report"
+              />
+            )}
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/cost-tracker"
-              linkText="Cost Tracker"
-            />
+            {!doesUserHaveAccess && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/cost-tracker"
+                linkText="Cost Tracker"
+              />
+            )}
+
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
 

@@ -279,6 +279,8 @@ function SidebarDevice({
         ...modifiedCheckedDevices,
       });
     }
+    console.log(checkedDevices)
+    console.log(checkedItems)
   };
 
   return (
