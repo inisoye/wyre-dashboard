@@ -70,6 +70,7 @@ export const ScheduleEmailModal = () => {
 
   const ShowModal = () => {
     setIsModalVisible(true);
+    console.log(emailModalData)
   };
 
   const handleCancel = () => {
@@ -85,6 +86,8 @@ export const ScheduleEmailModal = () => {
       frequency: frequencyDropdown,
       selected_devices: personalDataAvailableDevices,
     });
+
+    console.log(data)
 
     axios
       .post(addavailableDevicesToBillReceiver, data, {
@@ -239,17 +242,16 @@ export const ScheduleEmailModal = () => {
 
   // STYLING ENDS HERE
 
-  const assignedDevicesForPersonalData = emailModalData[1];
+  const assignedDevicesForPersonalData = emailModalData[2];
   const personalDataAssignedDevices = (
     <Menu
       onClick={handlePersonalDataDevicesMenuClick}
       selectedKeys={[personalDataAvailableDevices]}
-      multiple="true"
     >
       {assignedDevicesForPersonalData &&
-        assignedDevicesForPersonalData.assigned_devices.map((data) => (
-          <Menu.Item key={data.id}>
-            {data.name}
+        assignedDevicesForPersonalData.map((data) => (
+          <Menu.Item key={data.device_id}>
+            {data.device_name}
             <Checkbox style={{ marginLeft: '20px' }} />
           </Menu.Item>
         ))}
