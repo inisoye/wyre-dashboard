@@ -70,7 +70,6 @@ export const ScheduleEmailModal = () => {
 
   const ShowModal = () => {
     setIsModalVisible(true);
-    console.log(emailModalData)
   };
 
   const handleCancel = () => {
@@ -86,8 +85,6 @@ export const ScheduleEmailModal = () => {
       frequency: frequencyDropdown,
       selected_devices: personalDataAvailableDevices,
     });
-
-    console.log(data)
 
     axios
       .post(addavailableDevicesToBillReceiver, data, {
