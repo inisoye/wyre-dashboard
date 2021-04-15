@@ -48,7 +48,11 @@ function Billing({ match }) {
         <tr key={eachDevice.deviceName}>
           <td>
             <span>{eachDevice.deviceName}</span>—
-            <span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
+            <span>
+              {(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) ||
+                0}
+            </span>
+            —<span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
             <ThinArrowRight />
             <span>₦{eachDevice.value_naira.toLocaleString()}</span>
           </td>
@@ -62,7 +66,11 @@ function Billing({ match }) {
         <tr key={eachDevice.deviceName}>
           <td>
             <span>{eachDevice.deviceName}</span>—
-            <span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
+            <span>
+              {(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) ||
+                0}
+            </span>
+            —<span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
             <ThinArrowRight />
             <span>₦{eachDevice.value_naira.toLocaleString()}</span>
           </td>
@@ -186,7 +194,7 @@ function Billing({ match }) {
       >
         <table className='billing-table billing-metrics-table'>
           <tbody>
-            <tr>
+            {/* <tr>
               <td>
                 <span className='metric-name'>Utility:</span>{' '}
                 ₦{(metrics && metrics.utility_per_kwh.toFixed(2).toLocaleString())|| 0}/kWh
@@ -210,7 +218,7 @@ function Billing({ match }) {
                 ₦{(metrics && metrics.blended_cost_per_kwh.toFixed(2).toLocaleString()) || 0}
                 /kWh
               </td>
-            </tr>
+            </tr> */}
           </tbody>
           <tfoot>
             <tr>

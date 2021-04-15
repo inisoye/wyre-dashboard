@@ -67,4 +67,5 @@ export default {
   setUserId,
   setEndpointDateRange,
   setEndpointDataTimeInterval,
+  endpointDateRange,
 };

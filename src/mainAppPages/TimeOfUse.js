@@ -13,7 +13,6 @@ import TimeOfUseStackedBarChart from '../components/barCharts/TimeOfUseStackedBa
 import TimeOfUseTable from '../components/tables/TimeOfUseTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
@@ -138,7 +137,6 @@ function TimeOfUse({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='parameters-stacked-bar-container'>

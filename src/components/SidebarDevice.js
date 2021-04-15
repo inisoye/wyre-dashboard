@@ -272,7 +272,7 @@ function SidebarDevice({
       setCheckedItems({
         ...modifiedCheckedItems,
       });
-
+      
       const modifiedCheckedDevices = cloneObject(checkedDevices);
       delete modifiedCheckedDevices[modifiedDeviceName];
       setCheckedDevices({

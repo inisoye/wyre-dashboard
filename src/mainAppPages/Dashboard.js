@@ -19,6 +19,8 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 
+
+
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
   { url: "/", name: "Dashboard", id: 2 },
@@ -111,7 +113,7 @@ function Dashboard({ match }) {
           document={<PDFDocument />}
           fileName={"dashboard.pdf"}
         />
-      </div>
+        </div>
 
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
