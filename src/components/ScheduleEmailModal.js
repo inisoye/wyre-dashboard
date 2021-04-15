@@ -23,6 +23,7 @@ export const ScheduleEmailModal = () => {
     userId,
     allDevices,
     checkedDevices,
+    organization
   } = useContext(CompleteDataContext);
 
   const [emailModalData, setEmailModalData] = useState([]);
@@ -70,7 +71,6 @@ export const ScheduleEmailModal = () => {
 
   const ShowModal = () => {
     setIsModalVisible(true);
-    console.log(emailModalData)
   };
 
   const handleCancel = () => {
@@ -172,10 +172,12 @@ export const ScheduleEmailModal = () => {
 
   const submitEmailTargetForSendAQuickBill = (event) => {
     event.preventDefault();
+    
     let sendAQuickBiillData = JSON.stringify({
       email: sendBill,
       selected_devices: selectedDevicesIds,
     });
+
 
     setIsSendingBill(true);
     axios

@@ -47,11 +47,12 @@ function Billing({ match }) {
       return (
         <tr key={eachDevice.deviceName}>
           <td>
-            <span>{eachDevice.deviceName}</span>—
+            <span>{eachDevice.deviceName}</span>
+            {/* —
             <span>
               {(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) ||
                 0}
-            </span>
+            </span> */}
             —<span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
             <ThinArrowRight />
             <span>₦{eachDevice.value_naira.toLocaleString()}</span>
@@ -65,11 +66,12 @@ function Billing({ match }) {
       return (
         <tr key={eachDevice.deviceName}>
           <td>
-            <span>{eachDevice.deviceName}</span>—
+            <span>{eachDevice.deviceName}</span>
+            {/* —
             <span>
               {(metrics && metrics.ipp_per_kwh.toFixed(2).toLocaleString()) ||
                 0}
-            </span>
+            </span> */}
             —<span>{eachDevice.usage_kwh.toLocaleString()}kWh</span>
             <ThinArrowRight />
             <span>₦{eachDevice.value_naira.toLocaleString()}</span>
