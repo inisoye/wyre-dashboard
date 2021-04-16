@@ -23,7 +23,6 @@ export const ScheduleEmailModal = () => {
     userId,
     allDevices,
     checkedDevices,
-    organization
   } = useContext(CompleteDataContext);
 
   const [emailModalData, setEmailModalData] = useState([]);
@@ -162,6 +161,7 @@ export const ScheduleEmailModal = () => {
     let listOfDeviceId = allDevices.filter((e) => {
       return e.name === prop;
     });
+    console.log(listOfDeviceId[0].id)
     selectedDevicesIds.push(listOfDeviceId[0].id);
   }
 
@@ -172,12 +172,16 @@ export const ScheduleEmailModal = () => {
 
   const submitEmailTargetForSendAQuickBill = (event) => {
     event.preventDefault();
-    
+    if(selectedDevicesIds.length === 0 )
+    {
+      const filteredId = allDevices.filter((e)=>{
+        selectedDevicesIds.push(e.id)
+      })
+    }
     let sendAQuickBiillData = JSON.stringify({
       email: sendBill,
       selected_devices: selectedDevicesIds,
     });
-
 
     setIsSendingBill(true);
     axios
@@ -218,8 +222,9 @@ export const ScheduleEmailModal = () => {
     fontFamily: 'Montserrat',
     fontStyle: 'normal',
     fontWeight: 'normal',
-    fontSize: '12px',
+    fontSize: '16px',
     color: '#000000',
+    marginTop:'3px',
   };
 
   const rowStyles = {
@@ -271,7 +276,7 @@ export const ScheduleEmailModal = () => {
     <Menu
       onClick={handleExternalRecieversDevicesMenuClick}
       selectedKeys={[externalRecieverAssignedDeviceIds]}
-      mutiple="true"
+      mutiple={true}
     >
       {externalRecieversAssignedDevices &&
         externalRecieversAssignedDevices.map((item) => (
@@ -282,6 +287,14 @@ export const ScheduleEmailModal = () => {
         ))}
     </Menu>
   );
+
+  const truncateEmail = (str, num)=>{
+    if(str.length <= num)
+    {
+      return str
+    }
+    return str.slice(0,num) + '...'
+  }
 
   const external_recievers = emailModalData[0];
 
@@ -308,7 +321,9 @@ export const ScheduleEmailModal = () => {
           external_recievers.map((recievers) => (
             <Row key={recievers.id} style={{ marginBottom: '15px' }}>
               <Col span={10} style={emailStyles}>
-                {recievers.email}
+                {
+                  truncateEmail(recievers.email, 15)
+                }
               </Col>
               <Col span={10}>
                 <ModalDropdownBtn

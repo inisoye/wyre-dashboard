@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 import CompleteDataContext from '../Context';
 import dataHttpServices from '../services/devices';
 
 const DateRange = () => {
   const { selectedDateRange } = useContext(CompleteDataContext)
-  const Displaylocation = useLocation().pathname;
+  // const Displaylocation = useLocation().pathname;
 
   const defaultDateRange = dataHttpServices.endpointDateRange;
   const defaultStartDate = defaultDateRange.split(' ');
@@ -24,7 +24,8 @@ const DateRange = () => {
 
   return (
     <div style={dateRangeStyles}>
-      {Displaylocation === '/dashboard' &&
+      {
+      // Displaylocation === '/dashboard' &&
         (selectedDateRange && selectedDateRange.length > 0 ? (
           <div style={rangeStyles}>
             <span>(</span>
@@ -41,7 +42,7 @@ const DateRange = () => {
             <span>{defaultEndDate}</span>
             <span>)</span>
           </div>
-        ))}
+         ))} 
     </div>
   );
 }

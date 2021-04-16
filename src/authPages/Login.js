@@ -1,6 +1,7 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import CompleteDataContext from '../Context';
 import loginHttpServices from '../services/login';
@@ -10,11 +11,18 @@ import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 import OutlinedInput from '../smallComponents/OutlinedInput';
 import SocialCluster from '../smallComponents/SocialCluster';
 
+import usePasswordToggle from '../smallComponents/usePasswordToggle'
+import { Input } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
+
+
 function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
   const { setUserData } = useContext(CompleteDataContext);
+  const [inputvalue, setinputvalue] = useState('')
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm();
 
   const onSubmit = async ({ username, password }) => {
     try {
@@ -33,9 +41,13 @@ function Login() {
     }
   };
 
-  const removeErrorMessage = () => {
+  const removeErrorMessage = (e) => {
     setErrorMessage(undefined);
+    let value = e.target.value
+    setinputvalue(value)
+    console.log(inputvalue)
   };
+
 
   return (
     <div className='auth-page-container'>
@@ -51,7 +63,7 @@ function Login() {
         <p className='outlined-input-container'>
           <HiddenInputLabel htmlFor='username' labelText='Username' />
           <OutlinedInput
-            className='signup-login-contact-input'
+            className='signup-login-contact-input '
             type='text'
             name='username'
             id='username'
@@ -66,6 +78,7 @@ function Login() {
 
         <p className='outlined-input-container'>
           <HiddenInputLabel htmlFor='password' labelText='Password' />
+          
           <OutlinedInput
             className='signup-login-contact-input'
             type='password'
@@ -78,6 +91,30 @@ function Login() {
             register={register}
             onChange={removeErrorMessage}
           />
+
+          {/* <Controller
+          control={control}
+          name="password"
+          defaultValue=''
+          render={({
+            field
+          }) => (    
+              <Input.Password
+              {...field}
+              className='signup-login-contact-input outlined-input'
+              type='password'
+              name='password'
+              id='password'
+              placeholder='Password'
+              autoComplete='new-password'
+              required={true}
+              autoFocus={false}
+              onChange={removeErrorMessage}
+              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+            />
+          )}
+          /> */}
+
         </p>
 
         <p className='signup-login-contact-error-message'>{errorMessage}</p>

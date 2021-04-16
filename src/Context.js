@@ -185,6 +185,9 @@ const CompleteDataProvider = (props) => {
 
   const allDevices = []
 
+  
+  const [PasswordVisibility, setPasswordVisibility ] = useState(false)
+
 
   return (
     <CompleteDataContext.Provider
@@ -250,6 +253,11 @@ const CompleteDataProvider = (props) => {
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
+
+        // Password Toggle Visibility.
+        PasswordVisibility:PasswordVisibility,
+        setPasswordVisibility:setPasswordVisibility,
+        
         
        allDevices: allDevices,
       }}
