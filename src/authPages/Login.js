@@ -45,7 +45,6 @@ function Login() {
     setErrorMessage(undefined);
     let value = e.target.value
     setinputvalue(value)
-    console.log(inputvalue)
   };
 
 

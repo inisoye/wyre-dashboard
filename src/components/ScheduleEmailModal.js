@@ -115,8 +115,10 @@ export const ScheduleEmailModal = () => {
       .then((res) => {
         setEmailModalData(Object.values(res.data.data));
       })
-      .catch((error) =>
+      .catch((error) =>{
         console.log('Error adding assigned devices to external Receiver', error)
+        alert('Error adding assigned devices to external Receiver')
+      }
       );
   };
 
@@ -161,7 +163,6 @@ export const ScheduleEmailModal = () => {
     let listOfDeviceId = allDevices.filter((e) => {
       return e.name === prop;
     });
-    console.log(listOfDeviceId[0].id)
     selectedDevicesIds.push(listOfDeviceId[0].id);
   }
 
