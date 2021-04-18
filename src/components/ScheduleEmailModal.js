@@ -70,9 +70,11 @@ export const ScheduleEmailModal = () => {
       selected_devices: [personalDataAvailableDevices],
     });
 
-    console.log(data)
-
-    axios
+    if (frequencyDropdown === '' && personalDataAvailableDevices === undefined){
+      // pass
+    } 
+    else {
+      axios
       .post(addavailableDevicesToBillReceiver, data, {
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +84,8 @@ export const ScheduleEmailModal = () => {
       .then((response) => {
         setEmailModalData(Object.values(response.data.data));
       })
-      .catch((err) => console.log('Error setting Personal Data', err));
+      .catch((err) => console.log('Error setting Personal Data', err));  
+    }
   }, [frequencyDropdown])
 
 
@@ -104,7 +107,6 @@ export const ScheduleEmailModal = () => {
       reciever_id: currentRecieverId,
       selected_devices: externalRecieverAssignedDeviceIds,
     });
-
     axios
       .post(addavailableDevicesToBillReceiver, data, {
         headers: {
@@ -125,30 +127,13 @@ export const ScheduleEmailModal = () => {
   const handleExternalRecieversDevicesMenuClick = (v) => {
     const parsedIds = parseInt(v.key)
     externalRecieverAssignedDeviceIds.push(parsedIds)
-    console.log('from onclick func:',parsedIds)
     addDevicetoExternalReciever();
   };
 
   const handlePersonalDataDevicesMenuClick = (devices) => {
     let strIdToInt = parseInt(devices.key)
     setPersonalDataAvailableDevices(strIdToInt)
-    let data = JSON.stringify({
-      frequency: frequencyDropdown,
-      selected_devices: [personalDataAvailableDevices],
-    });
-
-    axios
-      .post(addavailableDevicesToBillReceiver, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setEmailModalData(Object.values(response.data.data));
-      })
-      .catch((err) => console.log('Error setting Personal Data', err));
-     };
+  };
 
   const handleChangForAddExternalReceiever = (e) => {
     let externalReceiver = e.target.value;
