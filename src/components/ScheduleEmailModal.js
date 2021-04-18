@@ -27,7 +27,6 @@ export const ScheduleEmailModal = () => {
     setEmailModalData
   } = useContext(CompleteDataContext);
 
-  // const [emailModalData, setEmailModalData] = useState([]);
 
   const [addEmail, setAddEmail] = useState('');
 
@@ -39,7 +38,7 @@ export const ScheduleEmailModal = () => {
   
   let externalRecieverAssignedDeviceIds = []
 
-  const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState([])
+  const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState()
   const [currentRecieverId, setcurrentRecieverId] = useState();
 
   const dateRange = dataHttpServices.endpointDateRange;
