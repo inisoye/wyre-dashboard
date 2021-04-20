@@ -32,6 +32,8 @@ function Header() {
     setUserData,
     organization,
     currentUrl,
+    setEmailModalData,
+    emailModalData
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -73,6 +75,8 @@ function Header() {
   const logOut = () => {
     window.localStorage.removeItem('loggedWyreUser');
     setUserData(undefined);
+    setEmailModalData(undefined)
+    console.log(emailModalData)
   };
 
   // const isOrganisationSapio =

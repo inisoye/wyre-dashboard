@@ -180,6 +180,7 @@ const CompleteDataProvider = (props) => {
   }, []);
 
   // State for Schedule Email Modal
+  const [emailModalData, setEmailModalData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
 
@@ -247,6 +248,8 @@ const CompleteDataProvider = (props) => {
         isLessThan1296: isLessThan1296,
 
         //Schedule Email Modal
+        emailModalData:emailModalData,
+        setEmailModalData:setEmailModalData,
         isModalVisible: isModalVisible,
         setIsModalVisible: setIsModalVisible,
 
