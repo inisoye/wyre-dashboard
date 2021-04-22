@@ -3,6 +3,9 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
+import CompleteDataContext from '../../Context';
+
+
 class TimeOfUseTable extends React.Component {
   state = {
     searchText: '',
@@ -95,80 +98,94 @@ class TimeOfUseTable extends React.Component {
   render() {
     const data = this.props.timeOfUseData;
 
+    const  titles = Object.keys(data[0])
+
     const columns = [
       {
         title: 'Index',
         dataIndex: 'index',
         key: 'index',
       },
-      {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-        ...this.getColumnSearchProps('date'),
-        sorter: (a, b) => new Date(a.date) - new Date(b.date),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Gen 1 (Hrs)',
-        dataIndex: 'gen1',
-        key: 'gen1',
-        ...this.getColumnSearchProps('gen1'),
-        sorter: (a, b) => a.gen1 - b.gen1,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Gen 2 (Hrs)',
-        dataIndex: 'gen2',
-        key: 'gen2',
-        ...this.getColumnSearchProps('gen2'),
-        sorter: (a, b) => a.gen2 - b.gen2,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Active Gen (Hrs)',
-        dataIndex: 'active_gen',
-        key: 'active_gen',
-        ...this.getColumnSearchProps('active_gen'),
-        sorter: (a, b) => a.active_gen.localeCompare(b.active_gen),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'First Time ON',
-        dataIndex: 'time_on',
-        key: 'time_on',
-        ...this.getColumnSearchProps('time_on'),
-        sorter: (a, b) => a.time_on.localeCompare(b.time_on),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Last Time OFF',
-        dataIndex: 'time_off',
-        key: 'time_off',
-        ...this.getColumnSearchProps('time_off'),
-        sorter: (a, b) => a.time_off.localeCompare(b.time_off),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Hours of Use',
-        dataIndex: 'hours_of_use',
-        key: 'hours_of_use',
-        ...this.getColumnSearchProps('hours_of_use'),
-        sorter: (a, b) => a.hours_of_use.localeCompare(b.hours_of_use),
-        sortDirections: ['descend', 'ascend'],
-      },
+
+
+    
+      // {
+      //   title: 'Date',
+      //   dataIndex: 'date',
+      //   key: 'date',
+      //   ...this.getColumnSearchProps('date'),
+      //   sorter: (a, b) => new Date(a.date) - new Date(b.date),
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Gen 1 (Hrs)',
+      //   dataIndex: 'gen1',
+      //   key: 'gen1',
+      //   ...this.getColumnSearchProps('gen1'),
+      //   sorter: (a, b) => a.gen1 - b.gen1,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Gen 2 (Hrs)',
+      //   dataIndex: 'gen2',
+      //   key: 'gen2',
+      //   ...this.getColumnSearchProps('gen2'),
+      //   sorter: (a, b) => a.gen2 - b.gen2,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Active Gen (Hrs)',
+      //   dataIndex: 'active_gen',
+      //   key: 'active_gen',
+      //   ...this.getColumnSearchProps('active_gen'),
+      //   sorter: (a, b) => a.active_gen.localeCompare(b.active_gen),
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'First Time ON',
+      //   dataIndex: 'time_on',
+      //   key: 'time_on',
+      //   ...this.getColumnSearchProps('time_on'),
+      //   sorter: (a, b) => a.time_on.localeCompare(b.time_on),
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Last Time OFF',
+      //   dataIndex: 'time_off',
+      //   key: 'time_off',
+      //   ...this.getColumnSearchProps('time_off'),
+      //   sorter: (a, b) => a.time_off.localeCompare(b.time_off),
+      //   sortDirections: ['descend', 'ascend'],
+      // },
+      // {
+      //   title: 'Hours of Use',
+      //   dataIndex: 'hours_of_use',
+      //   key: 'hours_of_use',
+      //   ...this.getColumnSearchProps('hours_of_use'),
+      //   sorter: (a, b) => a.hours_of_use.localeCompare(b.hours_of_use),
+      //   sortDirections: ['descend', 'ascend'],
+      // },
     ];
 
+    const { Column } = Table;
     return (
       <>
         <Table
           className='table-striped-rows'
-          columns={columns}
+          // columns={columns}
           dataSource={data}
           rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
           footer={() => `${data && data.length} entries in total`}
-        />
+        >
+
+        <Column title="gen1" dataIndex='gen1'
+           key= 'gen1'
+           {...this.getColumnSearchProps('gen1')}
+           sorter= {(a, b) => a.gen1 - b.gen1}
+           sortDirections = {['descend', 'ascend']}
+      />
+        </Table>
       </>
     );
   }

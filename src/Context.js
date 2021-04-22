@@ -147,6 +147,7 @@ const CompleteDataProvider = (props) => {
         checkedItems.constructor === Object
       ) {
         setRefinedRenderedData(getRefinedOrganizationData(organization));
+        console.log(organization)
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
         setRefinedRenderedData(getRenderedData(renderedDataArray));

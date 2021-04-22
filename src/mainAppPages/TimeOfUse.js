@@ -13,7 +13,7 @@ import TimeOfUseStackedBarChart from '../components/barCharts/TimeOfUseStackedBa
 import TimeOfUseTable from '../components/tables/TimeOfUseTable';
 import Loader from '../components/Loader';
 
-
+import TimeOfUseCard from '../smallComponents/TimeOfUseCard'
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
 
@@ -83,6 +83,8 @@ function TimeOfUse({ match }) {
       formatParameterTableData(tableHeadings, eachBranchTableValues)
     );
 
+console.log(arrayOfFormattedTableData)
+
   const csvHeaders = [
     { label: "Index", key: "index" },
     { label: "Date", key: "date" },
@@ -97,6 +99,9 @@ function TimeOfUse({ match }) {
   const timeOfUseTables =
     arrayOfFormattedTableData &&
     arrayOfFormattedTableData.map((eachBranch) => (
+      <>
+      <br/>
+      <TimeOfUseCard/>
       <article className='table-with-header-container'>
         <div className='table-header'>
           <div className='h-hidden-medium-down'>
@@ -124,9 +129,10 @@ function TimeOfUse({ match }) {
         </div>
 
         <div className='time-of-use-table-wrapper'>
-          <TimeOfUseTable timeOfUseData={eachBranch} />
+          <TimeOfUseTable timeOfUseData={eachBranch} branch={time_of_use_table}/>
         </div>
       </article>
+      </>
     ));
 
   if (isAuthenticatedDataLoading) {
