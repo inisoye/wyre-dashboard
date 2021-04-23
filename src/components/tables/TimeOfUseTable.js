@@ -3,8 +3,6 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
-import CompleteDataContext from '../../Context';
-
 
 class TimeOfUseTable extends React.Component {
   state = {
@@ -97,17 +95,18 @@ class TimeOfUseTable extends React.Component {
 
   render() {
     const data = this.props.timeOfUseData;
+    const arrayRemove = (arr,value)=>{
+        return arr.filter((element)=>{
+          return element !== value
+        })
+    }
 
-    const  titles = Object.keys(data[0])
+    const  titles = Object.keys(data[0]) //Gets the keys from the data array
+    titles.shift() //Removes the branchname key from the array.
+    const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
+    console.log(neededColumnsHeaders)
 
     const columns = [
-      {
-        title: 'Index',
-        dataIndex: 'index',
-        key: 'index',
-      },
-
-
     
       // {
       //   title: 'Date',
@@ -178,13 +177,17 @@ class TimeOfUseTable extends React.Component {
           pagination={{ position: ['none', 'bottomCenter'] }}
           footer={() => `${data && data.length} entries in total`}
         >
-
-        <Column title="gen1" dataIndex='gen1'
-           key= 'gen1'
-           {...this.getColumnSearchProps('gen1')}
-           sorter= {(a, b) => a.gen1 - b.gen1}
-           sortDirections = {['descend', 'ascend']}
-      />
+ 
+       {
+       neededColumnsHeaders && neededColumnsHeaders.map((headers, index)=>(
+         <Column title={headers} dataIndex={headers}
+          key= {headers}
+          {...this.getColumnSearchProps({headers})}
+          sorter= {(a, b) => a.headers - b.headers}
+          sortDirections = {['descend', 'ascend']}
+          />
+        )) 
+      }
         </Table>
       </>
     );

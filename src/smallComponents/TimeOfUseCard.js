@@ -6,7 +6,10 @@ import  CompleteDataContext from "../Context";
 const TimeOfUseCard = () => {
   const { organization } = useContext(CompleteDataContext)
 
-    const gridStyle = {
+  const cardData = Object.values(organization)
+  const branches = cardData[3]
+
+  const gridStyle = {
         width: '33%',
         textAlign: 'center',
       };
@@ -31,17 +34,16 @@ const TimeOfUseCard = () => {
         }
     return (
         <div>
-          
-            <Card  bordered={true} title="Head office" headStyle={{display:'flex',justifyContent:'center',fontSize:'20px',fontWeight:'500px'}}>
-          
-              <Card.Grid style={gridStyle}>
-                <p style={cardValueHeadingStyle}>EKEDC</p>
-                <p style={cardValueContentStyle}>100hrs</p>
-              </Card.Grid>
-              )
-            </Card>
-          )
-        
+          <Card bordered={true} title="Head office" headStyle={{display:'flex',justifyContent:'center',fontSize:'20px',fontWeight:'500px'}}>
+              {
+                branches.map(data=>(
+                <Card.Grid style={gridStyle}>
+                    <p style={cardValueHeadingStyle}>EKEDC</p>
+                    <p style={cardValueContentStyle}>100hrs</p>
+                </Card.Grid>
+                ))
+              }
+          </Card>
         </div>
     )
 }
