@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import axios from "axios"
 
 
 class TimeOfUseTable extends React.Component {
@@ -95,6 +96,7 @@ class TimeOfUseTable extends React.Component {
 
   render() {
     const data = this.props.timeOfUseData;
+    
     const arrayRemove = (arr,value)=>{
         return arr.filter((element)=>{
           return element !== value
@@ -104,7 +106,6 @@ class TimeOfUseTable extends React.Component {
     const  titles = Object.keys(data[0]) //Gets the keys from the data array
     titles.shift() //Removes the branchname key from the array.
     const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
-    console.log(neededColumnsHeaders)
 
     const columns = [
     

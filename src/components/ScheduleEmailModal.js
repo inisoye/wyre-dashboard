@@ -69,7 +69,6 @@ export const ScheduleEmailModal = () => {
 
   const ShowModal = () => {
     setIsModalVisible(true);
-    console.log(emailModalData[2])
   };
 
   const handleCancel = () => {
