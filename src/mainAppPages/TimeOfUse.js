@@ -83,7 +83,7 @@ function TimeOfUse({ match }) {
       formatParameterTableData(tableHeadings, eachBranchTableValues)
     );
 
-console.log(arrayOfFormattedTableData)
+    console.log(arrayOfFormattedTableData)
 
   const csvHeaders = [
     { label: "Index", key: "index" },
@@ -129,7 +129,7 @@ console.log(arrayOfFormattedTableData)
         </div>
 
         <div className='time-of-use-table-wrapper'>
-          <TimeOfUseTable timeOfUseData={eachBranch} branch={time_of_use_table}/>
+          <TimeOfUseTable timeOfUseData={eachBranch}/>
         </div>
       </article>
       </>

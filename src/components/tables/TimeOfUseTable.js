@@ -9,7 +9,18 @@ class TimeOfUseTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
+    timeOfUseData : []
   };
+
+  timeOfUseUrl = 'https://api.jsonbin.io/b/608544d8f6655022c46b5c3f'
+
+  componentDidMount(){
+    axios.get(this.timeOfUseUrl)
+    .then((res)=>{
+       this.setState({timeOfUseData: [res.data.authenticatedData.branches[0].time_of_use_table.values]})
+        console.log('Time of use data:',this.state.timeOfUseData)
+    })
+  }
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -96,16 +107,20 @@ class TimeOfUseTable extends React.Component {
 
   render() {
     const data = this.props.timeOfUseData;
-    
+    const { timeOfUseData } = this.state 
+
     const arrayRemove = (arr,value)=>{
         return arr.filter((element)=>{
           return element !== value
         })
     }
 
-    const  titles = Object.keys(data[0]) //Gets the keys from the data array
-    titles.shift() //Removes the branchname key from the array.
-    const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
+    // const  tableTitles = timeOfUseData && Object.keys(timeOfUseData[0]) //Gets the keys from the data array
+
+    // const dataSource =  timeOfUseData && timeOfUseData[0].time_of_use_table.values
+    // console.log(dataSource)
+
+    // const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
 
     const columns = [
     
@@ -180,14 +195,14 @@ class TimeOfUseTable extends React.Component {
         >
  
        {
-       neededColumnsHeaders && neededColumnsHeaders.map((headers, index)=>(
-         <Column title={headers} dataIndex={headers}
-          key= {headers}
-          {...this.getColumnSearchProps({headers})}
-          sorter= {(a, b) => a.headers - b.headers}
-          sortDirections = {['descend', 'ascend']}
-          />
-        )) 
+      //  tableTitles && tableTitles.map((headers, index)=>(
+      //    <Column title={headers} dataIndex={headers}
+      //     key= {headers}
+      //     {...this.getColumnSearchProps({headers})}
+      //     sorter= {(a, b) => a.headers - b.headers}
+      //     sortDirections = {['descend', 'ascend']}
+      //     />
+      //   )) 
       }
         </Table>
       </>

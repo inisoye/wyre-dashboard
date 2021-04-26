@@ -13,97 +13,30 @@
                 "last_time_off",
                 "hours_of_use"
             ],
-            "values":{
-                "0":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
+            "values":[{
+                "0": {
+                    "post_datetime": "2021-04-03T00:31:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0,
+                    "gen1_hou_cummulative": 0
                     },
-                "1":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
+                "1": {
+                    "post_datetime": "2021-04-03T01:05:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0.567,
+                    "gen1_hou_cummulative": 0.567
                     },
-                "2":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
-                    },
-                "3":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
-                    },
-                "4":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
-                    },
-                "5":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
-                    },
-                "6":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
-                    },
-                "7":
-                    {"active_gen": "gen1",
-                    "date": "26/12/2020",
-                    "gen1": 10,
-                    "gen2": 8,
-                    "hours_of_use": "08:07 AM",
-                    "index": 2,
-                    "time_off": "06:05 AM",
-                    "time_on": "11:50 AM",
-                    "utility": 5
+                "2": {
+                    "post_datetime": "2021-04-03T01:31:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0.433,
+                    "gen1_hou_cummulative": 1
                     }
+                }],
+                "sums": {
+                    "gen1": 124.47700000000003
+                    }           
+                }
             }
-        }
-    }
-]
+        ]
 }
