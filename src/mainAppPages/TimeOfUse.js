@@ -83,7 +83,7 @@ function TimeOfUse({ match }) {
       formatParameterTableData(tableHeadings, eachBranchTableValues)
     );
 
-    console.log(arrayOfFormattedTableData)
+  console.log(arrayOfFormattedTableData)
 
   const csvHeaders = [
     { label: "Index", key: "index" },

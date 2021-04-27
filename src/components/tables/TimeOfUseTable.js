@@ -12,13 +12,14 @@ class TimeOfUseTable extends React.Component {
     timeOfUseData : []
   };
 
-  timeOfUseUrl = 'https://api.jsonbin.io/b/608544d8f6655022c46b5c3f'
+  timeOfUseUrl = 'http://localhost:3006/branches'
 
   componentDidMount(){
     axios.get(this.timeOfUseUrl)
     .then((res)=>{
-       this.setState({timeOfUseData: [res.data.authenticatedData.branches[0].time_of_use_table.values]})
-        console.log('Time of use data:',this.state.timeOfUseData)
+      //  this.setState({timeOfUseData: res.data.authenticatedData.branches[0].time_of_use_table.values})
+      this.setState({timeOfUseData : res.data[0].time_of_use_table.values})
+        // console.log('Time of use data:',this.state.timeOfUseData)
     })
   }
 
@@ -115,10 +116,11 @@ class TimeOfUseTable extends React.Component {
         })
     }
 
-    // const  tableTitles = timeOfUseData && Object.keys(timeOfUseData[0]) //Gets the keys from the data array
+    // const  tableTitles = timeOfUseData[0] && Object.keys(this.state.timeOfUseData[0]) //Gets the keys from the data array
+    // console.log(tableTitles)
 
-    // const dataSource =  timeOfUseData && timeOfUseData[0].time_of_use_table.values
-    // console.log(dataSource)
+    const tableTitles = timeOfUseData[0] && Object.keys(timeOfUseData[0])
+    // console.log(timeOfUseData[0].date)
 
     // const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
 
@@ -188,21 +190,21 @@ class TimeOfUseTable extends React.Component {
         <Table
           className='table-striped-rows'
           // columns={columns}
-          dataSource={data}
+          dataSource={timeOfUseData && timeOfUseData}
           rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
-          footer={() => `${data && data.length} entries in total`}
+          footer={() => `${timeOfUseData && timeOfUseData.length} entries in total`}
         >
  
        {
-      //  tableTitles && tableTitles.map((headers, index)=>(
-      //    <Column title={headers} dataIndex={headers}
-      //     key= {headers}
-      //     {...this.getColumnSearchProps({headers})}
-      //     sorter= {(a, b) => a.headers - b.headers}
-      //     sortDirections = {['descend', 'ascend']}
-      //     />
-      //   )) 
+       tableTitles && tableTitles.map((headers, index)=>(
+         <Column title={headers.toUpperCase()} dataIndex={headers}
+          key= {headers}
+          {...this.getColumnSearchProps({headers})}
+          sorter= {(a, b) => a.headers - b.headers}
+          sortDirections = {['descend', 'ascend']}
+          />
+        )) 
       }
         </Table>
       </>

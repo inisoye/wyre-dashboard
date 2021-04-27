@@ -1,13 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'antd';
+import axios from 'axios'
 
 import  CompleteDataContext from "../Context";
 
 const TimeOfUseCard = () => {
-  const { organization } = useContext(CompleteDataContext)
+  const [timeOfUseDataCard, setTimeOfUseDataCard] = useState()
 
-  const cardData = Object.values(organization)
-  const branches = cardData[3]
+  let timeOfUseUrl = 'https://api.jsonbin.io/b/608544d8f6655022c46b5c3f'
+
+  useEffect(() => {
+      axios.get(timeOfUseUrl)
+      .then((res)=>{
+        setTimeOfUseDataCard(res.data.authenticatedData.branches[0].usage_hours)
+      })
+      .catch(err=>console.log('from timeOfUseCard:',err))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const gridStyle = {
         width: '33%',
@@ -32,16 +41,23 @@ const TimeOfUseCard = () => {
         lineHeight: '20px',
         color: '#000000'
         }
+
+    const devices = timeOfUseDataCard && timeOfUseDataCard.devices
+    const hours = timeOfUseDataCard && timeOfUseDataCard.hours
     return (
         <div>
           <Card bordered={true} title="Head office" headStyle={{display:'flex',justifyContent:'center',fontSize:'20px',fontWeight:'500px'}}>
               {
-                branches.map(data=>(
                 <Card.Grid style={gridStyle}>
-                    <p style={cardValueHeadingStyle}>EKEDC</p>
-                    <p style={cardValueContentStyle}>100hrs</p>
+                    {devices && devices.map((device)=>
+                      <p style={cardValueHeadingStyle}>{device.toUpperCase()}</p>
+                    )}
+                    {
+                    hours && hours.map((hour)=>
+                      <p style={cardValueContentStyle}>{hour}hrs</p>
+                    )
+                    }
                 </Card.Grid>
-                ))
               }
           </Card>
         </div>
