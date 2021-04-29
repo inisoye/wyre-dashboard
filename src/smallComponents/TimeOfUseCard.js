@@ -1,22 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext} from 'react'
 import { Card } from 'antd';
-import axios from 'axios'
 
 import  CompleteDataContext from "../Context";
 
-const TimeOfUseCard = () => {
-  const [timeOfUseDataCard, setTimeOfUseDataCard] = useState()
-
-  let timeOfUseUrl = 'https://api.jsonbin.io/b/608544d8f6655022c46b5c3f'
-
-  useEffect(() => {
-      axios.get(timeOfUseUrl)
-      .then((res)=>{
-        setTimeOfUseDataCard(res.data.authenticatedData.branches[0].usage_hours)
-      })
-      .catch(err=>console.log('from timeOfUseCard:',err))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+const TimeOfUseCard = ({data}) => {
+  const { refinedRenderedData, organization } = useContext(CompleteDataContext)
 
   const gridStyle = {
         width: '33%',
@@ -42,24 +30,21 @@ const TimeOfUseCard = () => {
         color: '#000000'
         }
 
-    const devices = timeOfUseDataCard && timeOfUseDataCard.devices
-    const hours = timeOfUseDataCard && timeOfUseDataCard.hours
     return (
-        <div>
-          <Card bordered={true} title="Head office" headStyle={{display:'flex',justifyContent:'center',fontSize:'20px',fontWeight:'500px'}}>
-              {
-                <Card.Grid style={gridStyle}>
-                    {devices && devices.map((device)=>
-                      <p style={cardValueHeadingStyle}>{device.toUpperCase()}</p>
-                    )}
-                    {
-                    hours && hours.map((hour)=>
-                      <p style={cardValueContentStyle}>{hour}hrs</p>
-                    )
-                    }
-                </Card.Grid>
-              }
-          </Card>
+        <div style={{marginTop:'20px', marginBottom:'20px'}}>
+         {data && [data].map((x,i)=>
+              <Card key={i} bordered={true} title={x.name} headStyle={{display:'flex',justifyContent:'center',fontSize:'20px',fontWeight:'500px'}}>
+                {[x.usage_hours].map((data)=>
+                    <Card.Grid style={gridStyle}>
+                      {data.devices.map((device)=><p style={cardValueHeadingStyle}>{device}</p>) }
+                      {data.hours.map((hour)=><p style={cardValueContentStyle}>{hour}hrs</p>)}
+                    </Card.Grid>
+                )
+                  
+                }
+              </Card>
+         ) 
+          }
         </div>
     )
 }

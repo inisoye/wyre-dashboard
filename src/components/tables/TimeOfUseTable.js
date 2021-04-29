@@ -2,26 +2,11 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import axios from "axios"
-
-
 class TimeOfUseTable extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
-    timeOfUseData : []
   };
-
-  timeOfUseUrl = 'http://localhost:3006/branches'
-
-  componentDidMount(){
-    axios.get(this.timeOfUseUrl)
-    .then((res)=>{
-      //  this.setState({timeOfUseData: res.data.authenticatedData.branches[0].time_of_use_table.values})
-      this.setState({timeOfUseData : res.data[0].time_of_use_table.values})
-        // console.log('Time of use data:',this.state.timeOfUseData)
-    })
-  }
 
   getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -108,7 +93,6 @@ class TimeOfUseTable extends React.Component {
 
   render() {
     const data = this.props.timeOfUseData;
-    const { timeOfUseData } = this.state 
 
     const arrayRemove = (arr,value)=>{
         return arr.filter((element)=>{
@@ -116,16 +100,16 @@ class TimeOfUseTable extends React.Component {
         })
     }
 
-    // const  tableTitles = timeOfUseData[0] && Object.keys(this.state.timeOfUseData[0]) //Gets the keys from the data array
-    // console.log(tableTitles)
-
-    const tableTitles = timeOfUseData[0] && Object.keys(timeOfUseData[0])
-    // console.log(timeOfUseData[0].date)
-
-    // const neededColumnsHeaders = arrayRemove(titles,"utility") // Remove Utitity from headers as it is not wanted.
-
+    // console.log(data)
+    for(const date in data.time_of_use_table.values)
+    {
+      let obj = data.time_of_use_table.values[date]
+      for (const prop in obj)
+      {
+          console.log(prop)
+      }
+    }
     const columns = [
-    
       // {
       //   title: 'Date',
       //   dataIndex: 'date',
@@ -190,18 +174,18 @@ class TimeOfUseTable extends React.Component {
         <Table
           className='table-striped-rows'
           // columns={columns}
-          dataSource={timeOfUseData && timeOfUseData}
+          dataSource={data && data.time_of_use_table.values}
           rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
-          footer={() => `${timeOfUseData && timeOfUseData.length} entries in total`}
+          footer={() => `${data.time_of_use_table.values.length} entries in total`}
         >
  
        {
-       tableTitles && tableTitles.map((headers, index)=>(
+       data.time_of_use_table.titles.map((headers, index)=>(
          <Column title={headers.toUpperCase()} dataIndex={headers}
           key= {headers}
           {...this.getColumnSearchProps({headers})}
-          sorter= {(a, b) => a.headers - b.headers}
+          sorter= {(a, b) => headers === "post_datetime" ? new Date(a.headers) - new Date(b.headers) : a.headers - b.headers}
           sortDirections = {['descend', 'ascend']}
           />
         )) 
