@@ -35,7 +35,7 @@ function TimeOfUse({ match }) {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-    
+    // console.log(organization.branches)
   }, [match, setCurrentUrl]);
 
   const { time_of_use_chart, time_of_use_table } = refinedRenderedData;
@@ -97,46 +97,6 @@ function TimeOfUse({ match }) {
     { label: "350KVA GEN_hours", key: "350KVA GEN_hours" },
     { label: "350KVA GEN_hou_cummlative", key: "350KVA GEN_hou_cummlative" },
   ]               
-  // console.log(organization.branches)
-
-  // const timeOfUseTables =
-  //   arrayOfFormattedTableData &&
-  //   arrayOfFormattedTableData.map((eachBranch) => (
-  //     <>
-  //     <br/>
-  //     <TimeOfUseCard/>
-  //     <article className='table-with-header-container'>
-  //       <div className='table-header'>
-  //         <div className='h-hidden-medium-down'>
-  //           <button type='button' className='table-header__left-button'>
-  //             PDF
-  //           </button>
-  //           {/* <ExportToCsv filename={`${eachBranch[0].branchName} time-of-use.csv`} csvHeaders={csvHeaders} csvData={eachBranch}>
-  //             <button type='button' className='table-header__left-button'>
-  //               CSV
-  //           </button>
-  //           </ExportToCsv> */}
-  //         </div>
-
-  //         <h3 className='table-header__heading'>
-  //           {/* Raw Logs for {eachBranch[0].branchName} */}
-  //         </h3>
-
-  //         <button
-  //           type='button'
-  //           className='table-header__right-button h-hidden-medium-down'
-  //         >
-  //           <ExcelIcon />
-  //           <span>Download in Excel</span>
-  //         </button>
-  //       </div>
-
-  //       <div className='time-of-use-table-wrapper'>
-  //         <TimeOfUseTable timeOfUseData={time_of_use_table}/>
-  //       </div>
-  //     </article>
-  //     </>
-  //   ));
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
@@ -148,13 +108,13 @@ function TimeOfUse({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
-      <article className='parameters-stacked-bar-container'>
+      {/* <article className='parameters-stacked-bar-container'>
         <TimeOfUseStackedBarChart
           chartTimeValues={chartTimeValues}
           chartDeviceNames={chartDeviceNames}
           chartDates={chartDates}
         />
-      </article>
+      </article> */}
 
       {organization.branches && organization.branches.map((eachBranch)=>(
           <>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+
 class TimeOfUseTable extends React.Component {
   state = {
     searchText: '',
@@ -100,15 +101,11 @@ class TimeOfUseTable extends React.Component {
         })
     }
 
-    // console.log(data)
-    for(const date in data.time_of_use_table.values)
-    {
-      let obj = data.time_of_use_table.values[date]
-      for (const prop in obj)
-      {
-          console.log(prop)
-      }
-    }
+    // for(let i = 0; data.time_of_use_table.values.length; i++){
+    //       let formatData = i 
+    //       console.log(formatData)
+    // }
+
     const columns = [
       // {
       //   title: 'Date',
