@@ -35,15 +35,7 @@ const TimeOfUseCard = ({data}) => {
             <Divider orientation="center">{data.name}</Divider>
             <List 
             style={{marginLeft:'20px'}}
-            grid={{
-              gutter: 16,
-              xs: 1,
-              sm: 2,
-              md: 4,
-              lg: 6,
-              xl: 6,
-              xxl: 3,
-            }}
+            grid={{ gutter: 16, column: 4 }}
             dataSource={data.usage_hours.devices}
             renderItem={item=>(
             <>
