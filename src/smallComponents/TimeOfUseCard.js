@@ -8,16 +8,15 @@ const TimeOfUseCard = ({data}) => {
         fontStyle: 'normal',
         fontWeight: '500',
         fontSize: '20px',
-        marginTop:'16px'
+        display: 'flex',
+        justifyContent:'center',
       }
 
       const cardValueContentStyle = {
-        fontFamily: 'Montserrat',
-        fontStyle: 'normal',
-        fontWeight: 'normal',
-        fontSize: '16px',
-        lineHeight: '20px',
-        color: '#000000',
+        display: 'flex',
+        justifyContent:'center',
+        marginTop: '16px',
+        fontSize: '1.6rem'
         }
 
     return (
@@ -31,7 +30,10 @@ const TimeOfUseCard = ({data}) => {
             renderItem={item=>(
             <>
             <List.Item>
-              <Card title={item}>{parseFloat(data.usage_hours.hours).toFixed(2)}</Card>
+              <Card >
+                  <h3 style={cardValueHeadingStyle}>{item}</h3>
+                  <p style={cardValueContentStyle}>{parseFloat(data.usage_hours.hours).toFixed(2)}</p>
+                </Card>
             </List.Item>
             </>
             )}

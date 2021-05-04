@@ -101,10 +101,17 @@ class TimeOfUseTable extends React.Component {
         })
     }
 
-    // for(let i = 0; data.time_of_use_table.values.length; i++){
-    //       let formatData = i 
-    //       console.log(formatData)
-    // }
+      // console.log(data.time_of_use_table.values)
+    
+    const test = data.time_of_use_table.values.map((x)=>{
+      [x].forEach(function(message, index) {
+        // console.log('message index '+ index);
+        Object.keys(message).forEach(function(prop) {    
+            console.log(prop + " = " + message[prop]);
+        });
+    })
+  })
+
 
     const columns = [
       // {
