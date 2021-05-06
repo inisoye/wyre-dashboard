@@ -49,7 +49,12 @@ export const ScheduleEmailModal = () => {
     dateRange = dataHttpServices.endpointDateRange;
   }
   else{
-    dateRange = dataHttpServices.convertDateRangeToEndpointFormat(userDateRange)
+    if(userDateRange=== null){
+      // pass
+    }
+    else{
+      dateRange = dataHttpServices.convertDateRangeToEndpointFormat(userDateRange)
+    }
   }
   
   const getemailModalDataUrl = `https://wyreng.xyz/api/v1/mail_schedules_data/${userId}/`;
