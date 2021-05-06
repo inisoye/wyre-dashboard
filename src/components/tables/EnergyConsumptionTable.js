@@ -145,6 +145,7 @@ class EnergyConsumptionTable extends React.Component {
       ...(energyConsumptionColumns || []),
     ];
 
+
     return (
       <>
         <Table

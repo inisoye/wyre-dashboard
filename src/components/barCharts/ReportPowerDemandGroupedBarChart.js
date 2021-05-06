@@ -2,30 +2,29 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import {
-  getLastArrayItems,
-  convertDateStringsToObjects,
-  formatParametersDatetimes,
-  formatParametersDates,
-} from '../../helpers/genericHelpers';
+import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const DashboardStackedBarChart = ({ data, organization }) => {
+const ReportPowerDemandGroupedBarChart = ({ data }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
+
+  const chartPeriodTypes = data && data.map((eachItem) => eachItem.period_type);
+  const chartDataLabels = data && data[0].data_labels;
+  const chartDemandValues = data && data.map((eachItem) => eachItem.data);
 
   const options = {
     layout: {
       padding: {
-        left: isMediumScreen ? 5 : 25,
-        right: isMediumScreen ? 20 : 50,
-        top: isMediumScreen ? 20 : 25,
-        bottom: isMediumScreen ? 10 : 25,
+        left: 10,
+        right: 20,
+        top: 20,
+        bottom: 10,
       },
     },
     legend: {
       display: true,
       labels: {
         boxWidth: isMediumScreen ? 13 : 16,
-        fontSize: isMediumScreen ? 14 : 16,
+        fontSize: isLessThan1296 ? 14 : 16,
         fontColor: 'black',
         padding: isLessThan1296 ? 10 : 25,
       },
@@ -34,7 +33,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     scales: {
       yAxes: [
         {
-          stacked: true,
+          stacked: false,
           display: true,
           gridLines: {
             color: '#f0f0f0',
@@ -47,10 +46,12 @@ const DashboardStackedBarChart = ({ data, organization }) => {
             fontFamily: 'Roboto',
             padding: 10,
             maxTicksLimit: 6,
+            fontSize: 10,
+            fontColor: '#A3A3A3',
           },
           scaleLabel: {
-            display: true,
-            labelString: 'Energy - Kilowatt (kW)/Hour',
+            display: false,
+            labelString: `Power Demand`,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -59,8 +60,11 @@ const DashboardStackedBarChart = ({ data, organization }) => {
       ],
       xAxes: [
         {
+          stacked: false,
           ticks: {
             fontFamily: 'Roboto',
+            fontSize: 10,
+            fontColor: '#A3A3A3',
             padding: 10,
             maxTicksLimit: 10,
           },
@@ -69,10 +73,8 @@ const DashboardStackedBarChart = ({ data, organization }) => {
             color: '#f0f0f0',
             zeroLineColor: '#f0f0f0',
           },
-          stacked: true,
           scaleLabel: {
-            display: true,
-            labelString: 'Days of the month',
+            display: false,
             padding: isMediumScreen ? 10 : 25,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
@@ -82,23 +84,10 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     },
   };
 
-  // ensure total(organization data) is removed from initial render
-  if (data) {
-    delete data[organization];
-  }
-
-  // Destructure data conditionally
-  const { dates: dateStrings, ...values } = data ? data : { dates: [] };
-
-  const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
-  const formattedDates = dateObjects && formatParametersDates(dateObjects);
-
-  const dataNames = Object.keys(values);
-  const dataValues = Object.values(values);
   const colorsArray = [
-    '#6C00FA',
     '#00C7E6',
     '#FF3DA1',
+    '#6C00FA',
     '#82ca9d',
     '#ff9b3d',
     '#360259',
@@ -108,32 +97,38 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     '#FFE11A',
   ];
 
-  const plottedDataSet = dataNames.map((_, index) => {
-    return {
-      maxBarThickness: 50,
-      label: dataNames[index],
-      // Pick data for last week if screen is a medium screen or less
-      data: isMediumScreen
-        ? getLastArrayItems(dataValues[index])
-        : dataValues[index],
-      backgroundColor: colorsArray[index],
-    };
-  });
+  const plottedDataSet =
+    chartPeriodTypes &&
+    chartPeriodTypes.map((_, index) => {
+      return {
+        maxBarThickness: 50,
+        label: chartPeriodTypes[index],
+        // Pick data for last week if screen is a medium screen or less
+        data: isMediumScreen
+          ? getLastArrayItems(chartDemandValues[index])
+          : chartDemandValues[index],
+        backgroundColor: colorsArray[index],
+      };
+    });
 
-  const plottedData = {
+  const plottedData = chartDataLabels && {
     labels: isMediumScreen
-      ? getLastArrayItems(formattedDates, 7)
+      ? getLastArrayItems(chartDataLabels, 7)
       : isLessThan1296
-      ? getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+      ? getLastArrayItems(chartDataLabels, 14)
+      : chartDataLabels,
     datasets: plottedDataSet,
   };
 
   return (
     <>
-      <Bar redraw data={plottedData} options={options} />
+      <Bar
+        redraw
+        data={plottedData || { datasets: [], labels: [] }}
+        options={options}
+      />
     </>
   );
 };
 
-export default DashboardStackedBarChart;
+export default ReportPowerDemandGroupedBarChart;

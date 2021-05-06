@@ -4,7 +4,7 @@ import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const CostTrackerConsumptionGroupedBarChart = ({
+const EnergyConsumptionBarChart = ({
   chartConsumptionValues,
   chartDeviceNames,
   chartDates,
@@ -144,4 +144,4 @@ const CostTrackerConsumptionGroupedBarChart = ({
   );
 };
 
-export default CostTrackerConsumptionGroupedBarChart;
+export default EnergyConsumptionBarChart;

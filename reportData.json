@@ -1,0 +1,267 @@
+{
+  "reportData": {
+    "displayed_data": [
+      "period_score",
+      "total_energy_consumed",
+      "blended_cost_of_energy",
+      "overview",
+      "branch_performance_1",
+      "energy_consumed_monthly",
+      "branch_performance_2",
+      "recommendation",
+      "power_demand_periods_bar",
+      "power_demand_periods_pie",
+      "power_demand"
+    ],
+    "period_score": {
+      "percentage_score": 60,
+      "rating": 3.5
+    },
+    "total_energy_consumed": {
+      "total_energy_consumed": 104223,
+      "forecasted_baseline": 152000,
+      "savings": -52000,
+      "energy_unit": "kWh",
+      "amount_lost": 1000000
+    },
+    "blended_cost_of_energy": {
+      "utility": 24,
+      "IPP": 19,
+      "generator": 24,
+      "solar": 24,
+      "total": 40
+    },
+    "overview": [
+      {
+        "site": "Meadow",
+        "utility_energy": 50000,
+        "utility_naira": 100000,
+        "ipp_energy": 22000,
+        "ipp_naira": 3000,
+        "gen_energy": 5000,
+        "gen_naira": 5000,
+        "solar_energy": 5000,
+        "solar_naira": "—",
+        "key": 1
+      },
+      {
+        "site": "Richmond",
+        "utility_energy": 10000,
+        "utility_naira": 20000,
+        "ipp_energy": 52000,
+        "ipp_naira": 5000,
+        "gen_energy": 3000,
+        "gen_naira": 3000,
+        "solar_energy": 2000,
+        "solar_naira": "—",
+        "key": 2
+      },
+      {
+        "site": "Main Hall",
+        "utility_energy": 2000,
+        "utility_naira": 5000,
+        "ipp_energy": 10000,
+        "ipp_naira": 3000,
+        "gen_energy": 1900,
+        "gen_naira": 2000,
+        "solar_energy": 1000,
+        "solar_naira": "—",
+        "key": 3
+      }
+    ],
+    "branch_performance_1": [
+      {
+        "branch": "Meadow",
+        "utility": 300,
+        "ipp": 200,
+        "gen": 500,
+        "total": 1000,
+        "key": 1
+      },
+      {
+        "branch": "Richmond",
+        "utility": 200,
+        "ipp": 250,
+        "gen": 1000,
+        "total": 1450,
+        "key": 2
+      },
+      {
+        "branch": "Main Hall",
+        "utility": 250,
+        "ipp": 250,
+        "gen": 1000,
+        "total": 1500,
+        "key": 3
+      }
+    ],
+    "energy_consumed_monthly": [
+      {
+        "branch": "Meadow Hall",
+        "dates": [
+          "2020-01-27T14:42:33.379395",
+          "2020-02-27T14:54:33.379395",
+          "2020-03-27T15:09:33.379395",
+          "2020-04-27T15:22:33.379395",
+          "2020-05-27T15:36:33.379395",
+          "2020-06-27T15:48:33.379395",
+          "2020-07-27T16:01:33.379395",
+          "2020-08-27T16:15:33.379395",
+          "2020-09-27T16:28:33.379395",
+          "2020-10-27T16:40:33.379395"
+        ],
+        "values": [370, 356, 334, 363, 374, 341, 326, 322, 347, 313]
+      },
+      {
+        "branch": "Richmond Gate",
+        "dates": [
+          "2020-01-27T14:42:33.379395",
+          "2020-02-27T14:54:33.379395",
+          "2020-03-27T15:09:33.379395",
+          "2020-04-27T15:22:33.379395",
+          "2020-05-27T15:36:33.379395",
+          "2020-06-27T15:48:33.379395",
+          "2020-07-27T16:01:33.379395",
+          "2020-08-27T16:15:33.379395",
+          "2020-09-27T16:28:33.379395",
+          "2020-10-27T16:40:33.379395"
+        ],
+        "values": [361, 308, 373, 367, 331, 354, 377, 378, 363, 377]
+      },
+      {
+        "branch": "Main Hall",
+        "dates": [
+          "2020-01-27T14:42:33.379395",
+          "2020-02-27T14:54:33.379395",
+          "2020-03-27T15:09:33.379395",
+          "2020-04-27T15:22:33.379395",
+          "2020-05-27T15:36:33.379395",
+          "2020-06-27T15:48:33.379395",
+          "2020-07-27T16:01:33.379395",
+          "2020-08-27T16:15:33.379395",
+          "2020-09-27T16:28:33.379395",
+          "2020-10-27T16:40:33.379395"
+        ],
+        "values": [375, 325, 337, 315, 328, 377, 365, 315, 370, 346]
+      }
+    ],
+    "branch_performance_2": [
+      {
+        "branch": "Meadow",
+        "papr": 70,
+        "base_line": 60,
+        "gen_efficiency": 30,
+        "emission": 10,
+        "blended_cost": 200,
+        "score": 65,
+        "key": 1
+      },
+      {
+        "branch": "Richmond",
+        "papr": 60,
+        "base_line": 50,
+        "gen_efficiency": 20,
+        "emission": 5,
+        "blended_cost": 30,
+        "score": 48,
+        "key": 2
+      },
+      {
+        "branch": "Main Hall",
+        "papr": 90,
+        "base_line": 67,
+        "gen_efficiency": 88,
+        "emission": 5,
+        "blended_cost": 24,
+        "score": 80,
+        "key": 3
+      }
+    ],
+    "recommendation": [
+      "Based on cost of Solar on time of peak use, switching 80% to Solar energy will produce a 50% drop in annual energy cost.",
+      "Meadow hall might need a reduced operating time on Generators."
+    ],
+    "power_demand_periods_bar": [
+      {
+        "period_type": "Off Peak",
+        "data": [50, 110, 150],
+        "data_labels": ["Minimum", "Maximum", "Average"]
+      },
+      {
+        "period_type": "Peak Period",
+        "data": [170, 155, 100],
+        "data_labels": ["Minimum", "Maximum", "Average"]
+      }
+    ],
+    "power_demand_periods_pie": {
+      "data": [20, 6],
+      "data_labels": ["Peak Period", "Off Peak Period"]
+    },
+    "power_demand": {
+      "dates": [
+        "2020-01-01T14:42:33.379395",
+        "2020-01-02T14:54:33.379395",
+        "2020-01-03T15:09:33.379395",
+        "2020-01-04T15:22:33.379395",
+        "2020-01-05T15:36:33.379395",
+        "2020-01-06T15:48:33.379395",
+        "2020-01-07T16:01:33.379395",
+        "2020-01-08T16:15:33.379395",
+        "2020-01-09T16:28:33.379395",
+        "2020-01-10T16:40:33.379395",
+        "2020-01-11T16:55:33.379395",
+        "2020-01-12T17:09:33.379395",
+        "2020-01-13T17:24:33.379395",
+        "2020-01-14T17:39:33.379395",
+        "2020-01-15T17:53:33.379395",
+        "2020-01-16T18:05:33.379395",
+        "2020-01-17T18:20:33.379395",
+        "2020-01-18T18:35:33.379395",
+        "2020-01-19T18:50:33.379395",
+        "2020-01-20T19:04:33.379395",
+        "2020-01-21T19:19:33.379395",
+        "2020-01-22T19:32:33.379395",
+        "2020-01-23T19:45:33.379395",
+        "2020-01-24T19:57:33.379395",
+        "2020-01-25T20:09:33.379395",
+        "2020-01-26T20:23:33.379395",
+        "2020-01-27T20:38:33.379395",
+        "2020-01-28T20:52:33.379395",
+        "2020-01-29T21:04:33.379395",
+        "2020-01-30T21:17:33.379395"
+      ],
+      "values": [
+        244,
+        201,
+        249,
+        152,
+        123,
+        173,
+        177,
+        279,
+        248,
+        217,
+        277,
+        219,
+        242,
+        238,
+        264,
+        267,
+        212,
+        243,
+        225,
+        264,
+        346,
+        200,
+        106,
+        122,
+        105,
+        253,
+        213,
+        138,
+        137,
+        149
+      ]
+    }
+  }
+}

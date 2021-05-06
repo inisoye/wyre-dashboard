@@ -113,12 +113,18 @@ const CompleteDataProvider = (props) => {
           setOrganization(returnedData);
         })
         .catch((error) => {
-          if (error.message === 'No branches') {
+          const logUserOut = () => {
             window.localStorage.removeItem('loggedWyreUser');
             setUserData(undefined);
-          } else if (error.response.data.message === 'UserId might not exist') {
-            window.localStorage.removeItem('loggedWyreUser');
-            setUserData(undefined);
+          };
+
+          if (error && error.message === 'No branches') {
+            logUserOut();
+          } else if (
+            error &&
+            error.response.data.message === 'UserId might not exist'
+          ) {
+            logUserOut();
           }
         });
     };
@@ -175,9 +181,15 @@ const CompleteDataProvider = (props) => {
   }, []);
 
   // State for Schedule Email Modal
+  const [emailModalData, setEmailModalData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const allDevices = [];
+
+  const allDevices = []
+
+  
+  const [PasswordVisibility, setPasswordVisibility ] = useState(false)
+
 
   return (
     <CompleteDataContext.Provider
@@ -237,6 +249,8 @@ const CompleteDataProvider = (props) => {
         isLessThan1296: isLessThan1296,
 
         //Schedule Email Modal
+        emailModalData:emailModalData,
+        setEmailModalData:setEmailModalData,
         isModalVisible: isModalVisible,
         setIsModalVisible: setIsModalVisible,
 
@@ -244,7 +258,12 @@ const CompleteDataProvider = (props) => {
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
 
-        allDevices: allDevices,
+        // Password Toggle Visibility.
+        PasswordVisibility:PasswordVisibility,
+        setPasswordVisibility:setPasswordVisibility,
+        
+        
+       allDevices: allDevices,
       }}
     >
       {props.children}

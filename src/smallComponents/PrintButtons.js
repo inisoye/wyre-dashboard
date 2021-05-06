@@ -20,13 +20,20 @@ function PrintButtons() {
     const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
 
     let selectedDevicesIds = [];
-    
+
     for (const prop in checkedDevices) {
       let listOfDeviceId = allDevices.filter((e) => {
         return e.name === prop;
       });
       selectedDevicesIds.push(listOfDeviceId[0].id);
     }
+
+    if (selectedDevicesIds.length === 0 ) {
+        const defaultIds = allDevices.filter((e)=>{
+          return selectedDevicesIds.push(e.id)
+        })
+    }
+    
     const data = JSON.stringify({ selected_devices: selectedDevicesIds})
 
     const response = axios

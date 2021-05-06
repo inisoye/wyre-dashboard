@@ -1,7 +1,6 @@
 import React from 'react';
 // import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
-
 const OutlinedInput = ({
   type,
   name,
@@ -13,7 +12,7 @@ const OutlinedInput = ({
   register,
   className,
   onChange,
-}) => {
+}) => {  
   return (
     <>
       <input
@@ -28,8 +27,7 @@ const OutlinedInput = ({
         autoCapitalize="off"
         ref={register}
         onChange={onChange}
-      />
-      {/* <EyeInvisibleOutlined /> */}
+      /> 
     </>
   );
 };

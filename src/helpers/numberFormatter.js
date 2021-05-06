@@ -2,9 +2,10 @@
 const numberFormatter = (x) => {
   if (!x) return;
 
-  if (typeof(x) === 'number'){
+  if (typeof(x) == "number"){
     x = x.toFixed(2)
   }
+
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 

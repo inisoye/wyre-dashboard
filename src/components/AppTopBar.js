@@ -24,7 +24,6 @@ function TopBar() {
     'dashboard',
     'score-card',
     'parameters',
-    'report',
     'cost-tracker',
     'billing',
   ];
