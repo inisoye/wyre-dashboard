@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -19,12 +19,11 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
-  const { setUserData } = useContext(CompleteDataContext);
-  const [inputvalue, setinputvalue] = useState('')
+  const { setUserData, PasswordVisibility, setPasswordVisibility } = useContext(CompleteDataContext);
 
   const { register, handleSubmit, control } = useForm();
 
-  const onSubmit = async ({ username, password }) => {
+  const onSubmit = async ({ username, password }, values) => {
     try {
       const user = await loginHttpServices.login({
         username: username,
@@ -43,10 +42,7 @@ function Login() {
 
   const removeErrorMessage = (e) => {
     setErrorMessage(undefined);
-    let value = e.target.value
-    setinputvalue(value)
   };
-
 
   return (
     <div className='auth-page-container'>
@@ -77,43 +73,17 @@ function Login() {
 
         <p className='outlined-input-container'>
           <HiddenInputLabel htmlFor='password' labelText='Password' />
-          
-          <OutlinedInput
-            className='signup-login-contact-input'
-            type='password'
-            name='password'
-            id='password'
-            placeholder='Password'
-            autoComplete='new-password'
-            required={true}
-            autoFocus={false}
-            register={register}
-            onChange={removeErrorMessage}
-          />
-
-          {/* <Controller
-          control={control}
-          name="password"
-          defaultValue=''
-          render={({
-            field
-          }) => (    
-              <Input.Password
-              {...field}
-              className='signup-login-contact-input outlined-input'
-              type='password'
-              name='password'
-              id='password'
-              placeholder='Password'
-              autoComplete='new-password'
-              required={true}
-              autoFocus={false}
-              onChange={removeErrorMessage}
-              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-            />
-          )}
-          /> */}
-
+          <Controller as={<Input.Password/>} control={control} defaultValue=''
+                className='signup-login-contact-input outlined-input'
+                type='password'
+                name='password'
+                id='password'
+                placeholder='Password'
+                autoComplete='new-password'
+                required={true}
+                autoFocus={false}
+                onChange={removeErrorMessage}
+                iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}/>
         </p>
 
         <p className='signup-login-contact-error-message'>{errorMessage}</p>

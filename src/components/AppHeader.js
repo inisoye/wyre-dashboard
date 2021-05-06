@@ -76,7 +76,6 @@ function Header() {
     window.localStorage.removeItem('loggedWyreUser');
     setUserData(undefined);
     setEmailModalData(undefined)
-    console.log(emailModalData)
   };
 
   // const isOrganisationSapio =
