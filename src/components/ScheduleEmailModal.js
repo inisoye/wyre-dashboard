@@ -24,7 +24,8 @@ export const ScheduleEmailModal = () => {
     allDevices,
     checkedDevices,
     emailModalData,
-    setEmailModalData
+    setEmailModalData,
+    userDateRange
   } = useContext(CompleteDataContext);
 
 
@@ -41,8 +42,16 @@ export const ScheduleEmailModal = () => {
   const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState()
   const [currentRecieverId, setcurrentRecieverId] = useState();
 
-  const dateRange = dataHttpServices.endpointDateRange;
-
+  let dateRange = ''; 
+  
+  if( userDateRange === [] )
+  {
+    dateRange = dataHttpServices.endpointDateRange;
+  }
+  else{
+    dateRange = dataHttpServices.convertDateRangeToEndpointFormat(userDateRange)
+  }
+  
   const getemailModalDataUrl = `https://wyreng.xyz/api/v1/mail_schedules_data/${userId}/`;
   const addNewExternalReceiverUrl = `https://wyreng.xyz/api/v1/add_external_bill_reciever/${userId}/`;
   const addavailableDevicesToBillReceiver = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
@@ -187,6 +196,8 @@ export const ScheduleEmailModal = () => {
       email: sendBill,
       selected_devices: selectedDevicesIds,
     });
+
+    console.log(sendBillUrl)
 
     setIsSendingBill(true);
     

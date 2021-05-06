@@ -41,6 +41,7 @@ const setEndpointDateRange = (newEndpointDateRange) => {
       ]));
 };
 
+
 // Handle Manipulation of time interval for url
 let endpointDataTimeInterval = 'hourly';
 
@@ -68,4 +69,5 @@ export default {
   setEndpointDateRange,
   setEndpointDataTimeInterval,
   endpointDateRange,
+  convertDateRangeToEndpointFormat
 };
