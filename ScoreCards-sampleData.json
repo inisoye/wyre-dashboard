@@ -1,0 +1,46 @@
+{
+    "devices":[
+        {   
+            "name":"Richmond Gate",
+            "score_card":{
+             "change_over_lags":[
+                    {
+                    "date_of_supply": "2021-04-03T00:31:00",
+                    "change_over_lags": "12mins",
+                    "dieselcost": 89,
+                    "value(Naira)": 125
+                    },
+                    {  
+                    "date_of_supply": "2021-04-03T00:31:00",
+                    "change_over_lags": "20mins",
+                    "dieselcost": 89,
+                    "value(Naira)": 159
+                    },
+                    {  
+                    "date_of_supply": "2021-04-03T00:31:00",
+                    "change_over_lags": "14mins",
+                    "dieselcost": 89,
+                    "value(Naira)": 200
+                    }
+                ],
+                "generator_size_efficiency":
+                    {
+                        "usage":"20",
+                        "unit":"%",
+                        "name":"Gen 1",
+                        "size":"40kva",
+                        "remarks":"Good"
+                    },
+                "fuelConsumption":
+                {
+                    "usage":"20",
+                    "unit":"litres",
+                    "name":"Gen 2",
+                    "litres":30.0,
+                    "hours":"12"
+                },
+                "is_generator": true
+            }
+        }
+    ]
+}
