@@ -3,7 +3,8 @@
         {   
             "name":"Richmond Gate",
             "score_card":{
-             "change_over_lags":[
+             "change_over_lags":{
+                "data":[
                     {
                     "date_of_supply": "2021-04-03T00:31:00",
                     "change_over_lags": "12mins",
@@ -22,7 +23,8 @@
                     "dieselcost": 89,
                     "value(Naira)": 200
                     }
-                ],
+                ]
+            },
                 "generator_size_efficiency":
                     {
                         "usage":"20",
