@@ -33,11 +33,14 @@
                     },
                 "fuelConsumption":
                 {
-                    "usage":"20",
-                    "unit":"litres",
-                    "name":"Gen 2",
-                    "litres":30.0,
-                    "hours":"12"
+                    "name": "main_generator",
+                    "size": "100kva",
+                    "diesel_usage": 30,
+                    "time_used": "12",
+                    "hours_to_maintenance": {
+                      "hours": 23,
+                      "unit": "hours"
+                    }
                 },
                 "is_generator": true
             }
