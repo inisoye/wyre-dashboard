@@ -4,26 +4,43 @@
             "name":"Richmond Gate",
             "score_card":{
              "change_over_lags":{
-                "data":[
+                "data": [
                     {
-                    "date_of_supply": "2021-04-03T00:31:00",
-                    "change_over_lags": "12mins",
-                    "dieselcost": 89,
-                    "value(Naira)": 125
+                      "date": "Jan 1 2020",
+                      "lag_duration": 15,
+                      "diesel_cost": 20,
+                      "diesel_value": 4800,
+                      "id": 1
                     },
-                    {  
-                    "date_of_supply": "2021-04-03T00:31:00",
-                    "change_over_lags": "20mins",
-                    "dieselcost": 89,
-                    "value(Naira)": 159
+                    {
+                      "date": "Jan 2 2020",
+                      "lag_duration": 14,
+                      "diesel_cost": 10,
+                      "diesel_value": 2400,
+                      "id": 2
                     },
-                    {  
-                    "date_of_supply": "2021-04-03T00:31:00",
-                    "change_over_lags": "14mins",
-                    "dieselcost": 89,
-                    "value(Naira)": 200
+                    {
+                      "date": "Jan 3 2020",
+                      "lag_duration": 60,
+                      "diesel_cost": 15,
+                      "diesel_value": 3600,
+                      "id": 3
+                    },
+                    {
+                      "date": "Jan 4 2020",
+                      "lag_duration": 120,
+                      "diesel_cost": 30,
+                      "diesel_value": 7200,
+                      "id": 4
+                    },
+                    {
+                      "date": "Jan 5 2020",
+                      "lag_duration": 90,
+                      "diesel_cost": 15,
+                      "diesel_value": 3600,
+                      "id": 5
                     }
-                ],
+                  ],
                 "units": {
                     "lag_duration": "Minutes",
                     "diesel_cost": "Litres"
