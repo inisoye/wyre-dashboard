@@ -28,20 +28,13 @@ export const ScheduleEmailModal = () => {
     userDateRange
   } = useContext(CompleteDataContext);
 
-
   const [addEmail, setAddEmail] = useState('');
-
   const [sendBill, setSendBill] = useState('');
   const [isSendingBill, setIsSendingBill] = useState(true);
   const [sentBillStatus, setSentBillStatus] = useState();
-
   const [frequencyDropdown, setFrequencyDropdown] = useState('');
-  
-  let externalRecieverAssignedDeviceIds = []
-
   const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState()
   const [currentRecieverId, setcurrentRecieverId] = useState();
-
   let dateRange = ''; 
   
   if( userDateRange === [] )
@@ -102,25 +95,29 @@ export const ScheduleEmailModal = () => {
     }
   }, [frequencyDropdown])
 
-
   const ShowModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    document.getElementById('TargetEmail').value = ''
   };
 
   const handleFrequencyMenuClick = (e) => {
     setFrequencyDropdown(e.key);
   };
 
+  let externalRecieverAssignedDeviceIds = []
+  let checkedDevicesIds;
+
   const addDevicetoExternalReciever = () => {
     const data = JSON.stringify({
       reciever_id: currentRecieverId,
-      selected_devices: externalRecieverAssignedDeviceIds,
+      selected_devices: checkedDevicesIds,
     });
+
+    console.log(data)
+
     axios
       .post(addavailableDevicesToBillReceiver, data, {
         headers: {
@@ -138,10 +135,18 @@ export const ScheduleEmailModal = () => {
       );
   };
 
+  function removeDuplicateDatas(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
   const handleExternalRecieversDevicesMenuClick = (v) => {
     const parsedIds = parseInt(v.key)
     externalRecieverAssignedDeviceIds.push(parsedIds)
-    addDevicetoExternalReciever();
+    checkedDevicesIds = externalRecieverAssignedDeviceIds.filter(removeDuplicateDatas)
+    console.log(checkedDevicesIds)
+    setTimeout(() => {
+      addDevicetoExternalReciever();
+    }, 2000);
   };
 
   const handlePersonalDataDevicesMenuClick = (devices) => {
