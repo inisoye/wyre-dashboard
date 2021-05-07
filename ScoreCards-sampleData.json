@@ -23,7 +23,11 @@
                     "dieselcost": 89,
                     "value(Naira)": 200
                     }
-                ]
+                ],
+                "units": {
+                    "lag_duration": "Minutes",
+                    "diesel_cost": "Litres"
+                  }
             },
                 "generator_size_efficiency":
                     {
