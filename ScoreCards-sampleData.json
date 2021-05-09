@@ -1,0 +1,72 @@
+{
+    "devices":[
+        {   
+            "name":"Richmond Gate",
+            "score_card":{
+             "change_over_lags":{
+                "data": [
+                    {
+                      "date": "Jan 1 2020",
+                      "lag_duration": 15,
+                      "diesel_cost": 20,
+                      "diesel_value": 4800,
+                      "id": 1
+                    },
+                    {
+                      "date": "Jan 2 2020",
+                      "lag_duration": 14,
+                      "diesel_cost": 10,
+                      "diesel_value": 2400,
+                      "id": 2
+                    },
+                    {
+                      "date": "Jan 3 2020",
+                      "lag_duration": 60,
+                      "diesel_cost": 15,
+                      "diesel_value": 3600,
+                      "id": 3
+                    },
+                    {
+                      "date": "Jan 4 2020",
+                      "lag_duration": 120,
+                      "diesel_cost": 30,
+                      "diesel_value": 7200,
+                      "id": 4
+                    },
+                    {
+                      "date": "Jan 5 2020",
+                      "lag_duration": 90,
+                      "diesel_cost": 15,
+                      "diesel_value": 3600,
+                      "id": 5
+                    }
+                  ],
+                "units": {
+                    "lag_duration": "Minutes",
+                    "diesel_cost": "Litres"
+                  }
+            },
+                "generator_size_efficiency":
+                    {
+                        "usage":"20",
+                        "unit":"%",
+                        "name":"Gen 1",
+                        "size":"40kva",
+                        "remarks":"Good"
+                    },
+                "fuelConsumption":
+                {
+                    "name": "main_generator",
+                    "size": "100kva",
+                    "diesel_usage": 30,
+                    "time_used": "12",
+                    "hours_to_maintenance": {
+                      "hours": 23,
+                      "unit": "hours"
+                    }
+                },
+                "is_generator": true
+            }
+        }
+    ]
+}

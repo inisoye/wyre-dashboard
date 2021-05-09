@@ -44,6 +44,7 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
+
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
 

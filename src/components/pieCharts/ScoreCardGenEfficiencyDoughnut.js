@@ -5,7 +5,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
   const { size, usage, unit, name } = data
     ? data
     : { size: '', usage: '', unit: '', name: '' };
-    
+
   const chartLabels = ['Used', 'Unused'];
   const chartData = [usage, 100 - usage];
 
