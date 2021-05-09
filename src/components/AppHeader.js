@@ -33,7 +33,6 @@ function Header() {
     organization,
     currentUrl,
     setEmailModalData,
-    emailModalData
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
