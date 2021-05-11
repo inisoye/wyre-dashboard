@@ -69,12 +69,14 @@ function PrintButtons() {
 
   return (
     <ul className="print-buttons h-hidden-medium-down">
+      <Tooltip title="Schedule an e-mail containing your billing info.">
       <li className="print-button-container">
         <button type="button" className="print-button">
           {modal}
         </button>
       </li>
-      <Tooltip title="Download a PDF File containing your billing data.">
+      </Tooltip>
+      <Tooltip title="Download a PDF file containing your billing data.">
       <li className="print-button-container">
         <button
           onClick={PdfDownloadLink}
