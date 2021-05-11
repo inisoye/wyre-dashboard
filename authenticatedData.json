@@ -56,8 +56,8 @@
                             },
                             "peak_to_avg_power_ratio": {
                                 "unit": "kW",
-                                "peak": 1000,
-                                "avg": 500,
+                                "peak": 3000,
+                                "avg": 200,
                                 "message": "Not so efficient, Higher is better",
                                 "message_color": "green"
                             },
@@ -6659,8 +6659,8 @@
                             },
                             "peak_to_avg_power_ratio": {
                                 "unit": "kW",
-                                "peak": 1000,
-                                "avg": 500,
+                                "peak": 2000,
+                                "avg": 300,
                                 "message": "Not so efficient, Higher is better",
                                 "message_color": "green"
                             },
@@ -13240,8 +13240,8 @@
                             },
                             "peak_to_avg_power_ratio": {
                                 "unit": "kW",
-                                "peak": 1000,
-                                "avg": 500,
+                                "peak": 5000,
+                                "avg": 200,
                                 "message": "Not so efficient, Higher is better",
                                 "message_color": "green"
                             },
