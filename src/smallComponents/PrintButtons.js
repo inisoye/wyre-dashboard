@@ -5,6 +5,7 @@ import PrintIcon from '../icons/PrintIcon';
 
 import CompleteDataContext from '../Context';
 import dataHttpServices from '../services/devices';
+import { notification, Tooltip } from 'antd';
 
 import axios from 'axios';
 
@@ -16,9 +17,18 @@ function PrintButtons() {
   );
   const dateRange = dataHttpServices.endpointDateRange;
 
-  const PdfDownloadLink = async () => {
-    const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
+  const openNotification = () => {
+    notification.info({
+      message: 'PDF Download',
+      description:
+        'Your file download will begin soon.',
+      duration: 5,
+    });
+  };
 
+  const PdfDownloadLink = async () => {
+    openNotification()
+    const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
     let selectedDevicesIds = [];
 
     for (const prop in checkedDevices) {
@@ -33,9 +43,7 @@ function PrintButtons() {
           return selectedDevicesIds.push(e.id)
         })
     }
-    
     const data = JSON.stringify({ selected_devices: selectedDevicesIds})
-
     const response = axios
       .post(staticUrl, data, {
         headers: {
@@ -66,6 +74,7 @@ function PrintButtons() {
           {modal}
         </button>
       </li>
+      <Tooltip title="Download a PDF File containing your billing data.">
       <li className="print-button-container">
         <button
           onClick={PdfDownloadLink}
@@ -75,6 +84,7 @@ function PrintButtons() {
           <PdfIcon />
         </button>
       </li>
+      </Tooltip>
       <li className="print-button-container">
         <button type="button" className="print-button">
           <PrintIcon />
