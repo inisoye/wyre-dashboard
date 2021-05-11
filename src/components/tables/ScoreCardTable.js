@@ -147,9 +147,9 @@ class ScoreCardTable extends React.Component {
             let totalDieselValue = 0;
 
             pageData.forEach(({ lag_duration, diesel_cost, diesel_value }) => {
-              totalLagDuration += lag_duration;
-              totalDieselCost += diesel_cost;
-              totalDieselValue += diesel_value;
+              totalLagDuration += lag_duration.toFixed(2);
+              totalDieselCost += diesel_cost.toFixed(2);
+              totalDieselValue += diesel_value.toFixed(2);
             });
 
             return (
