@@ -33,7 +33,6 @@ function Header() {
     organization,
     currentUrl,
     setEmailModalData,
-    emailModalData
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -136,13 +135,13 @@ function Header() {
           <ul className="header-nav-list">
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && ( */}
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
                 linkText="Score Card"
               />
-            )}
+            {/* )} */}
 
             <HeaderLinkWithDropdown
               className="header-nav-list__item header-link-with-dropdown"
@@ -179,13 +178,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                {!doesUserHaveAccess && (
+                {/* {!doesUserHaveAccess && ( */}
                   <HeaderSublink
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"
                     linkText="Time of Use"
                     />
-                  )}
+                  {/* )} */}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"

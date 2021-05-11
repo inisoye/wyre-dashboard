@@ -44,6 +44,7 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
+
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
 
@@ -197,25 +198,25 @@ function ScoreCard({ match }) {
           </div>
 
           <p className='score-card-bottom-text'>
-            Grid Supplied:{' '}
+            Estimated:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
-            Generator:{' '}
+            Actual Emission:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          <p className='score-card-bottom-text h-mt-24 h-red-text'>
+          {/* <p className='score-card-bottom-text h-mt-24 h-red-text'>
             <span>Conditional Sub-text Should Go Here</span>{' '}
             <span className='score-card-bottom-text-small'>
               (Additional Conditional Sub-text Should Go Here)
             </span>
-          </p>
+          </p> */}
         </article>
       </div>
 
