@@ -220,18 +220,7 @@ function ScoreCard({ match }) {
         </article>
       </div>
 
-      <article className='score-card-row-2'>
-        <h2 className='changeover-lags-heading score-card-heading'>
-          Change Over Lags
-        </h2>
-        <ScoreCardTable changeOverLagsData={change_over_lags} />
-      </article>
-
-      <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time} />
-      </article>
-
-      <div className='score-card-row-4'>
+      <div className='score-card-row-4' style={{marginBottom:'50px'}}>
         <article className='score-card-row-4__left'>
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
@@ -247,7 +236,18 @@ function ScoreCard({ match }) {
             Estimated Fuel Consumption for facility gens
           </p>
         </article>
-      </div>
+    </div>
+
+      <article className='score-card-row-2'>
+        <h2 className='changeover-lags-heading score-card-heading'>
+          Change Over Lags
+        </h2>
+        <ScoreCardTable changeOverLagsData={change_over_lags} />
+      </article>
+
+      <article className='score-card-row-3'>
+        <ScoreCardBarChart operatingTimeData={operating_time} />
+      </article>
     </>
   );
 }
