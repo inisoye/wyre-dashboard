@@ -6802,10 +6802,10 @@
                             "fuel_consumption": {
                               "name": "main_generator",
                               "size": "100kva",
-                              "diesel_usage": 30,
+                              "diesel_usage": 9,
                               "time_used": "12",
                               "hours_to_maintenance": {
-                                "hours": 23,
+                                "hours": 44,
                                 "unit": "hours"
                               }
                           }
@@ -13383,10 +13383,10 @@
                             "fuel_consumption": {
                               "name": "main_generator",
                               "size": "100kva",
-                              "diesel_usage": 30,
+                              "diesel_usage": 50,
                               "time_used": "12",
                               "hours_to_maintenance": {
-                                "hours": 23,
+                                "hours": 13,
                                 "unit": "hours"
                               }
                           }
