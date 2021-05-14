@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { typeOf } from 'react-responsive';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
@@ -77,7 +78,9 @@ const VerticalBar = ({ operatingTimeData }) => {
   const chartValues = chart.values;
 
   const timeWasted =
-    estimated_time_wasted.value + ' ' + estimated_time_wasted.unit;
+    estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
+
+    console.log(timeWasted)
 
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
