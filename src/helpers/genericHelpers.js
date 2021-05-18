@@ -3,6 +3,19 @@ import dayjs from 'dayjs';
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
 --------------------------------------------------------------------*/
+
+function removeDuplicateDatas(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+const truncateEmail = (str, num)=>{
+  if(str.length <= num)
+  {
+    return str
+  }
+  return str.slice(0,num) + '...'
+}
+
 const toCamelCase = (str) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -397,4 +410,6 @@ export {
   formatParametersTimes,
   formatParameterTableData,
   convertParameterDateStringsToObjects,
+  removeDuplicateDatas,
+  truncateEmail
 };
