@@ -68,6 +68,8 @@ export default {
   setUserId,
   setEndpointDateRange,
   setEndpointDataTimeInterval,
+  convertDateRangeToEndpointFormat,
   endpointDateRange,
-  convertDateRangeToEndpointFormat
+  userId,
+  token
 };
