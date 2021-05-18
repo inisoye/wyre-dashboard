@@ -34,8 +34,11 @@ export const ScheduleEmailModal = () => {
   const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState()
   const [currentRecieverId, setcurrentRecieverId] = useState();
 
-  let dateRange = dataHttpServices.endpointDateRange;
+  let dateRange = userDateRange === null || userDateRange.length ===0 ? dataHttpServices.endpointDateRange 
+                                        : dataHttpServices.convertDateRangeToEndpointFormat(userDateRange);
+
   
+
   const getemailModalDataUrl = `https://wyreng.xyz/api/v1/mail_schedules_data/${userId}/`;
   const addNewExternalReceiverUrl = `https://wyreng.xyz/api/v1/add_external_bill_reciever/${userId}/`;
   const addavailableDevicesToBillReceiver = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
