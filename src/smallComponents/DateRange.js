@@ -5,8 +5,10 @@ import CompleteDataContext from '../Context';
 import dataHttpServices from '../services/devices';
 
 const DateRange = () => {
-  const { selectedDateRange } = useContext(CompleteDataContext)
+  const { selectedDateRange, userDateRange } = useContext(CompleteDataContext)
   // const Displaylocation = useLocation().pathname;
+
+  console.log(userDateRange)
 
   const defaultDateRange = dataHttpServices.endpointDateRange;
   const defaultStartDate = defaultDateRange.split(' ');
@@ -26,20 +28,20 @@ const DateRange = () => {
     <div style={dateRangeStyles}>
       {
       // Displaylocation === '/dashboard' &&
-        (selectedDateRange && selectedDateRange.length > 0 ? (
-          <div style={rangeStyles}>
-            <span>(</span>
-            <span>{selectedDateRange[0]}</span>
-            <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
-            <span>{selectedDateRange[1]}</span>
-            <span>)</span>
-          </div>
-        ) : (
+        (userDateRange === null || userDateRange.length ===0  ? (
           <div style={rangeStyles}>
             <span>(</span>
             <span>{defaultStartDate[0]}</span>
             <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{defaultEndDate}</span>
+            <span>)</span>
+          </div>
+        ) : (
+          <div style={rangeStyles}>
+            <span>(</span>
+            <span>{selectedDateRange[0]}</span>
+            <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
+            <span>{selectedDateRange[1]}</span>
             <span>)</span>
           </div>
          ))} 
