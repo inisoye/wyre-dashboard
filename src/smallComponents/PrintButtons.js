@@ -88,7 +88,7 @@ function PrintButtons() {
       </li>
       </Tooltip>
       <li className="print-button-container">
-        <button type="button" className="print-button">
+        <button type="button" className="print-button" style={{cursor:"not-allowed"}}>
           <PrintIcon />
         </button>
       </li>
