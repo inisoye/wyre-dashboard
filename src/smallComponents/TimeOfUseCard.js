@@ -18,11 +18,11 @@ const TimeOfUseCard = ({data}) => {
         marginTop: '16px',
         fontSize: '1.6rem'
         }
-
+        
     return (
         <div style={{marginTop:'20px', marginBottom:'20px'}}>          
             <Divider orientation="center" style={cardValueHeadingStyle}>{data.name}</Divider>
-            <List 
+            {/* <List 
             style={{display:"initial", justifyContent:'center'}}
             grid={{ gutter: 16, column: 4, xs: 1,
               sm: 2, md: 2,}}
@@ -37,7 +37,14 @@ const TimeOfUseCard = ({data}) => {
             </List.Item>
             </>
             )}
-            />
+            /> */} 
+              {Object.values(data.usage_hours).map((item)=>(
+                <Card >
+                  <h3 style={cardValueHeadingStyle}>{item}</h3>
+                  <p style={cardValueContentStyle}>{}</p>
+                </Card>
+              ))  
+              }
         </div>
     )
 }
