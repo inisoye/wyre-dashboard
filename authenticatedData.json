@@ -1,4 +1,7 @@
 {
+  "authenticatedData":{
+  "status": true,
+  "message": "Successful",
   "authenticatedData": {
       "id": 1,
       "name": "Alpha Mead",
@@ -42513,11 +42516,11 @@
                 },
                 {
                   "device_name": "35KVA Gen",
-                  "hours" : 20
+                  "hours" : 20.789008
                 },
                 {
                   "device_name":"85Kva",
-                  "hours": 4
+                  "hours": 4.86790
                 }
               ],
               "time_of_use_table": {
@@ -49119,4 +49122,5 @@
           }
       ]
   }
+}
 }
