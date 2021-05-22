@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 // Base URL prefix
 let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
 // let baseUrlPrefix = `http://localhost:8000/api/v1/dashboard`;
-// let baseUrlPrefix = `http://localhost:3001/authenticatedData`
 
 // Handle determination of token
 let token = undefined;
@@ -53,7 +52,6 @@ const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
 const getAllData = async () => {
   // Add interval to url
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
-  // const baseUrl =`${baseUrlPrefix}`
   
   const config = {
     headers: { Authorization: token },
