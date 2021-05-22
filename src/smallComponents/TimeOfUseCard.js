@@ -1,6 +1,5 @@
 import React from 'react'
 import { List, Divider, Card } from 'antd';
-import { numberFormatter } from '../helpers/numberFormatter';
 
 const TimeOfUseCard = ({data}) => {
       const  cardValueHeadingStyle = {
