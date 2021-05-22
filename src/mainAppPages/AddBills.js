@@ -9,7 +9,6 @@ import { CaretDownFilled } from '@ant-design/icons';
 import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -188,7 +187,6 @@ function AddBills({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="cost-tracker-forms-content-wrapper">

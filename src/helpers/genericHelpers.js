@@ -42,15 +42,9 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
-const calculateRatio = (num_1, num_2) => {
-  for (let num = num_2; num > 1; num--) {
-    if (num_1 % num === 0 && num_2 % num === 0) {
-      num_1 = num_1 / num;
-      num_2 = num_2 / num;
-    }
-  }
-  const ratio = num_1 + ':' + num_2;
-  return ratio;
+const calculateRatio = (avg, peak) => {
+  let peak_ratio =  avg/peak
+  return peak_ratio.toFixed(1);
 };
 
 const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();

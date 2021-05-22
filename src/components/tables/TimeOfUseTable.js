@@ -95,80 +95,43 @@ class TimeOfUseTable extends React.Component {
   render() {
     const data = this.props.timeOfUseData;
 
-    const columns = [
-      {
-        title: 'Index',
-        dataIndex: 'index',
-        key: 'index',
-      },
-      {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-        ...this.getColumnSearchProps('date'),
-        sorter: (a, b) => new Date(a.date) - new Date(b.date),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Gen 1 (Hrs)',
-        dataIndex: 'gen1',
-        key: 'gen1',
-        ...this.getColumnSearchProps('gen1'),
-        sorter: (a, b) => a.gen1 - b.gen1,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Gen 2 (Hrs)',
-        dataIndex: 'gen2',
-        key: 'gen2',
-        ...this.getColumnSearchProps('gen2'),
-        sorter: (a, b) => a.gen2 - b.gen2,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Active Gen (Hrs)',
-        dataIndex: 'active_gen',
-        key: 'active_gen',
-        ...this.getColumnSearchProps('active_gen'),
-        sorter: (a, b) => a.active_gen.localeCompare(b.active_gen),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'First Time ON',
-        dataIndex: 'time_on',
-        key: 'time_on',
-        ...this.getColumnSearchProps('time_on'),
-        sorter: (a, b) => a.time_on.localeCompare(b.time_on),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Last Time OFF',
-        dataIndex: 'time_off',
-        key: 'time_off',
-        ...this.getColumnSearchProps('time_off'),
-        sorter: (a, b) => a.time_off.localeCompare(b.time_off),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Hours of Use',
-        dataIndex: 'hours_of_use',
-        key: 'hours_of_use',
-        ...this.getColumnSearchProps('hours_of_use'),
-        sorter: (a, b) => a.hours_of_use.localeCompare(b.hours_of_use),
-        sortDirections: ['descend', 'ascend'],
-      },
-    ];
+    const arrayRemove = (arr,value)=>{
+        return arr.filter((element)=>{
+          return element !== value
+        })
+    }
 
+  //   const test = data.time_of_use_table.values.map((x)=>{
+  //     [x].forEach(function(message, index) {
+  //       // console.log('message index '+ index);
+  //       Object.keys(message).forEach(function(prop) {    
+  //           console.log(prop + " = " + message[prop]);
+  //       });
+  //   })
+  // })
+
+    const { Column } = Table;
     return (
       <>
         <Table
           className='table-striped-rows'
-          columns={columns}
-          dataSource={data}
+          dataSource={data && data.time_of_use_table.values}
           rowKey={(record) => record.id}
           pagination={{ position: ['none', 'bottomCenter'] }}
-          footer={() => `${data && data.length} entries in total`}
-        />
+          footer={() => `${data.time_of_use_table.values.length} entries in total`}
+        >
+ 
+       {
+       data.time_of_use_table.titles.map((headers, index)=>(
+         <Column title={headers.toUpperCase()} dataIndex={headers}
+          key= {headers}
+          {...this.getColumnSearchProps({headers})}
+          sorter= {(a, b) => headers === "post_datetime" ? new Date(a.headers) - new Date(b.headers) : a.headers - b.headers}
+          sortDirections = {['descend', 'ascend']}
+          />
+        )) 
+      }
+        </Table>
       </>
     );
   }

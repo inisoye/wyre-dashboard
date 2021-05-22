@@ -1768,7 +1768,6 @@ thead.ant-table-thead tr th {
   display: -ms-flexbox;
   display: flex;
   padding: 20px 0;
-  width:100%;
 }
 
 @media (max-width: 767px) {
@@ -3987,3 +3986,4 @@ thead.ant-table-thead tr th {
 .footest-text {
   color: #6c00fa;
 }
+/*# sourceMappingURL=style.css.map */

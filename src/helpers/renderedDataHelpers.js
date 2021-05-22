@@ -31,7 +31,7 @@ const getSelectionMonthlyUsage = (data) => {
   let SelectionMonthlyUsage = { devices: [], hours: [] };
 
   // Add data for each branch
-  data.forEach((eachSelection) => {
+   data.forEach((eachSelection) => {
     const branchMonthlyUsage = eachSelection.usage_hours.hours.reduce(
       (acc, curr) => acc + curr,
       0

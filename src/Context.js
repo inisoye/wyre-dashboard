@@ -49,11 +49,11 @@ const CompleteDataProvider = (props) => {
   // For main app-wide datetime-picker.
   // New requests fired when datetime range is changed.
   const [userDateRange, setUserDateRange] = useState([]);
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
   const [parametersDataTimeInterval, setParametersDataTimeInterval] = useState(
     ''
   );
   /*--------------------------------------------------------------------
-
 
   
 
@@ -66,6 +66,7 @@ const CompleteDataProvider = (props) => {
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState(undefined);
   const [token, setToken] = useState();
+  const [userId, setUserId] = useState();
   /*--------------------------------------------------------------------
 
 
@@ -109,7 +110,6 @@ const CompleteDataProvider = (props) => {
             console.log('yeahh');
             throw new Error('No branches');
           }
-
           setOrganization(returnedData);
         })
         .catch((error) => {
@@ -147,15 +147,17 @@ const CompleteDataProvider = (props) => {
         checkedItems.constructor === Object
       ) {
         setRefinedRenderedData(getRefinedOrganizationData(organization));
+        
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
         setRefinedRenderedData(getRenderedData(renderedDataArray));
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
+      
   /*--------------------------------------------------------------------
 
-
+    
   
 
   --------------------------------------------------------------------*/
@@ -167,8 +169,15 @@ const CompleteDataProvider = (props) => {
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
       setUserData(user);
+      setToken(user.data.token);
+      setUserId(user.data.id);
     }
   }, []);
+
+  // State for Schedule Email Modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const allDevices = [];
 
   return (
     <CompleteDataContext.Provider
@@ -199,7 +208,10 @@ const CompleteDataProvider = (props) => {
         setCurrentUrl: setCurrentUrl,
         powerQualityUnit: powerQualityUnit,
         setPowerQualityUnit: setPowerQualityUnit,
+        userDateRange: userDateRange,
         setUserDateRange: setUserDateRange,
+        selectedDateRange: selectedDateRange,
+        setSelectedDateRange: setSelectedDateRange,
         setParametersDataTimeInterval: setParametersDataTimeInterval,
 
         // Authentication
@@ -213,6 +225,8 @@ const CompleteDataProvider = (props) => {
         setUserData: setUserData,
         token: token,
         setToken: setToken,
+        userId: userId,
+        setUserId: setUserId,
 
         // Media Queries
         useMediaQuery: useMediaQuery,
@@ -222,9 +236,15 @@ const CompleteDataProvider = (props) => {
         isXLargeScreen: isXLargeScreen,
         isLessThan1296: isLessThan1296,
 
+        //Schedule Email Modal
+        isModalVisible: isModalVisible,
+        setIsModalVisible: setIsModalVisible,
+
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
+
+        allDevices: allDevices,
       }}
     >
       {props.children}
