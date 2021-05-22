@@ -25,7 +25,7 @@ const TimeOfUseCard = ({data}) => {
             style={{display:"initial", justifyContent:'center'}}
             grid={{ gutter: 16, column: 4, xs: 1,
               sm: 2, md: 2,}}
-            dataSource={data.usage_hours}
+            dataSource={data.usage_hours.devices}
             renderItem={item=>(
             <>
             <List.Item>
