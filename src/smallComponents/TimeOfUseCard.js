@@ -30,8 +30,10 @@ const TimeOfUseCard = ({data}) => {
             <>
             <List.Item>
               <Card >
-                  <h3 style={cardValueHeadingStyle}>{item.device_name}</h3>
-                  <p style={cardValueContentStyle}>{parseFloat(item.hours).toFixed(2)}</p>
+                  {/* <h3 style={cardValueHeadingStyle}>{item.device_name}</h3> */}
+                  <h3 style={cardValueHeadingStyle}>{item}</h3>
+                  <p style={cardValueContentStyle}>{parseFloat(data.usage_hours.hours).toFixed(2)}</p>
+                  {/* <p style={cardValueContentStyle}>{parseFloat(item.hours).toFixed(2)}</p> */}
                 </Card>
             </List.Item>
             </>
