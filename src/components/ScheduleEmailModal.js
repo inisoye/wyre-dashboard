@@ -88,7 +88,8 @@ export const ScheduleEmailModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleCancel = () => {
+  const handleCancel = (e) => {
+    addDevicetoExternalReciever(e)
     setIsModalVisible(false);
   };
 
@@ -97,13 +98,29 @@ export const ScheduleEmailModal = () => {
   };
 
   let externalRecieverAssignedDeviceIds = []
+  let selectedDevicesIds = [];
 
-  const addDevicetoExternalReciever = () => {
-    const data = JSON.stringify({
-      reciever_id: currentRecieverId,
+  for (const prop in checkedDevices) {
+    let listOfDeviceId = allDevices.filter((e) => {
+      return e.name === prop;
+    });
+    selectedDevicesIds.push(listOfDeviceId[0].id);
+  }
+
+
+  const addDevicetoExternalReciever = (event) => {
+    event.preventDefault()
+    if(externalRecieverAssignedDeviceIds.length === 0 )
+    {
+      allDevices.filter((e)=>{
+        return externalRecieverAssignedDeviceIds.push(e.id)
+      })
+    }
+    const data =
+     JSON.stringify({
+      receiver_id: currentRecieverId,
       selected_devices: externalRecieverAssignedDeviceIds.filter(removeDuplicateDatas),
     });
-
      axios
       .post(addavailableDevicesToBillReceiver, data, {
         headers: {
@@ -113,12 +130,13 @@ export const ScheduleEmailModal = () => {
       })
       .then((res) => {
         setEmailModalData(Object.values(res.data.data));
+        console.log(emailModalData)
       })
       .catch((error) =>{
         console.log('Error adding assigned devices to external Receiver', error)
         alert('Error adding assigned devices to external receiver')
       }
-      );
+      ); 
   };
 
 
@@ -158,14 +176,6 @@ export const ScheduleEmailModal = () => {
       );
   };
 
-  let selectedDevicesIds = [];
-
-  for (const prop in checkedDevices) {
-    let listOfDeviceId = allDevices.filter((e) => {
-      return e.name === prop;
-    });
-    selectedDevicesIds.push(listOfDeviceId[0].id);
-  }
 
   const handleChangeForSendAQuickBill = (event) => {
     let targetEmail = event.target.value;
@@ -274,6 +284,7 @@ export const ScheduleEmailModal = () => {
     </Menu>
   );
 
+  const getDeviceIdsAssignedToReceivers = emailModalData && emailModalData[0]
 
   const externalRecieversAssignedDevices = emailModalData && emailModalData[2];
   const assignedDevicesForExternalRecievers = (
@@ -282,7 +293,6 @@ export const ScheduleEmailModal = () => {
       multiple={true}
       onClick={handleExternalRecieversDevicesMenuClick}
       selectedKeys={[externalRecieverAssignedDeviceIds]}
-      onMouseLeave={addDevicetoExternalReciever}
       >
       {externalRecieversAssignedDevices &&
         externalRecieversAssignedDevices.map((item) => (

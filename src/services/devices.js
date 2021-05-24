@@ -52,7 +52,7 @@ const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
 const getAllData = async () => {
   // Add interval to url
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
-
+  
   const config = {
     headers: { Authorization: token },
   };
