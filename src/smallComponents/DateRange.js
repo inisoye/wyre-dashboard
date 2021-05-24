@@ -8,8 +8,6 @@ const DateRange = () => {
   const { selectedDateRange, userDateRange } = useContext(CompleteDataContext)
   // const Displaylocation = useLocation().pathname;
 
-  console.log(userDateRange)
-
   const defaultDateRange = dataHttpServices.endpointDateRange;
   const defaultStartDate = defaultDateRange.split(' ');
   const reversedDate = defaultStartDate[1].split('').reverse().join('');
