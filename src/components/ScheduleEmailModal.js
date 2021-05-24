@@ -284,7 +284,23 @@ export const ScheduleEmailModal = () => {
     </Menu>
   );
 
-  const getDeviceIdsAssignedToReceivers = emailModalData && emailModalData[0]
+
+  const test =  emailModalData && emailModalData[0][0]
+
+  
+   for(const prop in  test){
+      for(const devices in prop.assigned_devices){
+        console.log(devices)
+      }
+        // console.log(test[prop])
+  }
+
+  // for (var key in test) {
+  //   if (test.hasOwnProperty(key)) {
+  //       console.log(key + " -> " + test[key]);
+  //   }
+  // }
+  // console.log(test)
 
   const externalRecieversAssignedDevices = emailModalData && emailModalData[2];
   const assignedDevicesForExternalRecievers = (
