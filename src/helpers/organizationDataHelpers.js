@@ -51,22 +51,28 @@ const getOrganizationDailyKwh = (data) => {
    Obtain dashboard monthly usage data for organization
   ----------------*/
 
-// const getOrganizationMonthlyUsage = (data) => {
-//   let organizationMonthlyUsage = { devices: [], hours: [] };
+const getOrganizationMonthlyUsage = (data) => {
+  let organizationMonthlyUsage = { devices: [], hours: [] };
 
-//   // Add data for each branch
-//   data.branches &&
-//     data.branches.forEach((eachBranch) => {
-//       const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
-//         (acc, curr) => acc + curr,
-//         0
-//       );
-//       organizationMonthlyUsage.devices.push(eachBranch.name);
-//       organizationMonthlyUsage.hours.push(branchMonthlyUsage);
-//     });
 
-//   return organizationMonthlyUsage;
-// };
+  // Add data for each branch
+  data.branches &&
+    data.branches.forEach((eachBranch) => {
+      // const hours = Array.prototype.concat.apply([], eachBranch.usage_hours.map((x)=>{
+      //   return x.hours
+      // })) When the usage_hours is restructured then activate this line of code.
+
+      // console.log(hours)
+      const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+      organizationMonthlyUsage.devices.push(eachBranch.name);
+      organizationMonthlyUsage.hours.push(branchMonthlyUsage);
+    });
+
+  return organizationMonthlyUsage;
+};
 
 /*----------------
    Collate dashboard energy data for each branch
@@ -667,7 +673,7 @@ const getRefinedOrganizationData = (data) => {
     // Dashboard Stuff
     ...getOrganizationEnergyData(data),
     daily_kwh: getOrganizationDailyKwh(data),
-    // usage_hours: getOrganizationMonthlyUsage(data),
+    usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
     baseline_energy: getOrganizationBaselineEnergy(data),
     peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),

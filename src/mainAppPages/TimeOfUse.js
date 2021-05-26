@@ -35,7 +35,6 @@ function TimeOfUse({ match }) {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-    // console.log(organization.branches)
   }, [match, setCurrentUrl]);
 
   const { time_of_use_chart, time_of_use_table } = refinedRenderedData;
