@@ -25,13 +25,13 @@ const TimeOfUseCard = ({data}) => {
             style={{display:"initial", justifyContent:'center'}}
             grid={{ gutter: 16, column: 4, xs: 1,
               sm: 2, md: 2,}}
-            dataSource={data.usage_hours}
+            dataSource={data.usage_hours.devices}
             renderItem={item=>(
             <>
             <List.Item>
               <Card >
-                  <h3 style={cardValueHeadingStyle}>{item.device_name}</h3>
-                  <p style={cardValueContentStyle}>{parseFloat(item.hours).toFixed(2)}</p>
+                  <h3 style={cardValueHeadingStyle}>{item}</h3>
+                  <p style={cardValueContentStyle}>{parseFloat(data.usage_hours.hours).toFixed(2)}</p>
                 </Card>
             </List.Item>
             </>
