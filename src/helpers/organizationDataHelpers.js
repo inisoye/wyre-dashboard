@@ -58,11 +58,6 @@ const getOrganizationMonthlyUsage = (data) => {
   // Add data for each branch
   data.branches &&
     data.branches.forEach((eachBranch) => {
-      // const hours = Array.prototype.concat.apply([], eachBranch.usage_hours.map((x)=>{
-      //   return x.hours
-      // })) When the usage_hours is restructured then activate this line of code.
-
-      // console.log(hours)
       const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
         (acc, curr) => acc + curr,
         0
