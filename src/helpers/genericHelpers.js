@@ -3,6 +3,19 @@ import dayjs from 'dayjs';
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
 --------------------------------------------------------------------*/
+
+function removeDuplicateDatas(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+const truncateEmail = (str, num)=>{
+  if(str.length <= num)
+  {
+    return str
+  }
+  return str.slice(0,num) + '...'
+}
+
 const toCamelCase = (str) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -43,12 +56,17 @@ const sumArrayOfArrays = (arrayOfArrays) =>
   }, []);
 
 const calculateRatio = (num_1, num_2) => {
-  for (let num = num_2; num > 1; num--) {
-    if (num_1 % num === 0 && num_2 % num === 0) {
-      num_1 = num_1 / num;
-      num_2 = num_2 / num;
-    }
-  }
+  // for (let num = num_2; num > 1; num--) {
+  //   if (num_1 % num === 0 && num_2 % num === 0) {
+  //     num_1 = num_1 / num;
+  //     num_2 = num_2 / num;
+  //   }
+  // }
+
+  let peak_ratio = (num_1/num_2)
+  num_1 = peak_ratio%1 === 0 ? peak_ratio.toFixed(0): peak_ratio.toFixed(1)
+  num_2 = 1
+
   const ratio = num_1 + ':' + num_2;
   return ratio;
 };
@@ -392,4 +410,6 @@ export {
   formatParametersTimes,
   formatParameterTableData,
   convertParameterDateStringsToObjects,
+  removeDuplicateDatas,
+  truncateEmail
 };

@@ -133,6 +133,7 @@ function SidebarBranch({ branchData }) {
                   total_usage_kwh: 0,
                 },
                 metrics: {
+                  ipp_per_kwh: 0,
                   diesel_per_kwh: 0,
                   utility_per_kwh: 0,
                   blended_cost_per_kwh: 0,
@@ -149,7 +150,7 @@ function SidebarBranch({ branchData }) {
 
   const handleCheck = (event) => {
     setIsChecked(!isChecked);
-
+    
     if (!isChecked) {
       // Add this branch to list of rendered objects when checked
       setRenderedDataObjects({

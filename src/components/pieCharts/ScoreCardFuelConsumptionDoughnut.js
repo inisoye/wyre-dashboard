@@ -7,7 +7,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     size,
     diesel_usage,
     time_used,
-    // hours_to_maintenance
+    hours_to_maintenance
   } = data
     ? data
     : {
@@ -18,6 +18,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         hours_to_maintenance: {},
       };
 
+  console.log(data)
   const chartLabels = ['Used Diesel', 'Unused Diesel'];
   const chartData = [diesel_usage, 100 - diesel_usage];
 
@@ -61,7 +62,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         <Doughnut data={plottedData} options={options} />
 
         <p className='fuel-consumption-doughnut-centre-text'>
-          <span>{diesel_usage}%</span> Used
+          <span>{hours_to_maintenance.hours}%</span> Used
         </p>
       </div>
 

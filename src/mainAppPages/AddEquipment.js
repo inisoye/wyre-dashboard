@@ -9,8 +9,6 @@ import equipmentHttpServices from '../services/equipment';
 import BreadCrumb from '../components/BreadCrumb';
 import ListOfEquipmentTable from '../components/tables/ListOfEquipmentTable';
 
-import PrintButtons from '../smallComponents/PrintButtons';
-
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '/cost-tracker', name: 'Cost Tracker', id: 2 },
@@ -93,7 +91,6 @@ function AddEquipment({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="cost-tracker-forms-content-wrapper">

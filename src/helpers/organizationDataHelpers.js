@@ -51,22 +51,22 @@ const getOrganizationDailyKwh = (data) => {
    Obtain dashboard monthly usage data for organization
   ----------------*/
 
-const getOrganizationMonthlyUsage = (data) => {
-  let organizationMonthlyUsage = { devices: [], hours: [] };
+// const getOrganizationMonthlyUsage = (data) => {
+//   let organizationMonthlyUsage = { devices: [], hours: [] };
 
-  // Add data for each branch
-  data.branches &&
-    data.branches.forEach((eachBranch) => {
-      const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
-        (acc, curr) => acc + curr,
-        0
-      );
-      organizationMonthlyUsage.devices.push(eachBranch.name);
-      organizationMonthlyUsage.hours.push(branchMonthlyUsage);
-    });
+//   // Add data for each branch
+//   data.branches &&
+//     data.branches.forEach((eachBranch) => {
+//       const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+//         (acc, curr) => acc + curr,
+//         0
+//       );
+//       organizationMonthlyUsage.devices.push(eachBranch.name);
+//       organizationMonthlyUsage.hours.push(branchMonthlyUsage);
+//     });
 
-  return organizationMonthlyUsage;
-};
+//   return organizationMonthlyUsage;
+// };
 
 /*----------------
    Collate dashboard energy data for each branch
@@ -601,6 +601,12 @@ const getOrganizationBillingTotals = (data) => {
       'diesel_per_kwh'
     ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
+    const organizationMetricsIppPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'ipp_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
   const organizationMetricsUtilityPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
@@ -623,6 +629,7 @@ const getOrganizationBillingTotals = (data) => {
       value_naira: organizationPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: organizationMetricsIppPerKwh,
       diesel_per_kwh: organizationMetricsDieselPerKwh,
       utility_per_kwh: organizationMetricsUtilityPerKwh,
       blended_cost_per_kwh: organizationMetricsBlendedCostPerKwh,
@@ -660,7 +667,7 @@ const getRefinedOrganizationData = (data) => {
     // Dashboard Stuff
     ...getOrganizationEnergyData(data),
     daily_kwh: getOrganizationDailyKwh(data),
-    usage_hours: getOrganizationMonthlyUsage(data),
+    // usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
     baseline_energy: getOrganizationBaselineEnergy(data),
     peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),

@@ -22,8 +22,6 @@ const BillingConsumptionKwhBarChart = ({
     numberOfCheckedItems > 3 ||
     false;
 
-  console.log(chartConsumptionValues);
-
   const options = {
     layout: {
       padding: {
