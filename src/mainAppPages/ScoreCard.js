@@ -145,8 +145,8 @@ function ScoreCard({ match }) {
               <span>
                 {peak_to_avg_power_ratio &&
                   calculateRatio(
-                    peak_to_avg_power_ratio.peak,
-                    peak_to_avg_power_ratio.avg
+                    peak_to_avg_power_ratio.avg,
+                    peak_to_avg_power_ratio.peak
                   )}{' '}
               </span>
             </p>
