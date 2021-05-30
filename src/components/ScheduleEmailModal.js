@@ -64,7 +64,7 @@ export const ScheduleEmailModal = () => {
 
 const postPersonalDataFrequency = (event)=>{
   event.preventDefault()
-  let data = JSON.stringify({
+  let personalData = JSON.stringify({
     frequency: frequencyDropdown,
     selected_devices: personalDataAvailableDevices,
   });
@@ -73,19 +73,26 @@ const postPersonalDataFrequency = (event)=>{
   // console.log('personal data', data)
   
   if (frequencyDropdown !== '' || personalDataAvailableDevices.length > 0){
-    // axios
-    //   .post(addavailableDevicesToBillReceiver, data, {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `bearer ${token}`,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setEmailModalData(Object.values(response.data.data));
-    //     console.log('Posted', emailModalData)
-    //   })
-    //   .catch((err) => console.log('Error setting Personal Data', err));  
-    console.log('condtion is, so:',data)
+      console.log('condtion is true:',personalData)
+
+      setTimeout(() => {
+        axios.post(addavailableDevicesToBillReceiver, personalData,{
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+          },
+        })
+        .then((response)=>{
+          setEmailModalData(Object.values(response.data.data))
+          console.log('from request:',emailModalData)
+        })
+        .catch(err=>
+          (notification.error({
+          message: "Couldn't add device to external reciever, Please try again",
+          })
+         )
+        )
+      }, 3000);
   }
   else{
     console.log('didnt post')
@@ -105,9 +112,7 @@ const postPersonalDataFrequency = (event)=>{
 
   let frequencyDropdown;
   const handleFrequencyMenuClick = (e) => {
-    // setFrequencyDropdown(e.key);
     frequencyDropdown= e.key
-    console.log(frequencyDropdown)
   };
 
 
