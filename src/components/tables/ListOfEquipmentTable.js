@@ -105,19 +105,11 @@ class ListOfEquipmentTable extends React.Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Wattage (watts)',
-        dataIndex: 'wattage',
-        key: 'wattage',
+        title: 'Voltage (watts)',
+        dataIndex: 'voltage',
+        key: 'voltage',
         ...this.getColumnSearchProps('wattage'),
-        sorter: (a, b) => a.wattage - b.wattage,
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Date Purchased',
-        dataIndex: 'date_purchased',
-        key: 'date_purchased',
-        ...this.getColumnSearchProps('date_purchased'),
-        sorter: (a, b) => a.date_purchased.localeCompare(b.date_purchased),
+        sorter: (a, b) => a.voltage - b.voltage,
         sortDirections: ['descend', 'ascend'],
       },
       {
@@ -126,6 +118,14 @@ class ListOfEquipmentTable extends React.Component {
         key: 'quantity',
         ...this.getColumnSearchProps('quantity'),
         sorter: (a, b) => a.quantity - b.quantity,
+        sortDirections: ['descend', 'ascend'],
+      },
+      {
+        title: 'Date Purchased',
+        dataIndex: 'date_purchased',
+        key: 'date_purchased',
+        ...this.getColumnSearchProps('date_purchased'),
+        sorter: (a, b) => a.date_purchased.localeCompare(b.date_purchased),
         sortDirections: ['descend', 'ascend'],
       },
       {

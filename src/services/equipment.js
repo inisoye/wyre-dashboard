@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'axios'
+
 const baseUrl = 'http://localhost:3002/equipment';
 
 const getAll = () => {
@@ -6,9 +7,15 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const add = (newObject) => {
-  const request = axios.post(baseUrl, newObject);
-  return request.then((response) => response.data);
+const add = async (newObject, branch_id, userId, token) => {
+  const request = axios.post(`http://wyreng.xyz/api/v1/branch/${branch_id}/${userId}/add_equipment/`, newObject, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  const response = await request;
+  return response.data;
 };
 
 const del = (id) => {
@@ -17,7 +24,7 @@ const del = (id) => {
 };
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
+  const request = axios.post(`${baseUrl}/${id}`, newObject);
   return request.then((response) => response.data);
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { DatePicker, notification } from 'antd';
-import { v4 as uuidv4 } from 'uuid';
+import { DatePicker, notification, Select } from 'antd';
+// import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
 
 import equipmentHttpServices from '../services/equipment';
@@ -23,7 +23,7 @@ const openNotificationWithIcon = (type) => {
 };
 
 function AddEquipment({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { setCurrentUrl, token, userId, organization } = useContext(CompleteDataContext);
   const [allEquipment, setAllEquipment] = useState([]);
 
   const {
@@ -48,6 +48,35 @@ function AddEquipment({ match }) {
       });
   }, [match, setCurrentUrl]);
 
+  const { Option } = Select
+  let branchname = organization && organization.branches
+
+  const branchSelectorStyle = {
+      width:'100%',
+      borderRadius: '4px',
+      display:'block',
+      color: '#595959',
+      fontSize: '1.4rem',
+      height: '40px',
+  }
+
+  let branchSelectorValue;
+  const branchSelector = (
+        <Select style={branchSelectorStyle} 
+        className="h-4-br" 
+        allowClear 
+        onSelect={(branch)=>{
+          branchSelectorValue =  branch
+        }}>
+        {branchname && branchname.map((branch)=>{
+        return <Option value={branch.id} key={branch.id}>
+                  {branch.name}
+              </Option>
+        })
+        }
+        </Select>
+  )
+
   const equipmentPurchaseDatePicker = (
     <DatePicker
       format="DD-MM-YYYY"
@@ -64,17 +93,15 @@ function AddEquipment({ match }) {
     equipmentQuantity,
   }) => {
     const newEquipmentData = {
-      id: uuidv4(),
       name: equipmentName,
-      wattage: equipmentWattage,
-      date_purchased: equipmentPurchaseDate.format('DD/MM/YYYY'),
+      voltage: equipmentWattage,
       quantity: equipmentQuantity,
+      date_purchased: equipmentPurchaseDate.format('YYYY-MM-DD'),
     };
 
     equipmentHttpServices
-      .add(newEquipmentData)
+      .add(newEquipmentData,branchSelectorValue,userId,token)
       .then((returnedEquipment) => {
-        console.log(returnedEquipment);
         setAllEquipment(allEquipment.concat(returnedEquipment));
         openNotificationWithIcon('success');
       })
@@ -181,6 +208,16 @@ function AddEquipment({ match }) {
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
+                  htmlFor="equipment-branch"
+                >
+                Branch
+                </label>
+              {branchSelector}
+            </div>
+
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
                   htmlFor="equipment-quantity"
                 >
                   Quantity
@@ -203,13 +240,13 @@ function AddEquipment({ match }) {
                 </p>
               </div>
             </div>
-
+            
             <button className="generic-submit-button cost-tracker-form-submit-button">
               Add
             </button>
-          </form>
-        </section>
-      </div>
+        </form>
+      </section>
+    </div>
 
       <article className="equipment-table-container">
         <h2 className="equipment-table-container__heading form-section-heading cost-tracker-form-section__heading">
