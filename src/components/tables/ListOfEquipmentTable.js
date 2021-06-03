@@ -143,12 +143,13 @@ class ListOfEquipmentTable extends React.Component {
       },
     ];
 
+
     return (
       <>
         <Table
           className='table-striped-rows'
           columns={columns}
-          dataSource={data}
+          dataSource={data[0] && data[0].data}
           rowKey={(record) => record.id}
           pagination={false}
           footer={() => ``}

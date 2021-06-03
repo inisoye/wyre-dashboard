@@ -95,12 +95,7 @@ function AddBills({ match }) {
       </Option>
     </Select>
   );
-  
-  let dieselTrackerBranchData;
-  let prePaidBranchData;
-  let postPaidBranchData;
-
-  
+    
   const branchSelectorStyle = {
     width:'100%',
     borderRadius: '4px',
@@ -111,17 +106,17 @@ function AddBills({ match }) {
 }
 
 
-  const branchSelector = (formType)=> (
+  const branchSelector =(
     <Select 
       className="h-4-br" 
       allowClear 
       style={branchSelectorStyle}
-      onSelect={(id)=>{
-        console.log(`from ${formType}, id is ${id}`)
-        formType = id
-      }}>
-      { organization.branches && organization.branches.map((branch)=>{
-       return <Option value={branch.id} key={branch.id}>{branch.name}</Option>
+      onChange={(e)=>{
+        console.log(e)
+      }}
+      >
+      { organization.branches && organization.branches.map((eachBranch)=>{
+       return <Option value={eachBranch.id} key={eachBranch.id}>{eachBranch.name}</Option>
       })
       }
     </Select>
@@ -157,17 +152,20 @@ function AddBills({ match }) {
   );
 
   const onPurchaseTrackerSubmit = ({
+    branchForPurchaseTracker,
     fuelQuantity,
     fuelPricePerLitre,
     fuelPurchaseDate,
     fuelType,
   }) => {
     const DieselCostData = {
-      branch : dieselTrackerBranchData,
+      branch : branchForPurchaseTracker,
       quantity : fuelQuantity,
       price_per_litre : fuelPricePerLitre,
       date : fuelPurchaseDate.format('YYYY-MM-DD')
     }
+    
+    console.log(branchForPurchaseTracker);
 
     billingHttpServices
     .addCostForDiesel(DieselCostData, token, userId, fuelType)
@@ -179,7 +177,6 @@ function AddBills({ match }) {
       alert('An error occured, Please try again!!')
     })
 
-    // console.log(fuelQuantity, fuelPricePerLitre, fuelPurchaseDate, fuelType);
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -188,13 +185,14 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPreSubmit = ({
+    branchForPrePaid,
     utilityPaymentPreAmount,
     utilityPaymentPreDate,
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
     const prePaidData = {
-      branch : prePaidBranchData,
+      branch : branchForPrePaid,
       value : utilityPaymentPreValue,
       amount : utilityPaymentPreAmount,
       tariff : utilityPaymentPreTariff,
@@ -217,6 +215,7 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPostSubmit = ({
+    branchForPostPaid,
     utilityPaymentPostAmount,
     utilityPaymentPostDate,
     utilityPaymentPostTariff,
@@ -224,7 +223,7 @@ function AddBills({ match }) {
   }) => {
 
     const postPaidData = {
-      branch : postPaidBranchData,
+      branch : branchForPostPaid,
       value : utilityPaymentPostValue,
       amount : utilityPaymentPostAmount,
       tariff : utilityPaymentPostTariff,
@@ -277,7 +276,22 @@ function AddBills({ match }) {
                   >
                     Branch
                   </label>
-                {branchSelector(dieselTrackerBranchData)}
+                <Controller 
+                    as={branchSelector} 
+                    name="branchForPurchaseTracker" 
+                    control={controlPurchaseTracker} 
+                    defaultValue=''
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPurchaseTracker && 
+                      'Please select a branch'
+                    }
+                />        
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPurchaseTracker && 'Please enter a fuel type'}
+                </p>
               </div>
 
               <div className="cost-tracker-input-container">
@@ -411,11 +425,25 @@ function AddBills({ match }) {
             <div className="cost-tracker-input-container">
                   <label
                     className="generic-input-label cost-tracker-input-label"
-                    htmlFor="fuel-branch"
+                    htmlFor="PrePaid-branch"
                   >
                     Branch
                   </label>
-                {branchSelector(prePaidBranchData)}
+                  <Controller
+                    as={branchSelector}
+                    name = 'branchForPrePaid'
+                    control = {controlPaymentTrackerPre}
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPrePaid && 
+                      'Please select a branch'
+                    }
+                  />    
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPrePaid && 'Please enter a fuel type'}
+                </p>
               </div>
 
               <div className="cost-tracker-input-container">
@@ -551,7 +579,21 @@ function AddBills({ match }) {
                   >
                     Branch
                   </label>
-                {branchSelector(postPaidBranchData)}
+                  <Controller
+                    as={branchSelector}
+                    name = 'branchForPostPaid'
+                    control = {controlPaymentTrackerPost}
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPostPaid && 
+                      'Please select a branch'
+                    }
+                  />    
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPostPaid && 'Please enter a fuel type'}
+                </p>
               </div>
 
               <div className="cost-tracker-input-container">

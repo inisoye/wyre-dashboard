@@ -41,11 +41,15 @@ function AddEquipment({ match }) {
     }
 
     equipmentHttpServices
-      .getAll()
-      .then((returnedEquipment) => setAllEquipment(returnedEquipment))
+      .getAll(userId,token, 3)
+      .then((returnedEquipment) =>{ 
+        // setAllEquipment(returnedEquipment)
+        console.log(returnedEquipment.data)
+      })
       .catch((error) => {
         console.log(error.response);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match, setCurrentUrl]);
 
   const { Option } = Select

@@ -11,7 +11,7 @@ import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 import OutlinedInput from '../smallComponents/OutlinedInput';
 import SocialCluster from '../smallComponents/SocialCluster';
 
-import usePasswordToggle from '../smallComponents/usePasswordToggle'
+// import usePasswordToggle from '../smallComponents/usePasswordToggle'
 import { Input } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
@@ -19,7 +19,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
-  const { setUserData, PasswordVisibility, setPasswordVisibility } = useContext(CompleteDataContext);
+  const { setUserData } = useContext(CompleteDataContext);
 
   const { register, handleSubmit, control } = useForm();
 
@@ -80,7 +80,9 @@ function Login() {
                 id='password'
                 placeholder='Password'
                 autoComplete='new-password'
-                required={true}
+                rules={{
+                  required : true
+                }}
                 autoFocus={false}
                 onChange={removeErrorMessage}
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}/>

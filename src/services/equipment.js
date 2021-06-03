@@ -2,9 +2,14 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3002/equipment';
 
-const getAll = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
+const getAll = (userId, token, branchId) => {
+  const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/${branchId}/`,{
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+  });
+  return request.then((response) => response);
 };
 
 const add = async (newObject, branch_id, userId, token) => {
