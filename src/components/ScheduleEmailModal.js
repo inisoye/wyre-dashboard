@@ -305,18 +305,22 @@ const postPersonalDataFrequency = (event)=>{
   );
 
 
-  const externalRecieverData =  emailModalData && emailModalData[0][0]
+  const externalRecieverData =  emailModalData && emailModalData[0]
 
   const checkIfDeviceIsCheckedByDefault = (prop)=>{
     let defaultdeviceId =[]        
-      Object.entries(externalRecieverData.assigned_devices).forEach(x=>{
-        return [x[1]].filter((e)=>{
-          return defaultdeviceId.push(e.id)
-        })
+    let dataValues= externalRecieverData && Object.values(externalRecieverData && externalRecieverData.map(x=>x.assigned_devices))
+    dataValues && dataValues.forEach((x)=>{
+      x.filter((e)=>{
+        return defaultdeviceId.push(e.id) 
       })
+    })
+      console.log(defaultdeviceId)
       let defaultCheckValue = defaultdeviceId.includes(prop)
       return defaultCheckValue
   }
+
+  console.log(checkIfDeviceIsCheckedByDefault(9))
 
   const externalRecieversAssignedDevices = emailModalData && emailModalData[2];
   const assignedDevicesForExternalRecievers = (
@@ -330,8 +334,7 @@ const postPersonalDataFrequency = (event)=>{
             {item.device_name}
             <Checkbox 
             style={{ marginLeft: '20px' }} 
-            // defaultChecked={checkIfDeviceIsCheckedByDefault(item.device_id)}
-            onChange={()=>{          
+            onChange={()=>{
               const parsedIds = parseInt(item.device_id)
               externalRecieverAssignedDeviceIds.push(parsedIds)
             }}/> 
