@@ -165,8 +165,6 @@ function AddBills({ match }) {
       date : fuelPurchaseDate.format('YYYY-MM-DD')
     }
     
-    console.log(branchForPurchaseTracker);
-
     billingHttpServices
     .addCostForDiesel(DieselCostData, token, userId, fuelType)
     .then(()=>{  

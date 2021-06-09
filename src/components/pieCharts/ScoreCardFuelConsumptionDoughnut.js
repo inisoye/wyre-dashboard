@@ -18,7 +18,6 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         hours_to_maintenance: {},
       };
 
-  console.log(data)
   const chartLabels = ['Used Diesel', 'Unused Diesel'];
   const chartData = [diesel_usage, 100 - diesel_usage];
 

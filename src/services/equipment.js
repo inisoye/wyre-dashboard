@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3002/equipment';
 
 const getAll = (userId, token, branchId) => {
-  const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/${branchId}/`,{
+  const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/`,{
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,

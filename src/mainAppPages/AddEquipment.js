@@ -43,8 +43,7 @@ function AddEquipment({ match }) {
     equipmentHttpServices
       .getAll(userId,token, 3)
       .then((returnedEquipment) =>{ 
-        // setAllEquipment(returnedEquipment)
-        console.log(returnedEquipment.data)
+        setAllEquipment(returnedEquipment.data.data)
       })
       .catch((error) => {
         console.log(error.response);
