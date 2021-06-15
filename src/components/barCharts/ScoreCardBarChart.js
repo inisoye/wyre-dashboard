@@ -80,8 +80,6 @@ const VerticalBar = ({ operatingTimeData }) => {
   const timeWasted =
     estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
 
-    console.log(timeWasted)
-
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
 
@@ -106,7 +104,7 @@ const VerticalBar = ({ operatingTimeData }) => {
   return (
     <div className="score-card-bar-chart-container">
       <div className="h-flex">
-        <h2 className="score-card-heading">Operating Time</h2>
+        <h2 className="score-card-heading">Operating Time Deviation</h2>
         <div className="score-card-bar-chart__text-wrapper">
           <p>
             Total Waste: <strong>{dieselWasted}</strong>

@@ -8,6 +8,11 @@ function removeDuplicateDatas(value, index, self) {
   return self.indexOf(value) === index;
 }
 
+
+const mergeTheEquipmentsData = (arr) => {
+      return [...new Set([].concat(...arr))];
+}
+
 const truncateEmail = (str, num)=>{
   if(str.length <= num)
   {
@@ -400,5 +405,6 @@ export {
   formatParameterTableData,
   convertParameterDateStringsToObjects,
   removeDuplicateDatas,
-  truncateEmail
+  truncateEmail,
+  mergeTheEquipmentsData
 };

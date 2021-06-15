@@ -202,13 +202,13 @@ function Header() {
               />
             )}
 
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && ( */}
               <HeaderLink
                 onClick={toggleNav}
                 url="/cost-tracker"
                 linkText="Cost Tracker"
               />
-            )}
+            {/* )} */}
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
