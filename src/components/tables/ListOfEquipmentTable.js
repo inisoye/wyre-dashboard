@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Table, Input, Button, Space, InputNumber, Popconfirm, Form, Typography } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
 
 
 // class ListOfEquipmentTable extends React.Component {
@@ -170,6 +171,18 @@ import { SearchOutlined } from '@ant-design/icons';
 
 
 
+const originData = [];
+
+for (let i = 0; i < 10; i++) {
+  originData.push({
+    key: i.toString(),
+    name: `Equipment ${i}`,
+    quantity: 32,
+    voltage: i,
+    date_purchased: `London Park no. ${i}`,
+  });
+}
+
 const EditableCell = ({
   editing,
   dataIndex,
@@ -206,16 +219,19 @@ const EditableCell = ({
 };
 
 const ListOfEquipmentTable = ({listOfEquipmentData}) => {
-
-const mergeTheEquipmentsData = (arr) => {
-    return [...new Set([].concat(...arr))];
-  }
-  
-const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
-
   const [form] = Form.useForm();
+  const [data, setData] = useState();
   const [editingKey, setEditingKey] = useState('');
-  const [data, setData] = useState(mergeTheEquipmentsData(Object.values(listOfEquipmentData)));
+
+  
+  useEffect(() => {
+    const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
+    const mapKeyToEachData = mergedData.map(element => {
+        let addKey = Object.assign(element, {key:element.name})  
+        return element
+    });         
+    setData(mapKeyToEachData)
+  },[data, listOfEquipmentData])
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -245,6 +261,7 @@ const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
         setEditingKey('');
+        console.log(data)
       } else {
         newData.push(row);
         setData(newData);
@@ -255,47 +272,39 @@ const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
     }
   };
 
-
-
-
   const columns = [
-        {
-        title: 'Equipment Name',
-        dataIndex: 'name',
-        key: 'name',
-        editable:true,
-      },
-      {
-        title: 'Voltage (watts)',
-        dataIndex: 'voltage',
-        key: 'voltage',
-        editable:true,
-      },
-      {
-        title: 'Quantity',
-        dataIndex: 'quantity',
-        key: 'quantity',
-        editable:true,
-      },
-      {
-        title: 'Date Purchased',
-        dataIndex: 'date_purchased',
-        key: 'date_purchased',
-        editable:true,
-      },
-
     {
-      title: 'Action',
+      title: 'Equipment Name',
+      dataIndex: 'name',
+      width: '25%',
+      editable: true,
+    },
+    {
+      title: 'Voltage (watts)',
+      dataIndex: 'voltage',
+      editable: true,
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      editable:true,
+    },
+    {
+      title: 'Date Purchased',
+      dataIndex: 'date_purchased',
+      editable: true,
+    },
+    {
+      title: 'Actions',
       dataIndex: 'operation',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
             <a
-              // href="//#endregion"
-              onClick={() => {
-                save(record.key)
-              }}
+              href="javascript:;"
+              onClick={() => save(record.key)}
               style={{
                 marginRight: 8,
               }}
@@ -303,11 +312,14 @@ const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
               Save
             </a>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a href="//#endregion">Cancel</a>
+              <a>Cancel</a>
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)} className="table-row-button" style={{width:'50%'}}>
+          <Typography.Link disabled={editingKey !== ''} onClick={() => {
+            edit(record)
+            console.log(record)
+            }} className="table-row-button" style={{width:'50%', marginRight:'10px'}}>
             Edit
           </Typography.Link>
         );
@@ -323,7 +335,7 @@ const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.key === 'name' ? 'text' : 'number',
+        inputType: col.dataIndex === 'name' ? 'text' : 'number',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -349,6 +361,5 @@ const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
     </Form>
   );
 };
-
 
 export default ListOfEquipmentTable;

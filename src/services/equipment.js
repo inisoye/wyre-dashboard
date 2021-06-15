@@ -28,8 +28,8 @@ const del = (id) => {
   return request.then((response) => response);
 };
 
-const update = (id, newObject) => {
-  const request = axios.post(`${baseUrl}/${id}`, newObject);
+const update = (id, branchId ,newObject,equipment_id) => {
+  const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}`, newObject);
   return request.then((response) => response.data);
 };
 
