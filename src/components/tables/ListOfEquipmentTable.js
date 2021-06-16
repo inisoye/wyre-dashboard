@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Table, Input, Button, Space, InputNumber, Popconfirm, Form, Typography } from 'antd';
+import { Table, Input, Button, Space, InputNumber, Popconfirm, Form, Typography, DatePicker } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
@@ -167,9 +167,17 @@ import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
 //   }
 // }
 
+const {RangePicker} = DatePicker
 
-
-
+const testData = [
+  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
+  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
+  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
+  {name: "Inverter", voltage: 6000, quantity: 2, date_purchased: "2021-05-18", key:'2'},
+  {name: "LG Washing Machine", voltage: 400, quantity: 1, date_purchased: "2021-06-02", key:'3'},
+  {name: "Panasonic AC", voltage: 2000, quantity: 1, date_purchased: "2021-05-30", key:'4'},
+  {name: "LCD Monitor", voltage: 200, quantity: 1, date_purchased: "2021-05-17", key:'5'},
+]
 
 const originData = [];
 
@@ -193,7 +201,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  const inputNode = inputType === 'number' ? <InputNumber /> : <Input/>;
   return (
     <td {...restProps}>
       {editing ? (
@@ -220,18 +228,19 @@ const EditableCell = ({
 
 const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   const [form] = Form.useForm();
-  const [data, setData] = useState();
+  const [data, setData] = useState(testData);
   const [editingKey, setEditingKey] = useState('');
 
-  
-  useEffect(() => {
-    const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
-    const mapKeyToEachData = mergedData.map(element => {
-        let addKey = Object.assign(element, {key:element.name})  
-        return element
-    });         
-    setData(mapKeyToEachData)
-  },[data, listOfEquipmentData])
+  console.log(listOfEquipmentData)
+  // useEffect(() => {
+  //   const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
+  //   console.log(mergedData)
+  //   const mapKeyToEachData = mergedData.map(element => {
+  //       let addKey = Object.assign(element, {key:element.name})  
+  //       return element
+  //   });         
+  //   setData(mapKeyToEachData)
+  // },[data, listOfEquipmentData])
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -261,7 +270,8 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
         newData.splice(index, 1, { ...item, ...row });
         setData(newData);
         setEditingKey('');
-        console.log(data)
+        delete item.key
+        console.log(item)
       } else {
         newData.push(row);
         setData(newData);
@@ -276,12 +286,14 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     {
       title: 'Equipment Name',
       dataIndex: 'name',
+      key: 'name',
       width: '25%',
       editable: true,
     },
     {
       title: 'Voltage (watts)',
       dataIndex: 'voltage',
+      key: 'voltage',
       editable: true,
     },
     {
@@ -293,6 +305,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     {
       title: 'Date Purchased',
       dataIndex: 'date_purchased',
+      key:'date_purchased',
       editable: true,
     },
     {
