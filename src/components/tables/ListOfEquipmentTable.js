@@ -239,26 +239,22 @@ const EditableCell = ({
 
 const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   const [form] = Form.useForm();
-  const [data, setData] = useState(testData);
+  const [data, setData] = useState();
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
     const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
     const mapKeyToEachData = mergedData.map(element => {
-        delete element.id
-        const formattedData  = element.equipments.map((data)=>{   
-          let addKey = Object.assign(data, {key:data.id})
+        let branchIds = element.id
+        const formattedData  = element.equipments.map((data)=>{ 
+          let addKey = Object.assign(data, {branch_id:branchIds})
+          let Key = Object.assign(data,{key:data.id})
           return data
         })
-       const mergetheFormattedData =  formattedData.forEach(x => {      
-          const obj = [x].reduce((combo, item) => {
-            return {...combo, ...item};
-          }, {});
-        return obj
-       });
-      
+        return formattedData
     });
-    // setData(mapKeyToEachData)
+    const combineArray = [].concat(...mapKeyToEachData)
+    setData(combineArray)
   },[data, listOfEquipmentData])
 
   const isEditing = (record) => record.key === editingKey;
