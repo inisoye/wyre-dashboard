@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Table, Input, Button, Space, InputNumber, Popconfirm, Form, Typography, DatePicker } from 'antd';
+import { Table, Input, Button, Space, InputNumber, Popconfirm, Form, Typography, DatePicker, Collapse } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
@@ -169,6 +169,17 @@ import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
 
 const {RangePicker} = DatePicker
 
+
+const DateWidget = (
+  <DatePicker
+    format="DD-MM-YYYY"
+    className="generic-input"
+    id="equipment-purchase-date"
+    onChange={(e)=>console.log(e)}
+  />
+);
+
+
 const testData = [
   {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
   {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
@@ -201,7 +212,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input/>;
+  const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'text' ? <Input/> : DateWidget;
   return (
     <td {...restProps}>
       {editing ? (
@@ -231,16 +242,24 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   const [data, setData] = useState(testData);
   const [editingKey, setEditingKey] = useState('');
 
-  console.log(listOfEquipmentData)
-  // useEffect(() => {
-  //   const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
-  //   console.log(mergedData)
-  //   const mapKeyToEachData = mergedData.map(element => {
-  //       let addKey = Object.assign(element, {key:element.name})  
-  //       return element
-  //   });         
-  //   setData(mapKeyToEachData)
-  // },[data, listOfEquipmentData])
+  useEffect(() => {
+    const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
+    const mapKeyToEachData = mergedData.map(element => {
+        delete element.id
+        const formattedData  = element.equipments.map((data)=>{   
+          let addKey = Object.assign(data, {key:data.id})
+          return data
+        })
+       const mergetheFormattedData =  formattedData.forEach(x => {      
+          const obj = [x].reduce((combo, item) => {
+            return {...combo, ...item};
+          }, {});
+        return obj
+       });
+      
+    });
+    // setData(mapKeyToEachData)
+  },[data, listOfEquipmentData])
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -348,7 +367,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'name' ? 'text' : 'number',
+        inputType: col.dataIndex === 'name' ? 'text' : col.dataIndex === 'voltage' || 'quantity' ? 'number' : '',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
