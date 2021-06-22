@@ -44,16 +44,25 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
-
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
 
   const generatorSizeEffficiencyDoughnuts =
     generatorSizeEffficiencyData &&
     generatorSizeEffficiencyData.map((eachGenerator) => (
+      
       <ScoreCardGenEfficiencyDoughnut
+        dataTitle='Generator Size Efficiency'
+        dataSubtitle='
+        This info-graph measures(b)
+        and scores the efficiency(b)
+        or inefficiency of the(b)
+        generator’s size in(b)
+        comparison to power(b)
+        demanded by the facility. '
         data={eachGenerator}
         key={eachGenerator.name}
+
       />
     ));
 
@@ -64,6 +73,12 @@ function ScoreCard({ match }) {
     fuelConsumptionData &&
     fuelConsumptionData.map((eachGenerator) => (
       <ScoreCardFuelConsumptionDoughnut
+        dataTitle='Fuel Consumption'
+        dataSubtitle='
+        (95% Accuracy) Estimated fuel(b)
+        consumed on each generator and(b)
+        the number of hours each generator(b)
+        has been operated for. '
         data={eachGenerator}
         key={eachGenerator.name}
       />
@@ -87,9 +102,13 @@ function ScoreCard({ match }) {
             <ScoreCardDoughnutChart
               dataTitle='Baseline Energy'
               dataSubtitle='
-            Describes the desparity between peak and average(b)
-            power demand of a facility. The higher the ratio(b)
-            the better, the lower the ratio the worse it becomes.'
+              This is an algorithm that forecasts(b)
+              energy consumption using weather(b)
+              and number of days to set a baseline(b)
+              usage.(b)
+              Baseline usage is compared to actual(b)
+              consumption to score energy(b)
+              performance.'
               data={baseline_energy}
             />
 
@@ -135,9 +154,12 @@ function ScoreCard({ match }) {
             <ScoreCardDoughnutChart
               dataTitle='Peak to Average Power Ratio'
               dataSubtitle='
-            Describes the desparity between peak and average (b)
-            power demand of a facility. The higher the ratio (b) 
-            the better, the lower the ratio the worse it becomes.'
+              Represents the disparity between(b)
+              peak and average power within a(b)
+              facility. To optimize efficiency,(b)
+              the goal is to close the gap between(b)
+              both metrics. The aim is to score as(b)
+              close to 1 as possible.'
               data={peak_to_avg_power_ratio}
             />
 
@@ -178,9 +200,14 @@ function ScoreCard({ match }) {
             <ScoreCardDoughnutChart
               dataTitle='Carbon Emission'
               dataSubtitle='
-            Describes the desparity between peak and average (b)
-            power demand of a facility. The higher the ratio (b) 
-            the better, the lower the ratio the worse it becomes.'
+            Carbon foot print on all energy(b)
+            sources. Diesel: 2.68kg of CO2 per(b)
+            liter Natural Gas: 0.549kg of CO2 per(b)
+            kWh A typical hardwood tree can absorb as(b)
+            much as 48 pounds of carbon dioxide per(b)
+            year. This means it will sequester(b)
+            approximately 1 ton of carbon dioxide(b)
+            by the time it reaches 40 years old.'
               data={score_card_carbon_emissions}
             />
 
@@ -220,7 +247,8 @@ function ScoreCard({ match }) {
         </article>
       </div>
 
-      <div className='score-card-row-4' style={{marginBottom:'50px'}}>
+     
+      <div className='score-card-row-4' style={{marginBottom:'50px', display: 'none'}}>
         <article className='score-card-row-4__left'>
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
@@ -246,7 +274,13 @@ function ScoreCard({ match }) {
       </article>
 
       <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time} />
+        <ScoreCardBarChart operatingTimeData={operating_time} 
+          dataTitle='Operating Time'
+          dataMessage='Reports each event and duration(b)
+         generators are operated outside(b)
+         official hours, the diesel consumed(b)
+         and cost in Naira.'
+        />
       </article>
     </>
   );

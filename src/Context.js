@@ -14,6 +14,7 @@ const CompleteDataProvider = (props) => {
   /* -------------------------------------------------------------------
   /* Data Control ------------------------------------------------------
   --------------------------------------------------------------------*/
+  const [deviceData, setDeviceData] = useState({});
   const [organization, setOrganization] = useState({});
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
   // Note: the rendered data objects state exludes data for the whole organisation
@@ -24,9 +25,11 @@ const CompleteDataProvider = (props) => {
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
+  // const getDeviceData = setDeviceData(getRefinedOrganizationData.organization_device_type);
+  // console.log(getDeviceData);
   /*--------------------------------------------------------------------
 
-
+  
 
 
   --------------------------------------------------------------------*/
@@ -105,12 +108,12 @@ const CompleteDataProvider = (props) => {
         .getAllData()
         .then((returnedData) => {
           setIsAuthenticatedDataLoading(false);
-
           if (returnedData.branches.length === 0) {
             console.log('yeahh');
             throw new Error('No branches');
           }
           setOrganization(returnedData);
+          console.log(setOrganization(returnedData));
         })
         .catch((error) => {
           const logUserOut = () => {
@@ -153,10 +156,12 @@ const CompleteDataProvider = (props) => {
         checkedItems.constructor === Object
       ) {
         setRefinedRenderedData(getRefinedOrganizationData(organization));
+        //console.log(organization);
         
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
         setRefinedRenderedData(getRenderedData(renderedDataArray));
+        //console.log(renderedDataArray);
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
@@ -179,7 +184,6 @@ const CompleteDataProvider = (props) => {
       setUserId(user.data.id);
     }
   }, []);
-
   // State for Schedule Email Modal
   const [emailModalData, setEmailModalData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);

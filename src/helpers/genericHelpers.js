@@ -91,7 +91,31 @@ const getAllOrganizationDevices = (data) => {
           if (!device.name.includes(eachBranch.name))
             device.name = eachBranch.name + ' ' + device.name;
         });
+        // let notGenValues = {};
+        // const eachBranchDevicesScoreCard = eachBranch.devices.map(devices => {
+        //   const checkIsGen = devices.score_card.is_generator;
+        //   if (checkIsGen){            
+        //     return devices.score_card;
+        //   }else{
+        //     notGenValues["baseline_energy"] = devices.score_card.baseline_energy;
+        //     notGenValues["peak_to_avg_power_ratio"] = devices.score_card.peak_to_avg_power_ratio;
+        //     notGenValues["operating_time"] = devices.score_card.operating_time;
+        //     notGenValues["score_card_carbon_emissions"] = devices.score_card.score_card_carbon_emissions;
+        //     devices.score_card = {};
+        //     devices.score_card = {...notGenValues};
+        //     return devices.score_card;
+        //   }
 
+        // })
+        //const newScoreCard = [...eachBranch.devices.score_card];
+        // eachBranch.devices.score_card = {};
+        // eachBranch.devices.score_card = {...notGenValues};
+
+        //console.log(eachBranchDevicesScoreCard);
+
+
+        //console.log(eachBranch.devices.score_card);
+        //console.log(eachBranch.devices);
         return eachBranch.devices;
       })
       .flat()
