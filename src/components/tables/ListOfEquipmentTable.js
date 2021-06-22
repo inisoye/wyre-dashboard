@@ -245,20 +245,15 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   useEffect(() => {
     const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
     const mapKeyToEachData = mergedData.map(element => {
-        delete element.id
+        let branchIds = element.id
         const formattedData  = element.equipments.map((data)=>{   
-          let addKey = Object.assign(data, {key:data.id})
+          let addKey = Object.assign(data, {branch_id:branchIds})
           return data
         })
-       const mergetheFormattedData =  formattedData.forEach(x => {      
-          const obj = [x].reduce((combo, item) => {
-            return {...combo, ...item};
-          }, {});
-        return obj
-       });
-      
+        return formattedData
     });
-    // setData(mapKeyToEachData)
+    console.log(mapKeyToEachData)
+    // setData(mergedData)
   },[data, listOfEquipmentData])
 
   const isEditing = (record) => record.key === editingKey;
