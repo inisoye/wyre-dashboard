@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://wyreng.xyz/api/v1/';
+const baseUrl = 'http://wyreng.xyz/api/v1';
 
 const getAll = (userId, token, branchId) => {
   const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/`,{
@@ -28,8 +28,9 @@ const del = (id) => {
   return request.then((response) => response);
 };
 
-const update = async (id, token, branchId ,newObject,equipment_id) => {
-  const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}`, newObject, {
+const update = async (id, token, branchId, equipment_id ,newObject) => {
+  console.log(newObject)
+  const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}/`, newObject, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,

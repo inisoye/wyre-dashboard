@@ -115,11 +115,11 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
 
       if (index > -1) {
         const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
+        let updatedData =  { ...item, ...row }
+        newData.splice(index, 1, updatedData);
         setData(newData);
         setEditingKey('');
-        // let tst = deleteSelectedData(item)
-        equipmentHttpServices.update(userId,token,item.branch_id,deleteSelectedData(item),item.id)
+        equipmentHttpServices.update(userId,token,item.branch_id,item.id,deleteSelectedData(updatedData))
       } else {
         newData.push(row);
         setData(newData);
