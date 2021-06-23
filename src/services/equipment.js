@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseUrl = 'http://wyreng.xyz/api/v1/';
 
 const getAll = (userId, token, branchId) => {
-  const request = axios.get(`https://wyreng.xyz/api/v1/equipments/${userId}/`,{
+  const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/`,{
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,
@@ -13,7 +13,7 @@ const getAll = (userId, token, branchId) => {
 };
 
 const add = async (newObject, branch_id, userId, token) => {
-  const request = axios.post(`https://wyreng.xyz/api/v1/branch/${branch_id}/${userId}/add_equipment/`, newObject, {
+  const request = axios.post(`http://wyreng.xyz/api/v1/branch/${branch_id}/${userId}/add_equipment/`, newObject, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${token}`,
