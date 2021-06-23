@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3002/equipment';
+const baseUrl = 'http://wyreng.xyz/api/v1/';
 
 const getAll = (userId, token, branchId) => {
   const request = axios.get(`http://wyreng.xyz/api/v1/equipments/${userId}/`,{
@@ -28,9 +28,15 @@ const del = (id) => {
   return request.then((response) => response);
 };
 
-const update = (id, branchId ,newObject,equipment_id) => {
-  const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}`, newObject);
-  return request.then((response) => response.data);
+const update = async (id, token, branchId ,newObject,equipment_id) => {
+  const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}`, newObject, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    }
+  });
+  const response = await request;
+  return response.data;
 };
 
 // eslint-disable-next-line
