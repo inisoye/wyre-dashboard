@@ -29,7 +29,6 @@ const del = (id) => {
 };
 
 const update = async (id, token, branchId, equipment_id ,newObject) => {
-  console.log(newObject)
   const request = axios.post(`${baseUrl}/branch/${branchId}/${id}/edit_equipment/${equipment_id}/`, newObject, {
     headers: {
       'Content-Type': 'application/json',
