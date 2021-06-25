@@ -220,12 +220,19 @@ function AddBills({ match }) {
     utilityPaymentPostValue,
   }) => {
 
+    const convertDate = (dateObjects)=>{
+      let formatObject = dateObjects.map((eachDateObject) => {
+        return eachDateObject.format('DD-MM-YYYY')
+      }).join('/');
+      return formatObject
+   }
+
     const postPaidData = {
       branch : branchForPostPaid,
       value : utilityPaymentPostValue,
       amount : utilityPaymentPostAmount,
       tariff : utilityPaymentPostTariff,
-      date : utilityPaymentPostDate.format('YYYY-MM-DD')
+      date :  convertDate(utilityPaymentPostDate)
     }
 
     billingHttpServices

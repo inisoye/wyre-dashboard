@@ -37,7 +37,7 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'text' ? <Input/> : DateWidget;
+  const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'text' ? <Input/> : inputType === 'date' ? <DatePicker/> :'';
   return (
     <td {...restProps}>
       {editing ? (
@@ -195,7 +195,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'name' ? 'text' : col.dataIndex === 'voltage' || 'quantity' ? 'number' : '',
+        inputType: col.dataIndex === 'date_purchase' ? 'date' : col.dataIndex === 'name' ? 'text' : col.dataIndex === 'voltage' || 'quantity' ? 'number' : '',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
