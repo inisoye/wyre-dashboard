@@ -74,7 +74,8 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
         let branchIds = element.id
         const formattedData  = element.equipments.map((data)=>{ 
           let addKey = Object.assign(data, {branch_id:branchIds})
-          let Key = Object.assign(data,{key:data.id})
+        //Added key value to each object using their IDs. because this is what the edit() func uses to differentiate them. 
+          let Key = Object.assign(data,{key:data.id}) 
           return data
         })
         return formattedData
