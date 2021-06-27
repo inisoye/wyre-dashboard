@@ -222,32 +222,35 @@ function AddBills({ match }) {
 
     const convertDate = (dateObjects)=>{
       let formatObject = dateObjects.map((eachDateObject) => {
-        return eachDateObject.format('DD-MM-YYYY')
-      }).join('/');
+        return eachDateObject.format('YYYY-MM-DD')
+      })
       return formatObject
    }
+
+   let FormattedDate = convertDate(utilityPaymentPostDate)
 
     const postPaidData = {
       branch : branchForPostPaid,
       value : utilityPaymentPostValue,
       amount : utilityPaymentPostAmount,
       tariff : utilityPaymentPostTariff,
-      date :  convertDate(utilityPaymentPostDate)
+      date :  FormattedDate[0],
+      end_date: FormattedDate[1]
     }
-
+    
     billingHttpServices
     .addCostPostPaid(postPaidData,token, userId)
     .then(()=>{
       openNotificationWithIcon('success', 'post-paid utility payment tracker');
     })
     .catch(error=>{
-      alert(error.response, 'Please try again!!!')
+      alert('An error occured,Please try again!!!')
       console.log(error.response)
     })
 
-    // Reset form fields. Controller value is set manually
-    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
-    resetPaymentTrackerPost();
+    // // Reset form fields. Controller value is set manually
+    // setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    // resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {
