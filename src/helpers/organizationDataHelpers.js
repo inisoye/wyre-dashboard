@@ -1,4 +1,3 @@
-import {useContext, useState} from "react";
 import {
   sumArrayOfArrays,
   getAllOrganizationDevices,
@@ -19,26 +18,7 @@ import {
   convertParameterDateStringsToObjects,
 } from './genericHelpers';
 
-//const [deviceData, setDeviceData] = useState({});
 
-const getScoreCardData = (data) => {
-  const allOrganizationData = getAllOrganizationDevices(data);
-  const getNotGenDevices = {};
-  const organizationDataArray = allOrganizationData.map(
-    (eachOrgData) => {
-      if (eachOrgData.score_card.is_generator){
-        return eachOrgData.score_card;
-      }else{
-        getNotGenDevices["baseline_energy"] = eachOrgData.score_card.baseline_energy;
-        getNotGenDevices["peak_to_avg_power_ratio"] = eachOrgData.score_card.peak_to_avg_power_ratio;
-        getNotGenDevices["operating_time"] = eachOrgData.score_card.operating_time;
-        getNotGenDevices["score_card_carbon_emissions"] = eachOrgData.score_card.score_card_carbon_emissions;
-        return getNotGenDevices;
-      }
-      }
-  );
-  return organizationDataArray;
-}
 /* -------------------------------------------------------------------
 /* Org Dashboard Calculations Begin ----------------------------------
 --------------------------------------------------------------------*/
@@ -174,16 +154,13 @@ const getOrganizationEnergyData = (data) => {
 /* Org Score Card Calculations Begin ---------------------------------
 --------------------------------------------------------------------*/
 // Baseline Energies
-//let dataObject = {};
-//const [dataObject, setDataObject] = useState({});
 
 const getOrganizationBaselineEnergy = (data) => {  
   const allOrganizationDevices = getAllOrganizationDevices(data);
-  //setDataObject = allOrganizationDevices;
+  //console.log(allOrganizationDevices);
   const baselineEnergiesArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.baseline_energy
   );
-  console.log(allOrganizationDevices);
   return sumBaselineEnergies(baselineEnergiesArray);
 };
 
@@ -192,17 +169,16 @@ const getOrganizationDeviceType = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
   
   const deviceTypeArray = allOrganizationDevices.map(
-    (eachDevice) => eachDevice.score_card.is_generator
+    (eachDevice) => 
+      eachDevice.score_card ?
+    {
+      device_name : eachDevice.name,
+      is_gen : eachDevice.score_card.is_generator,
+    } : false
   );
-
-  console.log(deviceTypeArray);
   return deviceTypeArray;
 }
 
-const getAllDeviceData = (data) => {
-  const allOrganizationDevices = getAllOrganizationDevices(data);
-  return allOrganizationDevices;
-}
 // Peak to Average Power Ratios
 const getOrganizationPeakToAveragePowerRatio = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
@@ -210,7 +186,7 @@ const getOrganizationPeakToAveragePowerRatio = (data) => {
   const peakToAveragePowerRatioArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.peak_to_avg_power_ratio
   );
-
+  console.log(peakToAveragePowerRatioArray[0].message);
   return sumPeakToAveragePowerRatios(peakToAveragePowerRatioArray);
 };
 
@@ -701,20 +677,9 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 /* Org Billing Calculations End --------------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedOrganizationData = (data) => {
-  // const [scoreCardData, setScoreCardData] = useState({});
-  // const handleScoreCardData = () => {
+const getRefinedOrganizationData = (data) => {    
 
-  // }
-  //const dataContext = 
-  //const [dataObject, setDataObject] = useState({});
-  // const handleDataObject = (data) => {
-  //   setDataObject = { ...getAllOrganizationDevices(data)}
-  // }
-  const dataObject = {};
-  const setDataObject = { ...getAllOrganizationDevices(data)}
-  console.log(setDataObject);
-
+  getOrganizationDeviceType(data);
   return {
     all_device_data : {...getAllOrganizationDevices(data)},
     name: data.name,
@@ -774,4 +739,4 @@ const getRefinedOrganizationData = (data) => {
     ),
   };
 };
-export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray };
+export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, getOrganizationDeviceType };

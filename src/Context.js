@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 import dataHttpServices from './services/devices';
 
-import { getRefinedOrganizationData } from './helpers/organizationDataHelpers';
+import { getRefinedOrganizationData, getOrganizationDeviceType} from './helpers/organizationDataHelpers';
 import { getRenderedData } from './helpers/renderedDataHelpers';
 
 // create context
@@ -25,8 +25,6 @@ const CompleteDataProvider = (props) => {
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
-  // const getDeviceData = setDeviceData(getRefinedOrganizationData.organization_device_type);
-  // console.log(getDeviceData);
   /*--------------------------------------------------------------------
 
   
@@ -113,7 +111,7 @@ const CompleteDataProvider = (props) => {
             throw new Error('No branches');
           }
           setOrganization(returnedData);
-          console.log(setOrganization(returnedData));
+          //console.log(setOrganization(returnedData));
         })
         .catch((error) => {
           const logUserOut = () => {
@@ -156,16 +154,23 @@ const CompleteDataProvider = (props) => {
         checkedItems.constructor === Object
       ) {
         setRefinedRenderedData(getRefinedOrganizationData(organization));
-        //console.log(organization);
-        
+        setDeviceData(getOrganizationDeviceType(organization));               
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
+        console.log(renderedDataArray.length);
+        const getDeviceType = renderedDataArray.map(eachDevice =>        
+          eachDevice.is_generator)
+        
+        console.log(getDeviceType);
+        console.log(renderedDataArray[0].is_generator);
         setRefinedRenderedData(getRenderedData(renderedDataArray));
-        //console.log(renderedDataArray);
+        //setDeviceData(getOrganizationDeviceType(renderedDataArray));
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
-      
+  
+  //console.log(deviceData);
+    
   /*--------------------------------------------------------------------
 
     
@@ -199,6 +204,7 @@ const CompleteDataProvider = (props) => {
     <CompleteDataContext.Provider
       value={{
         // Data Control
+        deviceData : deviceData,
         organization: organization,
         refinedRenderedData: refinedRenderedData,
         renderedDataObjects: renderedDataObjects,

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import CompleteDataContext from '../Context';
 
@@ -9,24 +9,43 @@ import ScoreCardBarChart from '../components/barCharts/ScoreCardBarChart';
 import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGenEfficiencyDoughnut';
 import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
 import Loader from '../components/Loader';
+import getAllDeviceData from '../helpers/organizationDataHelpers';
 
 
 import UpArrowIcon from '../icons/UpArrowIcon';
 
 import { calculateRatio, calculatePercentage } from '../helpers/genericHelpers';
 import { numberFormatter } from "../helpers/numberFormatter";
+import dataHttpServices from "../services/devices";
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Score Card', id: 2 },
 ];
 
+
+
 function ScoreCard({ match }) {
   const {
+    deviceData,
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
   } = useContext(CompleteDataContext);
+ 
+  const orgDeviceType = Object.entries(deviceData);
+  const eachOrgType = orgDeviceType.map(eachDevice => eachDevice[1]);
+  const getEachOrgType = eachOrgType.map(device => device.is_gen);
+  console.log(getEachOrgType);
+
+  const checkIsGenStatus = (getEachOrgType) => {
+    const checkStatus = getEachOrgType.filter(Boolean);
+    return checkStatus.length
+  };
+  const isGenStatus = checkIsGenStatus(getEachOrgType);
+
+  const [arrowColor, setArrowColor] = useState('#fa0303');
+
 
   useEffect(() => {
     if (match && match.url) {
@@ -35,6 +54,7 @@ function ScoreCard({ match }) {
   }, [match, setCurrentUrl]);
 
   const {
+    organization_device_type,
     baseline_energy,
     peak_to_avg_power_ratio,
     score_card_carbon_emissions,
@@ -44,9 +64,13 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
+  console.log(peak_to_avg_power_ratio);
+  const deviceTypeArray = {...organization_device_type}
+  console.log(baseline_energy);
+
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
-
+  //console.log(generatorSizeEffficiencyData);
   const generatorSizeEffficiencyDoughnuts =
     generatorSizeEffficiencyData &&
     generatorSizeEffficiencyData.map((eachGenerator) => (
@@ -87,7 +111,8 @@ function ScoreCard({ match }) {
    if (isAuthenticatedDataLoading) {
      return <Loader />;
    }
-
+  
+     
   return (
     <>
       <div className='breadcrumb-and-print-buttons'>
@@ -187,7 +212,7 @@ function ScoreCard({ match }) {
 
           <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
             <p className='h-red-text'>Not so efficient - Higher is better</p>
-            <UpArrowIcon />
+            <UpArrowIcon className={peak_to_avg_power_ratio.avg < peak_to_avg_power_ratio.peak ? arrowColor : setArrowColor('#008000')}/>
           </div>
         </article>
 
@@ -248,7 +273,7 @@ function ScoreCard({ match }) {
       </div>
 
      
-      <div className='score-card-row-4' style={{marginBottom:'50px', display: 'none'}}>
+      <div className={isGenStatus > 0 ? 'score-card-row-4' : 'hideCard'} style={{marginBottom:'50px'}}>
         <article className='score-card-row-4__left'>
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
@@ -264,9 +289,9 @@ function ScoreCard({ match }) {
             Estimated Fuel Consumption for facility gens
           </p>
         </article>
-    </div>
+      </div>
 
-      <article className='score-card-row-2'>
+      <article className={isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}>
         <h2 className='changeover-lags-heading score-card-heading'>
           Change Over Lags
         </h2>
