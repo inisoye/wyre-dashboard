@@ -22,6 +22,7 @@ const CompleteDataProvider = (props) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [checkedBranches, setCheckedBranches] = useState({});
   const [checkedDevices, setCheckedDevices] = useState({});
+  const [selectedDevices, setSelectedDevices] = useState([]);
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
@@ -157,20 +158,15 @@ const CompleteDataProvider = (props) => {
         setDeviceData(getOrganizationDeviceType(organization));               
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
-        console.log(renderedDataArray.length);
-        const getDeviceType = renderedDataArray.map(eachDevice =>        
-          eachDevice.is_generator)
+        const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
         
-        console.log(getDeviceType);
-        console.log(renderedDataArray[0].is_generator);
         setRefinedRenderedData(getRenderedData(renderedDataArray));
+        setSelectedDevices(getDeviceType);
         //setDeviceData(getOrganizationDeviceType(renderedDataArray));
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
-  
-  //console.log(deviceData);
-    
+      
   /*--------------------------------------------------------------------
 
     
@@ -212,6 +208,7 @@ const CompleteDataProvider = (props) => {
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
         checkedBranches: checkedBranches,
+        selectedDevices : selectedDevices,
         setCheckedBranches: setCheckedBranches,
         checkedDevices: checkedDevices,
         setCheckedDevices: setCheckedDevices,

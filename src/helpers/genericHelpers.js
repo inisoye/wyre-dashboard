@@ -43,6 +43,22 @@ const getLastArrayItems = (array, numberOfItems) => {
   return array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
+//checkIsGenStatus
+const checkIsGenStatus = (data) => {
+  const checkStatus = data.filter(Boolean);
+  return checkStatus.length
+}
+
+
+const daysInMonth = () => {
+  const date = new Date();
+  const currentDate = date.getDate();
+  const currentMonth = date.getMonth();
+  const currentYear = date.getFullYear();
+  //const numberOfDaysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  return new Date(currentYear, currentMonth+1, 0).getDate();;
+}
+
 /*
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
@@ -381,9 +397,11 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 --------------------------------------------------------------------*/
 
 export {
+  daysInMonth,
   toCamelCase,
   toKebabCase,
   toSnakeCase,
+  checkIsGenStatus,
   sumArrayOfArrays,
   calculateRatio,
   calculatePercentage,

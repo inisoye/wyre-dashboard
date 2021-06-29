@@ -9,12 +9,10 @@ import ScoreCardBarChart from '../components/barCharts/ScoreCardBarChart';
 import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGenEfficiencyDoughnut';
 import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
 import Loader from '../components/Loader';
-import getAllDeviceData from '../helpers/organizationDataHelpers';
-
 
 import UpArrowIcon from '../icons/UpArrowIcon';
 
-import { calculateRatio, calculatePercentage } from '../helpers/genericHelpers';
+import { calculateRatio, calculatePercentage, checkIsGenStatus, daysInMonth } from '../helpers/genericHelpers';
 import { numberFormatter } from "../helpers/numberFormatter";
 import dataHttpServices from "../services/devices";
 
@@ -27,22 +25,28 @@ const breadCrumbRoutes = [
 
 function ScoreCard({ match }) {
   const {
+    selectedDevices,
     deviceData,
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
   } = useContext(CompleteDataContext);
  
-  const orgDeviceType = Object.entries(deviceData);
-  const eachOrgType = orgDeviceType.map(eachDevice => eachDevice[1]);
-  const getEachOrgType = eachOrgType.map(device => device.is_gen);
-  console.log(getEachOrgType);
-
-  const checkIsGenStatus = (getEachOrgType) => {
-    const checkStatus = getEachOrgType.filter(Boolean);
-    return checkStatus.length
-  };
-  const isGenStatus = checkIsGenStatus(getEachOrgType);
+  //check the is_gen feature of devices
+  const useData = selectedDevices.length > 0 ? selectedDevices : deviceData;
+  const getIsGenStatus = (useData) => {
+    if (selectedDevices.length>0){      
+      return(checkIsGenStatus(useData));
+    }else{
+      const orgDeviceType = Object.entries(useData);
+          const eachOrgType = orgDeviceType.map(eachDevice => eachDevice[1]);
+          const getEachOrgType = eachOrgType.map(device => device.is_gen);
+               
+          return(checkIsGenStatus(getEachOrgType));        
+    }
+  }
+   
+  const isGenStatus = getIsGenStatus(useData);
 
   const [arrowColor, setArrowColor] = useState('#fa0303');
 
@@ -64,9 +68,9 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
-  console.log(peak_to_avg_power_ratio);
+  //console.log(peak_to_avg_power_ratio);
+  const date = new Date();
   const deviceTypeArray = {...organization_device_type}
-  console.log(baseline_energy);
 
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
@@ -164,7 +168,7 @@ function ScoreCard({ match }) {
             Saving Inbound of{' '}
             <span className='h-green-text'>
               {baseline_energy &&
-                numberFormatter(baseline_energy.forecast - baseline_energy.used)}
+                numberFormatter(baseline_energy.forecast - ((baseline_energy.used/date.getDate())*daysInMonth()))}
               {baseline_energy && baseline_energy.unit}
             </span>
           </p>
