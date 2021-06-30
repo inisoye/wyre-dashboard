@@ -155,7 +155,7 @@ const CompleteDataProvider = (props) => {
         checkedItems.constructor === Object
       ) {
         setRefinedRenderedData(getRefinedOrganizationData(organization));
-        setDeviceData(getOrganizationDeviceType(organization));               
+        setDeviceData(getOrganizationDeviceType(organization));  
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
         const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)

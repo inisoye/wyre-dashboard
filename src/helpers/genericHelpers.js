@@ -71,6 +71,22 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
+const getPeakToAverageMessage = (peakRatio) => {
+  let peakMessage;
+  let peakMessageColor;
+  if (peakRatio > 0.7){
+    peakMessage = 'Quite efficient';
+    peakMessageColor = '#008000';
+  }else if (peakRatio >= 0.5){
+    peakMessage = 'Fairly efficient';
+    peakMessageColor = '#FFBF00';
+  }else{
+    peakMessage = 'Inefficient - Higher is better';
+    peakMessageColor = '#fa0303';
+  }
+  return {message: peakMessage, color: peakMessageColor}
+}
+
 const calculateRatio = (num_1, num_2) => {
   // for (let num = num_2; num > 1; num--) {
   //   if (num_1 % num === 0 && num_2 % num === 0) {
@@ -398,6 +414,7 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 
 export {
   daysInMonth,
+  getPeakToAverageMessage,
   toCamelCase,
   toKebabCase,
   toSnakeCase,

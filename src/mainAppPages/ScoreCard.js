@@ -11,8 +11,10 @@ import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardF
 import Loader from '../components/Loader';
 
 import UpArrowIcon from '../icons/UpArrowIcon';
+import EcoFriendlyIcon from '../icons/EcoFriendlyIcon';
+import Greenleaf from '../icons/Greenleaf';
 
-import { calculateRatio, calculatePercentage, checkIsGenStatus, daysInMonth } from '../helpers/genericHelpers';
+import { calculateRatio, calculatePercentage, checkIsGenStatus, daysInMonth, getPeakToAverageMessage } from '../helpers/genericHelpers';
 import { numberFormatter } from "../helpers/numberFormatter";
 import dataHttpServices from "../services/devices";
 
@@ -29,6 +31,7 @@ function ScoreCard({ match }) {
     deviceData,
     refinedRenderedData,
     setCurrentUrl,
+    organization,
     isAuthenticatedDataLoading,
   } = useContext(CompleteDataContext);
  
@@ -48,8 +51,6 @@ function ScoreCard({ match }) {
    
   const isGenStatus = getIsGenStatus(useData);
 
-  const [arrowColor, setArrowColor] = useState('#fa0303');
-
 
   useEffect(() => {
     if (match && match.url) {
@@ -58,7 +59,6 @@ function ScoreCard({ match }) {
   }, [match, setCurrentUrl]);
 
   const {
-    organization_device_type,
     baseline_energy,
     peak_to_avg_power_ratio,
     score_card_carbon_emissions,
@@ -68,9 +68,15 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
-  //console.log(peak_to_avg_power_ratio);
+  const ratio = calculateRatio(peak_to_avg_power_ratio.peak,peak_to_avg_power_ratio.avg);
+    
+  const getPeakResult = getPeakToAverageMessage(ratio);
+  const arrowColor = getPeakResult.color;
+
+  //calculate number of trees for carbon emission
+  const noOfTrees = score_card_carbon_emissions.actual_value * 6;
+  const message = "Equivalent to "+noOfTrees+" Acacia trees";
   const date = new Date();
-  const deviceTypeArray = {...organization_device_type}
 
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
@@ -215,8 +221,8 @@ function ScoreCard({ match }) {
           </p>
 
           <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
-            <p className='h-red-text'>Not so efficient - Higher is better</p>
-            <UpArrowIcon className={peak_to_avg_power_ratio.avg < peak_to_avg_power_ratio.peak ? arrowColor : setArrowColor('#008000')}/>
+            <p style={{color:arrowColor}}>{getPeakResult.message}</p>
+            <UpArrowIcon className={arrowColor}/>
           </div>
         </article>
 
@@ -267,12 +273,17 @@ function ScoreCard({ match }) {
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          {/* <p className='score-card-bottom-text h-mt-24 h-red-text'>
-            <span>Conditional Sub-text Should Go Here</span>{' '}
-            <span className='score-card-bottom-text-small'>
-              (Additional Conditional Sub-text Should Go Here)
-            </span>
-          </p> */}
+          <p className='score-card-bottom-text h-mt-24'>  
+            <div>
+              <span>{message}</span>
+              <EcoFriendlyIcon className="ecoFriendlyIcon"/>
+            </div>         
+
+            {/* <span className='score-card-bottom-text-small'>
+              {noOfTrees}
+            </span>{' '}
+            <span>Acacia trees</span> */}
+          </p>
         </article>
       </div>
 

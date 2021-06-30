@@ -186,7 +186,6 @@ const getOrganizationPeakToAveragePowerRatio = (data) => {
   const peakToAveragePowerRatioArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.peak_to_avg_power_ratio
   );
-  console.log(peakToAveragePowerRatioArray[0].message);
   return sumPeakToAveragePowerRatios(peakToAveragePowerRatioArray);
 };
 
