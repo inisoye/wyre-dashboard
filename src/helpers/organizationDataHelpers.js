@@ -18,6 +18,7 @@ import {
   convertParameterDateStringsToObjects,
 } from './genericHelpers';
 
+
 /* -------------------------------------------------------------------
 /* Org Dashboard Calculations Begin ----------------------------------
 --------------------------------------------------------------------*/
@@ -51,22 +52,22 @@ const getOrganizationDailyKwh = (data) => {
    Obtain dashboard monthly usage data for organization
   ----------------*/
 
-const getOrganizationMonthlyUsage = (data) => {
-  let organizationMonthlyUsage = { devices: [], hours: [] };
+// const getOrganizationMonthlyUsage = (data) => {
+//   let organizationMonthlyUsage = { devices: [], hours: [] };
 
-  // Add data for each branch
-  data.branches &&
-    data.branches.forEach((eachBranch) => {
-      const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
-        (acc, curr) => acc + curr,
-        0
-      );
-      organizationMonthlyUsage.devices.push(eachBranch.name);
-      organizationMonthlyUsage.hours.push(branchMonthlyUsage);
-    });
+//   // Add data for each branch
+//   data.branches &&
+//     data.branches.forEach((eachBranch) => {
+//       const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+//         (acc, curr) => acc + curr,
+//         0
+//       );
+//       organizationMonthlyUsage.devices.push(eachBranch.name);
+//       organizationMonthlyUsage.hours.push(branchMonthlyUsage);
+//     });
 
-  return organizationMonthlyUsage;
-};
+//   return organizationMonthlyUsage;
+// };
 
 /*----------------
    Collate dashboard energy data for each branch
@@ -153,15 +154,30 @@ const getOrganizationEnergyData = (data) => {
 /* Org Score Card Calculations Begin ---------------------------------
 --------------------------------------------------------------------*/
 // Baseline Energies
-const getOrganizationBaselineEnergy = (data) => {
-  const allOrganizationDevices = getAllOrganizationDevices(data);
 
+const getOrganizationBaselineEnergy = (data) => {  
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+  //console.log(allOrganizationDevices);
   const baselineEnergiesArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.baseline_energy
   );
-
   return sumBaselineEnergies(baselineEnergiesArray);
 };
+
+//check if device is a generator or not
+const getOrganizationDeviceType = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+  
+  const deviceTypeArray = allOrganizationDevices.map(
+    (eachDevice) => 
+      eachDevice.score_card ?
+    {
+      device_name : eachDevice.name,
+      is_gen : eachDevice.score_card.is_generator,
+    } : false
+  );
+  return deviceTypeArray;
+}
 
 // Peak to Average Power Ratios
 const getOrganizationPeakToAveragePowerRatio = (data) => {
@@ -170,7 +186,6 @@ const getOrganizationPeakToAveragePowerRatio = (data) => {
   const peakToAveragePowerRatioArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.peak_to_avg_power_ratio
   );
-
   return sumPeakToAveragePowerRatios(peakToAveragePowerRatioArray);
 };
 
@@ -601,6 +616,12 @@ const getOrganizationBillingTotals = (data) => {
       'diesel_per_kwh'
     ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
+    const organizationMetricsIppPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'ipp_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
   const organizationMetricsUtilityPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
@@ -623,6 +644,7 @@ const getOrganizationBillingTotals = (data) => {
       value_naira: organizationPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: organizationMetricsIppPerKwh,
       diesel_per_kwh: organizationMetricsDieselPerKwh,
       utility_per_kwh: organizationMetricsUtilityPerKwh,
       blended_cost_per_kwh: organizationMetricsBlendedCostPerKwh,
@@ -654,14 +676,18 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 /* Org Billing Calculations End --------------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedOrganizationData = (data) => {
+const getRefinedOrganizationData = (data) => {    
+
+  getOrganizationDeviceType(data);
   return {
+    all_device_data : {...getAllOrganizationDevices(data)},
     name: data.name,
     // Dashboard Stuff
     ...getOrganizationEnergyData(data),
     daily_kwh: getOrganizationDailyKwh(data),
-    usage_hours: getOrganizationMonthlyUsage(data),
+    // usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
+    organization_device_type : getOrganizationDeviceType(data),
     baseline_energy: getOrganizationBaselineEnergy(data),
     peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
     score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
@@ -712,5 +738,4 @@ const getRefinedOrganizationData = (data) => {
     ),
   };
 };
-
-export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray };
+export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, getOrganizationDeviceType };

@@ -7,7 +7,6 @@ import adminHttpServices from '../services/admin';
 import BreadCrumb from '../components/BreadCrumb';
 import AdminDevicesTable from '../components/tables/adminTables/AdminDevicesTable';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -37,7 +36,6 @@ function ViewDevices({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='table-with-header-container h-no-mt'>
