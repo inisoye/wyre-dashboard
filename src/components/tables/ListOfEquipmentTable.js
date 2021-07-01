@@ -1,19 +1,23 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, DatePicker} from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, DatePicker, Space, notification} from 'antd';
 import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
 import equipmentHttpServices from '../../services/equipment'
 
 import CompleteDataContext from '../../Context';
+import moment from 'moment'
 
 const {RangePicker} = DatePicker
 
 const DateWidget = (
-  <DatePicker
-    format="DD-MM-YYYY"
-    className="generic-input"
-    id="equipment-purchase-date"
-    onChange={(e)=>console.log(e)}
-  />
+  // <DatePicker
+  //   defaultValue={moment()}
+  //   format="DD-MM-YYYY"
+  //   className="generic-input"
+  //   id="equipment-purchase-date"
+  //   onChange={(e)=>console.log(e)}
+  // />
+
+  <input type="date"/>
 );
 
 
@@ -37,7 +41,8 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : inputType === 'text' ? <Input/> : inputType === 'date' ? <DatePicker/> :'';
+  const inputNode =  inputType === 'date' ? DateWidget : inputType === 'number' ? <InputNumber /> : 
+                    inputType === 'text' ? <Input/> :'';
   return (
     <td {...restProps}>
       {editing ? (
@@ -84,6 +89,15 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     setData(combineArray)
   },[listOfEquipmentData])
 
+  const openNotificationWithIcon = (type, message) => {
+    notification[type]({
+      message: `Success`,
+      description:
+        `${message}`,
+    });
+  };
+  
+
   const isEditing = (record) => record.key === editingKey;
 
   const edit = (record) => {
@@ -100,19 +114,19 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   const cancel = () => {
     setEditingKey('');
   };
+  
+  const deleteSelectedData = (item)=>{
+    delete item.key;
+    delete item.id;
+    delete item.branch_id;
+    return item
+  }
 
   const save = async (key) => {
     try {
       const row = await form.validateFields();
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
-
-      const deleteSelectedData = (item)=>{
-        delete item.key;
-        delete item.id;
-        delete item.branch_id;
-        return item
-      }
 
       if (index > -1) {
         const item = newData[index];
@@ -131,6 +145,25 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     }
   };
 
+  const handleDelete = async (key) => {
+    const row = await form.validateFields();
+    const dataSource = [...data];
+    const index = dataSource.findIndex((item) => key === item.key);
+    const item = dataSource[index];
+    let DataToBeDeleted =  { ...item, ...row }
+    setData(dataSource.filter((item) => item.key !== key))
+    const delData = equipmentHttpServices.del(userId,item.id,token,item.branch_id,deleteSelectedData(DataToBeDeleted))
+
+    if((await delData).status === 200){
+      openNotificationWithIcon('success','Equipment successfully deleted')
+    }
+
+    delData.catch((err)=>{
+      console.log(err)
+      openNotificationWithIcon('error', 'An error occured, please check your Internet and try again')
+    })
+  };
+
   const columns = [
     {
       title: 'Equipment Name',
@@ -144,12 +177,14 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
       dataIndex: 'voltage',
       key: 'voltage',
       editable: true,
+      width:'15%'
     },
     {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
       editable:true,
+      width:'15%'
     },
     {
       title: 'Date Purchased',
@@ -160,6 +195,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     {
       title: 'Actions',
       dataIndex: 'operation',
+      width:'25%',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -178,11 +214,23 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
             </Popconfirm>
           </span>
         ) : (
+        <Space>
           <Typography.Link disabled={editingKey !== ''} onClick={() => {
             edit(record)
             }} className="table-row-button" style={{width:'50px'}}>
             <span style={{marginRight:'150px'}}>Edit</span>
           </Typography.Link>
+          
+          <Typography.Link disabled={editingKey !== ''} onClick={() => {
+            // edit(record)
+            }} className="table-row-button" style={{width:'70px'}}>
+            <Popconfirm title="Sure to delete?" onConfirm={()=>{
+              handleDelete(record.key)
+            }}>
+              <span>Delete</span>
+            </Popconfirm>
+          </Typography.Link>
+        </Space>
         );
       },
     },
@@ -196,7 +244,8 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'date_purchase' ? 'date' : col.dataIndex === 'name' ? 'text' : col.dataIndex === 'voltage' || 'quantity' ? 'number' : '',
+        inputType: col.dataIndex === 'date_purchased' ? 'date' : col.dataIndex === 'name' ? 'text' : 
+                   col.dataIndex === 'voltage' || 'quantity' ? 'number' : '',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -224,3 +273,4 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
 };
 
 export default ListOfEquipmentTable;
+

@@ -41,7 +41,7 @@ function AddEquipment({ match }) {
     }
 
     equipmentHttpServices
-      .getAll(userId,token, 3)
+      .getAll(userId,token)
       .then((returnedEquipment) =>{ 
         setAllEquipment(returnedEquipment.data.data)
       })
