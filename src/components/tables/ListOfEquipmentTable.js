@@ -1,23 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, DatePicker, Space, notification} from 'antd';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, Space, notification} from 'antd';
 import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
 import equipmentHttpServices from '../../services/equipment'
-
 import CompleteDataContext from '../../Context';
-import moment from 'moment'
-
-const {RangePicker} = DatePicker
 
 const DateWidget = (
-  // <DatePicker
-  //   defaultValue={moment()}
-  //   format="DD-MM-YYYY"
-  //   className="generic-input"
-  //   id="equipment-purchase-date"
-  //   onChange={(e)=>console.log(e)}
-  // />
-
-  <input type="date"/>
+  <input type="date" 
+    className="generic-input"
+    format="DD-MM-YYYY"
+    id="equipment-purchase-date"
+    // onChange={(e)=>console.log(e.target.value)}
+  />
 );
 
 
@@ -135,6 +128,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
         setData(newData);
         setEditingKey('');
         equipmentHttpServices.update(userId,token,item.branch_id,item.id,deleteSelectedData(updatedData))
+        openNotificationWithIcon('success','Equipment edited successfully.')
       } else {
         newData.push(row);
         setData(newData);
