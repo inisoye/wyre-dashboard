@@ -20,7 +20,7 @@ const add = async (newObject, branch_id, userId, token) => {
     },
   });
   const response = await request;
-  return response.data;
+  return response.data.data;
 };
 
 const del = async (id,equipment_id, token,branch_id,dataObject) => {

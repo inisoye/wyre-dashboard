@@ -13,17 +13,6 @@ const DateWidget = (
   />
 );
 
-
-const testData = [
-  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
-  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
-  {name: "Equipment 2", voltage: 12.3, quantity: 22, date_purchased: "2021-05-19", key:'1'},
-  {name: "Inverter", voltage: 6000, quantity: 2, date_purchased: "2021-05-18", key:'2'},
-  {name: "LG Washing Machine", voltage: 400, quantity: 1, date_purchased: "2021-06-02", key:'3'},
-  {name: "Panasonic AC", voltage: 2000, quantity: 1, date_purchased: "2021-05-30", key:'4'},
-  {name: "LCD Monitor", voltage: 200, quantity: 1, date_purchased: "2021-05-17", key:'5'},
-]
-
 const EditableCell = ({
   editing,
   dataIndex,
@@ -84,7 +73,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({
-      message: `Success`,
+      message: `Deleted`,
       description:
         `${message}`,
     });
@@ -149,7 +138,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     const delData = equipmentHttpServices.del(userId,item.id,token,item.branch_id,deleteSelectedData(DataToBeDeleted))
 
     if((await delData).status === 200){
-      openNotificationWithIcon('success','Equipment successfully deleted')
+      openNotificationWithIcon('info','Equipment successfully deleted')
     }
 
     delData.catch((err)=>{
