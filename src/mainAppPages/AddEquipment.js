@@ -102,13 +102,14 @@ function AddEquipment({ match }) {
       date_purchased: equipmentPurchaseDate.format('YYYY-MM-DD'),
     };
 
-    equipmentHttpServices
-      .add(newEquipmentData,branchSelectorValue,userId,token)
-      .then((returnedEquipment) => {
-        setAllEquipment(allEquipment.concat(returnedEquipment));
+   let submitData = equipmentHttpServices.add(newEquipmentData,branchSelectorValue,userId,token)
+  submitData.then((returnedEquipment) => {
+        // setAllEquipment(allEquipment.concat(returnedEquipment));
+        console.log(Object.assign({},returnedEquipment))
         openNotificationWithIcon('success');
       })
-      .catch((error) => {
+  submitData.catch((error) => {
+      alert('An error occured, please try again.')
         console.log(error.response);
       });
 
