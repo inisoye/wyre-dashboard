@@ -5,7 +5,6 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ReportHttpServices from '../services/report';
 
@@ -105,7 +104,7 @@ function Report({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
+        
       </div>
 
       <div className="report-row-1">

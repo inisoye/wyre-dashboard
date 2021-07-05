@@ -8,6 +8,8 @@ const ScoreCardDoughnutChart = ({ data, dataTitle, dataSubtitle }) => {
 
   const extractedDataArray = Object.values(extractedDataObject).reverse();
   let extractedLabelsArray = Object.keys(extractedDataObject).reverse();
+  
+
 
   // Remove underscores and capitalize every word
   extractedLabelsArray = extractedLabelsArray.map((label) =>

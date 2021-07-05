@@ -10,7 +10,6 @@ import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGen
 import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import UpArrowIcon from '../icons/UpArrowIcon';
 
@@ -45,6 +44,7 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
+
   const generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
 
@@ -77,7 +77,6 @@ function ScoreCard({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className='score-card-row-1'>
@@ -146,8 +145,8 @@ function ScoreCard({ match }) {
               <span>
                 {peak_to_avg_power_ratio &&
                   calculateRatio(
-                    peak_to_avg_power_ratio.peak,
-                    peak_to_avg_power_ratio.avg
+                    peak_to_avg_power_ratio.avg,
+                    peak_to_avg_power_ratio.peak
                   )}{' '}
               </span>
             </p>
@@ -199,40 +198,29 @@ function ScoreCard({ match }) {
           </div>
 
           <p className='score-card-bottom-text'>
-            Grid Supplied:{' '}
+            Estimated:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
-            Generator:{' '}
+            Actual Emission:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          <p className='score-card-bottom-text h-mt-24 h-red-text'>
+          {/* <p className='score-card-bottom-text h-mt-24 h-red-text'>
             <span>Conditional Sub-text Should Go Here</span>{' '}
             <span className='score-card-bottom-text-small'>
               (Additional Conditional Sub-text Should Go Here)
             </span>
-          </p>
+          </p> */}
         </article>
       </div>
 
-      <article className='score-card-row-2'>
-        <h2 className='changeover-lags-heading score-card-heading'>
-          Change Over Lags
-        </h2>
-        <ScoreCardTable changeOverLagsData={change_over_lags} />
-      </article>
-
-      <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time} />
-      </article>
-
-      <div className='score-card-row-4'>
+      <div className='score-card-row-4' style={{marginBottom:'50px'}}>
         <article className='score-card-row-4__left'>
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
@@ -248,7 +236,18 @@ function ScoreCard({ match }) {
             Estimated Fuel Consumption for facility gens
           </p>
         </article>
-      </div>
+    </div>
+
+      <article className='score-card-row-2'>
+        <h2 className='changeover-lags-heading score-card-heading'>
+          Change Over Lags
+        </h2>
+        <ScoreCardTable changeOverLagsData={change_over_lags} />
+      </article>
+
+      <article className='score-card-row-3'>
+        <ScoreCardBarChart operatingTimeData={operating_time} />
+      </article>
     </>
   );
 }

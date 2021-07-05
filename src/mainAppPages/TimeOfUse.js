@@ -13,8 +13,7 @@ import TimeOfUseStackedBarChart from '../components/barCharts/TimeOfUseStackedBa
 import TimeOfUseTable from '../components/tables/TimeOfUseTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
-
+import TimeOfUseCard from '../smallComponents/TimeOfUseCard'
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
 
@@ -29,6 +28,7 @@ function TimeOfUse({ match }) {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
+    organization
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
@@ -55,26 +55,26 @@ function TimeOfUse({ match }) {
     time_of_use_table &&
     time_of_use_table.map((eachBranch) => {
       const { dates } = eachBranch;
-      const dateObjects = convertDateStringsToObjects(dates.dates || dates);
-      const branchWithDateObjects = { ...eachBranch, dates: dateObjects };
-      return branchWithDateObjects;
+      // const dateObjects = convertDateStringsToObjects(dates.dates || dates);
+      // const branchWithDateObjects = { ...eachBranch, dates: dateObjects };
+      // return branchWithDateObjects;
     });
 
   const tableHeadings = Object.keys({
     branchName: '',
     date: '',
-    ...(timeOfUseTableDataWithDateObjects
-      ? timeOfUseTableDataWithDateObjects[0].values
-      : []),
+    // ...(timeOfUseTableDataWithDateObjects
+    //   ? timeOfUseTableDataWithDateObjects[0].values
+    //   : []),
   });
 
   const arrayOfTableValues =
     timeOfUseTableDataWithDateObjects &&
     timeOfUseTableDataWithDateObjects.map((eachBranch) => {
       return Object.values({
-        branchName: [eachBranch.branchName],
-        date: formatParametersDates(eachBranch.dates),
-        ...eachBranch.values,
+        // branchName: [eachBranch.branchName],
+        // date: formatParametersDates(eachBranch.dates),
+        // ...eachBranch.values,
       });
     });
 
@@ -84,51 +84,18 @@ function TimeOfUse({ match }) {
       formatParameterTableData(tableHeadings, eachBranchTableValues)
     );
 
+  const csvTitles = organization.branches && organization.branches[0].time_of_use_table.titles
+  // console.log(csvTitles)
   const csvHeaders = [
-    { label: "Index", key: "index" },
-    { label: "Date", key: "date" },
-    { label: "Gen 1", key: "gen1" },
-    { label: "Gen 2", key: "gen2" },
-    { label: "Active Gen", key: "active_gen" },
-    { label: "First Time ON", key: "time_on" },
-    { label: "Last Time OFF", key: "time_off" },
-    { label: "Hours of Use", key: "hours_of_use" },
-  ]
-
-  const timeOfUseTables =
-    arrayOfFormattedTableData &&
-    arrayOfFormattedTableData.map((eachBranch) => (
-      <article className='table-with-header-container'>
-        <div className='table-header'>
-          <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
-              PDF
-            </button>
-            <ExportToCsv filename={`${eachBranch[0].branchName} time-of-use.csv`} csvHeaders={csvHeaders} csvData={eachBranch}>
-              <button type='button' className='table-header__left-button'>
-                CSV
-            </button>
-            </ExportToCsv>
-          </div>
-
-          <h3 className='table-header__heading'>
-            Raw Logs for {eachBranch[0].branchName}
-          </h3>
-
-          <button
-            type='button'
-            className='table-header__right-button h-hidden-medium-down'
-          >
-            <ExcelIcon />
-            <span>Download in Excel</span>
-          </button>
-        </div>
-
-        <div className='time-of-use-table-wrapper'>
-          <TimeOfUseTable timeOfUseData={eachBranch} />
-        </div>
-      </article>
-    ));
+    // organization.branches && organization.branches.map((data)=>[{ label: data && data.time_of_use_table.titles, key: data && data.time_of_use_table.titles }])
+    { label: "post_datetime", key: "post_datetime" },
+    { label: "EKEDC", key: "EKEDC" },
+    { label: "EKEDC_hours", key: "EKEDC_hours" },
+    { label: "EKEDC_hou_cummlative", key: "EKEDC_hou_cummlative" },
+    { label: "350KVA GEN", key: "350KVA GEN" },
+    { label: "350KVA GEN_hours", key: "350KVA GEN_hours" },
+    { label: "350KVA GEN_hou_cummlative", key: "350KVA GEN_hou_cummlative" },
+  ]               
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
@@ -138,18 +105,52 @@ function TimeOfUse({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
-      <article className='parameters-stacked-bar-container'>
+      {/* <article className='parameters-stacked-bar-container'>
         <TimeOfUseStackedBarChart
           chartTimeValues={chartTimeValues}
           chartDeviceNames={chartDeviceNames}
           chartDates={chartDates}
         />
-      </article>
+      </article> */}
 
-      {timeOfUseTables}
+      {organization.branches && organization.branches.map((eachBranch)=>(
+          <>
+          <TimeOfUseCard data={eachBranch}/>
+          <article className='table-with-header-container'>
+            <div className='table-header'>
+              <div className='h-hidden-medium-down'>
+                <button type='button' className='table-header__left-button'>
+                  PDF
+                </button>
+                <ExportToCsv filename={`${eachBranch.name} time-of-use.csv`} csvHeaders={csvHeaders} csvData={eachBranch.time_of_use_table.values}>
+                  <button type='button' className='table-header__left-button'>
+                    CSV
+                </button>
+                </ExportToCsv>
+              </div>
+    
+              <h3 className='table-header__heading'>
+                Raw Logs for {eachBranch.name}
+              </h3>
+    
+              <button
+                type='button'
+                className='table-header__right-button h-hidden-medium-down'
+              >
+                <ExcelIcon />
+                <span>Download in Excel</span>
+              </button>
+            </div>
+    
+            <div className='time-of-use-table-wrapper'>
+              <TimeOfUseTable timeOfUseData={eachBranch}/>
+            </div>
+          </article>
+          </>    
+      ))
+        }
     </>
   );
 }
