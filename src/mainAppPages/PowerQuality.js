@@ -6,7 +6,6 @@ import BreadCrumb from '../components/BreadCrumb';
 import PowerQualityPageSection from '../components/parameterPagesSections/PowerQualityPageSection';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -46,7 +45,6 @@ function PowerQuality({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div>{powerQualitySections}</div>

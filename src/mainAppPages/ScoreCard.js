@@ -10,7 +10,6 @@ import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGen
 import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import UpArrowIcon from '../icons/UpArrowIcon';
 
@@ -77,7 +76,6 @@ function ScoreCard({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className='score-card-row-1'>

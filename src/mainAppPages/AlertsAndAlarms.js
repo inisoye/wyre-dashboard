@@ -8,7 +8,6 @@ import alertsHttpServices from '../services/alertsAndAlarms';
 
 import BreadCrumb from '../components/BreadCrumb';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 
 const breadCrumbRoutes = [
@@ -91,7 +90,6 @@ function AlertsAndAlarms({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="alerts-and-alarms-form-content-wrapper">

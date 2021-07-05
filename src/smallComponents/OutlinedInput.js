@@ -11,21 +11,23 @@ const OutlinedInput = ({
   register,
   className,
   onChange,
-}) => {
+}) => {  
   return (
-    <input
-      className={className + ' outlined-input'}
-      type={type}
-      name={name}
-      id={id}
-      placeholder={placeholder}
-      autoComplete={autoComplete}
-      required={required}
-      autoFocus={autoFocus}
-      autoCapitalize='off'
-      ref={register}
-      onChange={onChange}
-    />
+    <>
+      <input
+        className={className + ' outlined-input'}
+        type={type}
+        name={name}
+        id={id}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+        required={required}
+        autoFocus={autoFocus}
+        autoCapitalize="off"
+        ref={register}
+        onChange={onChange}
+      /> 
+    </>
   );
 };
 

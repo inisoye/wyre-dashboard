@@ -15,7 +15,6 @@ import PowerDemandStackedBarChart from '../components/barCharts/PowerDemandStack
 import PowerDemandTable from '../components/tables/PowerDemandTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
@@ -128,7 +127,6 @@ function PowerDemand({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='parameters-stacked-bar-container'>

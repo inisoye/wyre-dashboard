@@ -601,6 +601,12 @@ const getOrganizationBillingTotals = (data) => {
       'diesel_per_kwh'
     ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
+    const organizationMetricsIppPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'ipp_per_kwh'
+    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
   const organizationMetricsUtilityPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
@@ -623,6 +629,7 @@ const getOrganizationBillingTotals = (data) => {
       value_naira: organizationPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: organizationMetricsIppPerKwh,
       diesel_per_kwh: organizationMetricsDieselPerKwh,
       utility_per_kwh: organizationMetricsUtilityPerKwh,
       blended_cost_per_kwh: organizationMetricsBlendedCostPerKwh,
