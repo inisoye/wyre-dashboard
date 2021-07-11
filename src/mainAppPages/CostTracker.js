@@ -7,6 +7,8 @@ import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrack
 import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import Loader from '../components/Loader';
+import {mergeTheData} from '../helpers/genericHelpers'
+import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
 
 
 const breadCrumbRoutes = [
@@ -19,6 +21,7 @@ function CostTracker({ match }) {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
+    organization
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
@@ -32,6 +35,16 @@ function CostTracker({ match }) {
     cost_tracker_monthly_cost,
     cost_tracker_consumption,
   } = refinedRenderedData;
+
+
+  const comparisonData = organization.branches && organization.branches.map((eachValue)=>{
+   const {cost_tracker_monthly_diesel_purchase, cost_tracker_monthly_diesel_estimate, name} = eachValue
+    return {
+      'branchName': name,
+      'diesel_estimate': cost_tracker_monthly_diesel_estimate,
+      "diesel_purchase": cost_tracker_monthly_diesel_purchase
+    }
+  })
 
   const dieselQuantityBarCharts =
     cost_tracker_diesel_qty &&
@@ -80,6 +93,23 @@ function CostTracker({ match }) {
         </div>
       </article>
     ));
+
+    const DiselCostAndConsumptionComparison  =
+    comparisonData &&
+    comparisonData.map((eachBranch) => (
+      <article
+        className='cost-tracker-chart-container'
+        key={eachBranch.branchName}
+      >
+        <h3 className='cost-tracker-branch-name'>
+          {eachBranch.branchName}
+        </h3>
+        <div className='cost-tracker-chart-wrapper'>
+          <ComparisonBarChart comparisonData={eachBranch} />
+        </div>
+      </article>
+    ));
+
   
    if (isAuthenticatedDataLoading) {
      return <Loader />;
@@ -104,6 +134,12 @@ function CostTracker({ match }) {
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
         {monthlyCostBarCharts}
+      </section>
+
+      
+      <section className='cost-tracker-section'>
+        <h2 className='h-screen-reader-text'>Estimated Monthly Cost</h2>
+        {DiselCostAndConsumptionComparison}
       </section>
     </>
   );

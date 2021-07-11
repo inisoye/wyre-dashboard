@@ -9,7 +9,7 @@ function removeDuplicateDatas(value, index, self) {
 }
 
 
-const mergeTheEquipmentsData = (arr) => {
+const mergeTheData = (arr) => {
       return [...new Set([].concat(...arr))];
 }
 
@@ -406,5 +406,5 @@ export {
   convertParameterDateStringsToObjects,
   removeDuplicateDatas,
   truncateEmail,
-  mergeTheEquipmentsData
+  mergeTheData
 };
