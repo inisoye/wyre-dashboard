@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography, Space, notification} from 'antd';
-import { mergeTheEquipmentsData } from '../../helpers/genericHelpers'
+import { mergeTheData } from '../../helpers/genericHelpers'
 import equipmentHttpServices from '../../services/equipment'
 import CompleteDataContext from '../../Context';
 
@@ -56,7 +56,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
-    const mergedData = mergeTheEquipmentsData(Object.values(listOfEquipmentData))
+    const mergedData = mergeTheData(Object.values(listOfEquipmentData))
     const mapKeyToEachData = mergedData.map(element => {
         let branchIds = element.id
         const formattedData  = element.equipments.map((data)=>{ 
