@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Row, Col, Menu, Checkbox, Input, Alert } from 'antd';
+import { Modal, Row, Col, Menu, Checkbox, Input, Alert, notification } from 'antd';
 import axios from 'axios';
 
 import CompleteDataContext from '../Context';
@@ -67,7 +67,6 @@ export const ScheduleEmailModal = () => {
       .then((resp) => {
         setEmailModalData(resp.data.data);
         setExterNalReceiverSelect(convertExternalReceiver(resp.data.data.external_recievers, 'id', 'assigned_devices'));
-        console.log('this is the console.log data and here we go', convertExternalReceiver(resp.data.data.external_recievers, 'id', 'assigned_devices'))
       })
       .catch((error) => console.log('An error occured:', error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +128,6 @@ export const ScheduleEmailModal = () => {
       })
       .then((res) => {
         setEmailModalData(res.data.data);
-        console.log(emailModalData)
       })
       .catch((error) => {
         console.log('Error adding assigned devices to external Receiver', error)
@@ -140,8 +138,6 @@ export const ScheduleEmailModal = () => {
 
 
   const handleExternalRecieversDevicesMenuClick = (v) => {
-    console.log('this is v', v);
-    console.log('this is exterNalReceiverSelect', exterNalReceiverSelect);
     const receiverId = v.target['data-receiver'];
     const value = v.target.eventKey;
     let selectedArray
@@ -177,8 +173,15 @@ export const ScheduleEmailModal = () => {
     let addExternalReceiverData = JSON.stringify({
       email: addEmail,
     });
-
-    axios
+    
+    if (addEmail ==='' || addEmail === undefined) {
+        notification.error({
+          message: "Please Insert a recipient's E-mail address",
+          description:
+            'Type recipient email Input before adding external',
+        });
+    } else {
+      axios
       .post(addNewExternalReceiverUrl, addExternalReceiverData, {
         headers: {
           'Content-Type': 'application/json',
@@ -190,7 +193,9 @@ export const ScheduleEmailModal = () => {
       })
       .catch((err) =>
         alert("Couldn't add external Reciever, Please try again.")
-      );
+      );  
+    }
+    
   };
 
 
@@ -314,13 +319,10 @@ export const ScheduleEmailModal = () => {
   const externalRecieversAssignedDevices = emailModalData && emailModalData.available_devices;
   const assignedDevicesForExternalRecievers = (assigned_devices, receiverId) => {
     const assignedDeviceObject = convertToObject(assigned_devices, 'id', 'name');
-    console.log('here is the assigned device', assignedDeviceObject)
     return (
     <Menu
       selectable
       multiple={true}
-      // onClick={handleExternalRecieversDevicesMenuClick}
-      // selectedKeys={[externalRecieverAssignedDeviceIds]}
       >
       {externalRecieversAssignedDevices &&
         externalRecieversAssignedDevices.map((item) => (
