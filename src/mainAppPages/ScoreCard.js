@@ -293,7 +293,7 @@ function ScoreCard({ match }) {
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
           <p className='gen-efficiency-footer-text'>
-            Utilization factor for facility generators
+            Utilization Factor for Facility Generators
           </p>
         </article>
 
@@ -301,7 +301,7 @@ function ScoreCard({ match }) {
           <h2 className='score-card-heading'>Fuel Consumption</h2>
           {fuelConsumptionDoughnuts}
           <p className='fuel-consumption-footer-text'>
-            Estimated Fuel Consumption for facility gens
+            Estimated Fuel Consumption for Facility Generators
           </p>
         </article>
       </div>
