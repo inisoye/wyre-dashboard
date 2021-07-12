@@ -39,7 +39,7 @@ function PrintButtons() {
     }
 
     if (selectedDevicesIds.length === 0 ) {
-        const defaultIds = allDevices.filter((e)=>{
+        allDevices.filter((e)=>{
           return selectedDevicesIds.push(e.id)
         })
     }

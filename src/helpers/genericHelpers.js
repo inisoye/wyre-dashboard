@@ -71,6 +71,11 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
+const calculateRatio = (avg, peak) => {
+  let peak_ratio =  avg/peak
+  return peak_ratio.toFixed(1);
+}
+
 const getPeakToAverageMessage = (peakRatio) => {
   let peakMessage;
   let peakMessageColor;
@@ -86,24 +91,6 @@ const getPeakToAverageMessage = (peakRatio) => {
   }
   return {message: peakMessage, color: peakMessageColor}
 }
-
-const calculateRatio = (num_1, num_2) => {
-  // for (let num = num_2; num > 1; num--) {
-  //   if (num_1 % num === 0 && num_2 % num === 0) {
-  //     num_1 = num_1 / num;
-  //     num_2 = num_2 / num;
-  //   }
-  // }
-
-  let peak_ratio = (num_1/num_2)
-  num_1 = peak_ratio%1 === 0 ? peak_ratio.toFixed(0): peak_ratio.toFixed(1)
-  num_2 = 1
-
-  //const ratio = num_1 + ':' + num_2;
-  const ratio = (num_2/num_1).toFixed(2);
-
-  return ratio;
-};
 
 const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 // -------------------------------------------------------------------

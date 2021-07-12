@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Row, Col, Menu, Checkbox, Input, Alert } from 'antd';
+import { Modal, Row, Col, Menu, Checkbox, Input, Alert, notification } from 'antd';
 import axios from 'axios';
 
 import CompleteDataContext from '../Context';
@@ -116,13 +116,15 @@ export const ScheduleEmailModal = () => {
         return externalRecieverAssignedDeviceIds.push(e.id)
       })
     }
-    const data =
+
+    const addDeviceData =
      JSON.stringify({
       receiver_id: currentRecieverId,
       selected_devices: externalRecieverAssignedDeviceIds.filter(removeDuplicateDatas),
     });
+
      axios
-      .post(addavailableDevicesToBillReceiver, data, {
+      .post(addavailableDevicesToBillReceiver, addDeviceData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `bearer ${token}`,
@@ -137,12 +139,6 @@ export const ScheduleEmailModal = () => {
         alert('Error adding assigned devices to external receiver')
       }
       ); 
-  };
-
-
-  const handleExternalRecieversDevicesMenuClick = (v) => {
-    const parsedIds = parseInt(v.key)
-    externalRecieverAssignedDeviceIds.push(parsedIds)
   };
 
   const handlePersonalDataDevicesMenuClick = (devices) => {
@@ -160,8 +156,15 @@ export const ScheduleEmailModal = () => {
     let addExternalReceiverData = JSON.stringify({
       email: addEmail,
     });
-
-    axios
+    
+    if (addEmail ==='' || addEmail === undefined) {
+        notification.error({
+          message: "Please Insert a recipient's E-mail address",
+          description:
+            'Type recipient email Input before adding external',
+        });
+    } else {
+      axios
       .post(addNewExternalReceiverUrl, addExternalReceiverData, {
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +176,9 @@ export const ScheduleEmailModal = () => {
       })
       .catch((err) =>
         alert("Couldn't add external Reciever, Please try again.")
-      );
+      );  
+    }
+    
   };
 
 
@@ -284,21 +289,38 @@ export const ScheduleEmailModal = () => {
     </Menu>
   );
 
-  const getDeviceIdsAssignedToReceivers = emailModalData && emailModalData[0]
+
+  const externalRecieverData =  emailModalData && emailModalData[0][0]
+
+  const checkIfDeviceIsCheckedByDefault = (prop)=>{
+    let defaultdeviceId =[]        
+      Object.entries(externalRecieverData.assigned_devices).forEach(x=>{
+        return [x[1]].filter((e)=>{
+          return defaultdeviceId.push(e.id)
+        })
+      })
+      let defaultCheckValue = defaultdeviceId.includes(prop)
+      return defaultCheckValue
+  }
 
   const externalRecieversAssignedDevices = emailModalData && emailModalData[2];
   const assignedDevicesForExternalRecievers = (
     <Menu
       selectable
       multiple={true}
-      onClick={handleExternalRecieversDevicesMenuClick}
-      selectedKeys={[externalRecieverAssignedDeviceIds]}
       >
       {externalRecieversAssignedDevices &&
         externalRecieversAssignedDevices.map((item) => (
           <Menu.Item key={item.device_id}>
             {item.device_name}
-            <Checkbox style={{ marginLeft: '20px' }}/>
+            <Checkbox 
+            style={{ marginLeft: '20px' }} 
+            // defaultChecked={checkIfDeviceIsCheckedByDefault(item.device_id)}
+            onChange={()=>{          
+              const parsedIds = parseInt(item.device_id)
+              externalRecieverAssignedDeviceIds.push(parsedIds)
+              console.log(item.device_id)
+            }}/> 
           </Menu.Item>
         ))}
     </Menu>
