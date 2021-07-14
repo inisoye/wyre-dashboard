@@ -1,3 +1,6 @@
+import { getRefinedBranchData } from './branchDataHelpers';
+import { getDeviceData } from './deviceDataHelper';
+
 import {
   sumArrayOfArrays,
   getAllOrganizationDevices,
@@ -738,4 +741,49 @@ const getRefinedOrganizationData = (data) => {
     ),
   };
 };
+
 export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, getOrganizationDeviceType };
+
+
+/* -------------------------------------------------------------------
+/* Handles when a date search is made wit while some checkbox are ticked
+--------------------------------------------------------------------*/
+// const getRefinedOrganizationDataWithChekBox = ({
+//   checkedBranches,
+//   checkedDevices,
+//   organization,
+//   setRenderedDataObjects
+// }) => {
+
+//   let branchAndDevice = {}
+//   // convert branches to array using the object keys
+//   const branches = Object.keys(checkedBranches);
+//   // convert device to array using the object keys
+//   const devices = Object.keys(checkedDevices);
+
+//   // convert branches or device are present then
+//   if (branches.length !== 0 || devices.length > 0) {
+
+//     organization.branches.forEach((branch) => {
+//       if (branches.length > 0) {
+//         // check whether the branch name is part of the branches array
+//         if (branches.includes(branch.name)) {
+//           branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch) }
+//         }
+
+//       }
+//       if (devices.length > 0) {
+//         branch.devices.forEach((device) => {
+//           const combinedNames = `${branch.name} ${device.name}`;
+//            // check whether the device name is part of the devices array
+//           if (devices.includes(combinedNames)) {
+//             branchAndDevice = { ...branchAndDevice, ...getDeviceData({ branchData: branch, deviceData: device }) }
+//           }
+//         })
+
+//       }
+//     })
+//   }
+//   setRenderedDataObjects(branchAndDevice);
+//   return branchAndDevice;
+// }

@@ -1,4 +1,6 @@
+
 import React, { createContext, useEffect, useState } from 'react';
+
 import { useMediaQuery } from 'react-responsive';
 
 import dataHttpServices from './services/devices';
@@ -163,8 +165,42 @@ const CompleteDataProvider = (props) => {
         setSelectedDevices(getDeviceType);
       }
     }
-  }, [organization, checkedItems, renderedDataObjects]);
+  }, [checkedItems, renderedDataObjects]);
       
+  /*--------------------------------------------------------------------
+
+
+
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Organization data on load ------------------------------------------
+  /* there is need to separate the organisation from the rest 
+  --------------------------------------------------------------------*/
+  useEffect(() => {
+    
+    // Ensure organization object is not empty
+    if (
+      Object.keys(organization).length > 0 &&
+      organization.constructor === Object
+    ) {
+      // If nothing is checked, render organization's data
+      // Otherwise, render data from checked items
+      if (
+        Object.keys(checkedItems).length === 0 &&
+        checkedItems.constructor === Object
+      ) {
+        setRefinedRenderedData(getRefinedOrganizationData(organization));
+      } else {
+        // get the data to render
+        const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
+          checkedBranches, checkedDevices, organization, setRenderedDataObjects
+        })
+        const renderedDataArray = Object.values(dataWithCheckBoxes);
+        setRefinedRenderedData(getRenderedData(renderedDataArray));
+      }
+    }
+  }, [organization]);
   /*--------------------------------------------------------------------
 
     
