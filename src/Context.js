@@ -159,10 +159,8 @@ const CompleteDataProvider = (props) => {
       } else {
         const renderedDataArray = Object.values(renderedDataObjects);
         const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
-        
         setRefinedRenderedData(getRenderedData(renderedDataArray));
         setSelectedDevices(getDeviceType);
-        //setDeviceData(getOrganizationDeviceType(renderedDataArray));
       }
     }
   }, [organization, checkedItems, renderedDataObjects]);
