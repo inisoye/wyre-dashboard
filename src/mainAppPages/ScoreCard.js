@@ -57,7 +57,7 @@ function ScoreCard({ match }) {
   const arrowColor = getPeakResult.color;
 
   //calculate number of trees for carbon emission
-  const noOfTrees = score_card_carbon_emissions.actual_value * 6;
+  const noOfTrees = (score_card_carbon_emissions.actual_value * 6).toFixed(2);
   const message = "Equivalent to "+noOfTrees+" Acacia trees";
   const date = new Date();
 
