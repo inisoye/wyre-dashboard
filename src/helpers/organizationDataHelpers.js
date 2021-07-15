@@ -178,6 +178,7 @@ const getOrganizationDeviceType = (data) => {
     {
       device_name : eachDevice.name,
       is_gen : eachDevice.score_card.is_generator,
+ 
     } : false
   );
   return deviceTypeArray;
@@ -744,7 +745,6 @@ const getRefinedOrganizationData = (data) => {
 };
 
 
-
 /* -------------------------------------------------------------------
 /* Handles when a date search is made wit while some checkbox are ticked
 --------------------------------------------------------------------*/
@@ -788,5 +788,7 @@ const getRefinedOrganizationDataWithChekBox = ({
   return branchAndDevice;
 }
 
+
 export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, 
   getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox };
+
