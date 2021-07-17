@@ -328,7 +328,7 @@ textarea:focus {
   }
 }
 @media (min-width: 1013px) {
-  .page-content, .top-bar, .sidebar, header,
+  .dashboard-row-3-content, .top-bar, .sidebar, header,
 .h-regular-gutters {
     padding-left: 40px;
     padding-right: 40px;
@@ -1656,8 +1656,52 @@ thead.ant-table-thead tr th {
   align-items: center;
 }
 
+.dashboard__total-energy-amount {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.total-energy-price__heading {
+  margin-top: 6px;
+}
+
+.total-energy-price__heading__text {
+  color: #143861;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+.total-energy-price__heading__text {
+  color: #143861;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.total-energy-price__heading__text__hrs {
+  font-size: 1.4rem;
+}
+.total-energy-price__heading__text__bold{
+  color: #143861;
+  font-size: 1.9rem;
+  font-weight: 500;
+  margin: 35px 0 15px 0;
+}
+
+.total-right-energy-price{
+  background-color: #6c00fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin: auto; */
+  /* margin: 35px 0 15px 0; */
+  width: 26%;
+}
+.total-left-energy-price{
+padding-left: 40px;
+}
+
 .total-energy__heading {
-  color: #ffffff;
+  color: #143861;
   font-size: 3rem;
 }
 
@@ -1730,7 +1774,7 @@ thead.ant-table-thead tr th {
 }
 
 @media (min-width: 1200px) {
-  .dashboard-row-3 {
+  .dashboard-row-3, .dashboard-row-2 {
     display: flex;
     justify-content: space-between;
     width: 100%;

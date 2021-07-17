@@ -18,7 +18,12 @@ import DashboardDownArrow from "../icons/DashboardDownArrow";
 import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
+import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
+import { sumArrayOfArrays } from "../helpers/genericHelpers";
 
+const addAllArrayValue = (data) => {
+  return data.reduce((a, b) => a + b, 0)
+}
 
 
 const breadCrumbRoutes = [
@@ -65,7 +70,20 @@ function Dashboard({ match }) {
     today,
     yesterday,
     daily_kwh,
+    all_device_data
   } = refinedRenderedData;
+
+
+  const abc = {};
+  console.log('this is abc kkkkk', abc[0]);
+  // console.log('here we go ehre', all_device_data[0]);
+  console.log('here we go ehre', all_device_data && Object.keys(all_device_data).length !== 0? all_device_data[0] : '');
+
+  all_device_data && Object.keys(all_device_data).length !== 0 && Object.values(all_device_data).forEach((eachDevice) => {
+    console.log('this is the each data object', eachDevice.score_card.operating_time.estimated_cost.value);
+    console.log('this iyahdlhjkskjdhnisjn', eachDevice.time_of_use);
+    console.log('this is the each data object', eachDevice);
+  })
 
   const pageRef = useRef();
 
@@ -81,12 +99,12 @@ function Dashboard({ match }) {
     html2pdf(page)
 
     // window
-      // .open("", "PRINT", "height=650,width=900,top=100,left=100")
-      // .document.write("Testing PDfs")
-      // .document.close()
-      // .focus()
-      // .print()
-      // .close();
+    // .open("", "PRINT", "height=650,width=900,top=100,left=100")
+    // .document.write("Testing PDfs")
+    // .document.close()
+    // .focus()
+    // .print()
+    // .close();
 
     // html2canvas(input)
     //   .then((canvas) => {
@@ -113,7 +131,7 @@ function Dashboard({ match }) {
           document={<PDFDocument />}
           fileName={"dashboard.pdf"}
         /> */}
-        </div>
+      </div>
 
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
@@ -163,6 +181,29 @@ function Dashboard({ match }) {
               unit={cost_of_energy && cost_of_energy.unit}
             />
           </article>
+        </div>
+        <div className="dashboard-row-1 dashboard-row-1b">
+          {
+            all_device_data && Object.keys(all_device_data).length !== 0 && Object.values(all_device_data).map((eachDevice) => {
+              
+              return <article className="dashboard__total-energy-amount dashboard__banner--small">
+              <DashBoardAmountUsed name={eachDevice?.name} totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
+              amount={eachDevice.score_card.is_generator ? eachDevice.score_card.operating_time.estimated_cost.value 
+                : eachDevice.billing?.totals?.present_total?.value_naira
+              }  
+              // timeInUse={addAllArrayValue(eachDevice?.time_of_use?.values)}
+              timeInUse={eachDevice?.score_card.fuel_consumption.time_used}
+              />
+            </article>
+            })
+          }
+
+          {/* <article className="dashboard__total-energy-amount dashboard__banner--small">
+            <DashBoardAmountUsed  avatar={avatar}/>
+          </article>
+          <article className="dashboard__total-energy-amount dashboard__banner--small">
+            <DashBoardAmountUsed  avatar={avatar}/>
+          </article> */}
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
