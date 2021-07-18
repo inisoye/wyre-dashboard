@@ -1,13 +1,13 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
+const ScoreCardFuelConsumptionDoughnut = ({ data, dataTitle, dataSubtitle }) => {
   const {
     name,
     size,
     diesel_usage,
     time_used,
-    // hours_to_maintenance
+    hours_to_maintenance
   } = data
     ? data
     : {
@@ -32,6 +32,8 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     ],
   };
 
+  const dataSubtitleArray = dataSubtitle.split('(b)');
+
   const options = {
     cutoutPercentage: 60,
     legend: {
@@ -51,7 +53,19 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         label: function (tooltipItem, data) {
           return data['datasets'][0]['data'][tooltipItem['index']] + '%';
         },
+
+        footer: function () {
+          const dataTitleAndSubtitleArray = [
+            dataTitle + ': ',
+            ...dataSubtitleArray,
+          ];
+          return dataTitleAndSubtitleArray;
+        },
       },
+      xPadding: 30,
+      yPadding: 30,
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
     },
   };
 
@@ -61,7 +75,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         <Doughnut data={plottedData} options={options} />
 
         <p className='fuel-consumption-doughnut-centre-text'>
-          <span>{diesel_usage}%</span> Used
+          <span>{hours_to_maintenance.hours}%</span> Used
         </p>
       </div>
 

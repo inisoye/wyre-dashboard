@@ -5,7 +5,6 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ErrorIcon from '../icons/ErrorIcon';
 
@@ -46,7 +45,7 @@ function Password({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
+        
       </div>
 
       <div className="password-page-container">

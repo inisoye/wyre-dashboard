@@ -1,0 +1,1 @@
+export const SCORE_CARD_EXCLUDE_CLIENTS = ['Sapio Utilities'];
