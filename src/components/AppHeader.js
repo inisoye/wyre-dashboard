@@ -22,6 +22,7 @@ import OverviewIcon from '../icons/OverviewIcon';
 import PadlockIcon from '../icons/PadlockIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import LogoutIcon from '../icons/LogoutIcon';
+import { SCORE_CARD_EXCLUDE_CLIENTS } from '../helpers/constants';
 
 function Header() {
   const {
@@ -136,11 +137,14 @@ function Header() {
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
             {/* {!doesUserHaveAccess && ( */}
+              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+              &&
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
                 linkText="Score Card"
               />
+            }
             {/* )} */}
 
             <HeaderLinkWithDropdown
@@ -178,13 +182,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                {/* {!doesUserHaveAccess && ( */}
+                {!doesUserHaveAccess && (
                   <HeaderSublink
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"
                     linkText="Time of Use"
                     />
-                  {/* )} */}
+                  )}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"
@@ -212,14 +216,14 @@ function Header() {
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-
+            {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
               // url='/messages'
               linkText="Messages"
             />
-
+            )}
             <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}
