@@ -91,6 +91,7 @@ function Header() {
       }
       
   });
+  
 
   const doesUserHaveAccess =
     organisationName && checkOrganizationHasAccess(organisationName);
@@ -207,11 +208,14 @@ function Header() {
             )}
 
             {/* {!doesUserHaveAccess && ( */}
+              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+              &&
               <HeaderLink
                 onClick={toggleNav}
                 url="/cost-tracker"
                 linkText="Cost Tracker"
               />
+            }
             {/* )} */}
 
 
