@@ -106,6 +106,18 @@ const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 
 // -------------------------------------------------------------------
 
+// 
+/**
+ * @description nadd the usage hour to the device
+ * @param {*} branch the branch
+ * @param {*} deviceName the name of the device
+ * @returns the usage hours of the int
+ */
+const addUsageHoursToDevice = (branch, deviceName) => {
+  const index = branch.usage_hours.devices.findIndex((item) => deviceName === item);
+  return branch.usage_hours.hours[index]
+}
+
 const getAllOrganizationDevices = (data) => {
   return (
     data.branches &&
@@ -114,14 +126,19 @@ const getAllOrganizationDevices = (data) => {
         // Add branch name to each device name
         eachBranch.devices.forEach((device) => {
           // Prevent process from repeating several times
-          if (!device.name.includes(eachBranch.name))
+          if (!device.name.includes(eachBranch.name)){
+            device.usage_hour = addUsageHoursToDevice(eachBranch, device.name, eachBranch.name)
             device.name = eachBranch.name + ' ' + device.name;
-        });        
+          }
+        });
+              
         return eachBranch.devices;
       })
       .flat()
   );
 };
+
+
 
 const getModifiedBranchLevelData = (branchData, propertyName, branchName) => {
   const branchLevelDataOfProperty = branchData && branchData[propertyName];

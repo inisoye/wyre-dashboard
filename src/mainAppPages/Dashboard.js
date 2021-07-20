@@ -18,7 +18,7 @@ import DashboardDownArrow from "../icons/DashboardDownArrow";
 import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
-
+import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 
 
 const breadCrumbRoutes = [
@@ -65,7 +65,10 @@ function Dashboard({ match }) {
     today,
     yesterday,
     daily_kwh,
+    all_device_data
   } = refinedRenderedData;
+
+ 
 
   const pageRef = useRef();
 
@@ -81,12 +84,12 @@ function Dashboard({ match }) {
     html2pdf(page)
 
     // window
-      // .open("", "PRINT", "height=650,width=900,top=100,left=100")
-      // .document.write("Testing PDfs")
-      // .document.close()
-      // .focus()
-      // .print()
-      // .close();
+    // .open("", "PRINT", "height=650,width=900,top=100,left=100")
+    // .document.write("Testing PDfs")
+    // .document.close()
+    // .focus()
+    // .print()
+    // .close();
 
     // html2canvas(input)
     //   .then((canvas) => {
@@ -113,7 +116,7 @@ function Dashboard({ match }) {
           document={<PDFDocument />}
           fileName={"dashboard.pdf"}
         /> */}
-        </div>
+      </div>
 
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
@@ -163,6 +166,22 @@ function Dashboard({ match }) {
               unit={cost_of_energy && cost_of_energy.unit}
             />
           </article>
+        </div>
+        <div className="dashboard-row-1b">
+          {
+            all_device_data && Object.keys(all_device_data).length !== 0 
+            && Object.values(all_device_data).map((eachDevice, index) => {
+              return index < 6 && <article className="dashboard__total-energy-amount dashboard__banner--smallb">
+              <DashBoardAmountUsed key={index} name={eachDevice?.name}
+              deviceType={eachDevice.device_type}
+              totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
+              amount={eachDevice.billing?.totals?.present_total?.value_naira
+              }
+              timeInUse={eachDevice?.usage_hour}
+              />
+            </article>
+            })
+          }
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
