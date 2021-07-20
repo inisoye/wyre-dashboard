@@ -19,11 +19,6 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import { sumArrayOfArrays } from "../helpers/genericHelpers";
-
-const addAllArrayValue = (data) => {
-  return data.reduce((a, b) => a + b, 0)
-}
 
 
 const breadCrumbRoutes = [
@@ -73,17 +68,7 @@ function Dashboard({ match }) {
     all_device_data
   } = refinedRenderedData;
 
-
-  const abc = {};
-  console.log('this is abc kkkkk', abc[0]);
-  // console.log('here we go ehre', all_device_data[0]);
-  console.log('here we go ehre', all_device_data && Object.keys(all_device_data).length !== 0? all_device_data[0] : '');
-
-  all_device_data && Object.keys(all_device_data).length !== 0 && Object.values(all_device_data).forEach((eachDevice) => {
-    console.log('this is the each data object', eachDevice.score_card.operating_time.estimated_cost.value);
-    console.log('this iyahdlhjkskjdhnisjn', eachDevice.time_of_use);
-    console.log('this is the each data object', eachDevice);
-  })
+ 
 
   const pageRef = useRef();
 
@@ -182,28 +167,21 @@ function Dashboard({ match }) {
             />
           </article>
         </div>
-        <div className="dashboard-row-1 dashboard-row-1b">
+        <div className="dashboard-row-1b">
           {
-            all_device_data && Object.keys(all_device_data).length !== 0 && Object.values(all_device_data).map((eachDevice) => {
-              
-              return <article className="dashboard__total-energy-amount dashboard__banner--small">
-              <DashBoardAmountUsed name={eachDevice?.name} totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
-              amount={eachDevice.score_card.is_generator ? eachDevice.score_card.operating_time.estimated_cost.value 
-                : eachDevice.billing?.totals?.present_total?.value_naira
-              }  
-              // timeInUse={addAllArrayValue(eachDevice?.time_of_use?.values)}
-              timeInUse={eachDevice?.score_card.fuel_consumption.time_used}
+            all_device_data && Object.keys(all_device_data).length !== 0 
+            && Object.values(all_device_data).map((eachDevice, index) => {
+              return index < 6 && <article className="dashboard__total-energy-amount dashboard__banner--smallb">
+              <DashBoardAmountUsed key={index} name={eachDevice?.name}
+              deviceType={eachDevice.device_type}
+              totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
+              amount={eachDevice.billing?.totals?.present_total?.value_naira
+              }
+              timeInUse={eachDevice?.usage_hour}
               />
             </article>
             })
           }
-
-          {/* <article className="dashboard__total-energy-amount dashboard__banner--small">
-            <DashBoardAmountUsed  avatar={avatar}/>
-          </article>
-          <article className="dashboard__total-energy-amount dashboard__banner--small">
-            <DashBoardAmountUsed  avatar={avatar}/>
-          </article> */}
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
