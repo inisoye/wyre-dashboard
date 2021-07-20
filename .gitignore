@@ -11,6 +11,8 @@
 # production
 /build
 
+settings.json
+
 # misc
 .DS_Store
 .env.local
@@ -139,3 +141,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .prettierrc
+**/mock/**

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, Select, notification } from 'antd';
 import moment from 'moment';
@@ -95,32 +95,6 @@ function AddBills({ match }) {
       </Option>
     </Select>
   );
-    
-  const branchSelectorStyle = {
-    width:'100%',
-    borderRadius: '4px',
-    display:'block',
-    color: '#595959',
-    fontSize: '1.4rem',
-    height: '40px',
-}
-
-
-  const branchSelector =(
-    <Select 
-      className="h-4-br" 
-      allowClear 
-      style={branchSelectorStyle}
-      onChange={(e)=>{
-        console.log(e)
-      }}
-      >
-      { organization.branches && organization.branches.map((eachBranch)=>{
-       return <Option value={eachBranch.id} key={eachBranch.id}>{eachBranch.name}</Option>
-      })
-      }
-    </Select>
-  )
 
   const utilityPaymentPreDatePicker = (
     <DatePicker
@@ -151,15 +125,22 @@ function AddBills({ match }) {
     />
   );
 
+  let defaultBranch;
+
+const getBranchName = organization.branches && organization.branches.map((branch)=>{
+  defaultBranch = branch.id
+  return branch.id
+})
+
+
   const onPurchaseTrackerSubmit = ({
-    branchForPurchaseTracker,
     fuelQuantity,
     fuelPricePerLitre,
     fuelPurchaseDate,
     fuelType,
   }) => {
     const DieselCostData = {
-      branch : branchForPurchaseTracker,
+      branch : defaultBranch,
       quantity : fuelQuantity,
       price_per_litre : fuelPricePerLitre,
       date : fuelPurchaseDate.format('YYYY-MM-DD')
@@ -183,14 +164,13 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPreSubmit = ({
-    branchForPrePaid,
     utilityPaymentPreAmount,
     utilityPaymentPreDate,
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
     const prePaidData = {
-      branch : branchForPrePaid,
+      branch : defaultBranch,
       value : utilityPaymentPreValue,
       amount : utilityPaymentPreAmount,
       tariff : utilityPaymentPreTariff,
@@ -213,7 +193,6 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPostSubmit = ({
-    branchForPostPaid,
     utilityPaymentPostAmount,
     utilityPaymentPostDate,
     utilityPaymentPostTariff,
@@ -230,7 +209,7 @@ function AddBills({ match }) {
    let FormattedDate = convertDate(utilityPaymentPostDate)
 
     const postPaidData = {
-      branch : branchForPostPaid,
+      branch : defaultBranch,
       value : utilityPaymentPostValue,
       amount : utilityPaymentPostAmount,
       tariff : utilityPaymentPostTariff,
@@ -277,31 +256,7 @@ function AddBills({ match }) {
             onSubmit={handleSubmitPurchaseTracker(onPurchaseTrackerSubmit)}
           >
             <div className="cost-tracker-form-inputs-wrapper">
-              <div className="cost-tracker-input-container">
-                  <label
-                    className="generic-input-label cost-tracker-input-label"
-                    htmlFor="fuel-branch"
-                  >
-                    Branch
-                  </label>
-                <Controller 
-                    as={branchSelector} 
-                    name="branchForPurchaseTracker" 
-                    control={controlPurchaseTracker} 
-                    defaultValue=''
-                    rules = {{
-                      required : true
-                    }}
-                    help={
-                      errorsPurchaseTracker.branchForPurchaseTracker && 
-                      'Please select a branch'
-                    }
-                />        
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.branchForPurchaseTracker && 'Please enter a fuel type'}
-                </p>
-              </div>
-
+              
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
@@ -430,29 +385,6 @@ function AddBills({ match }) {
           >
             <div className="cost-tracker-form-inputs-wrapper">
 
-            <div className="cost-tracker-input-container">
-                  <label
-                    className="generic-input-label cost-tracker-input-label"
-                    htmlFor="PrePaid-branch"
-                  >
-                    Branch
-                  </label>
-                  <Controller
-                    as={branchSelector}
-                    name = 'branchForPrePaid'
-                    control = {controlPaymentTrackerPre}
-                    rules = {{
-                      required : true
-                    }}
-                    help={
-                      errorsPurchaseTracker.branchForPrePaid && 
-                      'Please select a branch'
-                    }
-                  />    
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.branchForPrePaid && 'Please enter a fuel type'}
-                </p>
-              </div>
 
               <div className="cost-tracker-input-container">
                 <label
@@ -579,30 +511,6 @@ function AddBills({ match }) {
             )}
           >
             <div className="cost-tracker-form-inputs-wrapper">
-
-            <div className="cost-tracker-input-container">
-                  <label
-                    className="generic-input-label cost-tracker-input-label"
-                    htmlFor="fuel-branch"
-                  >
-                    Branch
-                  </label>
-                  <Controller
-                    as={branchSelector}
-                    name = 'branchForPostPaid'
-                    control = {controlPaymentTrackerPost}
-                    rules = {{
-                      required : true
-                    }}
-                    help={
-                      errorsPurchaseTracker.branchForPostPaid && 
-                      'Please select a branch'
-                    }
-                  />    
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.branchForPostPaid && 'Please enter a fuel type'}
-                </p>
-              </div>
 
               <div className="cost-tracker-input-container">
                 <label
