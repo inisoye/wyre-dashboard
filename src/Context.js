@@ -5,11 +5,14 @@ import { useMediaQuery } from 'react-responsive';
 
 import dataHttpServices from './services/devices';
 
-import { getRefinedOrganizationData, 
-  getOrganizationDeviceType, 
-  getRefinedOrganizationDataWithChekBox} from './helpers/organizationDataHelpers';
+import {
+  getRefinedOrganizationData,
+  getOrganizationDeviceType,
+  getRefinedOrganizationDataWithChekBox
+} from './helpers/organizationDataHelpers';
 
 import { getRenderedData } from './helpers/renderedDataHelpers';
+import { allDeviceGenerators } from './helpers/genericHelpers';
 
 // create context
 const CompleteDataContext = React.createContext();
@@ -28,6 +31,7 @@ const CompleteDataProvider = (props) => {
   const [checkedBranches, setCheckedBranches] = useState({});
   const [checkedDevices, setCheckedDevices] = useState({});
   const [selectedDevices, setSelectedDevices] = useState([]);
+  const [allCheckedOrSelectedDevice, setAllCheckedOrSelectedDevice] = useState([]);
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
@@ -159,9 +163,16 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        setRefinedRenderedData(getRefinedOrganizationData(organization));
-        setDeviceData(getOrganizationDeviceType(organization));  
+        const refindedData = getRefinedOrganizationData(organization)
+        // set all the device into the needed data(bucket)
+        setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
+        setRefinedRenderedData(refindedData);
+        setDeviceData(getOrganizationDeviceType(organization));
+
       } else {
+
+        const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        setAllCheckedOrSelectedDevice(holdAllDevices);
         const renderedDataArray = Object.values(renderedDataObjects);
         const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
         setRefinedRenderedData(getRenderedData(renderedDataArray));
@@ -169,7 +180,7 @@ const CompleteDataProvider = (props) => {
       }
     }
   }, [checkedItems, renderedDataObjects]);
-      
+
   /*--------------------------------------------------------------------
 
 
@@ -181,7 +192,7 @@ const CompleteDataProvider = (props) => {
   /* there is need to separate the organisation from the rest 
   --------------------------------------------------------------------*/
   useEffect(() => {
-    
+
     // Ensure organization object is not empty
     if (
       Object.keys(organization).length > 0 &&
@@ -193,8 +204,14 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        setRefinedRenderedData(getRefinedOrganizationData(organization));
+        const refindedData = getRefinedOrganizationData(organization)
+        setRefinedRenderedData(refindedData);
+        // set all the device into the needed data(bucket)
+        setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
       } else {
+        // generate all the data for the devices selected
+        const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        setAllCheckedOrSelectedDevice(holdAllDevices);
         // get the data to render
         const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
           checkedBranches, checkedDevices, organization, setRenderedDataObjects
@@ -229,8 +246,8 @@ const CompleteDataProvider = (props) => {
 
   const allDevices = []
 
-  
-  const [PasswordVisibility, setPasswordVisibility ] = useState(false)
+
+  const [PasswordVisibility, setPasswordVisibility] = useState(false)
 
 
   return (
@@ -252,6 +269,7 @@ const CompleteDataProvider = (props) => {
         numberOfCheckedItems: Object.keys(checkedItems).length,
         numberOfCheckedBranches: Object.keys(checkedBranches).length,
         isAuthenticatedDataLoading: isAuthenticatedDataLoading,
+        allCheckedOrSelectedDevice: allCheckedOrSelectedDevice,
 
         // Nav and Sidebar Controls
         isNavOpen: isNavOpen,
@@ -293,8 +311,8 @@ const CompleteDataProvider = (props) => {
         isLessThan1296: isLessThan1296,
 
         //Schedule Email Modal
-        emailModalData:emailModalData,
-        setEmailModalData:setEmailModalData,
+        emailModalData: emailModalData,
+        setEmailModalData: setEmailModalData,
         isModalVisible: isModalVisible,
         setIsModalVisible: setIsModalVisible,
 
@@ -303,11 +321,11 @@ const CompleteDataProvider = (props) => {
         setPreloadedUserFormData: setPreloadedUserFormData,
 
         // Password Toggle Visibility.
-        PasswordVisibility:PasswordVisibility,
-        setPasswordVisibility:setPasswordVisibility,
-        
-        
-       allDevices: allDevices,
+        PasswordVisibility: PasswordVisibility,
+        setPasswordVisibility: setPasswordVisibility,
+
+
+        allDevices: allDevices,
       }}
     >
       {props.children}

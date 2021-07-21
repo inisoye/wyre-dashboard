@@ -267,6 +267,30 @@ const getNestedAvgDemandObject = (array, nestedObject) => {
 
   return { unit: 'kw', value: valuesArrayAvg };
 };
+
+const allDeviceGenerators = (checkedItems, organization) => {
+
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems);
+
+  checkedItemsArray.map((name) => {
+    organization.branches.forEach((eachBranch) => {
+      if (eachBranch.name === name) {
+        holdAllDevices = [...holdAllDevices, ...eachBranch.devices];
+      }
+      else if (name.startsWith(eachBranch.name) && (name.length > eachBranch.name.length)
+      ) {
+        eachBranch.devices.some((device) => {
+          if (device.name === name) {
+            holdAllDevices.push(device);
+            return false;
+          }
+        })
+      }
+    })
+  })
+  return holdAllDevices;
+}
 /* --------------------------------------------------------------------
 /* Dashboard Helpers End --------------------------------------------
 --------------------------------------------------------------------*/
@@ -457,5 +481,6 @@ export {
   convertParameterDateStringsToObjects,
   removeDuplicateDatas,
   truncateEmail,
-  mergeTheData
+  mergeTheData,
+  allDeviceGenerators
 };
