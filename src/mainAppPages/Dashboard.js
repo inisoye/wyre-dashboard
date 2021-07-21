@@ -41,7 +41,8 @@ const PDFDocument = () => (
 );
 
 function Dashboard({ match }) {
-  let { refinedRenderedData, isAuthenticatedDataLoading } = useContext(
+  let { refinedRenderedData, isAuthenticatedDataLoading, 
+    allCheckedOrSelectedDevice  } = useContext(
     CompleteDataContext
   );
 
@@ -169,9 +170,9 @@ function Dashboard({ match }) {
         </div>
         <div className="dashboard-row-1b">
           {
-            all_device_data && Object.keys(all_device_data).length !== 0 
-            && Object.values(all_device_data).map((eachDevice, index) => {
-              return index < 6 && <article className="dashboard__total-energy-amount dashboard__banner--smallb">
+            allCheckedOrSelectedDevice
+            && allCheckedOrSelectedDevice.map((eachDevice, index) => {
+              return index < 6 && <article key={index} className="dashboard__total-energy-amount dashboard__banner--smallb">
               <DashBoardAmountUsed key={index} name={eachDevice?.name}
               deviceType={eachDevice.device_type}
               totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
