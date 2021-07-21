@@ -22,7 +22,7 @@ function SidebarOrganization({ orgData }) {
   const branchComponents =
     orgData.branches && isOpen
       ? orgData.branches.map((eachBranch) => {
-          return <SidebarBranch branchData={eachBranch} key={eachBranch.id} />;
+          return <SidebarBranch branchData={eachBranch} key={eachBranch.name} />;
         }): '';
         // allDevices.length =0
   
