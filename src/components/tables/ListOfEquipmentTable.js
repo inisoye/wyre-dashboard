@@ -9,7 +9,6 @@ const DateWidget = (
     className="generic-input"
     format="DD-MM-YYYY"
     id="equipment-purchase-date"
-    // onChange={(e)=>console.log(e.target.value)}
   />
 );
 
@@ -205,7 +204,6 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
           </Typography.Link>
           
           <Typography.Link disabled={editingKey !== ''} onClick={() => {
-            // edit(record)
             }} className="table-row-button" style={{width:'70px'}}>
             <Popconfirm title="Sure to delete?" onConfirm={()=>{
               handleDelete(record.key)
