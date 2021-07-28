@@ -61,8 +61,8 @@ const getAllData = async () => {
   //const resp = await axios.get(test, config);
   //console.log(resp.data.authenticatedData);
 
-  // const response = await axios.get(baseUrl, config);
-  const response = dashBoardMock;
+  const response = await axios.get(baseUrl, config);
+  // const response = dashBoardMock;
   //console.log(response.data.authenticatedData.branches[0].devices[0].score_card.is_generator);
   return response.data.authenticatedData;  
 };
