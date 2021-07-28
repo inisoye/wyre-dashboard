@@ -1954,6 +1954,16 @@ thead.ant-table-thead tr th {
   font-weight: 400;
 }
 
+.doughnut-card-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-icon{
+  fill: #a19090;
+  stroke-width: 0.01rem;
+}
+
 .score-card-doughnut-container {
   align-items: center;
   display: flex;
