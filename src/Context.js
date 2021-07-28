@@ -117,11 +117,9 @@ const CompleteDataProvider = (props) => {
         .then((returnedData) => {
           setIsAuthenticatedDataLoading(false);
           if (returnedData.branches.length === 0) {
-            console.log('yeahh');
             throw new Error('No branches');
           }
           setOrganization(returnedData);
-          //console.log(setOrganization(returnedData));
         })
         .catch((error) => {
           const logUserOut = () => {

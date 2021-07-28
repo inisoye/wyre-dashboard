@@ -79,7 +79,6 @@ const sumArrayOfArrays = (arrayOfArrays) =>
 const calculateRatio = (avg, peak) => {
   let peak_ratio =  avg/peak
 
-  console.log('here is the peak value', peak_ratio);
   if(peak_ratio && isFinite(peak_ratio)){
     return peak_ratio.toFixed(2)
   }
