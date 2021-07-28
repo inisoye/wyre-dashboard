@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react';
-
+import React, { useEffect, useContext } from 'react';
+import { Tooltip } from 'antd';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
@@ -12,11 +12,17 @@ import Loader from '../components/Loader';
 
 import UpArrowIcon from '../icons/UpArrowIcon';
 import EcoFriendlyIcon from '../icons/EcoFriendlyIcon';
-import Greenleaf from '../icons/Greenleaf';
+import InformationIcon from '../icons/InformationIcon';
 
-import { calculateRatio, calculatePercentage, checkIsGenStatus, daysInMonth, getPeakToAverageMessage } from '../helpers/genericHelpers';
+import {
+  calculateRatio, calculatePercentage, daysInMonth,
+  getPeakToAverageMessage, getBaselineEnergyColor
+} from '../helpers/genericHelpers';
+
 import { numberFormatter } from "../helpers/numberFormatter";
-import dataHttpServices from "../services/devices";
+
+
+import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -26,13 +32,11 @@ const breadCrumbRoutes = [
 
 function ScoreCard({ match }) {
   const {
-    selectedDevices,
-    deviceData,
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
   } = useContext(CompleteDataContext);
- 
+
 
   useEffect(() => {
     if (match && match.url) {
@@ -50,26 +54,27 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
-  
-  const ratio = calculateRatio(peak_to_avg_power_ratio.peak,peak_to_avg_power_ratio.avg);
-    
+  const date = new Date();
+  const ratio = calculateRatio(peak_to_avg_power_ratio.peak, peak_to_avg_power_ratio.avg);
+  const savingdInbound = numberFormatter(baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth()));
+
   const getPeakResult = getPeakToAverageMessage(ratio);
   const arrowColor = getPeakResult.color;
 
   //calculate number of trees for carbon emission
   const noOfTrees = (score_card_carbon_emissions.actual_value * 6).toFixed(2);
-  const message = "Equivalent to "+noOfTrees+" Acacia trees";
-  const date = new Date();
+  const message = "Equivalent to " + noOfTrees + " Acacia trees";
+
 
   let generatorSizeEffficiencyData =
     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
-    generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
-      eachDevice => eachDevice.is_gen === true
-    );
+  generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
+    eachDevice => eachDevice.is_gen === true
+  );
   const generatorSizeEffficiencyDoughnuts =
     generatorSizeEffficiencyData &&
     generatorSizeEffficiencyData.map((eachGenerator) => (
-      
+
       <ScoreCardGenEfficiencyDoughnut
         dataTitle='Generator Size Efficiency'
         dataSubtitle='
@@ -108,12 +113,12 @@ function ScoreCard({ match }) {
         key={eachGenerator.name}
       />
     ));
-  
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
-  
-     
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
+
+
   return (
     <>
       <div className='breadcrumb-and-print-buttons'>
@@ -122,32 +127,33 @@ function ScoreCard({ match }) {
 
       <div className='score-card-row-1'>
         <article className='score-card-row-1__item'>
-          <h2 className='score-card-heading'>Baseline Energy</h2>
-
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading carbon-emission-container'>
+              Baseline Energy
+            </h2>
+            <div>
+              <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.BASE_ENERGY}>
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+          </div>
           <div className='score-card-doughnut-container'>
             <ScoreCardDoughnutChart
-              dataTitle='Baseline Energy'
-              dataSubtitle='
-              This is an algorithm that forecasts(b)
-              energy consumption using weather(b)
-              and number of days to set a baseline(b)
-              usage.(b)
-              Baseline usage is compared to actual(b)
-              consumption to score energy(b)
-              performance.'
               data={baseline_energy}
             />
 
             <p className='doughnut-centre-text'>
               <span>
                 {baseline_energy &&
-                  calculatePercentage(
+                  (calculatePercentage(
                     baseline_energy.used,
                     baseline_energy.forecast
-                  )}
-                %
+                  )|| `-`)}
               </span>
-              <span> Used</span>
+              <span>{baseline_energy.used &&  baseline_energy.forecast ? `% Used` : ' '}</span>
             </p>
           </div>
 
@@ -163,39 +169,43 @@ function ScoreCard({ match }) {
 
           <p className='score-card-bottom-text h-mt-24'>
             Saving Inbound of{' '}
-            <span className='h-green-text'>
-              {baseline_energy &&
-                numberFormatter(baseline_energy.forecast - ((baseline_energy.used/date.getDate())*daysInMonth()))}
-              {baseline_energy && baseline_energy.unit}
+
+            {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
+              savingdInbound
+            }
             </span>
+            }
+            {/* {baseline_energy && baseline_energy.unit} */}
+
           </p>
         </article>
 
         <article className='score-card-row-1__item'>
-          <h2 className='score-card-heading peak-to-average-container'>
-            Peak to Average Power Ratio
-          </h2>
-
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading carbon-emission-container'>
+              Peak to Average Power Ratio
+            </h2>
+            <div>
+              <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.PEAK_RATIO}>
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+          </div>
           <div className='score-card-doughnut-container'>
             <ScoreCardDoughnutChart
-              dataTitle='Peak to Average Power Ratio'
-              dataSubtitle='
-              Represents the disparity between(b)
-              peak and average power within a(b)
-              facility. To optimize efficiency,(b)
-              the goal is to close the gap between(b)
-              both metrics. The aim is to score as(b)
-              close to 1 as possible.'
               data={peak_to_avg_power_ratio}
             />
 
             <p className='doughnut-centre-text'>
               <span>
-                {peak_to_avg_power_ratio &&
+                {peak_to_avg_power_ratio && (
                   calculateRatio(
                     peak_to_avg_power_ratio.avg,
                     peak_to_avg_power_ratio.peak
-                  )}{' '}
+                  ) || `-`)}{' '}
               </span>
             </p>
           </div>
@@ -212,41 +222,39 @@ function ScoreCard({ match }) {
           </p>
 
           <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
-            <p style={{color:arrowColor}}>{getPeakResult.message}</p>
-            <UpArrowIcon className={arrowColor}/>
+            <p style={{ color: arrowColor }}>{getPeakResult.message}</p>
+            <UpArrowIcon className={arrowColor} />
           </div>
         </article>
 
         <article className='score-card-row-1__item'>
-          <h2 className='score-card-heading carbon-emission-container'>
-            Carbon Emission
-          </h2>
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading carbon-emission-container'>
+              Carbon Emission
+            </h2>
+            <div>
+              <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.CARBON}>
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+          </div>
 
           <div className='score-card-doughnut-container'>
             <ScoreCardDoughnutChart
-              dataTitle='Carbon Emission'
-              dataSubtitle='
-            Carbon foot print on all energy(b)
-            sources. Diesel: 2.68kg of CO2 per(b)
-            liter Natural Gas: 0.549kg of CO2 per(b)
-            kWh A typical hardwood tree can absorb as(b)
-            much as 48 pounds of carbon dioxide per(b)
-            year. This means it will sequester(b)
-            approximately 1 ton of carbon dioxide(b)
-            by the time it reaches 40 years old.'
               data={score_card_carbon_emissions}
             />
 
             <p className='doughnut-centre-text'>
               <span>
                 {score_card_carbon_emissions &&
-                  calculatePercentage(
+                  (calculatePercentage(
                     score_card_carbon_emissions.actual_value,
                     score_card_carbon_emissions.estimated_value
-                  )}
-                %
-              </span>{' '}
-              Used
+                  ) || `-`)}
+              </span>{score_card_carbon_emissions.actual_value ? `% Used` : ' '}
             </p>
           </div>
 
@@ -264,11 +272,11 @@ function ScoreCard({ match }) {
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          <p className='score-card-bottom-text h-mt-24'>  
+          <p className='score-card-bottom-text h-mt-24'>
             <div>
               <span>{message}</span>
-              <EcoFriendlyIcon className="ecoFriendlyIcon"/>
-            </div>         
+              <EcoFriendlyIcon className="ecoFriendlyIcon" />
+            </div>
 
             {/* <span className='score-card-bottom-text-small'>
               {noOfTrees}
@@ -278,7 +286,7 @@ function ScoreCard({ match }) {
         </article>
       </div>
       {/*{isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}*/}
-      <div className={deviceLength > 0 ? 'score-card-row-4' : 'hideCard'} style={{marginBottom:'50px'}}>
+      <div className={deviceLength > 0 ? 'score-card-row-4' : 'hideCard'} style={{ marginBottom: '50px' }}>
         <article className='score-card-row-4__left'>
           <h2 className='score-card-heading'>Generator Size Efficiency</h2>
           {generatorSizeEffficiencyDoughnuts}
@@ -303,9 +311,9 @@ function ScoreCard({ match }) {
         <ScoreCardTable changeOverLagsData={change_over_lags} />
       </article>
 
-      
+
       <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time} 
+        <ScoreCardBarChart operatingTimeData={operating_time}
           dataTitle='Operating Time'
           dataMessage='Reports each event and duration(b)
          generators are operated outside(b)
