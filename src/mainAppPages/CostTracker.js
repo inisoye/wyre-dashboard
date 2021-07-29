@@ -7,8 +7,10 @@ import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrack
 import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import Loader from '../components/Loader';
-import {mergeTheData} from '../helpers/genericHelpers'
 import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
+import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
+
+import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
 
 
 const breadCrumbRoutes = [
@@ -110,6 +112,45 @@ function CostTracker({ match }) {
       </article>
     ));
 
+    const subHeaderStyle= {
+      marginLeft:'20px',
+      fontSize:'1.5rem',
+      fontWeight:'500'
+    }
+
+
+    const DieselOverViewCharts =
+    cost_tracker_diesel_qty &&
+    cost_tracker_diesel_qty.map((eachBranch) => (
+      <article
+        className='cost-tracker-chart-container'
+        key={eachBranch.branchName}
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Cost Overview
+        </h3>
+        <div className='cost-tracker-chart-wrapper'>
+        <p style={subHeaderStyle}>Diesel Overview</p>
+          { <DieselOverviewCostTrackerTable/> }
+        </div>
+      </article>
+    ));
+
+    
+
+    const UtilityOverViewCharts =
+    cost_tracker_diesel_qty &&
+    cost_tracker_diesel_qty.map((eachBranch) => (
+      <article
+        className='cost-tracker-chart-container'
+        key={eachBranch.branchName}
+      >
+        <div className='cost-tracker-chart-wrapper'>
+        <p style={subHeaderStyle}>Utility Overview</p>
+          { <UtilityOverviewCostTrackerTable/> }
+        </div>
+      </article>
+    ));
   
    if (isAuthenticatedDataLoading) {
      return <Loader />;
@@ -120,6 +161,12 @@ function CostTracker({ match }) {
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
+
+      <section className="cost-tracker-section">
+        <h2 className='h-screen-reader-text'>Cost Overview</h2>
+        <p>{DieselOverViewCharts}</p>
+        <p> {UtilityOverViewCharts}</p>
+      </section>
 
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
