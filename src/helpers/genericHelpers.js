@@ -61,7 +61,7 @@ const daysInMonth = () => {
   const currentMonth = date.getMonth();
   const currentYear = date.getFullYear();
   //const numberOfDaysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
-  return new Date(currentYear, currentMonth+1, 0).getDate();;
+  return new Date(currentYear, currentMonth+1, 0).getDate();
 }
 
 /*
@@ -78,7 +78,11 @@ const sumArrayOfArrays = (arrayOfArrays) =>
 
 const calculateRatio = (avg, peak) => {
   let peak_ratio =  avg/peak
-  return peak_ratio.toFixed(1);
+
+  if(peak_ratio && isFinite(peak_ratio)){
+    return peak_ratio.toFixed(2)
+  }
+  return 0;
 }
 
 const getPeakToAverageMessage = (peakRatio) => {
@@ -97,7 +101,24 @@ const getPeakToAverageMessage = (peakRatio) => {
   return {message: peakMessage, color: peakMessageColor}
 }
 
-const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
+const getBaselineEnergyColor = (inbound) => {
+  let peakMessageColor;
+  if (Number(inbound) > 0){
+    peakMessageColor = '#008000';
+  }else{
+    peakMessageColor = '#fa0303';
+  }
+  return {color: peakMessageColor}
+}
+
+const calculatePercentage = (num_1, num_2) => { 
+  const percentage = ((num_1 / num_2) * 100).toFixed() || 0;
+
+  if (isNaN(percentage)) {
+    return 0;
+  }
+  return percentage 
+};
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -360,6 +381,12 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
     .filter(Boolean)
     .reduce((acc, curr) => acc + curr, 0);
 };
+// round decimple to the legth specifile
+const roundToDecimalPLace = (number, length) => (!Number.isInteger(number) 
+  ? number.toFixed(length) : number);
+
+const sumOfArrayElements = (array) => array.reduce((acc, curr) => acc + Number(curr), 0)
+
 /* --------------------------------------------------------------------
 /* Score Card Helpers End -------------------------------------------
 --------------------------------------------------------------------*/
@@ -448,6 +475,7 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 export {
   daysInMonth,
   getPeakToAverageMessage,
+  getBaselineEnergyColor,
   toCamelCase,
   toKebabCase,
   toSnakeCase,
@@ -482,5 +510,7 @@ export {
   removeDuplicateDatas,
   truncateEmail,
   mergeTheData,
-  allDeviceGenerators
+  allDeviceGenerators,
+  roundToDecimalPLace,
+  sumOfArrayElements
 };

@@ -27,7 +27,7 @@ function DashBoardAmountUsed (
                 </div>
             </div>
             <div className="total-energy-price__footer total-energy-price__common">
-                <p className="total-energy-price__footer__text">₦ {numberFormatter(amount) || 0}</p>
+                <p className="total-energy-price__footer__text"> {numberFormatter(amount)? `₦ ${numberFormatter(amount)}` : '-'}</p>
             </div>
         </>
     );

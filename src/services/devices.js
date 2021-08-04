@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+// import dashBoardMock from '../mock/dashboard';
 
 // Base URL prefix
 let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
@@ -61,6 +62,7 @@ const getAllData = async () => {
   //console.log(resp.data.authenticatedData);
 
   const response = await axios.get(baseUrl, config);
+  // const response = dashBoardMock;
   //console.log(response.data.authenticatedData.branches[0].devices[0].score_card.is_generator);
   return response.data.authenticatedData;  
 };
