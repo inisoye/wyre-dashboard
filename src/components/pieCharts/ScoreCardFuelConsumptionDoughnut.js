@@ -1,7 +1,7 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const ScoreCardFuelConsumptionDoughnut = ({ data, dataTitle, dataSubtitle }) => {
+const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
   const {
     name,
     size,
@@ -32,7 +32,6 @@ const ScoreCardFuelConsumptionDoughnut = ({ data, dataTitle, dataSubtitle }) => 
     ],
   };
 
-  const dataSubtitleArray = dataSubtitle.split('(b)');
 
   const options = {
     cutoutPercentage: 60,
@@ -54,16 +53,9 @@ const ScoreCardFuelConsumptionDoughnut = ({ data, dataTitle, dataSubtitle }) => 
           return data['datasets'][0]['data'][tooltipItem['index']] + '%';
         },
 
-        footer: function () {
-          const dataTitleAndSubtitleArray = [
-            dataTitle + ': ',
-            ...dataSubtitleArray,
-          ];
-          return dataTitleAndSubtitleArray;
-        },
       },
-      xPadding: 30,
-      yPadding: 30,
+      xPadding: 10,
+      yPadding: 10,
       footerFontStyle: 'normal',
       footerMarginTop: 12,
     },
