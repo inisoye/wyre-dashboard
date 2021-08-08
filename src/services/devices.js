@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-// import dashBoardMock from '../mock/dashboard';
+import dashBoardMock from '../mock/dashboard';
 
 // Base URL prefix
 let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;

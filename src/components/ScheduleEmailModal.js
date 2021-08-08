@@ -32,7 +32,7 @@ export const ScheduleEmailModal = () => {
   const [isSendingBill, setIsSendingBill] = useState(true);
   const [sentBillStatus, setSentBillStatus] = useState();
   const [frequencyDropdown, setFrequencyDropdown] = useState('');
-  const [personalDataAvailableDevices, setPersonalDataAvailableDevices] = useState()
+  const [personalDataSelectedeDevices, setPersonalDataSelectedeDevices] = useState([])
   const [currentRecieverId, setcurrentRecieverId] = useState();
 
   let dateRange = userDateRange === null || userDateRange.length === 0 ? dataHttpServices.endpointDateRange
@@ -44,18 +44,19 @@ export const ScheduleEmailModal = () => {
   const addNewExternalReceiverUrl = `https://wyreng.xyz/api/v1/add_external_bill_reciever/${userId}/`;
   const addavailableDevicesToBillReceiver = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
   const deleteBillReceiverUrl = `https://wyreng.xyz/api/v1/delete_mail_reciever/${userId}/`;
+  const addAssignedDevice = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
   const sendBillUrl = `https://wyreng.xyz/api/v1/send_report/${userId}/${dateRange}/`;
   const convertExternalReceiver = (arr, key, value) => {
     let result = arr.reduce((r, item) => {
-      r[item[key]] = item[value].map(({id}) => id);
-      return r; 
+      r[item[key]] = item[value].map(({ id }) => id);
+      return r;
     }, {});
     return result;
   }
 
-  const arrayRemove = (arr, value) =>{
-    return arr.filter((ele)=>ele !== value);
-}
+  const arrayRemove = (arr, value) => {
+    return arr.filter((ele) => ele !== value);
+  }
 
   useEffect(() => {
     axios
@@ -75,24 +76,21 @@ export const ScheduleEmailModal = () => {
   useEffect(() => {
     let data = JSON.stringify({
       frequency: frequencyDropdown,
-      selected_devices: [personalDataAvailableDevices],
+      selected_devices: personalDataSelectedeDevices,
     });
 
-    if (frequencyDropdown === '' && personalDataAvailableDevices === undefined) {
-      // pass
-    }
-    else {
+    if (frequencyDropdown !== '') {
       axios
-      .post(addavailableDevicesToBillReceiver, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setEmailModalData(response.data.data);
-      })
-      .catch((err) => console.log('Error setting Personal Data', err));
+        .post(addavailableDevicesToBillReceiver, data, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setEmailModalData(response.data.data);
+        })
+        .catch((err) => console.log('Error setting Personal Data', err));
     }
   }, [frequencyDropdown])
 
@@ -141,26 +139,51 @@ export const ScheduleEmailModal = () => {
     const receiverId = v.target['data-receiver'];
     const value = v.target.eventKey;
     let selectedArray
-    if(v.target.checked){
+    if (v.target.checked) {
       selectedArray = exterNalReceiverSelect;
       selectedArray[receiverId].push(parseInt(value));
       setExterNalReceiverSelect(selectedArray);
-    }else{
+    } else {
       selectedArray = exterNalReceiverSelect;
       const newArray = arrayRemove(selectedArray[receiverId], parseInt(value));
       selectedArray[receiverId] = newArray;
       setExterNalReceiverSelect(selectedArray);
     }
 
-    addDevicetoExternalReciever({ receiver_id: receiverId, 
-      selected_devices: selectedArray[receiverId] });
+    addDevicetoExternalReciever({
+      receiver_id: receiverId,
+      selected_devices: selectedArray[receiverId]
+    });
 
   };
 
 
   const handlePersonalDataDevicesMenuClick = (devices) => {
-    let strIdToInt = parseInt(devices.key)
-    setPersonalDataAvailableDevices(strIdToInt)
+    let strIdToInt = parseInt(devices.target.eventKey);
+    let selected_devices;
+    if (devices.target.checked) {
+      selected_devices = [...personalDataSelectedeDevices, strIdToInt];
+    } else {
+      selected_devices = personalDataSelectedeDevices.filter(item => item !== strIdToInt)
+    }
+
+    let data = JSON.stringify({
+      selected_devices
+    });
+    axios
+      .post(addAssignedDevice, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setEmailModalData(response.data.data);
+        setPersonalDataSelectedeDevices(selected_devices)
+      })
+      .catch((err) => console.log('Error setting Personal Data', err));
+
+      
   };
 
   const handleChangForAddExternalReceiever = (e) => {
@@ -173,29 +196,29 @@ export const ScheduleEmailModal = () => {
     let addExternalReceiverData = JSON.stringify({
       email: addEmail,
     });
-    
-    if (addEmail ==='' || addEmail === undefined) {
-        notification.error({
-          message: "Please Insert a recipient's E-mail address",
-          description:
-            'Type recipient email Input before adding external',
-        });
+
+    if (addEmail === '' || addEmail === undefined) {
+      notification.error({
+        message: "Please Insert a recipient's E-mail address",
+        description:
+          'Type recipient email Input before adding external',
+      });
     } else {
       axios
-      .post(addNewExternalReceiverUrl, addExternalReceiverData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setEmailModalData(response.data.data);
-      })
-      .catch((err) =>
-        alert("Couldn't add external Reciever, Please try again.")
-      );  
+        .post(addNewExternalReceiverUrl, addExternalReceiverData, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setEmailModalData(response.data.data);
+        })
+        .catch((err) =>
+          alert("Couldn't add external Reciever, Please try again.")
+        );
     }
-    
+
   };
 
 
@@ -280,22 +303,25 @@ export const ScheduleEmailModal = () => {
   // STYLING ENDS HERE
 
   const assignedDevicesForPersonalData = emailModalData && emailModalData.available_devices;
-  const personalDataAssignedDevices = (
-    <Menu
-      selectable
-      multiple={true}
-      onClick={handlePersonalDataDevicesMenuClick}
-      selectedKeys={[personalDataAvailableDevices]}
-    >
-      {assignedDevicesForPersonalData &&
-        assignedDevicesForPersonalData.map((data) => (
-          <Menu.Item key={data.device_id}>
-            {data.device_name}
-            <Checkbox style={{ marginLeft: '20px' }} />
-          </Menu.Item>
-        ))}
-    </Menu>
-  );
+  const assignedDevicesPersonalData = emailModalData && emailModalData.assigned_devices;
+  // const personalDataAssignedDevices = (
+  //   <Menu
+  //     selectable
+  //     multiple={true}
+  //     onClick={handlePersonalDataDevicesMenuClick}
+  //     selectedKeys={[personalDataAvailableDevices]}
+  //   >
+  //     {assignedDevicesForPersonalData &&
+  //       assignedDevicesForPersonalData.map((data) => (
+  //         <Menu.Item key={data.device_id}>
+  //           {data.device_name}
+  //           <Checkbox style={{ marginLeft: '20px' }} />
+  //         </Menu.Item>
+  //       ))}
+  //   </Menu>
+  // );
+
+  console.log('ehere is the email data ==============>>>>>>>>>>', emailModalData)
 
   const frequencyDropDownList = (
     <Menu onClick={handleFrequencyMenuClick} selectedKeys={[frequencyDropdown]}>
@@ -307,6 +333,9 @@ export const ScheduleEmailModal = () => {
 
 
   const convertToObject = (arr, key, value) => {
+    if(!arr || arr.length === 0){
+      return {}
+    }
     let result = arr.reduce((resData, item) => {
       resData[item[key]] = item[value];
       return resData;
@@ -314,28 +343,29 @@ export const ScheduleEmailModal = () => {
     return result;
   }
 
-  
+
 
   const externalRecieversAssignedDevices = emailModalData && emailModalData.available_devices;
-  const assignedDevicesForExternalRecievers = (assigned_devices, receiverId) => {
+  const assignedDevicesForExternalRecievers = (assigned_devices, receiverId, handleClick) => {
     const assignedDeviceObject = convertToObject(assigned_devices, 'id', 'name');
     return (
-    <Menu
-      selectable
-      multiple={true}
+      <Menu
+        selectable
+        multiple={true}
       >
-      {externalRecieversAssignedDevices &&
-        externalRecieversAssignedDevices.map((item) => (
-          <Menu.ItemGroup data-receiver={receiverId} key={item.device_id}>
-            {item.device_name}
-            <Checkbox defaultChecked={!!assignedDeviceObject[item.device_id]} 
-            onChange={handleExternalRecieversDevicesMenuClick} 
-            data-receiver={receiverId}
-            key={item.device_id} style={{ marginLeft: '20px' }}/>
-          </Menu.ItemGroup>
-        ))}
-    </Menu>
-  )};
+        {externalRecieversAssignedDevices &&
+          externalRecieversAssignedDevices.map((item) => (
+            <Menu.ItemGroup data-receiver={receiverId} key={item.device_id}>
+              {item.device_name}
+              <Checkbox defaultChecked={!!assignedDeviceObject[item.device_id]}
+                onChange={handleClick}
+                data-receiver={receiverId}
+                key={item.device_id} style={{ marginLeft: '20px' }} />
+            </Menu.ItemGroup>
+          ))}
+      </Menu>
+    )
+  };
 
   const external_recievers = emailModalData && emailModalData.external_recievers;
 
@@ -366,7 +396,7 @@ export const ScheduleEmailModal = () => {
               </Col>
               <Col span={10}>
                 <ModalDropdownBtn
-                  dropDownList={assignedDevicesForExternalRecievers(recievers.assigned_devices, recievers.id)}
+                  dropDownList={assignedDevicesForExternalRecievers(recievers.assigned_devices, recievers.id, handleExternalRecieversDevicesMenuClick)}
                   text="Assigned Devices"
                   onTouch={() => {
                     setcurrentRecieverId(recievers.id);
@@ -416,10 +446,13 @@ export const ScheduleEmailModal = () => {
         </Row>
         <Hr />
         <Row justify="center" style={rowStyles}>
+
           <Col span={12}>
             <ModalDropdownBtn
               text="Assigned Devices"
-              dropDownList={personalDataAssignedDevices}
+              // dropDownList={personalDataAssignedDevices}
+              dropDownList={assignedDevicesForExternalRecievers(emailModalData?.personal_data?.assigned_devices, 1, 
+                handlePersonalDataDevicesMenuClick)}
             />
           </Col>
           <Col>

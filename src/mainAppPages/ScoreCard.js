@@ -54,73 +54,69 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
-  const date = new Date();
-  const ratio = calculateRatio(peak_to_avg_power_ratio.peak, peak_to_avg_power_ratio.avg);
-  const savingdInbound = numberFormatter(baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth()));
+  let date, ratio, savingdInbound, savingdInboundCarbonEmmission, arrowColor, getPeakResult;
+  let noOfTrees, message, generatorSizeEffficiencyData, generatorSizeEffficiencyDoughnuts, fuelConsumptionData;
+  let deviceLength, fuelConsumptionDoughnuts;
 
-  const getPeakResult = getPeakToAverageMessage(ratio);
-  const arrowColor = getPeakResult.color;
+  const dataPresent = Object.keys(refinedRenderedData).length !== 0;
+  if (Object.keys(refinedRenderedData).length !== 0) {
+    date = new Date();
+    ratio = calculateRatio(peak_to_avg_power_ratio.avg, peak_to_avg_power_ratio.peak);
+    savingdInbound = numberFormatter(baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth()));
+    savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions.estimated_value - ((score_card_carbon_emissions.actual_value / date.getDate()) * daysInMonth())));
 
-  //calculate number of trees for carbon emission
-  const noOfTrees = (score_card_carbon_emissions.actual_value * 6).toFixed(2);
-  const message = "Equivalent to " + noOfTrees + " Acacia trees";
+    getPeakResult = getPeakToAverageMessage(ratio);
+    arrowColor = getPeakResult.color;
+
+    //calculate number of trees for carbon emission
+    noOfTrees = (score_card_carbon_emissions.actual_value * 6).toFixed(2);
+    message = "Equivalent to " + noOfTrees + " Acacia trees";
 
 
-  let generatorSizeEffficiencyData =
-    generator_size_efficiency && generator_size_efficiency.filter(Boolean);
-  generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
-    eachDevice => eachDevice.is_gen === true
-  );
-  const generatorSizeEffficiencyDoughnuts =
-    generatorSizeEffficiencyData &&
-    generatorSizeEffficiencyData.map((eachGenerator) => (
+    generatorSizeEffficiencyData =
+      generator_size_efficiency && generator_size_efficiency.filter(Boolean);
+    generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
+      eachDevice => eachDevice.is_gen === true
+    );
+   generatorSizeEffficiencyDoughnuts =
+      generatorSizeEffficiencyData &&
+      generatorSizeEffficiencyData.map((eachGenerator) => (
 
-      <ScoreCardGenEfficiencyDoughnut
-        dataTitle='Generator Size Efficiency'
-        dataSubtitle='
-        This info-graph measures(b)
-        and scores the efficiency(b)
-        or inefficiency of the(b)
-        generator’s size in(b)
-        comparison to power(b)
-        demanded by the facility. '
-        data={eachGenerator}
-        key={eachGenerator.name}
+        <ScoreCardGenEfficiencyDoughnut
+          data={eachGenerator}
+          key={eachGenerator.name}
 
-      />
-    ));
+        />
+      ));
 
-  let fuelConsumptionData =
-    fuel_consumption && fuel_consumption.filter(Boolean);
+    fuelConsumptionData =
+      fuel_consumption && fuel_consumption.filter(Boolean);
 
-  fuelConsumptionData = fuelConsumptionData.filter(
-    eachDevice => eachDevice.is_gen === true
-  );
+    fuelConsumptionData = fuelConsumptionData.filter(
+      eachDevice => eachDevice.is_gen === true
+    );
 
-  let deviceLength = fuelConsumptionData.length;
+    deviceLength = fuelConsumptionData.length;
 
-  const fuelConsumptionDoughnuts =
-    fuelConsumptionData &&
-    fuelConsumptionData.map((eachGenerator) => (
-      <ScoreCardFuelConsumptionDoughnut
-        dataTitle='Fuel Consumption'
-        dataSubtitle='
-        (95% Accuracy) Estimated fuel(b)
-        consumed on each generator and(b)
-        the number of hours each generator(b)
-        has been operated for. '
-        data={eachGenerator}
-        key={eachGenerator.name}
-      />
-    ));
+    fuelConsumptionDoughnuts =
+      fuelConsumptionData &&
+      fuelConsumptionData.map((eachGenerator) => (
+        <ScoreCardFuelConsumptionDoughnut
+          data={eachGenerator}
+          key={eachGenerator.name}
+        />
+      ));
 
-  if (isAuthenticatedDataLoading) {
-    return <Loader />;
   }
+
+  // if (isAuthenticatedDataLoading) {
+  //   return <Loader />;
+  // }
 
 
   return (
-    <>
+    <> {
+      dataPresent && (<> 
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
@@ -151,9 +147,9 @@ function ScoreCard({ match }) {
                   (calculatePercentage(
                     baseline_energy.used,
                     baseline_energy.forecast
-                  )|| `-`)}
+                  ) || `-`)}{baseline_energy.used && '%'}
               </span>
-              <span>{baseline_energy.used &&  baseline_energy.forecast ? `% Used` : ' '}</span>
+              <span>{baseline_energy.used && baseline_energy.forecast ? `used` : ' '}</span>
             </p>
           </div>
 
@@ -163,12 +159,12 @@ function ScoreCard({ match }) {
           </p>
 
           <p className='score-card-bottom-text h-mt-16'>
-            So far (Days): {baseline_energy && numberFormatter(baseline_energy.used)}
+            So far ({new Date().getDate()} Days): {baseline_energy && numberFormatter(baseline_energy.used)}
             {baseline_energy && baseline_energy.unit}
           </p>
 
           <p className='score-card-bottom-text h-mt-24'>
-            Saving Inbound of{' '}
+            Savings Inbound {' '}
 
             {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
               savingdInbound
@@ -253,31 +249,42 @@ function ScoreCard({ match }) {
                   (calculatePercentage(
                     score_card_carbon_emissions.actual_value,
                     score_card_carbon_emissions.estimated_value
-                  ) || `-`)}
-              </span>{score_card_carbon_emissions.actual_value ? `% Used` : ' '}
+                  ) || `-`)}{score_card_carbon_emissions.actual_value && '%'}
+              </span>{score_card_carbon_emissions.actual_value ? `used` : ' '}
             </p>
           </div>
 
-          <p className='score-card-bottom-text'>
+          <p style={{ padding: 0 }} className='score-card-bottom-text'>
             Estimated:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          <p className='score-card-bottom-text h-mt-16'>
+          <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
             Actual Emission:{' '}
             {score_card_carbon_emissions &&
               numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
             {score_card_carbon_emissions && score_card_carbon_emissions.unit}
           </p>
 
-          <p className='score-card-bottom-text h-mt-24'>
+          <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
+            Savings Inbound {' '}
+            {savingdInboundCarbonEmmission && <span style={{
+              color: getBaselineEnergyColor(savingdInboundCarbonEmmission).color
+            }}>{
+                savingdInboundCarbonEmmission
+              }
+            </span>
+            }
+          </p>
+
+          <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
             <div>
               <span>{message}</span>
               <EcoFriendlyIcon className="ecoFriendlyIcon" />
             </div>
-
+            {/* <span>{message}</span> */}
             {/* <span className='score-card-bottom-text-small'>
               {noOfTrees}
             </span>{' '}
@@ -288,7 +295,16 @@ function ScoreCard({ match }) {
       {/*{isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}*/}
       <div className={deviceLength > 0 ? 'score-card-row-4' : 'hideCard'} style={{ marginBottom: '50px' }}>
         <article className='score-card-row-4__left'>
-          <h2 className='score-card-heading'>Generator Size Efficiency</h2>
+          {/* <h2 className='score-card-heading'>Generator Size Efficiency</h2> */}
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading'>Generator Size Efficiency</h2>
+            <Tooltip placement='top' style={{ textAlign: 'justify' }}
+              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.SIZE_EFFICIENCY}>
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           {generatorSizeEffficiencyDoughnuts}
           <p className='gen-efficiency-footer-text'>
             Utilization Factor for Facility Generators
@@ -296,7 +312,15 @@ function ScoreCard({ match }) {
         </article>
 
         <article className='score-card-row-4__right'>
-          <h2 className='score-card-heading'>Fuel Consumption</h2>
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading'>Fuel Efficiency</h2>
+            <Tooltip placement='top' style={{ textAlign: 'justify' }}
+              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.FUEL_EFFICIENCYL}>
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           {fuelConsumptionDoughnuts}
           <p className='fuel-consumption-footer-text'>
             Estimated Fuel Consumption for Facility Generators
@@ -315,13 +339,13 @@ function ScoreCard({ match }) {
       <article className='score-card-row-3'>
         <ScoreCardBarChart operatingTimeData={operating_time}
           dataTitle='Operating Time'
-          dataMessage='Reports each event and duration(b)
-         generators are operated outside(b)
-         official hours, the diesel consumed(b)
-         and cost in Naira.'
+          dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
         />
       </article>
+      </>)
+    }
     </>
+
   );
 }
 
