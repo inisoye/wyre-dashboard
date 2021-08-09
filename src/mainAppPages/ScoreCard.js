@@ -78,6 +78,7 @@ function ScoreCard({ match }) {
     generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
       eachDevice => eachDevice.is_gen === true
     );
+    
    generatorSizeEffficiencyDoughnuts =
       generatorSizeEffficiencyData &&
       generatorSizeEffficiencyData.map((eachGenerator) => (
