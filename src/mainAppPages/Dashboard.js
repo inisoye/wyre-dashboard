@@ -66,7 +66,6 @@ function Dashboard({ match }) {
     today,
     yesterday,
     daily_kwh,
-    all_device_data
   } = refinedRenderedData;
 
  
