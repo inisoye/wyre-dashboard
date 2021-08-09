@@ -86,7 +86,6 @@ const calculateRatio = (avg, peak) => {
 }
 
 const getPeakToAverageMessage = (peakRatio) => {
-  console.log('this is the peak ratio', peakRatio);
   let peakMessage;
   let peakMessageColor;
   if (peakRatio > 0.7){

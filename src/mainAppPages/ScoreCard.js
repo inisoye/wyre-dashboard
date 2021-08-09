@@ -109,9 +109,9 @@ function ScoreCard({ match }) {
 
   }
 
-  // if (isAuthenticatedDataLoading) {
-  //   return <Loader />;
-  // }
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
 
   return (
