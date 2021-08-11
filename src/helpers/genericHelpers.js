@@ -77,7 +77,7 @@ const sumArrayOfArrays = (arrayOfArrays) =>
   }, []);
 
 const calculateRatio = (avg, peak) => {
-  let peak_ratio =  avg/peak
+  let peak_ratio =  Number(avg)/Number(peak)
 
   if(peak_ratio && isFinite(peak_ratio)){
     return peak_ratio.toFixed(2)
@@ -89,7 +89,7 @@ const getPeakToAverageMessage = (peakRatio) => {
   let peakMessage;
   let peakMessageColor;
   if (peakRatio > 0.7){
-    peakMessage = 'Quite efficient';
+    peakMessage = 'Efficient';
     peakMessageColor = '#008000';
   }else if (peakRatio >= 0.5){
     peakMessage = 'Fairly efficient';

@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { typeOf } from 'react-responsive';
+import { Tooltip } from 'antd';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 import { numberFormatter } from '../../helpers/numberFormatter';
+import InformationIcon from '../../icons/InformationIcon';
 
 const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
-  const messageArray = dataMessage.split('(b)');
 
   const options = {
     legend: {
@@ -22,23 +22,23 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
       callbacks: {
         title: function (tooltipItem, data) {
           return data['labels'][tooltipItem[0]['index']];
-        }, 
-        label: function(tooltipItem, data){
+        },
+        label: function (tooltipItem, data) {
           return data['datasets'][0]['data'][tooltipItem['index']];
         },
-        
-        footer: function () {
-          const titleAndMessageArray = [
-            dataTitle+ ': ',
-            ...messageArray,
-          ];
-          return titleAndMessageArray;
-        },
+
+        // footer: function () {
+        //   const titleAndMessageArray = [
+        //     dataTitle+ ': ',
+        //     ...messageArray,
+        //   ];
+        //   return titleAndMessageArray;
+        // },
       },
       footerFontStyle: 'normal',
       footerMarginTop: 12,
     },
-    
+
     maintainAspectRatio: false,
     scales: {
       yAxes: [
@@ -93,8 +93,8 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
     estimated_diesel_wasted,
     estimated_cost,
   } = operatingTimeData
-    ? operatingTimeData
-    : {
+      ? operatingTimeData
+      : {
         chart: {},
         estimated_time_wasted: {},
         estimated_diesel_wasted: {},
@@ -102,7 +102,7 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
       };
 
   const chartValues = chart.values;
-  
+
   const timeWasted =
     estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
 
@@ -113,8 +113,8 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
     labels: isMediumScreen
       ? chart.dates && getLastArrayItems(chart.dates, 7)
       : isLessThan1296
-      ? chart.dates && getLastArrayItems(chart.dates, 14)
-      : chart.dates,
+        ? chart.dates && getLastArrayItems(chart.dates, 14)
+        : chart.dates,
     datasets: [
       {
         label: 'Wastage',
@@ -125,13 +125,21 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
         borderWidth: 1,
       },
     ],
-    
+
   };
 
   return (
     <div className="score-card-bar-chart-container">
       <div className="h-flex">
+        <div style={{display: 'flex'}}>
         <h2 className="score-card-heading">Operating Time Deviation</h2>
+        <Tooltip placement='top' style={{ textAlign: 'justify' }}
+          overlayStyle={{ whiteSpace: 'pre-line' }} title={dataMessage}>
+          <p>
+            <InformationIcon className="info-icon" />
+          </p>
+        </Tooltip>
+        </div>
         <div className="score-card-bar-chart__text-wrapper">
           <p>
             Total Waste: <strong>{dieselWasted}</strong>
