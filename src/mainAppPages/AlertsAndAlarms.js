@@ -16,8 +16,34 @@ const breadCrumbRoutes = [
 ];
 
 function AlertsAndAlarms({ match }) {
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const { setCurrentUrl, token, userId } = useContext(CompleteDataContext);
   const [preloadedAlertsFormData, setPreloadedAlertsFormData] = useState({});
+
+  const isDataReady = preloadedAlertsFormData && preloadedAlertsFormData
+
+  const [power_factor_alerts, setpower_factor_alerts] = useState(preloadedAlertsFormData.power_factor_alerts)
+  const [max_power_factor, setmax_power_factor] = useState(isDataReady.max_power_factor)
+  const [min_power_factor, setmin_power_factor] = useState(isDataReady.min_power_factor)
+  const [baseline_alerts, setbaseline_alerts] = useState(isDataReady.baseline_alerts)
+  const [load_balance_alerts, setload_balance_alerts] = useState(isDataReady.load_balance_alerts)
+  const [frequency_alerts, setFrequency_alerts] = useState(isDataReady.frequency_alerts)
+  const [frequency_normal, setfrequency_normal] = useState(isDataReady.frequency_normal)
+  const [frequency_precision, setfrequency_precision] = useState(isDataReady.frequency_precision)
+  const [voltage_alerts, setvoltage_alerts] = useState(isDataReady.voltage_alerts)
+  const [max_voltage, setmax_voltage] = useState(isDataReady.max_voltage)
+  const [min_voltage, setmin_voltage] = useState(isDataReady.min_voltage)
+  const [emitted_co2_alerts, setemitted_co2_alerts] = useState(isDataReady.emitted_co2_alerts)
+  const [set_co2_alerts, setset_co2_alerts] = useState(isDataReady.set_co2_alerts)
+  const [set_co2_value, setset_co2_value] = useState(isDataReady.set_co2_value)
+  const [operating_time_alerts, setoperating_time_alerts] = useState(isDataReady.operating_time_alerts)
+  const [operation_start_time, setoperation_start_time] = useState(isDataReady.operation_start_time)
+  const [operation_end_time, setoperation_end_time] = useState(isDataReady.operation_end_time)
+  const [load_alerts, setload_alerts] = useState(isDataReady.load_alerts)
+  const [load_threshold_value, setload_threshold_value] = useState(isDataReady.load_threshold_value)
+  const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
+  const [generator_maintenance_alert, setgenerator_maintenance_alert] = useState(isDataReady.generator_maintenance_alert)
+  
+  console.log(preloadedAlertsFormData)
 
   useEffect(() => {
     if (match && match.url) {
@@ -31,13 +57,13 @@ function AlertsAndAlarms({ match }) {
 
   // Get all alerts
   useEffect(() => {
-    alertsHttpServices.getAll().then((returnedData) => {
+    alertsHttpServices.getAll(userId,token).then((returnedData) => {
       /**
        * Reset added to force form prefilling
        * https://stackoverflow.com/a/64307087/15063835
        */
-      reset(returnedData);
-      setPreloadedAlertsFormData(returnedData);
+      reset(returnedData.data);
+      setPreloadedAlertsFormData(returnedData.data);
     });
   }, [reset]);
 
@@ -128,6 +154,13 @@ function AlertsAndAlarms({ match }) {
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
+                        placeholder={preloadedAlertsFormData.max_power_factor}
+                        value={max_power_factor}
+                        onChange={(e)=>{
+                          e.preventDefault()
+                          setmax_power_factor(e.target.value)
+                          // preloadedAlertsFormData.max_power_factor = parseFloat(e.target.value)
+                        }}
                         autoFocus
                       />{' '}
                       or goes below{' '}
@@ -143,6 +176,12 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="lowPowerFactor"
                         id="low-power-factor"
+                        placeholder={preloadedAlertsFormData.min_power_factor}
+                        value={preloadedAlertsFormData.min_power_factor}
+                        onChange={(e)=>{
+                          e.preventDefault()
+                          // setmin_power_factor(e.target.value)
+                        }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
@@ -161,11 +200,14 @@ function AlertsAndAlarms({ match }) {
                     />
                     <Controller
                       name="powerFactorChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.power_factor_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                              props.onChange(e.target.checked)
+                              // setpower_factor_alerts(e.target.checked)
+                          }}
                           checked={props.value}
                           className="power-factor-checkbox alerts-and-alarms-checkbox"
                           id="power-factor-checkbox"
