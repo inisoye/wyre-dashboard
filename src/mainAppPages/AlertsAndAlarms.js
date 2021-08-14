@@ -33,7 +33,7 @@ function AlertsAndAlarms({ match }) {
   const [max_voltage, setmax_voltage] = useState(isDataReady.max_voltage)
   const [min_voltage, setmin_voltage] = useState(isDataReady.min_voltage)
   const [emitted_co2_alerts, setemitted_co2_alerts] = useState(isDataReady.emitted_co2_alerts)
-  const [set_co2_alerts, setset_co2_alerts] = useState(isDataReady.set_co2_alerts)
+  const [set_co2_alerts, setSet_co2_alerts] = useState(isDataReady.set_co2_alerts)
   const [set_co2_value, setset_co2_value] = useState(isDataReady.set_co2_value)
   const [operating_time_alerts, setoperating_time_alerts] = useState(isDataReady.operating_time_alerts)
   const [operation_start_time, setoperation_start_time] = useState(isDataReady.operation_start_time)
@@ -410,6 +410,91 @@ function AlertsAndAlarms({ match }) {
 
             <ol className="alerts-and-alarms-list">
               <li className="alerts-and-alarms-list-item">
+                  <div className="alerts-and-alarms-question-container">
+                    <label htmlFor="estimated-baseline-checkbox" className="alerts-and-alarms-question-container">
+                       When estimated Baseline is Reached
+                    </label>
+                    <div>
+                    <Controller
+                      name="estimatedbaselineChecked"
+                      defaultValue={preloadedAlertsFormData.baseline_alerts}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setbaseline_alerts(e.target.checked)
+                            preloadedAlertsFormData.baseline_alerts = e.target.checked
+                          }}
+                          checked={props.value}
+                          className="estimated-baseline-checkbox alerts-and-alarms-checkbox"
+                          id="estimated-baseline-checkbox"
+                        />
+                      )}
+                    />
+                    </div>
+                  </div>
+              </li>
+
+              <li className="alerts-and-alarms-list-item">
+                <div className="alerts-and-alarms-question-container">
+                  <div>
+                    <p className="alerts-and-alarms-question">
+                      <label htmlFor="set-baseline">
+                        {' '}
+                        When Set Baseline is Reached
+                      </label>{' '}
+                      <input
+                        className="alerts-and-alarms-input"
+                        type="text"
+                        inputMode="decimal"
+                        name="set-baseline"
+                        id="set-baseline"
+                        placeholder={preloadedAlertsFormData.frequency_normal}
+                        value={frequency_normal}
+                        onChange={(e)=>{
+                          setfrequency_normal(e.target.value)
+                          preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
+                        }}
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />
+                      <span className="alerts-and-alarms-unit">kWh</span>
+                    </p>
+                    <p className="input-error-message">
+                      {errors.frequencyVariance &&
+                        'Frequency variance must be a number'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <HiddenInputLabel
+                      htmlFor="set-baseline-checkbox"
+                      labelText="set baseline"
+                    />
+                    <Controller
+                      name="frequencyVarianceChecked"
+                      defaultValue={preloadedAlertsFormData.frequency_alerts}
+                      control={control}
+                      render={(props) => (
+                        <Checkbox
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setFrequency_alerts(e.target.checked)
+                            preloadedAlertsFormData.frequency_alerts = e.target.checked
+                          }}
+                          checked={props.value}
+                          className="set-baseline-checkbox alerts-and-alarms-checkbox"
+                          id="set-baseline-checkbox"
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+              </li>
+
+              <li className="alerts-and-alarms-list-item">
                 <div className="alerts-and-alarms-question-container">
                   {' '}
                   <label
@@ -421,11 +506,15 @@ function AlertsAndAlarms({ match }) {
                   <div>
                     <Controller
                       name="eliminatedCo2Checked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.emitted_co2_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setemitted_co2_alerts(e.target.checked)
+                            preloadedAlertsFormData.emitted_co2_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="eliminated-co2-checkbox alerts-and-alarms-checkbox"
                           id="eliminated-co2-checkbox"
@@ -448,11 +537,15 @@ function AlertsAndAlarms({ match }) {
                   <div>
                     <Controller
                       name="setCo2Checked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.set_co2_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setSet_co2_alerts(e.target.checked)
+                            preloadedAlertsFormData.set_co2_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="set-co2-checkbox alerts-and-alarms-checkbox"
                           id="set-co2-checkbox"
@@ -475,11 +568,15 @@ function AlertsAndAlarms({ match }) {
                   <div>
                     <Controller
                       name="generatorOnChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.operating_time_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setoperating_time_alerts(e.target.checked)
+                            preloadedAlertsFormData.operating_time_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="generator-on-checkbox alerts-and-alarms-checkbox"
                           id="generator-on-checkbox"
@@ -501,6 +598,11 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="loadExcess"
                         id="load-excess"
+                        placeholder = {preloadedAlertsFormData.load_threshold_value}
+                        onChange={(e)=>{
+                          setload_threshold_value(e.target.value)
+                          preloadedAlertsFormData.load_threshold_value = formatIntInputs(e)
+                        }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
@@ -521,11 +623,15 @@ function AlertsAndAlarms({ match }) {
 
                     <Controller
                       name="loadExcessChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.load_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setload_alerts(e.target.checked)
+                            preloadedAlertsFormData.load_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="load-excess-checkbox alerts-and-alarms-checkbox"
                           id="load-excess-checkbox"
@@ -596,7 +702,7 @@ function AlertsAndAlarms({ match }) {
           <div className="alert-and-alarms-button-container">
             <button
               type="submit"
-              className="generic-submit-button alert-and-alarms-button"
+              className="generic-submit-button alert-and-alarms-button" 
             >
               Save Updates
             </button>
