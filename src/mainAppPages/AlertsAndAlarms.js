@@ -22,7 +22,7 @@ function AlertsAndAlarms({ match }) {
   const isDataReady = preloadedAlertsFormData && preloadedAlertsFormData
 
   const [power_factor_alerts, setpower_factor_alerts] = useState(preloadedAlertsFormData.power_factor_alerts)
-  const [max_power_factor, setmax_power_factor] = useState(isDataReady.max_power_factor)
+  const [max_power_factor, setmax_power_factor] = useState()
   const [min_power_factor, setmin_power_factor] = useState(isDataReady.min_power_factor)
   const [baseline_alerts, setbaseline_alerts] = useState(isDataReady.baseline_alerts)
   const [load_balance_alerts, setload_balance_alerts] = useState(isDataReady.load_balance_alerts)
@@ -67,6 +67,13 @@ function AlertsAndAlarms({ match }) {
     });
   }, [reset]);
 
+  const formatIntInputs = (e)=>{
+    let convertdataToInt = parseFloat(e.target.value)
+    // const value = convertdataToInt === NaN || convertdataToInt === undefined ? newdata : convertdataToInt
+    // console.log(newdata)
+    return convertdataToInt
+  }
+
   const onSubmit = ({
     highPowerFactor,
     lowPowerFactor,
@@ -109,7 +116,8 @@ function AlertsAndAlarms({ match }) {
       ...newAlertsFormData,
     };
 
-    alertsHttpServices.update(updatedAlertsFormData);
+    console.log(updatedAlertsFormData)
+    // alertsHttpServices.update(updatedAlertsFormData);
   };
 
   return (
@@ -159,7 +167,7 @@ function AlertsAndAlarms({ match }) {
                         onChange={(e)=>{
                           e.preventDefault()
                           setmax_power_factor(e.target.value)
-                          // preloadedAlertsFormData.max_power_factor = parseFloat(e.target.value)
+                          preloadedAlertsFormData.max_power_factor = formatIntInputs(e) 
                         }}
                         autoFocus
                       />{' '}
@@ -177,10 +185,11 @@ function AlertsAndAlarms({ match }) {
                         name="lowPowerFactor"
                         id="low-power-factor"
                         placeholder={preloadedAlertsFormData.min_power_factor}
-                        value={preloadedAlertsFormData.min_power_factor}
+                        value={min_power_factor}
                         onChange={(e)=>{
                           e.preventDefault()
-                          // setmin_power_factor(e.target.value)
+                          setmin_power_factor(e.target.value)
+                          preloadedAlertsFormData.min_power_factor = formatIntInputs(e) 
                         }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
@@ -206,7 +215,8 @@ function AlertsAndAlarms({ match }) {
                         <Checkbox
                           onChange={(e) => {
                               props.onChange(e.target.checked)
-                              // setpower_factor_alerts(e.target.checked)
+                              setpower_factor_alerts(e.target.checked)
+                              preloadedAlertsFormData.power_factor_alerts = e.target.checked
                           }}
                           checked={props.value}
                           className="power-factor-checkbox alerts-and-alarms-checkbox"
@@ -229,11 +239,16 @@ function AlertsAndAlarms({ match }) {
                   </label>{' '}
                   <Controller
                     name="loadBalanceIssuesChecked"
-                    defaultValue={false}
+                    defaultValue={preloadedAlertsFormData.load_balance_alerts}
                     control={control}
                     render={(props) => (
                       <Checkbox
-                        onChange={(e) => props.onChange(e.target.checked)}
+                        onChange={(e) => {
+                          props.onChange(e.target.checked)
+                          setload_balance_alerts(e.target.checked)
+                          console.log(e.target.checked)
+                          preloadedAlertsFormData.load_balance_alerts = e.target.checked
+                        }}
                         checked={props.value}
                         className="load-balance-issues-checkbox alerts-and-alarms-checkbox"
                         id="load-balance-issues-checkbox"
@@ -257,6 +272,12 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="frequencyVariance"
                         id="frequency-variance-factor"
+                        placeholder={preloadedAlertsFormData.frequency_normal}
+                        value={frequency_normal}
+                        onChange={(e)=>{
+                          setfrequency_normal(e.target.value)
+                          preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
+                        }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
@@ -275,11 +296,15 @@ function AlertsAndAlarms({ match }) {
                     />
                     <Controller
                       name="frequencyVarianceChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.frequency_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setFrequency_alerts(e.target.checked)
+                            preloadedAlertsFormData.frequency_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="frequency-variance-checkbox alerts-and-alarms-checkbox"
                           id="frequency-variance-checkbox"
@@ -307,6 +332,12 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="highVoltage"
                         id="high-voltage"
+                        placeholder={preloadedAlertsFormData.max_voltage}
+                        value={max_voltage}
+                        onChange={(e)=>{
+                          setmax_voltage(e.target.value)
+                          preloadedAlertsFormData.max_voltage = formatIntInputs(e)
+                        }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
@@ -325,6 +356,12 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="lowVoltage"
                         id="low-voltage"
+                        placeholder={preloadedAlertsFormData.min_voltage}
+                        value={min_voltage}
+                        onChange={(e)=>{
+                          setmin_voltage(e.target.value)
+                          preloadedAlertsFormData.min_voltage = formatIntInputs(e)
+                        }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
                         })}
@@ -345,11 +382,15 @@ function AlertsAndAlarms({ match }) {
 
                     <Controller
                       name="voltageChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.voltage_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setvoltage_alerts(e.target.checked)
+                            preloadedAlertsFormData.voltage_alerts = e.target.checked
+                          }}
                           checked={props.value}
                           className="voltage-checkbox alerts-and-alarms-checkbox"
                           id="voltage-checkbox"
