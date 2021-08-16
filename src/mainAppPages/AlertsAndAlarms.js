@@ -43,7 +43,7 @@ function AlertsAndAlarms({ match }) {
   const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
   const [generator_maintenance_alert, setgenerator_maintenance_alert] = useState(isDataReady.generator_maintenance_alert)
   
-  console.log(preloadedAlertsFormData)
+  // console.log(preloadedAlertsFormData)
 
   useEffect(() => {
     if (match && match.url) {
@@ -63,6 +63,7 @@ function AlertsAndAlarms({ match }) {
        * https://stackoverflow.com/a/64307087/15063835
        */
       reset(returnedData.data);
+      console.log(returnedData)
       setPreloadedAlertsFormData(returnedData.data);
     });
   }, [reset]);
@@ -450,11 +451,11 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="set-baseline"
                         id="set-baseline"
-                        placeholder={preloadedAlertsFormData.frequency_normal}
+                        // placeholder={preloadedAlertsFormData.frequency_normal}
                         value={frequency_normal}
                         onChange={(e)=>{
-                          setfrequency_normal(e.target.value)
-                          preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
+                          // setfrequency_normal(e.target.value)
+                          // preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
                         }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
@@ -475,14 +476,14 @@ function AlertsAndAlarms({ match }) {
                     />
                     <Controller
                       name="frequencyVarianceChecked"
-                      defaultValue={preloadedAlertsFormData.frequency_alerts}
+                      // defaultValue={preloadedAlertsFormData.frequency_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
                           onChange={(e) => {
                             props.onChange(e.target.checked)
-                            setFrequency_alerts(e.target.checked)
-                            preloadedAlertsFormData.frequency_alerts = e.target.checked
+                            // setFrequency_alerts(e.target.checked)
+                            // preloadedAlertsFormData.frequency_alerts = e.target.checked
                           }}
                           checked={props.value}
                           className="set-baseline-checkbox alerts-and-alarms-checkbox"
@@ -682,11 +683,15 @@ function AlertsAndAlarms({ match }) {
                   <div>
                     <Controller
                       name="generatorMaintenanceTimeChecked"
-                      defaultValue={false}
+                      defaultValue={preloadedAlertsFormData.generator_maintenance_alert}
                       control={control}
                       render={(props) => (
                         <Checkbox
-                          onChange={(e) => props.onChange(e.target.checked)}
+                          onChange={(e) => {
+                            props.onChange(e.target.checked)
+                            setgenerator_maintenance_alert(e.target.checked)
+                            preloadedAlertsFormData.generator_maintenance_alert = e.target.checked
+                          }}
                           checked={props.value}
                           className="generator-maintenance-time-checkbox alerts-and-alarms-checkbox"
                           id="generator-maintenance-time-checkbox"
@@ -694,6 +699,12 @@ function AlertsAndAlarms({ match }) {
                       )}
                     />
                   </div>
+                </div>
+                <div>
+                  <ol>
+                    {/* <li>Hi</li>
+                    <li>Ye</li> */}
+                  </ol>
                 </div>
               </li>
             </ol>
