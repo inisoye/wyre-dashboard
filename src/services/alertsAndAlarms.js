@@ -1,7 +1,7 @@
 import axios from 'axios';
 const baseUrl = 'http://wyreng.xyz/api/v1/alerts_data';
 
-const getAll = (userId, token) => {
+const getAll = async (userId, token) => {
   let requestUrl = `${baseUrl}/${userId}/`
   const request = axios.get(requestUrl, {
     headers:{
@@ -9,17 +9,19 @@ const getAll = (userId, token) => {
             Authorization: `bearer ${token}`,
     }
   });
-  return request.then((response) => response.data);
+  const response = await request;
+  return response.data;
 };
 
-const update = (newObject, token, userId) => {
+const update = async (newObject, token, userId) => {
   let requestUrl = `${baseUrl}/${userId}/`
   const request = axios.post(requestUrl, newObject,{
     headers:{
             'Content-Type': 'application/json',
             Authorization: `bearer ${token}`,
     }})
-  return request.then((response) => response.data);
+  const response = await request;
+  return response.data;
 };
 
 // eslint-disable-next-line
