@@ -9,6 +9,9 @@ import alertsHttpServices from '../services/alertsAndAlarms';
 import BreadCrumb from '../components/BreadCrumb';
 
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
+import { DatePicker, Space } from 'antd';
+import moment from 'moment';
+
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -18,6 +21,7 @@ const breadCrumbRoutes = [
 function AlertsAndAlarms({ match }) {
   const { setCurrentUrl, token, userId } = useContext(CompleteDataContext);
   const [preloadedAlertsFormData, setPreloadedAlertsFormData] = useState({});
+  const [generator_data, setGenerator_data] = useState([])
 
   const isDataReady = preloadedAlertsFormData && preloadedAlertsFormData
 
@@ -42,8 +46,9 @@ function AlertsAndAlarms({ match }) {
   const [load_threshold_value, setload_threshold_value] = useState(isDataReady.load_threshold_value)
   const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
   const [generator_maintenance_alert, setgenerator_maintenance_alert] = useState(isDataReady.generator_maintenance_alert)
+  const [energy_usage_max, setEnergy_usage_max] = useState(preloadedAlertsFormData.energy_usage_max)
   
-  // console.log(preloadedAlertsFormData)
+  console.log(generator_data)
 
   useEffect(() => {
     if (match && match.url) {
@@ -61,12 +66,12 @@ function AlertsAndAlarms({ match }) {
       /**
        * Reset added to force form prefilling
        * https://stackoverflow.com/a/64307087/15063835
-       */
+      */
       reset(returnedData.data);
-      console.log(returnedData)
       setPreloadedAlertsFormData(returnedData.data);
+      setGenerator_data(returnedData.generator_data)
     });
-  }, [reset]);
+  }, [reset,userId,token]);
 
   const formatIntInputs = (e)=>{
     let convertdataToInt = parseFloat(e.target.value)
@@ -75,6 +80,21 @@ function AlertsAndAlarms({ match }) {
     return convertdataToInt
   }
 
+  const onDateChange = (date, dateString)=>{
+    console.log(dateString);
+    return dateString
+  }
+
+  const formatDate = (date)=>{
+    const testDate = '18-08-2021'
+    const splitDate = testDate.split('-')
+    return splitDate
+  }
+
+  // console.log(formatDate()[0])
+  
+  const newGenData = {}
+  
   const onSubmit = ({
     highPowerFactor,
     lowPowerFactor,
@@ -273,11 +293,11 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="frequencyVariance"
                         id="frequency-variance-factor"
-                        placeholder={preloadedAlertsFormData.frequency_normal}
-                        value={frequency_normal}
+                        placeholder={preloadedAlertsFormData.frequency_precision}
+                        value={frequency_precision}
                         onChange={(e)=>{
-                          setfrequency_normal(e.target.value)
-                          preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
+                          setfrequency_precision(e.target.value)
+                          preloadedAlertsFormData.frequency_precision = formatIntInputs(e)
                         }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
@@ -451,11 +471,11 @@ function AlertsAndAlarms({ match }) {
                         inputMode="decimal"
                         name="set-baseline"
                         id="set-baseline"
-                        // placeholder={preloadedAlertsFormData.frequency_normal}
-                        value={frequency_normal}
+                        placeholder={preloadedAlertsFormData.energy_usage_max}
+                        value={energy_usage_max}
                         onChange={(e)=>{
-                          // setfrequency_normal(e.target.value)
-                          // preloadedAlertsFormData.frequency_normal = formatIntInputs(e)
+                          setEnergy_usage_max(e.target.value)
+                          preloadedAlertsFormData.energy_usage_max = formatIntInputs(e)
                         }}
                         ref={register({
                           pattern: /^-?\d+\.?\d*$/,
@@ -700,11 +720,28 @@ function AlertsAndAlarms({ match }) {
                     />
                   </div>
                 </div>
-                <div>
-                  <ol>
-                    {/* <li>Hi</li>
-                    <li>Ye</li> */}
-                  </ol>
+                <div style={{marginTop:'20px'}}>
+                  <ul>
+                    {generator_data.length > 0 ? generator_data.map((data, index)=>(
+                      <li style={{marginBottom:'10px'}} key={data.id}>
+                          <div>
+                            <span style={{width:'50%'}}>{index}. {data.name} </span>
+                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-checkbox'> 
+                                  <DatePicker 
+                                    onChange={onDateChange}
+                                    format="DD-MM-YYYY"
+                                    onOk={()=>{
+                                      console.log('ok')
+                                    }}
+                                    defaultValue={moment().set({'year': formatDate()[2], 'month': formatDate()[1], 'day': formatDate()[0]  })}
+                                  />
+                          </span>
+                          </div>
+                      </li>
+                    ))
+                    : null
+                    }
+                  </ul>
                 </div>
               </li>
             </ol>
