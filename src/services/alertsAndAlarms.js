@@ -12,8 +12,13 @@ const getAll = (userId, token) => {
   return request.then((response) => response.data);
 };
 
-const update = (newObject) => {
-  const request = axios.put(baseUrl, newObject);
+const update = (newObject, token, userId) => {
+  let requestUrl = `${baseUrl}/${userId}/`
+  const request = axios.post(requestUrl, newObject,{
+    headers:{
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+    }})
   return request.then((response) => response.data);
 };
 
