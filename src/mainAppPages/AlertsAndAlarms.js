@@ -47,9 +47,8 @@ function AlertsAndAlarms({ match }) {
   const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
   const [generator_maintenance_alert, setgenerator_maintenance_alert] = useState(isDataReady.generator_maintenance_alert)
   const [energy_usage_max, setEnergy_usage_max] = useState(preloadedAlertsFormData.energy_usage_max)
+  const [energy_usage_alerts, setEnergy_usage_alerts] = useState(isDataReady.energy_usage_alerts)
   
-  console.log(generator_data)
-
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -70,6 +69,7 @@ function AlertsAndAlarms({ match }) {
       reset(returnedData.data);
       setPreloadedAlertsFormData(returnedData.data);
       setGenerator_data(returnedData.generator_data)
+      console.log(returnedData)
     });
   }, [reset,userId,token]);
 
@@ -80,21 +80,32 @@ function AlertsAndAlarms({ match }) {
     return convertdataToInt
   }
 
+  const [maintenanceDate, setMaintenanceDate] = useState('')
+
   const onDateChange = (date, dateString)=>{
-    console.log(dateString);
+    setMaintenanceDate(dateString)
     return dateString
   }
 
-  const formatDate = (date)=>{
-    const testDate = '18-08-2021'
-    const splitDate = testDate.split('-')
-    return splitDate
+  const setGenData = (id, dateString)=>{
+    if(dateString !== ''){
+      let specGen = generator_data && generator_data.filter((data)=>{
+        return data.id === id
+    })
+    for(const key in specGen) {
+        const gottenData = specGen[key].next_maintenance_date = dateString
+      }
+    let obj = Object.keys(generator_data).forEach((e)=>{
+      if(e===id){
+        generator_data[e]={
+          specGen
+        }
+      }
+    })
+    return generator_data
   }
+}
 
-  // console.log(formatDate()[0])
-  
-  const newGenData = {}
-  
   const onSubmit = ({
     highPowerFactor,
     lowPowerFactor,
@@ -134,11 +145,11 @@ function AlertsAndAlarms({ match }) {
 
     const updatedAlertsFormData = {
       ...preloadedAlertsFormData,
-      ...newAlertsFormData,
+      // ...generator_data,
     };
 
-    console.log(updatedAlertsFormData)
-    // alertsHttpServices.update(updatedAlertsFormData);
+    // console.log(updatedAlertsFormData)
+    alertsHttpServices.update(updatedAlertsFormData,token,userId);
   };
 
   return (
@@ -496,14 +507,14 @@ function AlertsAndAlarms({ match }) {
                     />
                     <Controller
                       name="frequencyVarianceChecked"
-                      // defaultValue={preloadedAlertsFormData.frequency_alerts}
+                      defaultValue={preloadedAlertsFormData.energy_usage_alerts}
                       control={control}
                       render={(props) => (
                         <Checkbox
                           onChange={(e) => {
                             props.onChange(e.target.checked)
-                            // setFrequency_alerts(e.target.checked)
-                            // preloadedAlertsFormData.frequency_alerts = e.target.checked
+                            setEnergy_usage_alerts(e.target.checked)
+                            preloadedAlertsFormData.energy_usage_alerts = e.target.checked
                           }}
                           checked={props.value}
                           className="set-baseline-checkbox alerts-and-alarms-checkbox"
@@ -721,27 +732,38 @@ function AlertsAndAlarms({ match }) {
                   </div>
                 </div>
                 <div style={{marginTop:'20px'}}>
-                  <ul>
+                  <ol>
                     {generator_data.length > 0 ? generator_data.map((data, index)=>(
                       <li style={{marginBottom:'10px'}} key={data.id}>
-                          <div>
-                            <span style={{width:'50%'}}>{index}. {data.name} </span>
-                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-checkbox'> 
+                          <div >
+                            <span style={{width:'50%'}}>{index + 1}. {data.name} </span>
+                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker' onMouseOver={()=>{
+                                      setGenData(data.id,maintenanceDate)
+                                    }}> 
                                   <DatePicker 
                                     onChange={onDateChange}
                                     format="DD-MM-YYYY"
-                                    onOk={()=>{
-                                      console.log('ok')
+                                    dateRender={current => {
+                                      const style = {};
+                                      if (current.date() === 23) {
+                                        style.border = '1px solid #1890ff';
+                                        style.borderRadius = '50%';
+                                      }
+                                      return (
+                                        <div className="ant-picker-cell-inner" style={style}>
+                                          {current.date()}
+                                        </div>
+                                      );
                                     }}
-                                    defaultValue={moment().set({'year': formatDate()[2], 'month': formatDate()[1], 'day': formatDate()[0]  })}
+                                    // defaultValue={moment(generator_data.next_maintenance_date === null ? '': generator_data.next_maintenance_date, 'DD-MM-YYYY')}
                                   />
-                          </span>
+                              </span>
                           </div>
                       </li>
                     ))
                     : null
                     }
-                  </ul>
+                  </ol>
                 </div>
               </li>
             </ol>
