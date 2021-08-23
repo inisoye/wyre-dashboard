@@ -125,7 +125,7 @@ function ScoreCard({ match }) {
       <div className='score-card-row-1'>
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Baseline Energy
             </h2>
             <div>
@@ -179,7 +179,7 @@ function ScoreCard({ match }) {
 
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Peak to Average Power Ratio
             </h2>
             <div>
@@ -226,7 +226,7 @@ function ScoreCard({ match }) {
 
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Carbon Emission
             </h2>
             <div>

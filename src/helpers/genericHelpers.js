@@ -468,6 +468,29 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 
   return { ...parameterData, dates: parameterDateObjects };
 };
+
+// modify date in report to the right format
+const modifyStatisTicDate = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const dateONly = new Date(dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1)).toLocaleDateString()
+  return `(${dateDay}, ${dateONly})`
+};
+
+const modifyStatisTicDateWithTime = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const splitString = dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1).split(" ");
+  let deteOnly = splitString.slice(0, splitString.length -1).join(' ');
+  if(deteOnly[deteOnly.length -1] === ','){
+    deteOnly = deteOnly.substring(0, deteOnly.length - 1);
+  }
+  let timeOnly = splitString.slice(splitString.length -1)[0];
+  if(timeOnly[timeOnly.length -1] === '.'){
+    timeOnly = timeOnly.substring(0, timeOnly.length - 1);
+  }
+  return {dateDay, deteOnly, timeOnly}
+};
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
@@ -512,5 +535,7 @@ export {
   mergeTheData,
   allDeviceGenerators,
   roundToDecimalPLace,
-  sumOfArrayElements
+  sumOfArrayElements,
+  modifyStatisTicDate,
+  modifyStatisTicDateWithTime
 };

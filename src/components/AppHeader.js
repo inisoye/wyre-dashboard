@@ -98,7 +98,11 @@ function Header() {
 
   return (
     <header
-      className={isReportPageOpen ? 'header report-page-header' : 'header'}
+      className={
+        // isReportPageOpen ? 'header report-page-header' : 
+        'header'
+      }
+
     >
       <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
@@ -115,9 +119,10 @@ function Header() {
             <Link className="header-logo" to="/">
               <Logo
                 className={
-                  isReportPageOpen
-                    ? 'header-logo__image'
-                    : 'header-logo__image header- h-white-fill-medium-up'
+                  // isReportPageOpen
+                  //   ? 'header-logo__image'
+                  //   : 
+                    'header-logo__image header- h-white-fill-medium-up'
                 }
               />
             </Link>

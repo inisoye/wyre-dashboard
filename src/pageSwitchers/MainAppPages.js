@@ -45,7 +45,8 @@ function MainAppPages() {
 
         <main
           className={
-            isReportPageOpen ? 'main-container h-full-width' : 'main-container'
+            // isReportPageOpen ? 'main-container h-full-width' : 
+            'main-container'
           }
         >
           <TopBar />

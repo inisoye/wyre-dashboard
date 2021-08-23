@@ -3551,7 +3551,7 @@ thead.ant-table-thead tr th {
 
 .report-row-1-card {
   margin-bottom: 30px;
-  height: 250px;
+  height: 240px;
 }
 
 @media (min-width: 792px) {
@@ -3589,18 +3589,12 @@ thead.ant-table-thead tr th {
   font-size: 1.8rem;
 }
 
-.report-card-1-percentage {
-  margin-top: 24px;
-  font-size: 4rem;
-  font-weight: 500;
-}
-
 .report-card-1-rating {
-  margin-top: 21px;
+  margin-top: 16px;
 }
 
 .report-card-1-paragraph {
-  margin-top: 24px;
+  margin-top: 18px;
   font-size: 1.4rem;
 }
 
@@ -3639,10 +3633,6 @@ thead.ant-table-thead tr th {
   }
 }
 
-.report-card-2__topleft,
-.report-card-2__topright {
-  max-width: 49%;
-}
 
 @media (max-width: 379px) {
   .report-card-2__topleft,
@@ -3703,26 +3693,10 @@ thead.ant-table-thead tr th {
   }
 }
 
-.report-energy-consumed-decr {
-  margin-top: 11px;
-}
-
-.report-card-2-topright__second {
-  margin-top: 29px;
-}
-
 @media (max-width: 969px) {
   .report-card-2-topright__second {
     margin-top: 15px;
   }
-}
-
-.report-card-2-topright__value {
-  font-size: 2.4rem;
-  font-weight: 500;
-  line-height: 29px;
-  margin-top: 8px;
-  display: block;
 }
 
 @media (min-width: 792px) and (max-width: 969px) {
