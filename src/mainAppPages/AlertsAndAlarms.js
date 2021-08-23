@@ -7,6 +7,8 @@ import CompleteDataContext from '../Context';
 import alertsHttpServices from '../services/alertsAndAlarms';
 
 import BreadCrumb from '../components/BreadCrumb';
+import { notification } from 'antd';
+
 
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 import { DatePicker, Space } from 'antd';
@@ -69,9 +71,17 @@ function AlertsAndAlarms({ match }) {
       reset(returnedData.data);
       setPreloadedAlertsFormData(returnedData.data);
       setGenerator_data(returnedData.generator_data)
-      console.log(returnedData)
+      // console.log(returnedData)
     });
   }, [reset,userId,token]);
+
+  const openNotification = (type, title, desc) => {
+    notification[type]({
+      message: `${title}`,
+      description:`${desc}`,
+      duration : 6
+    });
+  };
 
   const formatIntInputs = (e)=>{
     let convertdataToInt = parseFloat(e.target.value)
@@ -144,12 +154,16 @@ function AlertsAndAlarms({ match }) {
     };
 
     const updatedAlertsFormData = {
-      ...preloadedAlertsFormData,
-      // ...generator_data,
+      'data': preloadedAlertsFormData,
+      'generator_data': generator_data,
     };
 
     // console.log(updatedAlertsFormData)
-    alertsHttpServices.update(updatedAlertsFormData,token,userId);
+    alertsHttpServices.update(updatedAlertsFormData,token,userId).then((res)=>{
+      openNotification('success','Success', 'Your changes has been updated succesfully')
+    }).catch((err)=>{
+      openNotification('error','Error','Something un-expected occured, please try again.')
+    });
   };
 
   return (
@@ -250,7 +264,7 @@ function AlertsAndAlarms({ match }) {
                               setpower_factor_alerts(e.target.checked)
                               preloadedAlertsFormData.power_factor_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.power_factor_alerts}
                           className="power-factor-checkbox alerts-and-alarms-checkbox"
                           id="power-factor-checkbox"
                         />
@@ -278,10 +292,9 @@ function AlertsAndAlarms({ match }) {
                         onChange={(e) => {
                           props.onChange(e.target.checked)
                           setload_balance_alerts(e.target.checked)
-                          console.log(e.target.checked)
                           preloadedAlertsFormData.load_balance_alerts = e.target.checked
                         }}
-                        checked={props.value}
+                        checked={preloadedAlertsFormData.load_balance_alerts}
                         className="load-balance-issues-checkbox alerts-and-alarms-checkbox"
                         id="load-balance-issues-checkbox"
                       />
@@ -337,7 +350,7 @@ function AlertsAndAlarms({ match }) {
                             setFrequency_alerts(e.target.checked)
                             preloadedAlertsFormData.frequency_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.frequency_alerts}
                           className="frequency-variance-checkbox alerts-and-alarms-checkbox"
                           id="frequency-variance-checkbox"
                         />
@@ -423,7 +436,7 @@ function AlertsAndAlarms({ match }) {
                             setvoltage_alerts(e.target.checked)
                             preloadedAlertsFormData.voltage_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.voltage_alerts}
                           className="voltage-checkbox alerts-and-alarms-checkbox"
                           id="voltage-checkbox"
                         />
@@ -458,7 +471,7 @@ function AlertsAndAlarms({ match }) {
                             setbaseline_alerts(e.target.checked)
                             preloadedAlertsFormData.baseline_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.baseline_alerts}
                           className="estimated-baseline-checkbox alerts-and-alarms-checkbox"
                           id="estimated-baseline-checkbox"
                         />
@@ -516,7 +529,7 @@ function AlertsAndAlarms({ match }) {
                             setEnergy_usage_alerts(e.target.checked)
                             preloadedAlertsFormData.energy_usage_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.energy_usage_alerts}
                           className="set-baseline-checkbox alerts-and-alarms-checkbox"
                           id="set-baseline-checkbox"
                         />
@@ -547,7 +560,7 @@ function AlertsAndAlarms({ match }) {
                             setemitted_co2_alerts(e.target.checked)
                             preloadedAlertsFormData.emitted_co2_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.emitted_co2_alerts}
                           className="eliminated-co2-checkbox alerts-and-alarms-checkbox"
                           id="eliminated-co2-checkbox"
                         />
@@ -578,7 +591,7 @@ function AlertsAndAlarms({ match }) {
                             setSet_co2_alerts(e.target.checked)
                             preloadedAlertsFormData.set_co2_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.set_co2_alerts}
                           className="set-co2-checkbox alerts-and-alarms-checkbox"
                           id="set-co2-checkbox"
                         />
@@ -609,7 +622,7 @@ function AlertsAndAlarms({ match }) {
                             setoperating_time_alerts(e.target.checked)
                             preloadedAlertsFormData.operating_time_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.operating_time_alerts}
                           className="generator-on-checkbox alerts-and-alarms-checkbox"
                           id="generator-on-checkbox"
                         />
@@ -664,7 +677,7 @@ function AlertsAndAlarms({ match }) {
                             setload_alerts(e.target.checked)
                             preloadedAlertsFormData.load_alerts = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.load_alerts}
                           className="load-excess-checkbox alerts-and-alarms-checkbox"
                           id="load-excess-checkbox"
                         />
@@ -674,7 +687,7 @@ function AlertsAndAlarms({ match }) {
                 </div>
               </li>
 
-              <li className="alerts-and-alarms-list-item">
+              {/* <li className="alerts-and-alarms-list-item">
                 <div className="alerts-and-alarms-question-container">
                   {' '}
                   <label
@@ -700,7 +713,7 @@ function AlertsAndAlarms({ match }) {
                     />
                   </div>
                 </div>
-              </li>
+              </li> */}
 
               <li className="alerts-and-alarms-list-item">
                 <div className="alerts-and-alarms-question-container">
@@ -723,7 +736,7 @@ function AlertsAndAlarms({ match }) {
                             setgenerator_maintenance_alert(e.target.checked)
                             preloadedAlertsFormData.generator_maintenance_alert = e.target.checked
                           }}
-                          checked={props.value}
+                          checked={preloadedAlertsFormData.generator_maintenance_alert}
                           className="generator-maintenance-time-checkbox alerts-and-alarms-checkbox"
                           id="generator-maintenance-time-checkbox"
                         />
@@ -738,6 +751,7 @@ function AlertsAndAlarms({ match }) {
                           <div >
                             <span style={{width:'50%'}}>{index + 1}. {data.name} </span>
                               <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker' onMouseOver={()=>{
+                                      console.log(data.id)
                                       setGenData(data.id,maintenanceDate)
                                     }}> 
                                   <DatePicker 

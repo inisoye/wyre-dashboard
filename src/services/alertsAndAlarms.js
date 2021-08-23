@@ -14,7 +14,6 @@ const getAll = async (userId, token) => {
 };
 
 const update = async (newObject, token, userId) => {
-  console.log(newObject)
   let requestUrl = `${baseUrl}/${userId}/`
   const request = axios.post(requestUrl, newObject,{
     headers:{
