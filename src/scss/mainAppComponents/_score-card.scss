@@ -20,23 +20,21 @@
 
 .score-card-row-1__item {  
   background-color: $white;
-       margin-bottom: 30px;  
-       min-height: 477px;
-       padding: 24px;
-       padding-bottom: 42px;
-       display: flex;
-       flex-direction: column;
+  margin-bottom: 30px;  
+  min-height: 477px;
+  padding: 24px;
+  padding-bottom: 42px;
+  display: flex;
+  flex-direction: column;
+  border-radius: $medium-border;
+    @include media('>1122px') {
+    max-width: 31.5%;
+    justify-content: space-between;
+  }
 
-     
-       @include media('>1122px') {
-        max-width: 30%;
-        justify-content: space-between;
-      }
-
-      @include media('>=1510px') {
-        flex-grow: 1;
-      }
-
+  @include media('>=1510px') {
+    flex-grow: 1;
+  }
 }
 
 
@@ -88,6 +86,7 @@
   background-color: $white;
   margin-bottom: 30px;
   overflow: auto;
+  border-radius: $medium-border;
 }
 
 .changeover-lags-heading {
@@ -99,6 +98,7 @@
   background-color: $white;
   margin-bottom: 30px;
   padding: 24px;
+  border-radius: $medium-border;
 }
 
 .score-card-bar-chart-container {
@@ -152,14 +152,20 @@
 .score-card-row-4__right {
   background-color: $white;
   padding: 24px;
+  border-radius: $medium-border;
 
   @include media('>1530px') {
     flex-grow: 1;
+  }
+
+  @include media('>1122px') {
+    width: 48%;
   }
 }
 
 .score-card-row-4__left {
   margin-bottom: 30px;
+  border-radius: $medium-border;
 
   @include media('>1122px') {
     margin-bottom: 0;

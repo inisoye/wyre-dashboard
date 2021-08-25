@@ -1915,7 +1915,6 @@ thead.ant-table-thead tr th {
 @media (min-width: 1123px) {
   .score-card-row-1 {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
   }
 }
@@ -2773,8 +2772,7 @@ thead.ant-table-thead tr th {
 }
 
 .billing-bill-table-container {
-  background-color: #ffffff;
-  margin-top: 30px;
+  /* background-color: #ffffff; */
   overflow: auto;
   padding-bottom: 52px;
   width: 100%;
