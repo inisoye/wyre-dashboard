@@ -70,7 +70,6 @@ function AlertsAndAlarms({ match }) {
       reset(returnedData.data);
       setPreloadedAlertsFormData(returnedData.data);
       setGenerator_data(returnedData.generator_data)
-      console.log(returnedData)
     });
   }, [reset,userId,token]);
 
@@ -150,7 +149,6 @@ function AlertsAndAlarms({ match }) {
       'generator_data': generator_data,
     };
 
-    console.log(updatedAlertsFormData)
     alertsHttpServices.update(updatedAlertsFormData,token,userId).then((res)=>{
       openNotification('success','Success', 'Your changes has been updated succesfully')
     }).catch((err)=>{
