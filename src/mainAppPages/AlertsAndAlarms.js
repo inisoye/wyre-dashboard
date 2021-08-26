@@ -749,7 +749,7 @@ function AlertsAndAlarms({ match }) {
                                     format="DD-MM-YYYY"
                                     dateRender={current => {
                                       const style = {};
-                                      if (current.date() === 23) {
+                                      if (current.date() === generator_data.next_maintenance_date) {
                                         style.border = '1px solid #1890ff';
                                         style.borderRadius = '50%';
                                       }
@@ -759,7 +759,7 @@ function AlertsAndAlarms({ match }) {
                                         </div>
                                       );
                                     }}
-                                    // defaultValue={moment(generator_data.next_maintenance_date === null ? '': generator_data.next_maintenance_date, 'DD-MM-YYYY')}
+                                    // defaultValue={moment(generator_data.next_maintenance_date, 'DD-MM-YYYY')}
                                   />
                               </span>
                           </div>
