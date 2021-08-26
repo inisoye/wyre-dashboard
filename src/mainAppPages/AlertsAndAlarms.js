@@ -3,11 +3,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
-
 import alertsHttpServices from '../services/alertsAndAlarms';
 
 import BreadCrumb from '../components/BreadCrumb';
-import { notification } from 'antd';
+import { notification, Button } from 'antd';
 
 
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
@@ -71,7 +70,7 @@ function AlertsAndAlarms({ match }) {
       reset(returnedData.data);
       setPreloadedAlertsFormData(returnedData.data);
       setGenerator_data(returnedData.generator_data)
-      // console.log(returnedData)
+      console.log(returnedData)
     });
   }, [reset,userId,token]);
 
@@ -90,15 +89,8 @@ function AlertsAndAlarms({ match }) {
     return convertdataToInt
   }
 
-  const [maintenanceDate, setMaintenanceDate] = useState('')
-
-  const onDateChange = (date, dateString)=>{
-    setMaintenanceDate(dateString)
-    return dateString
-  }
-
   const setGenData = (id, dateString)=>{
-    if(dateString !== ''){
+    if(dateString !== "Invalid date"){
       let specGen = generator_data && generator_data.filter((data)=>{
         return data.id === id
     })
@@ -158,11 +150,12 @@ function AlertsAndAlarms({ match }) {
       'generator_data': generator_data,
     };
 
-    // console.log(updatedAlertsFormData)
+    console.log(updatedAlertsFormData)
     alertsHttpServices.update(updatedAlertsFormData,token,userId).then((res)=>{
       openNotification('success','Success', 'Your changes has been updated succesfully')
     }).catch((err)=>{
       openNotification('error','Error','Something un-expected occured, please try again.')
+      console.log(err)
     });
   };
 
@@ -747,15 +740,14 @@ function AlertsAndAlarms({ match }) {
                 <div style={{marginTop:'20px'}}>
                   <ol>
                     {generator_data.length > 0 ? generator_data.map((data, index)=>(
-                      <li style={{marginBottom:'10px'}} key={data.id}>
-                          <div >
+                      <li  style={{marginBottom:'10px'}} key={data.id}>
+                          <div style={{display:'flex',alignItems:'center', justifyContent:'flex-start'}}>
                             <span style={{width:'50%'}}>{index + 1}. {data.name} </span>
-                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker' onMouseOver={()=>{
-                                      console.log(data.id)
-                                      setGenData(data.id,maintenanceDate)
-                                    }}> 
+                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker'> 
                                   <DatePicker 
-                                    onChange={onDateChange}
+                                    onChange={(e)=>{
+                                      setGenData(data.id,moment(e).format('YYYY-MM-DD'))
+                                    }}
                                     format="DD-MM-YYYY"
                                     dateRender={current => {
                                       const style = {};
