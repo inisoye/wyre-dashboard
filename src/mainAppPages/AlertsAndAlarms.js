@@ -81,11 +81,13 @@ function AlertsAndAlarms({ match }) {
     });
   };
 
+  console.log(preloadedAlertsFormData)
+
   const formatIntInputs = (e)=>{
     let convertdataToInt = parseFloat(e.target.value)
-    // const value = convertdataToInt === NaN || convertdataToInt === undefined ? newdata : convertdataToInt
-    // console.log(newdata)
-    return convertdataToInt
+    const value = isNaN(convertdataToInt) ? '' : convertdataToInt
+    console.log(value)
+    return value
   }
 
   const setGenData = (id, dateString)=>{
@@ -104,6 +106,16 @@ function AlertsAndAlarms({ match }) {
       }
     })
     return generator_data
+  }
+}
+
+const defaultDate = (data)=>{
+  let date = data && data.next_maintenance_date
+  if(date === null){
+      return ;
+  }
+  else{
+    return moment(date, 'YYYY-MM-DD')
   }
 }
 
@@ -194,6 +206,7 @@ function AlertsAndAlarms({ match }) {
                         className="alerts-and-alarms-input"
                         type="text"
                         inputMode="decimal"
+                        width="50"
                         name="highPowerFactor"
                         id="high-power-factor"
                         ref={register({
@@ -204,7 +217,7 @@ function AlertsAndAlarms({ match }) {
                         onChange={(e)=>{
                           e.preventDefault()
                           setmax_power_factor(e.target.value)
-                          preloadedAlertsFormData.max_power_factor = formatIntInputs(e) 
+                          preloadedAlertsFormData.max_power_factor = formatIntInputs(e)
                         }}
                         autoFocus
                       />{' '}
@@ -749,7 +762,7 @@ function AlertsAndAlarms({ match }) {
                                     format="DD-MM-YYYY"
                                     dateRender={current => {
                                       const style = {};
-                                      if (current.date() === generator_data.next_maintenance_date) {
+                                      if (current.date() === data.next_maintenance_date) {
                                         style.border = '1px solid #1890ff';
                                         style.borderRadius = '50%';
                                       }
@@ -759,7 +772,7 @@ function AlertsAndAlarms({ match }) {
                                         </div>
                                       );
                                     }}
-                                    // defaultValue={moment(generator_data.next_maintenance_date, 'DD-MM-YYYY')}
+                                    defaultValue={defaultDate(data)}
                                   />
                               </span>
                           </div>
@@ -771,16 +784,16 @@ function AlertsAndAlarms({ match }) {
                 </div>
               </li>
             </ol>
-          </fieldset>
-
-          <div className="alert-and-alarms-button-container">
+          
+          <div style={{marginBottom:'5%', marginLeft:'10%'}}>
             <button
               type="submit"
-              className="generic-submit-button alert-and-alarms-button" 
-            >
+              className="generic-submit-button alert-and-alarms-button" >
               Save Updates
             </button>
           </div>
+          </fieldset>
+
         </form>
       </div>
     </>
