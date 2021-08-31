@@ -60,16 +60,6 @@ function AlertsAndAlarms({ match }) {
     defaultValues: preloadedAlertsFormData,
   });
 
-  const InputStyles = {    
-      border: '1px solid #d9d9d9',
-      color: '#595959',
-      // fontSize: '1.4rem',
-      height: '24px',
-      padding: '8px 11px',
-      maxWidth: '54px',
-      borderRadius: '2px',
-      margin: '0 10px',
-  }
 
   // Get all alerts
   useEffect(() => {
