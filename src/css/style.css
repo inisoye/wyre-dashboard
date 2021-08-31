@@ -2729,7 +2729,7 @@ thead.ant-table-thead tr th {
   font-size: 1.4rem;
   height: 24px;
   padding: 8px 11px;
-  max-width: 54px;
+  /* max-width: 54px; */
   border-radius: 2px;
   margin: 0 10px;
 }
