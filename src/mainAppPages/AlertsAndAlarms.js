@@ -6,7 +6,7 @@ import CompleteDataContext from '../Context';
 import alertsHttpServices from '../services/alertsAndAlarms';
 
 import BreadCrumb from '../components/BreadCrumb';
-import { notification, Button } from 'antd';
+import { notification } from 'antd';
 
 
 import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
@@ -60,6 +60,7 @@ function AlertsAndAlarms({ match }) {
     defaultValues: preloadedAlertsFormData,
   });
 
+
   // Get all alerts
   useEffect(() => {
     alertsHttpServices.getAll(userId,token).then((returnedData) => {
@@ -81,12 +82,9 @@ function AlertsAndAlarms({ match }) {
     });
   };
 
-  console.log(preloadedAlertsFormData)
-
   const formatIntInputs = (e)=>{
     let convertdataToInt = parseFloat(e.target.value)
     const value = isNaN(convertdataToInt) ? '' : convertdataToInt
-    console.log(value)
     return value
   }
 
