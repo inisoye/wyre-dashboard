@@ -5,30 +5,47 @@ import PrintIcon from '../icons/PrintIcon';
 
 import CompleteDataContext from '../Context';
 import dataHttpServices from '../services/devices';
+import { notification, Tooltip } from 'antd';
 
 import axios from 'axios';
 
 import { ScheduleEmailModal } from '../components/ScheduleEmailModal';
 
 function PrintButtons() {
-  const { token, userId, allDevices, checkedDevices } = useContext(
+  const { token, userId, allDevices, checkedDevices,userDateRange, } = useContext(
     CompleteDataContext
   );
-  const dateRange = dataHttpServices.endpointDateRange;
+
+  let dateRange = userDateRange === null || userDateRange.length === 0 ? dataHttpServices.endpointDateRange
+    : dataHttpServices.convertDateRangeToEndpointFormat(userDateRange);
+
+  const openNotification = () => {
+    notification.info({
+      message: 'PDF Download',
+      description:
+        'Your file download will begin soon.',
+      duration: 5,
+    });
+  };
 
   const PdfDownloadLink = async () => {
+    openNotification()
     const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
-
     let selectedDevicesIds = [];
-    
+
     for (const prop in checkedDevices) {
       let listOfDeviceId = allDevices.filter((e) => {
         return e.name === prop;
       });
       selectedDevicesIds.push(listOfDeviceId[0].id);
     }
-    const data = JSON.stringify({ selected_devices: selectedDevicesIds})
 
+    if (selectedDevicesIds.length === 0 ) {
+        allDevices.filter((e)=>{
+          return selectedDevicesIds.push(e.id)
+        })
+    }
+    const data = JSON.stringify({ selected_devices: selectedDevicesIds})
     const response = axios
       .post(staticUrl, data, {
         headers: {
@@ -54,11 +71,14 @@ function PrintButtons() {
 
   return (
     <ul className="print-buttons h-hidden-medium-down">
+      <Tooltip title="Schedule an e-mail containing your billing info.">
       <li className="print-button-container">
         <button type="button" className="print-button">
           {modal}
         </button>
       </li>
+      </Tooltip>
+      <Tooltip title="Download a PDF file containing your billing data.">
       <li className="print-button-container">
         <button
           onClick={PdfDownloadLink}
@@ -68,8 +88,9 @@ function PrintButtons() {
           <PdfIcon />
         </button>
       </li>
+      </Tooltip>
       <li className="print-button-container">
-        <button type="button" className="print-button">
+        <button type="button" className="print-button" style={{cursor:"not-allowed"}}>
           <PrintIcon />
         </button>
       </li>

@@ -1,8 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, Select, notification } from 'antd';
 import moment from 'moment';
 import CompleteDataContext from '../Context';
+
+import billingHttpServices from '../services/bills'
 
 import { CaretDownFilled } from '@ant-design/icons';
 
@@ -27,7 +29,7 @@ const openNotificationWithIcon = (type, formName) => {
 };
 
 function AddBills({ match }) {
-  const { setCurrentUrl, isAuthenticatedDataLoading } = useContext(
+  const { setCurrentUrl, isAuthenticatedDataLoading, token, userId, organization } = useContext(
     CompleteDataContext
   );
 
@@ -123,15 +125,37 @@ function AddBills({ match }) {
     />
   );
 
+  let defaultBranch;
+
+const getBranchName = organization.branches && organization.branches.map((branch)=>{
+  defaultBranch = branch.id
+  return branch.id
+})
+
+
   const onPurchaseTrackerSubmit = ({
     fuelQuantity,
     fuelPricePerLitre,
     fuelPurchaseDate,
     fuelType,
   }) => {
-    console.log(fuelQuantity, fuelPricePerLitre, fuelPurchaseDate, fuelType);
+    const DieselCostData = {
+      branch : defaultBranch,
+      quantity : fuelQuantity,
+      price_per_litre : fuelPricePerLitre,
+      date : fuelPurchaseDate.format('YYYY-MM-DD')
+    }
+    
+    billingHttpServices
+    .addCostForDiesel(DieselCostData, token, userId, fuelType)
+    .then(()=>{  
+      openNotificationWithIcon('success', 'fuel purchase tracker');
+    })
+    .catch((err)=>{
+      console.log(err)
+      alert('An error occured, Please try again!!')
+    })
 
-    openNotificationWithIcon('success', 'fuel purchase tracker');
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -145,14 +169,23 @@ function AddBills({ match }) {
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
-    console.log(
-      utilityPaymentPreAmount,
-      utilityPaymentPreDate,
-      utilityPaymentPreTariff,
-      utilityPaymentPreValue
-    );
+    const prePaidData = {
+      branch : defaultBranch,
+      value : utilityPaymentPreValue,
+      amount : utilityPaymentPreAmount,
+      tariff : utilityPaymentPreTariff,
+      date : utilityPaymentPreDate.format('YYYY-MM-DD')
+    }
 
-    openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+    billingHttpServices
+      .addCostPrePaid(prePaidData,token,userId)
+      .then(()=>{  
+        openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+      })
+      .catch(err=>{
+        console.log(err.response)
+        alert(err.response, 'Please try again!!!')
+      })
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPreDate', undefined);
@@ -165,18 +198,38 @@ function AddBills({ match }) {
     utilityPaymentPostTariff,
     utilityPaymentPostValue,
   }) => {
-    console.log(
-      utilityPaymentPostAmount,
-      utilityPaymentPostDate,
-      utilityPaymentPostTariff,
-      utilityPaymentPostValue
-    );
 
-    openNotificationWithIcon('success', 'post-paid utility payment tracker');
+    const convertDate = (dateObjects)=>{
+      let formatObject = dateObjects.map((eachDateObject) => {
+        return eachDateObject.format('YYYY-MM-DD')
+      })
+      return formatObject
+   }
 
-    // Reset form fields. Controller value is set manually
-    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
-    resetPaymentTrackerPost();
+   let FormattedDate = convertDate(utilityPaymentPostDate)
+
+    const postPaidData = {
+      branch : defaultBranch,
+      value : utilityPaymentPostValue,
+      amount : utilityPaymentPostAmount,
+      tariff : utilityPaymentPostTariff,
+      date :  FormattedDate[0],
+      end_date: FormattedDate[1]
+    }
+    
+    billingHttpServices
+    .addCostPostPaid(postPaidData,token, userId)
+    .then(()=>{
+      openNotificationWithIcon('success', 'post-paid utility payment tracker');
+    })
+    .catch(error=>{
+      alert('An error occured,Please try again!!!')
+      console.log(error.response)
+    })
+
+    // // Reset form fields. Controller value is set manually
+    // setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    // resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {
@@ -203,6 +256,7 @@ function AddBills({ match }) {
             onSubmit={handleSubmitPurchaseTracker(onPurchaseTrackerSubmit)}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+              
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
@@ -330,6 +384,8 @@ function AddBills({ match }) {
             )}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+
+
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
@@ -455,6 +511,7 @@ function AddBills({ match }) {
             )}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"

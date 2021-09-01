@@ -279,6 +279,8 @@ function SidebarDevice({
         ...modifiedCheckedDevices,
       });
     }
+    console.log(checkedDevices)
+    console.log(checkedItems)
   };
 
   return (
@@ -298,3 +300,8 @@ function SidebarDevice({
 }
 
 export default SidebarDevice;
+
+
+
+
+// end of script

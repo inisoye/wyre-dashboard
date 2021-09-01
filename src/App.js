@@ -6,14 +6,15 @@ import AuthPages from './pageSwitchers/AuthPages';
 import AdminPages from './pageSwitchers/AdminPages';
 
 function App() {
-  const { userData, isUserAdmin } = useContext(CompleteDataContext);
+  const { userData, isUserAdmin, isAuthenticatedDataLoading } = useContext(CompleteDataContext);
 
   return (
     <>
       {isUserAdmin ? (
         <AdminPages />
       ) : userData ? (
-        <MainAppPages />
+        <MainAppPages 
+        isLoading={isAuthenticatedDataLoading} />
       ) : (
         <AuthPages />
       )}

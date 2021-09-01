@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { createContext, useEffect, useState } from 'react';
+
 import { useMediaQuery } from 'react-responsive';
 
 import dataHttpServices from './services/devices';
 
-import { getRefinedOrganizationData } from './helpers/organizationDataHelpers';
+import {
+  getRefinedOrganizationData,
+  getOrganizationDeviceType,
+  getRefinedOrganizationDataWithChekBox
+} from './helpers/organizationDataHelpers';
+
 import { getRenderedData } from './helpers/renderedDataHelpers';
+import { allDeviceGenerators } from './helpers/genericHelpers';
 
 // create context
 const CompleteDataContext = React.createContext();
@@ -14,6 +22,7 @@ const CompleteDataProvider = (props) => {
   /* -------------------------------------------------------------------
   /* Data Control ------------------------------------------------------
   --------------------------------------------------------------------*/
+  const [deviceData, setDeviceData] = useState({});
   const [organization, setOrganization] = useState({});
   const [renderedDataObjects, setRenderedDataObjects] = useState({});
   // Note: the rendered data objects state exludes data for the whole organisation
@@ -21,12 +30,14 @@ const CompleteDataProvider = (props) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [checkedBranches, setCheckedBranches] = useState({});
   const [checkedDevices, setCheckedDevices] = useState({});
+  const [selectedDevices, setSelectedDevices] = useState([]);
+  const [allCheckedOrSelectedDevice, setAllCheckedOrSelectedDevice] = useState([]);
   const [isAuthenticatedDataLoading, setIsAuthenticatedDataLoading] = useState(
     true
   );
   /*--------------------------------------------------------------------
 
-
+  
 
 
   --------------------------------------------------------------------*/
@@ -105,20 +116,24 @@ const CompleteDataProvider = (props) => {
         .getAllData()
         .then((returnedData) => {
           setIsAuthenticatedDataLoading(false);
-
           if (returnedData.branches.length === 0) {
-            console.log('yeahh');
             throw new Error('No branches');
           }
           setOrganization(returnedData);
         })
         .catch((error) => {
-          if (error.message === 'No branches') {
+          const logUserOut = () => {
             window.localStorage.removeItem('loggedWyreUser');
             setUserData(undefined);
-          } else if (error.response.data.message === 'UserId might not exist') {
-            window.localStorage.removeItem('loggedWyreUser');
-            setUserData(undefined);
+          };
+
+          if (error && error.message === 'No branches') {
+            logUserOut();
+          } else if (
+            error &&
+            error.response.data.message === 'UserId might not exist'
+          ) {
+            logUserOut();
           }
         });
     };
@@ -146,15 +161,64 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        setRefinedRenderedData(getRefinedOrganizationData(organization));
-        
+        const refindedData = getRefinedOrganizationData(organization)
+        // set all the device into the needed data(bucket)
+        setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
+        setRefinedRenderedData(refindedData);
+        setDeviceData(getOrganizationDeviceType(organization));
+
       } else {
+
+        const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        setAllCheckedOrSelectedDevice(holdAllDevices);
         const renderedDataArray = Object.values(renderedDataObjects);
+        const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
+        setRefinedRenderedData(getRenderedData(renderedDataArray));
+        setSelectedDevices(getDeviceType);
+      }
+    }
+  }, [checkedItems, renderedDataObjects]);
+
+  /*--------------------------------------------------------------------
+
+
+
+
+  --------------------------------------------------------------------*/
+  /* -------------------------------------------------------------------
+  /* Organization data on load ------------------------------------------
+  /* there is need to separate the organisation from the rest 
+  --------------------------------------------------------------------*/
+  useEffect(() => {
+
+    // Ensure organization object is not empty
+    if (
+      Object.keys(organization).length > 0 &&
+      organization.constructor === Object
+    ) {
+      // If nothing is checked, render organization's data
+      // Otherwise, render data from checked items
+      if (
+        Object.keys(checkedItems).length === 0 &&
+        checkedItems.constructor === Object
+      ) {
+        const refindedData = getRefinedOrganizationData(organization)
+        setRefinedRenderedData(refindedData);
+        // set all the device into the needed data(bucket)
+        setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
+      } else {
+        // generate all the data for the devices selected
+        const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        setAllCheckedOrSelectedDevice(holdAllDevices);
+        // get the data to render
+        const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
+          checkedBranches, checkedDevices, organization, setRenderedDataObjects
+        })
+        const renderedDataArray = Object.values(dataWithCheckBoxes);
         setRefinedRenderedData(getRenderedData(renderedDataArray));
       }
     }
-  }, [organization, checkedItems, renderedDataObjects]);
-      
+  }, [organization]);
   /*--------------------------------------------------------------------
 
     
@@ -173,16 +237,22 @@ const CompleteDataProvider = (props) => {
       setUserId(user.data.id);
     }
   }, []);
-
   // State for Schedule Email Modal
+  const [emailModalData, setEmailModalData] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const allDevices = [];
+
+  const allDevices = []
+
+
+  const [PasswordVisibility, setPasswordVisibility] = useState(false)
+
 
   return (
     <CompleteDataContext.Provider
       value={{
         // Data Control
+        deviceData : deviceData,
         organization: organization,
         refinedRenderedData: refinedRenderedData,
         renderedDataObjects: renderedDataObjects,
@@ -190,12 +260,14 @@ const CompleteDataProvider = (props) => {
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
         checkedBranches: checkedBranches,
+        selectedDevices : selectedDevices,
         setCheckedBranches: setCheckedBranches,
         checkedDevices: checkedDevices,
         setCheckedDevices: setCheckedDevices,
         numberOfCheckedItems: Object.keys(checkedItems).length,
         numberOfCheckedBranches: Object.keys(checkedBranches).length,
         isAuthenticatedDataLoading: isAuthenticatedDataLoading,
+        allCheckedOrSelectedDevice: allCheckedOrSelectedDevice,
 
         // Nav and Sidebar Controls
         isNavOpen: isNavOpen,
@@ -237,12 +309,19 @@ const CompleteDataProvider = (props) => {
         isLessThan1296: isLessThan1296,
 
         //Schedule Email Modal
+        emailModalData: emailModalData,
+        setEmailModalData: setEmailModalData,
         isModalVisible: isModalVisible,
         setIsModalVisible: setIsModalVisible,
 
         // Preloaded Form Data
         preloadedUserFormData: preloadedUserFormData,
         setPreloadedUserFormData: setPreloadedUserFormData,
+
+        // Password Toggle Visibility.
+        PasswordVisibility: PasswordVisibility,
+        setPasswordVisibility: setPasswordVisibility,
+
 
         allDevices: allDevices,
       }}

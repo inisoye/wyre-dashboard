@@ -16,6 +16,10 @@
     box-shadow: $grey-box-shadow;
     flex-direction: row;
     justify-content: space-between;
+
+    &.report-page-header {
+      background-image: none;
+    }
   }
 
   &.h-no-linear-gradient {
