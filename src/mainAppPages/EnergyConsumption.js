@@ -45,65 +45,71 @@ function EnergyConsumption({ match }) {
     energy_consumption_usage,
   } = refinedRenderedData;
 
-  const chartConsumptionValues =
-    energy_consumption_values &&
-    energy_consumption_values.map((eachDevice) => eachDevice.value);
+  let chartConsumptionValues, allDeviceNames, chartDates, energyConsumptionUnit;
+  let allDates, tableHeadings, formattedTableData, dataForEnergyConsumptionColumns;
+  let deviceNames, energyConsumptionColumns, energyConsumptionValuesTableDataClone;
+  let tableEnergyConsumptionValues, tableValues, csvHeaders;
 
-  const allDeviceNames =
-    energy_consumption_values &&
-    energy_consumption_values.map((eachDevice) => eachDevice.deviceName);
+  if (energy_consumption_usage && energy_consumption_values) {
+    chartConsumptionValues =
+      energy_consumption_values &&
+      energy_consumption_values.map((eachDevice) => eachDevice.value);
 
-  const chartDates =
-    energy_consumption_values &&
-    formatParametersDatetimes(energy_consumption_values[0].dates);
+    allDeviceNames =
+      energy_consumption_values &&
+      energy_consumption_values.map((eachDevice) => eachDevice.deviceName);
 
-  const energyConsumptionUnit =
-    energy_consumption_values && energy_consumption_values[0].units;
+    chartDates =
+      energy_consumption_values &&
+      formatParametersDatetimes(energy_consumption_values[0].dates);
 
-  const energyConsumptionValuesTableDataClone =
-    energy_consumption_values &&
-    energy_consumption_values.map((eachDevice) => {
-      return {
-        [eachDevice.deviceName]: eachDevice.value,
-      };
+    energyConsumptionUnit =
+      energy_consumption_values && energy_consumption_values[0].units;
+
+    energyConsumptionValuesTableDataClone =
+      energy_consumption_values &&
+      energy_consumption_values.map((eachDevice) => {
+        return {
+          [eachDevice.deviceName]: eachDevice.value,
+        };
+      });
+
+    allDates =
+      energy_consumption_values && energy_consumption_values[0].dates;
+
+    tableEnergyConsumptionValues =
+      energyConsumptionValuesTableDataClone &&
+      Object.assign(...energyConsumptionValuesTableDataClone);
+
+    tableHeadings = Object.keys({
+      date: '',
+      time: '',
+      ...tableEnergyConsumptionValues,
     });
 
-  const allDates =
-    energy_consumption_values && energy_consumption_values[0].dates;
+    tableValues = Object.values({
+      date: allDates && formatParametersDates(allDates),
+      time: allDates && formatParametersTimes(allDates),
+      ...tableEnergyConsumptionValues,
+    });
 
-  const tableEnergyConsumptionValues =
-    energyConsumptionValuesTableDataClone &&
-    Object.assign(...energyConsumptionValuesTableDataClone);
+    formattedTableData = formatParameterTableData(
+      tableHeadings,
+      tableValues
+    );
 
-  const tableHeadings = Object.keys({
-    date: '',
-    time: '',
-    ...tableEnergyConsumptionValues,
-  });
-
-  const tableValues = Object.values({
-    date: allDates && formatParametersDates(allDates),
-    time: allDates && formatParametersTimes(allDates),
-    ...tableEnergyConsumptionValues,
-  });
-
-  const formattedTableData = formatParameterTableData(
-    tableHeadings,
-    tableValues
-  );
-
-  const dataForEnergyConsumptionColumns =
+    dataForEnergyConsumptionColumns =
       formattedTableData &&
       formattedTableData.map((eachRow) => {
 
         return eachRow;
       });
 
-    const deviceNames =
+    deviceNames =
       dataForEnergyConsumptionColumns.length &&
       Object.keys(dataForEnergyConsumptionColumns[0]);
 
-    const energyConsumptionColumns =
+    energyConsumptionColumns =
       deviceNames &&
       deviceNames.map((eachName) => {
         return {
@@ -111,6 +117,10 @@ function EnergyConsumption({ match }) {
           key: `${eachName}`,
         };
       });
+      csvHeaders = energyConsumptionColumns
+  }
+
+
 
   // console.log(energyConsumptionColumns)
 
@@ -122,8 +132,6 @@ function EnergyConsumption({ match }) {
   //   { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
   // ]
 
-  const csvHeaders = energyConsumptionColumns
-
   if (isAuthenticatedDataLoading) {
     return <Loader />;
   }
@@ -133,7 +141,8 @@ function EnergyConsumption({ match }) {
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
-
+      {energy_consumption_usage && energy_consumption_values && 
+      <>
       <article className='parameters-stacked-bar-container'>
         <EnergyConsumptionBarChart
           chartConsumptionValues={chartConsumptionValues}
@@ -199,6 +208,7 @@ function EnergyConsumption({ match }) {
           />
         </div>
       </article>
+      </>}
     </>
   );
 }

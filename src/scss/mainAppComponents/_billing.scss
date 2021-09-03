@@ -1,6 +1,7 @@
 .billing-bar-container {
   background-color: $white;
   height: 450px;
+  border-radius: $medium-border;
 
   @include media('>=medium') {
     height: 547px;
@@ -12,6 +13,9 @@
 }
 
 .billing-bill-tables {
+  border-radius: $medium-border;
+  background-color: $white;
+  margin-top: 30px;
   @include media('>=medium') {
     display: flex;
     width: 100%;
@@ -20,8 +24,6 @@
 }
 
 .billing-bill-table-container {
-  background-color: $white;
-  margin-top: 30px;
   overflow: auto;
   padding-bottom: 52px;
   width: 100%;
@@ -99,6 +101,8 @@
   padding-bottom: 52px;
   padding-top: 15px;
   width: 100%;
+
+  border-radius: $medium-border;
 
   @include media('>=1210px') {
     width: 49%;

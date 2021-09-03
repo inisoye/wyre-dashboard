@@ -1,6 +1,7 @@
 .cost-tracker-section {
   margin-bottom: 70px;
-
+  border-radius: $medium-border;
+  
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -10,6 +11,7 @@
   background-color: $white;
   margin-bottom: 30px;
 
+  border-radius: $medium-border;
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -25,6 +27,8 @@
 .cost-tracker-chart-wrapper {
   background-color: $white;
   height: 450px;
+
+  border-radius: $medium-border;
 
   @include media('>=medium') {
     height: 547px;
