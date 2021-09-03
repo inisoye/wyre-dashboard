@@ -172,12 +172,12 @@ const getBranchName = organization.branches && organization.branches.map((branch
     resetPurchaseTracker();
   };
 
-  const onUsedTrackerSubmit = ({fuelUsedDate, fuelUsedQuantity})=>{
-    console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelUsedQuantity)
+  const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance})=>{
+    console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelBalance)
 
     // Reset form fields. Controller value is set manually
     setValueUsedTracker('fuelUsedDate', undefined);
-    setValueUsedTracker('fuelUsedQuantity', undefined);
+    setValueUsedTracker('fuelBalance', undefined);
     resetUsedTracker();
   }
 
@@ -647,7 +647,7 @@ const getBranchName = organization.branches && organization.branches.map((branch
       
         <section className="cost-tracker-form-section add-bills-section">
           <h2 className="form-section-heading add-bills-section__heading">
-            Diesel/Petrol Used Tracker
+          End of Month Diesel/Petrol Balance
           </h2>
 
           <form
@@ -656,34 +656,8 @@ const getBranchName = organization.branches && organization.branches.map((branch
             onSubmit={handleUsedTracker(onUsedTrackerSubmit)}
           >
             <div className="cost-tracker-form-inputs-wrapper">
-              
-              <div className="cost-tracker-input-container">
-                <label
-                  className="generic-input-label cost-tracker-input-label"
-                  htmlFor="fuel-used-quantity"
-                >
-                  Quantity
-                </label>
-                <input
-                  className="generic-input"
-                  type="text"
-                  inputMode="decimal"
-                  name="fuelUsedQuantity"
-                  id="fuel-used-quantity"
-                  ref={registerUsedTracker({
-                    required: true,
-                    pattern: /^-?\d+\.?\d*$/,
-                  })}
-                  required
-                  autoFocus
-                />
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.fuelUsedQuantity &&
-                    'Please enter a number'}
-                </p>
-              </div>
 
-              <div className="cost-tracker-input-container">
+            <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
                   htmlFor="fuel-purchase-date"
@@ -714,6 +688,61 @@ const getBranchName = organization.branches && organization.branches.map((branch
                     'Please enter a date'}
                 </p>
               </div>
+              
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-used-quantity"
+                >
+                  Balance
+                </label>
+                <input
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelBalance"
+                  id="fuel-used-quantity"
+                  ref={registerUsedTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
+                  required
+                  autoFocus
+                />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelBalance &&
+                    'Please enter a number'}
+                </p>
+              </div>
+            
+              <div className="cost-tracker-input-container" >
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="flow-meter-snapshot"
+                >
+                  Flow Meter Snapshot
+                </label>
+                <input
+                  style={{backgroundColor:'#C4C4C48A'}}
+                  className="generic-input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  name="flowMeterSnapshot"
+                  id="flow-meter-snapshot"
+                  ref={registerUsedTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
+                  required
+                  autoFocus
+                />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelBalance &&
+                    'Please enter a number'}
+                </p>
+              </div>
+
+              
             </div>
             <button className="generic-submit-button cost-tracker-form-submit-button">
               Submit
