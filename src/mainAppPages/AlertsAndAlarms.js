@@ -107,6 +107,8 @@ function AlertsAndAlarms({ match }) {
   }
 }
 
+const testData = {}
+
 const defaultDate = (data)=>{
   let date = data && data.next_maintenance_date
   if(date === null){
@@ -717,70 +719,73 @@ const defaultDate = (data)=>{
                 </div>
               </li> */}
 
-              <li className="alerts-and-alarms-list-item">
-                <div className="alerts-and-alarms-question-container">
-                  {' '}
-                  <label
-                    htmlFor="generator-maintenance-time-checkbox"
-                    className="alerts-and-alarms-question"
-                  >
-                    When set generator maintenance time is drawing close
-                  </label>{' '}
-                  <div>
-                    <Controller
-                      name="generatorMaintenanceTimeChecked"
-                      defaultValue={preloadedAlertsFormData.generator_maintenance_alert}
-                      control={control}
-                      render={(props) => (
-                        <Checkbox
-                          onChange={(e) => {
-                            props.onChange(e.target.checked)
-                            setgenerator_maintenance_alert(e.target.checked)
-                            preloadedAlertsFormData.generator_maintenance_alert = e.target.checked
-                          }}
-                          checked={preloadedAlertsFormData.generator_maintenance_alert}
-                          className="generator-maintenance-time-checkbox alerts-and-alarms-checkbox"
-                          id="generator-maintenance-time-checkbox"
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-                <div style={{marginTop:'20px'}}>
-                  <ol>
-                    {generator_data.length > 0 ? generator_data.map((data, index)=>(
-                      <li  style={{marginBottom:'10px'}} key={data.id}>
-                          <div style={{display:'flex',alignItems:'center', justifyContent:'flex-start'}}>
-                            <span style={{width:'50%'}}>{index + 1}. {data.name} </span>
-                              <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker'> 
-                                  <DatePicker 
-                                    onChange={(e)=>{
-                                      setGenData(data.id,moment(e).format('YYYY-MM-DD'))
-                                    }}
-                                    format="DD-MM-YYYY"
-                                    dateRender={current => {
-                                      const style = {};
-                                      if (current.date() === data.next_maintenance_date) {
-                                        style.border = '1px solid #1890ff';
-                                        style.borderRadius = '50%';
-                                      }
-                                      return (
-                                        <div className="ant-picker-cell-inner" style={style}>
-                                          {current.date()}
-                                        </div>
-                                      );
-                                    }}
-                                    defaultValue={defaultDate(data)}
-                                  />
-                              </span>
-                          </div>
-                      </li>
-                    ))
-                    : null
-                    }
-                  </ol>
-                </div>
-              </li>
+              {testData.length > 0 && 
+                 <li className="alerts-and-alarms-list-item">
+                 <div className="alerts-and-alarms-question-container">
+                   {' '}
+                   <label
+                     htmlFor="generator-maintenance-time-checkbox"
+                     className="alerts-and-alarms-question"
+                   >
+                     When set generator maintenance time is drawing close
+                   </label>{' '}
+                   <div>
+                     <Controller
+                       name="generatorMaintenanceTimeChecked"
+                       defaultValue={preloadedAlertsFormData.generator_maintenance_alert}
+                       control={control}
+                       render={(props) => (
+                         <Checkbox
+                           onChange={(e) => {
+                             props.onChange(e.target.checked)
+                             setgenerator_maintenance_alert(e.target.checked)
+                             preloadedAlertsFormData.generator_maintenance_alert = e.target.checked
+                           }}
+                           checked={preloadedAlertsFormData.generator_maintenance_alert}
+                           className="generator-maintenance-time-checkbox alerts-and-alarms-checkbox"
+                           id="generator-maintenance-time-checkbox"
+                         />
+                       )}
+                     />
+                   </div>
+                 </div>
+                 <div style={{marginTop:'20px'}}>
+                   <ol>
+                     {generator_data.length > 0 ? generator_data.map((data, index)=>(
+                       <li  style={{marginBottom:'10px'}} key={data.id}>
+                           <div style={{display:'flex',alignItems:'center', justifyContent:'flex-start'}}>
+                             <span style={{width:'50%'}}>{index + 1}. {data.name} </span>
+                               <span style={{marginLeft:'20px'}} className='alerts-and-alarms-datepicker'> 
+                                   <DatePicker 
+                                     onChange={(e)=>{
+                                       setGenData(data.id,moment(e).format('YYYY-MM-DD'))
+                                     }}
+                                     format="DD-MM-YYYY"
+                                     dateRender={current => {
+                                       const style = {};
+                                       if (current.date() === data.next_maintenance_date) {
+                                         style.border = '1px solid #1890ff';
+                                         style.borderRadius = '50%';
+                                       }
+                                       return (
+                                         <div className="ant-picker-cell-inner" style={style}>
+                                           {current.date()}
+                                         </div>
+                                       );
+                                     }}
+                                     defaultValue={defaultDate(data)}
+                                   />
+                               </span>
+                           </div>
+                       </li>
+                     ))
+                     : null
+                     }
+                   </ol>
+                 </div>
+               </li>
+              }
+             
             </ol>
           
           <div style={{marginBottom:'5%', marginLeft:'10%'}}>
