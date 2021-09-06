@@ -32,20 +32,20 @@ function AlertsAndAlarms({ match }) {
   const [baseline_alerts, setbaseline_alerts] = useState(isDataReady.baseline_alerts)
   const [load_balance_alerts, setload_balance_alerts] = useState(isDataReady.load_balance_alerts)
   const [frequency_alerts, setFrequency_alerts] = useState(isDataReady.frequency_alerts)
-  const [frequency_normal, setfrequency_normal] = useState(isDataReady.frequency_normal)
+  // const [frequency_normal, setfrequency_normal] = useState(isDataReady.frequency_normal)
   const [frequency_precision, setfrequency_precision] = useState(isDataReady.frequency_precision)
   const [voltage_alerts, setvoltage_alerts] = useState(isDataReady.voltage_alerts)
   const [max_voltage, setmax_voltage] = useState(isDataReady.max_voltage)
   const [min_voltage, setmin_voltage] = useState(isDataReady.min_voltage)
   const [emitted_co2_alerts, setemitted_co2_alerts] = useState(isDataReady.emitted_co2_alerts)
   const [set_co2_alerts, setSet_co2_alerts] = useState(isDataReady.set_co2_alerts)
-  const [set_co2_value, setset_co2_value] = useState(isDataReady.set_co2_value)
+  const [set_co2_value, reset_co2_value] = useState(isDataReady.set_co2_value)
   const [operating_time_alerts, setoperating_time_alerts] = useState(isDataReady.operating_time_alerts)
-  const [operation_start_time, setoperation_start_time] = useState(isDataReady.operation_start_time)
-  const [operation_end_time, setoperation_end_time] = useState(isDataReady.operation_end_time)
+  // const [operation_start_time, setoperation_start_time] = useState(isDataReady.operation_start_time)
+  // const [operation_end_time, setoperation_end_time] = useState(isDataReady.operation_end_time)
   const [load_alerts, setload_alerts] = useState(isDataReady.load_alerts)
   const [load_threshold_value, setload_threshold_value] = useState(isDataReady.load_threshold_value)
-  const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
+  // const [changeover_lag_alerts, setchangeover_lag_alerts] = useState(isDataReady.changeover_lag_alerts)
   const [generator_maintenance_alert, setgenerator_maintenance_alert] = useState(isDataReady.generator_maintenance_alert)
   const [energy_usage_max, setEnergy_usage_max] = useState(preloadedAlertsFormData.energy_usage_max)
   const [energy_usage_alerts, setEnergy_usage_alerts] = useState(isDataReady.energy_usage_alerts)
@@ -106,8 +106,6 @@ function AlertsAndAlarms({ match }) {
     return generator_data
   }
 }
-
-const testData = {}
 
 const defaultDate = (data)=>{
   let date = data && data.next_maintenance_date
@@ -491,7 +489,7 @@ const defaultDate = (data)=>{
                     <p className="alerts-and-alarms-question">
                       <label htmlFor="set-baseline">
                         {' '}
-                        When Set Baseline is Reached
+                        When set energy target is Reached
                       </label>{' '}
                       <input
                         className="alerts-and-alarms-input"
@@ -574,16 +572,44 @@ const defaultDate = (data)=>{
                 </div>
               </li>
 
+              
               <li className="alerts-and-alarms-list-item">
                 <div className="alerts-and-alarms-question-container">
-                  {' '}
-                  <label
-                    htmlFor="set-co2-checkbox"
-                    className="alerts-and-alarms-question"
-                  >
-                    When set CO<sub>2</sub> is reached
-                  </label>{' '}
                   <div>
+                    <p className="alerts-and-alarms-question">
+                      <label htmlFor="set-baseline">
+                        {' '}
+                        When set CO<sub>2</sub> is reached
+                      </label>{' '}
+                      <input
+                        className="alerts-and-alarms-input"
+                        type="text"
+                        inputMode="decimal"
+                        name="set-baseline"
+                        id="set-baseline"
+                        placeholder={preloadedAlertsFormData.set_co2_value}
+                        value={set_co2_value}
+                        onChange={(e)=>{
+                          reset_co2_value(e.target.value)
+                          preloadedAlertsFormData.set_co2_value = formatIntInputs(e)
+                        }}
+                        ref={register({
+                          pattern: /^-?\d+\.?\d*$/,
+                        })}
+                      />
+                      <span className="alerts-and-alarms-unit">tons</span>
+                    </p>
+                    <p className="input-error-message">
+                      {errors.frequencyVariance &&
+                        'Frequency variance must be a number'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <HiddenInputLabel
+                      htmlFor="set-baseline-checkbox"
+                      labelText="set baseline"
+                    />
                     <Controller
                       name="setCo2Checked"
                       defaultValue={preloadedAlertsFormData.set_co2_alerts}
@@ -603,8 +629,8 @@ const defaultDate = (data)=>{
                     />
                   </div>
                 </div>
-              </li>
-
+              </li>  
+            
               <li className="alerts-and-alarms-list-item">
                 <div className="alerts-and-alarms-question-container">
                   {' '}
@@ -719,7 +745,7 @@ const defaultDate = (data)=>{
                 </div>
               </li> */}
 
-              {testData.length > 0 && 
+              {generator_data.length > 0 && 
                  <li className="alerts-and-alarms-list-item">
                  <div className="alerts-and-alarms-question-container">
                    {' '}
