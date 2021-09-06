@@ -215,16 +215,6 @@ function AddEquipment({ match }) {
                 </p>
               </div>
 
-              {/* <div className="cost-tracker-input-container">
-                <label
-                  className="generic-input-label cost-tracker-input-label"
-                  htmlFor="equipment-branch"
-                >
-                Branch
-                </label>
-              {branchSelector}
-            </div> */}
-
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
