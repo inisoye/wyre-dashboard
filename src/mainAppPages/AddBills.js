@@ -33,6 +33,10 @@ function AddBills({ match }) {
     CompleteDataContext
   );
 
+  const [images,setImages] = useState([])
+
+  console.log(images)
+
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -172,12 +176,13 @@ const getBranchName = organization.branches && organization.branches.map((branch
     resetPurchaseTracker();
   };
 
-  const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance})=>{
+  const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
     console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelBalance)
 
     // Reset form fields. Controller value is set manually
     setValueUsedTracker('fuelUsedDate', undefined);
     setValueUsedTracker('fuelBalance', undefined);
+    setValueUsedTracker('flowMeterSnapshot', undefined);
     resetUsedTracker();
   }
 
@@ -728,18 +733,14 @@ const getBranchName = organization.branches && organization.branches.map((branch
                   type="file"
                   accept="image/png, image/jpeg"
                   name="flowMeterSnapshot"
+                  onChange={(e)=>setImages(e.target.files)}
                   id="flow-meter-snapshot"
                   ref={registerUsedTracker({
                     required: true,
-                    pattern: /^-?\d+\.?\d*$/,
                   })}
                   required
                   autoFocus
                 />
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.fuelBalance &&
-                    'Please enter a number'}
-                </p>
               </div>
 
               
