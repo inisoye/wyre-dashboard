@@ -30,6 +30,8 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
+import NewAppTopBar from '../components/NewAppTopBar';
+import LoadOverview from '../mainAppPages/LoadOverview';
 
 function MainAppPages() {
   const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
@@ -48,7 +50,8 @@ function MainAppPages() {
             isReportPageOpen ? 'main-container h-full-width' : 'main-container'
           }
         >
-          <TopBar />
+          {/* <TopBar /> */}
+          <NewAppTopBar />
           <ScrollToTop>
             <div className="page-content">
               {/* {!isAuthenticatedDataLoading ? */}
@@ -89,6 +92,7 @@ function MainAppPages() {
                   <Route path="/score-card" component={ScoreCard} />
                   <Route path="/client-profile" component={ClientProfile} />
                   <Route path="/password" component={Password} />
+                  <Route path="/load-overview" component={LoadOverview} />
                   <Route path="/alerts-and-alarms" component={AlertsAndAlarms} />
                   <Route
                     exact

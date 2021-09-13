@@ -198,14 +198,14 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && (
               <HeaderLink
                 onClick={toggleNav}
                 url="/dashboard"
                 // url="/report"
                 linkText="Report"
               />
-            )}
+            )} */}
 
             {/* {!doesUserHaveAccess && ( */}
               {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)

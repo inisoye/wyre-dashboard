@@ -1,0 +1,19 @@
+
+.load-overviews-table-data{
+    width: 100%;
+    border-radius: 6px;
+    background-color: $white;
+    p {
+        margin-left: 20px;
+        font-size: smaller;
+    }
+
+    @include media('>medium') {
+        width: 33%;
+    }
+}
+
+.load-overviews-row-table-data{
+    display: flex;
+    flex-wrap: wrap;
+}
