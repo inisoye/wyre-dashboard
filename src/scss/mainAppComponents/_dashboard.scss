@@ -12,6 +12,7 @@
 .dashboard__banner--small {
   width: 100%;
   height: 174px;
+  border-radius: $medium-border;
 
   @include media('>=medium') {
     height: 200px;
@@ -21,6 +22,23 @@
     max-width: 31.5%;
   }
 }
+
+.dashboard__banner--smallb {
+  width: 100%;
+  height: 174px;
+  border-radius: $medium-border;
+
+  @include media('>=medium') {
+    height: 200px;
+  }
+
+  @include media('>=1200px') {
+    flex: 1;
+    min-width: 30.5%;
+    column-gap: 30px;
+  }
+}
+
 
 .dashboard__total-energy {
   background-color: $purple;
@@ -95,9 +113,11 @@
   height: 340px;
   background-color: $white;
   margin-top: 30px;
+  border-radius: $medium-border;
 }
 
 .dashboard-bar-container {
+  border-radius: $medium-border;
   @include media('>=medium') {
     height: 500px;
   }
@@ -127,6 +147,7 @@
 .dashboard-today-and-yesterday {
   background-color: $white;
   margin-top: 30px;
+  border-radius: $medium-border;
 
   @include media('>=1200px') {
     width: 40%;

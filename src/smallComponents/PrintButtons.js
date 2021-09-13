@@ -12,10 +12,12 @@ import axios from 'axios';
 import { ScheduleEmailModal } from '../components/ScheduleEmailModal';
 
 function PrintButtons() {
-  const { token, userId, allDevices, checkedDevices } = useContext(
+  const { token, userId, allDevices, checkedDevices,userDateRange, } = useContext(
     CompleteDataContext
   );
-  const dateRange = dataHttpServices.endpointDateRange;
+
+  let dateRange = userDateRange === null || userDateRange.length === 0 ? dataHttpServices.endpointDateRange
+    : dataHttpServices.convertDateRangeToEndpointFormat(userDateRange);
 
   const openNotification = () => {
     notification.info({

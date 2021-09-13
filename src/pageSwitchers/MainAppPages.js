@@ -3,6 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import CompleteDataContext from '../Context';
 
+import Loader from "../components/Loader";
+
 import AddBills from '../mainAppPages/AddBills';
 import AddEquipment from '../mainAppPages/AddEquipment';
 import Billing from '../mainAppPages/Billing';
@@ -30,7 +32,7 @@ import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
 
 function MainAppPages() {
-  const { currentUrl } = useContext(CompleteDataContext);
+  const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
 
   const isReportPageOpen = currentUrl.includes('report');
 
@@ -47,58 +49,59 @@ function MainAppPages() {
           }
         >
           <TopBar />
-
           <ScrollToTop>
             <div className="page-content">
-              <Switch>
-                <Route exact path="/">
-                  <Redirect to="/dashboard" />
-                </Route>
-                <Route path="/dashboard" component={Dashboard} />
-                <Route exact path="/log-in">
-                  <Redirect to="/" />
-                </Route>
-                <Route path="/billing" component={Billing} />
-                <Route exact path="/cost-tracker" component={CostTracker} />
-                <Route path="/cost-tracker/add-bills" component={AddBills} />
-                <Route
-                  path="/cost-tracker/add-equipment"
-                  component={AddEquipment}
-                />
-                <Route path="/messages" component={Messages} />
-                <Route
-                  path="/parameters/last-reading"
-                  component={LastReading}
-                />
-                <Route path="/parameters/time-of-use" component={TimeOfUse} />
-                <Route
-                  path="/parameters/power-demand"
-                  component={PowerDemand}
-                />
-                <Route
-                  path="/parameters/power-quality"
-                  component={PowerQuality}
-                />
-                <Route
-                  path="/parameters/energy-consumption"
-                  component={EnergyConsumption}
-                />
-                <Route path="/report" component={Report} />                
-                <Route path="/score-card" component={ScoreCard} />
-                <Route path="/client-profile" component={ClientProfile} />
-                <Route path="/password" component={Password} />
-                <Route path="/alerts-and-alarms" component={AlertsAndAlarms} />
-                <Route
-                  exact
-                  path="/branches"
-                  component={BranchesDevicesAndUsers}
-                />
-                <Route
-                  path="/branches/user-form"
-                  component={BranchesUserForm}
-                />
-                <Route component={Error} />
-              </Switch>
+              {/* {!isAuthenticatedDataLoading ? */}
+                <Switch>
+                  <Route exact path="/">
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route path="/dashboard" component={Dashboard} />
+                  <Route exact path="/log-in">
+                    <Redirect to="/" />
+                  </Route>
+                  <Route path="/billing" component={Billing} />
+                  <Route exact path="/cost-tracker" component={CostTracker} />
+                  <Route path="/cost-tracker/add-bills" component={AddBills} />
+                  <Route
+                    path="/cost-tracker/add-equipment"
+                    component={AddEquipment}
+                  />
+                  <Route path="/messages" component={Messages} />
+                  <Route
+                    path="/parameters/last-reading"
+                    component={LastReading}
+                  />
+                  <Route path="/parameters/time-of-use" component={TimeOfUse} />
+                  <Route
+                    path="/parameters/power-demand"
+                    component={PowerDemand}
+                  />
+                  <Route
+                    path="/parameters/power-quality"
+                    component={PowerQuality}
+                  />
+                  <Route
+                    path="/parameters/energy-consumption"
+                    component={EnergyConsumption}
+                  />
+                  <Route path="/report" component={Report} />
+                  <Route path="/score-card" component={ScoreCard} />
+                  <Route path="/client-profile" component={ClientProfile} />
+                  <Route path="/password" component={Password} />
+                  <Route path="/alerts-and-alarms" component={AlertsAndAlarms} />
+                  <Route
+                    exact
+                    path="/branches"
+                    component={BranchesDevicesAndUsers}
+                  />
+                  <Route
+                    path="/branches/user-form"
+                    component={BranchesUserForm}
+                  />
+                  <Route component={Error} />
+                </Switch>
+                {/* : <Loader />} */}
             </div>
           </ScrollToTop>
         </main>

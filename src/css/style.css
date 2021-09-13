@@ -1915,7 +1915,6 @@ thead.ant-table-thead tr th {
 @media (min-width: 1123px) {
   .score-card-row-1 {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
   }
 }
@@ -1952,6 +1951,16 @@ thead.ant-table-thead tr th {
 .score-card-heading {
   font-size: 1.6rem;
   font-weight: 400;
+}
+
+.doughnut-card-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-icon{
+  fill: #a19090;
+  stroke-width: 0.01rem;
 }
 
 .score-card-doughnut-container {
@@ -2719,7 +2728,7 @@ thead.ant-table-thead tr th {
   font-size: 1.4rem;
   height: 24px;
   padding: 8px 11px;
-  max-width: 54px;
+  /* max-width: 54px; */
   border-radius: 2px;
   margin: 0 10px;
 }
@@ -2763,8 +2772,7 @@ thead.ant-table-thead tr th {
 }
 
 .billing-bill-table-container {
-  background-color: #ffffff;
-  margin-top: 30px;
+  /* background-color: #ffffff; */
   overflow: auto;
   padding-bottom: 52px;
   width: 100%;
