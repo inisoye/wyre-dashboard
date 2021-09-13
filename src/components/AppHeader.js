@@ -220,14 +220,14 @@ function Header() {
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
               // url='/messages'
               linkText="Messages"
             />
-            )}
+            )} */}
             <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}
