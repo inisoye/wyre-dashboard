@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import CompleteDataContext from '../Context';
 
@@ -9,9 +9,10 @@ import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerM
 import Loader from '../components/Loader';
 import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
 import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
-
 import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
-
+import axios from 'axios';
+import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
+import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -19,18 +20,38 @@ const breadCrumbRoutes = [
 ];
 
 function CostTracker({ match }) {
+  
+  const [overviewData, setOverviewData] = useState([])
+  const [dieselPurchasedData, setDieselPurchasedData] = useState([])
+
   const {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
-    organization
+    organization,
+    token,
+    userId
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-  }, [match, setCurrentUrl]);
+
+    const requestUrl = `http://wyreng.xyz/api/v1/cost_tracker_overview/${userId}/`;
+    axios.get(requestUrl,  {
+      headers:{
+              'Content-Type': 'application/json',
+              Authorization: `bearer ${token}`,
+      }}
+    ).then((req)=>{
+      setOverviewData(req.data.data)
+      setDieselPurchasedData(getDieselPurchaseData())
+    }).catch((err)=>{
+      alert('Something un-expected happened, please reload page')
+      console.log(err)
+    })
+  }, [match, setCurrentUrl,token,userId]);
 
   const {
     cost_tracker_diesel_qty,
@@ -38,6 +59,21 @@ function CostTracker({ match }) {
     cost_tracker_consumption,
   } = refinedRenderedData;
 
+
+  const getDieselPurchaseData = ()=>{
+    let branchesData = overviewData && Object.keys(overviewData).filter(key=>{
+      return key !== 'diesel_overview'
+    })
+    const getData = branchesData.map(keys=>{
+      return overviewData[keys]
+    })
+
+    let getDieselUtilityData = Object.entries(overviewData).filter(data=>{
+      return data[0] !== 'diesel_overview'
+    })
+
+    return getDieselUtilityData
+  }
 
   const comparisonData = organization.branches && organization.branches.map((eachValue)=>{
    const {cost_tracker_monthly_diesel_purchase, cost_tracker_monthly_diesel_estimate, name} = eachValue
@@ -115,28 +151,50 @@ function CostTracker({ match }) {
     const subHeaderStyle= {
       marginLeft:'20px',
       fontSize:'1.5rem',
-      fontWeight:'500'
+      fontWeight:'500',
+      marginTop:'20px',
     }
 
 
-    const DieselOverViewCharts =
-    cost_tracker_diesel_qty &&
-    cost_tracker_diesel_qty.map((eachBranch) => (
+    const DieselOverViewCharts = (
       <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
         <h3 className='cost-tracker-branch-name'>
           Cost Overview
         </h3>
-        <div className='cost-tracker-chart-wrapper'>
         <p style={subHeaderStyle}>Diesel Overview</p>
-          { <DieselOverviewCostTrackerTable/> }
-        </div>
+           <DieselOverviewCostTrackerTable dieselOverviewData={overviewData.diesel_overview}/> 
       </article>
-    ));
+    );
 
     
+    const DieselPurchasedCharts = (
+      dieselPurchasedData && dieselPurchasedData.map(e=>(
+        <article
+        className='cost-tracker-chart-container'
+      >
+        <h3 className='cost-tracker-branch-name'>
+            Diesel Purchased for {e[0]}
+        </h3>
+          <DieselPurchasedTable data={e[1].diesel}/>
+      </article>
+      ))
+    )
+
+    const utilityPurchasedCharts = (
+      dieselPurchasedData && dieselPurchasedData.map(e=>(
+        <article
+        className='cost-tracker-chart-container'
+      >
+        <h3 className='cost-tracker-branch-name'>
+            Utility Purchased for {e[0]}
+        </h3>
+          <UtilityPurchasedTable data={e[1].utility}/>
+      </article>
+      ))
+    )
+
 
     const UtilityOverViewCharts =
     cost_tracker_diesel_qty &&
@@ -162,31 +220,31 @@ function CostTracker({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
+      <div>
+      </div>
+
       <section className="cost-tracker-section">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
         <p>{DieselOverViewCharts}</p>
         <p> {UtilityOverViewCharts}</p>
       </section>
 
+
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
-        {dieselQuantityBarCharts}
-      </section>
-
-      <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Quantity of Diesel Consumed</h2>
-        {dieselConsumptionBarCharts}
-      </section>
-
-      <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {monthlyCostBarCharts}
+          {DieselPurchasedCharts}
       </section>
 
       
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Estimated Monthly Cost</h2>
-        {DiselCostAndConsumptionComparison}
+        <h2 className='h-screen-reader-text'>Quantity of utility Purchased</h2>
+          {utilityPurchasedCharts}
+      </section>
+
+
+      <section className='cost-tracker-section'>
+        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+        {monthlyCostBarCharts}
       </section>
     </>
   );
