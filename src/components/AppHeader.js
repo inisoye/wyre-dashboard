@@ -198,14 +198,14 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && (
               <HeaderLink
                 onClick={toggleNav}
                 url="/dashboard"
                 // url="/report"
                 linkText="Report"
               />
-            )}
+            )} */}
 
             {/* {!doesUserHaveAccess && ( */}
               {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
@@ -220,14 +220,14 @@ function Header() {
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-            {!doesUserHaveAccess && (
+            {/* {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
               // url='/messages'
               linkText="Messages"
             />
-            )}
+            )} */}
             <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}
