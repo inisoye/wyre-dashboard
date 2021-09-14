@@ -8,7 +8,7 @@ import dataHttpServices from '../services/devices';
 const { CheckableTag } = Tag;
 const { RangePicker } = DatePicker;
 
-
+// default pickers
 const picker = {
   Today: [moment().startOf('day'), moment()],
   'Yesterday': [moment('00:00:00', 'HH:mm:ss').subtract(1, 'days'), moment()],
@@ -39,14 +39,24 @@ function NewAppTopBar() {
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    form.setFieldsValue({
+      from: selectedDate[0],
+      to: selectedDate[1],
+      timeFrom: selectedTime[0],
+      timeTo: selectedTime[1],
+    })
 
+  }, [selectedDate, selectedTime]);
+
+  // day select handler
   const onDaySelect = (day) => {
     setSelectedDate([moment(selectedDate[0]).set('date', day).startOf('day'), moment(selectedDate[1]).set('date', day).endOf('day')]);
   }
 
 
+  // month select handler
   const onMonthSelect = (month) => {
-    console.log('here is the component text', componentText);
     if (componentText === 'Select Month') {
       return setSelectedDate([moment(selectedDate[0]).set('month', month).startOf('month').startOf('day'),
       moment(selectedDate[1]).set('month', month).endOf('month').endOf('day')]);
@@ -54,6 +64,7 @@ function NewAppTopBar() {
     return setSelectedDate([moment(selectedDate[0]).set('month', month).startOf('day'),
     moment(selectedDate[1]).set('month', month).endOf('day')]);
   }
+  // year select handler
   const onYearSelect = (year) => {
     if (componentText === 'Select Year') {
       setSelectedDate([moment(selectedDate[0]).set('year', year).startOf('year').startOf('day'),
@@ -62,6 +73,7 @@ function NewAppTopBar() {
     return setSelectedDate([moment(selectedDate[0]).set('year', year).startOf('day'),
     moment(selectedDate[1]).set('year', year).endOf('day')]);
   }
+  // Quarter select handler
   const onQuarterSelect = (quarter) => {
     if (componentText === 'Select Quarter') {
       return setSelectedDate([moment(selectedDate[0]).quarter(quarter).startOf('quarter').startOf('day'),
@@ -75,6 +87,7 @@ function NewAppTopBar() {
       moment().endOf('day')]);
     }
   }
+  //half year select handler
   const onHalfYearSelect = (half) => {
     const quarterValue = half > 1 ? 3 : 1;
     if (componentText === 'Select Half Year') {
@@ -84,24 +97,21 @@ function NewAppTopBar() {
     }
   }
 
-  useEffect(() => {
-    form.setFieldsValue({
-      from: selectedDate[0],
-      to: selectedDate[1],
-      timeFrom: selectedTime[0],
-      timeTo: selectedTime[1],
-    })
+  const setDateValueOnSelect = (startDate, endDate) => {
+    
+  }
 
-  }, [selectedDate, selectedTime]);
-
+  // on date search submit(to make the api call)
   const onApplyClick = () => {
 
     setUserDateRange(selectedDate);
-    setSelectedDateRange([moment(selectedDate[0]).format('YYYY-MM-DD HH:mm'), moment(selectedDate[1]).format('YYYY-MM-DD HH:mm')]);
+    setSelectedDateRange([moment(selectedDate[0]).format('YYYY-MM-DD HH:mm'),
+    moment(selectedDate[1]).format('YYYY-MM-DD HH:mm')]);
     dataHttpServices.setEndpointDateRange(selectedDate);
     setOpenModal(false);
   }
 
+  // on open day select handler for when open day is selected
   const openDaySelectButtonClick = (checked) => {
 
     setComponentText('Select Day');
@@ -119,6 +129,7 @@ function NewAppTopBar() {
     setShowWeeks(false);
   }
 
+  // open week select handler to open the component
   const onOpenWeekSelectButton = (checked) => {
     setComponentText('Select Week');
     if (checked) {
@@ -133,6 +144,7 @@ function NewAppTopBar() {
     setShowHalfYears(false);
   }
 
+  // open month select handler to open the component
   const openMonthSelectButtonClick = (checked) => {
     setComponentText('Select Month');
     if (checked) {
@@ -147,6 +159,7 @@ function NewAppTopBar() {
     setShowWeeks(false);
   }
 
+  // open quarter select handler to open the component
   const onOpenQuarterSelectButton = (checked) => {
     setComponentText('Select Quarter');
     if (checked) {
@@ -160,6 +173,8 @@ function NewAppTopBar() {
     setShowHalfYears(false);
     setShowWeeks(false);
   }
+
+  // open year select handler to open the component
   const onOpenPastYearSelectButton = (checked) => {
     setComponentText('Select Year');
     if (checked) {
@@ -173,6 +188,8 @@ function NewAppTopBar() {
     setShowHalfYears(false);
     setShowWeeks(false);
   }
+
+  // open half year select handler to open the component
   const onOpenHalfYearSelectButton = (checked) => {
     setComponentText('Select Half Year');
     if (checked) {
@@ -189,14 +206,29 @@ function NewAppTopBar() {
     setShowWeeks(false);
   }
 
+  const checkedHalfYear = (value) => {
+    if (moment(selectedDate[0]).quarter() > 2 && value === 2) {
+      return true;
+    }
+    if (moment(selectedDate[0]).quarter() < 3 && value === 1) {
+      return true;
+    }
+
+  }
+
+  // handle when user select a calendar 
   const onFirstCalendarClick = (date) => {
     setComponentText(false);
     setSelectedDate([date, selectedDate[1]]);
   }
+
+  // handle when user select the second calendar 
   const onSecondCalendarClick = (date) => {
     setComponentText(false);
     setSelectedDate([selectedDate[0], date]);
   }
+
+  // handle when user select the first time 
   const onFirstTimeClick = (time) => {
     setComponentText(false);
     setSelectedTime([time, selectedTime[1]]);
@@ -206,6 +238,8 @@ function NewAppTopBar() {
       second: time.get('second')
     }), selectedDate[1]]);
   }
+
+  // handle when user select the first second
   const onSecondTimeClick = (time) => {
     setComponentText(false);
     setSelectedTime([selectedTime[0], time]);
@@ -265,8 +299,8 @@ function NewAppTopBar() {
       className='pickday-search-tag' onClick={() => onDaySelect(data.day)} >{data.day}</p>
   )
 
+  // handles date range
   const dateRender = (current) => {
-
     const style = {};
     style.color = 'rgba(0, 0, 0, 0.65)';
     style.backgroundColor = 'inherit';
@@ -284,22 +318,14 @@ function NewAppTopBar() {
       </div>
     );
   };
+
+  // the date that are disabled
   const disabledDate = (current) => current.isAfter(moment()) || null;
 
   const getPopupContainer = (trigger) => trigger.parentElement;
 
-  const checkedHalfYear = (value) => {
-    if (moment(selectedDate[0]).quarter() > 2 && value === 2) {
-      return true;
-    }
-    if (moment(selectedDate[0]).quarter() < 3 && value === 1) {
-      return true;
-    }
-
-  }
 
   const Content = () => (
-
     <div className='header-date-search' style={{
       display: 'flex', flexDirection: 'column',
       height: componentText ? 460 : 400

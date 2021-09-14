@@ -3,13 +3,25 @@
     width: 100%;
     border-radius: 6px;
     background-color: $white;
+    margin-right: 2%;
+    margin-bottom: 2rem;
     p {
-        margin-left: 20px;
+        margin-left: 2rem;
         font-size: smaller;
+
+    }
+    hr{
+        height: 1rem !important; 
+        background-color: red !important;
+        // opacity: 0.1;
+    }
+
+    h2{
+       margin-left: 2rem; 
     }
 
     @include media('>medium') {
-        width: 33%;
+        width: 31%;
     }
 }
 

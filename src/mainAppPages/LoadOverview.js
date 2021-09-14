@@ -63,32 +63,32 @@ function LoadOverview({ match }) {
           {all_device_data && Object.values(all_device_data)?.filter((value) => value.is_load)
             .map(eachDeviceData => {
               return <article className={'load-overviews-table-data'}>
-                <h2 className=''>
+                <h2>
                   Change Over Lags
                 </h2>
                 <div>
-                  <hr style={{ height: 1, backgroundColor: 'red' }} />
+                  <hr />
                   <p>
                     Consumption: {eachDeviceData.energy_consumption.usage}
                   </p>
-                  <hr style={{ height: 1, backgroundColor: 'red' }} />
+                  <hr />
                   <p>
                     Maximum Demand: {eachDeviceData.dashboard.max_demand.value}
                   </p>
-                  <hr style={{ height: 1, backgroundColor: 'red' }} />
+                  <hr />
                   <p>
                     Minimum Demand: {eachDeviceData.dashboard.min_demand.value}
                   </p>
-                  <hr style={{ height: 1, backgroundColor: 'black' }} />
+                  <hr />
                   <p>
                     Average Demand: {eachDeviceData.dashboard.avg_demand.value}
                   </p>
 
-                  <hr style={{ height: 1, backgroundColor: 'red' }} />
+                  <hr />
                   <p>
                     Running Time: 20
                   </p>
-                  <hr style={{ height: 1, backgroundColor: 'red' }} />
+                  <hr />
                 </div>
               </article>
             })}
