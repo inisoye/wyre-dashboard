@@ -66,6 +66,15 @@ function AddBills({ match }) {
     errors: errorsPaymentTrackerPost,
   } = useForm();
 
+  const {
+    register : registerUsedTracker,
+    handleSubmit : handleUsedTracker,
+    reset: resetUsedTracker,
+    setValue : setValueUsedTracker,
+    control: controlUsedTracker,
+    errors: errorsUsedTracker,
+  } = useForm()
+
   const fuelPurchaseDatePicker = (
     <DatePicker
       format="DD-MM-YYYY"
@@ -162,6 +171,15 @@ const getBranchName = organization.branches && organization.branches.map((branch
     setValuePurchaseTracker('fuelType', undefined);
     resetPurchaseTracker();
   };
+
+  const onUsedTrackerSubmit = ({fuelUsedDate, fuelUsedQuantity})=>{
+    console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelUsedQuantity)
+
+    // Reset form fields. Controller value is set manually
+    setValueUsedTracker('fuelUsedDate', undefined);
+    setValueUsedTracker('fuelUsedQuantity', undefined);
+    resetUsedTracker();
+  }
 
   const onUtilityPaymentTrackerPreSubmit = ({
     utilityPaymentPreAmount,
@@ -626,6 +644,83 @@ const getBranchName = organization.branches && organization.branches.map((branch
             </button>
           </form>
         </section>
+      
+        <section className="cost-tracker-form-section add-bills-section">
+          <h2 className="form-section-heading add-bills-section__heading">
+            Diesel/Petrol Used Tracker
+          </h2>
+
+          <form
+            className="cost-tracker-form"
+            action="#"
+            onSubmit={handleUsedTracker(onUsedTrackerSubmit)}
+          >
+            <div className="cost-tracker-form-inputs-wrapper">
+              
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-used-quantity"
+                >
+                  Quantity
+                </label>
+                <input
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelUsedQuantity"
+                  id="fuel-used-quantity"
+                  ref={registerUsedTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
+                  required
+                  autoFocus
+                />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelUsedQuantity &&
+                    'Please enter a number'}
+                </p>
+              </div>
+
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-purchase-date"
+                >
+                  Date
+                </label>
+                <Controller
+                  as={fuelPurchaseDatePicker}
+                  name="fuelUsedDate"
+                  control={controlUsedTracker}
+                  defaultValue=""
+                  rules={{
+                    required: true,
+                  }}
+                  validateStatus={
+                    errorsUsedTracker.fuelUsedDate &&
+                    'Please enter a date'
+                      ? 'error'
+                      : ''
+                  }
+                  help={
+                    errorsUsedTracker.fuelUsedDate &&
+                    'Please enter a date'
+                  }
+                />
+                <p className="input-error-message">
+                  {errorsUsedTracker.fuelPurchaseDate &&
+                    'Please enter a date'}
+                </p>
+              </div>
+            </div>
+            <button className="generic-submit-button cost-tracker-form-submit-button">
+              Submit
+            </button>
+          </form>
+        </section>
+
       </div>
     </>
   );
