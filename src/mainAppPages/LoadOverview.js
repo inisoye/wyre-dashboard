@@ -38,12 +38,13 @@ function LoadOverview({ match }) {
 
   useEffect(() => {
     if (all_device_data) {
+      console.log('==============>>>>>>>', all_device_data)
       const data = refineisLoadOverviewData(all_device_data);
       setAllisLoadDeviceData(Object.values(data));
     }
 
   }, [all_device_data]);
-
+ console.log(allIsLoadDeviceData);
   const generateChartData = (isLoadData, nonEmpty) => {
     let label = [];
     let data = []
@@ -94,7 +95,9 @@ function LoadOverview({ match }) {
       </div>
       {
         allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (<>
-
+          <article className='score-card-row-3'>
+            <h2> {branch[0].branchName} </h2> 
+          </article>
           <article className='score-card-row-3'>
             <RunningTime runningTimeData={generateChartData(branch, false)}
               dataTitle='Operating Time'
