@@ -3,7 +3,6 @@ import { Table } from 'antd';
 
 
 const UtilityPurchasedTable = ({ data }) => {
-    console.log('from table:',data)
     const columns = [
         {
           title: 'Date',

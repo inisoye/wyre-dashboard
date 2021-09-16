@@ -196,19 +196,16 @@ function CostTracker({ match }) {
     )
 
 
-    const UtilityOverViewCharts =
-    cost_tracker_diesel_qty &&
-    cost_tracker_diesel_qty.map((eachBranch) => (
+    const UtilityOverViewCharts =(
       <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
         <div className='cost-tracker-chart-wrapper'>
         <p style={subHeaderStyle}>Utility Overview</p>
-          { <UtilityOverviewCostTrackerTable/> }
+          <UtilityOverviewCostTrackerTable/> 
         </div>
       </article>
-    ));
+    );
   
    if (isAuthenticatedDataLoading) {
      return <Loader />;
@@ -225,8 +222,8 @@ function CostTracker({ match }) {
 
       <section className="cost-tracker-section">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
-        <p>{DieselOverViewCharts}</p>
-        <p> {UtilityOverViewCharts}</p>
+        {DieselOverViewCharts}
+        {UtilityOverViewCharts}
       </section>
 
 
@@ -242,10 +239,10 @@ function CostTracker({ match }) {
       </section>
 
 
-      <section className='cost-tracker-section'>
+      {/* <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
         {monthlyCostBarCharts}
-      </section>
+      </section> */}
     </>
   );
 }
