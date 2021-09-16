@@ -239,10 +239,10 @@ function CostTracker({ match }) {
       </section>
 
 
-      {/* <section className='cost-tracker-section'>
+      <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {monthlyCostBarCharts}
-      </section> */}
+        {/* {monthlyCostBarCharts} */}
+      </section>
     </>
   );
 }
