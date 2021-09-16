@@ -49,9 +49,20 @@ function NewAppTopBar() {
 
   }, [selectedDate, selectedTime]);
 
+
+  const setDateValueOnSelect = (startDate, endDate) => {
+    let newStartDate = startDate;
+    let newEndDate = endDate;
+    if (moment(startDate).isAfter(moment(endDate))) {
+      newStartDate = moment(endDate).startOf('day');
+    }
+    return [newStartDate, newEndDate];
+  }
+
   // day select handler
   const onDaySelect = (day) => {
-    setSelectedDate([moment(selectedDate[0]).set('date', day).startOf('day'), moment(selectedDate[1]).set('date', day).endOf('day')]);
+    setSelectedDate(setDateValueOnSelect(moment(selectedDate[0]).set('date', day).startOf('day'),
+      moment(selectedDate[1]).set('date', day).endOf('day')));
   }
 
 
@@ -97,9 +108,7 @@ function NewAppTopBar() {
     }
   }
 
-  const setDateValueOnSelect = (startDate, endDate) => {
-    
-  }
+
 
   // on date search submit(to make the api call)
   const onApplyClick = () => {
@@ -206,6 +215,7 @@ function NewAppTopBar() {
     setShowWeeks(false);
   }
 
+  // check half year date
   const checkedHalfYear = (value) => {
     if (moment(selectedDate[0]).quarter() > 2 && value === 2) {
       return true;
@@ -219,13 +229,13 @@ function NewAppTopBar() {
   // handle when user select a calendar 
   const onFirstCalendarClick = (date) => {
     setComponentText(false);
-    setSelectedDate([date, selectedDate[1]]);
+    setSelectedDate(setDateValueOnSelect(date, selectedDate[1]));
   }
 
   // handle when user select the second calendar 
   const onSecondCalendarClick = (date) => {
     setComponentText(false);
-    setSelectedDate([selectedDate[0], date]);
+    setSelectedDate(setDateValueOnSelect(selectedDate[0], date));
   }
 
   // handle when user select the first time 
@@ -250,10 +260,22 @@ function NewAppTopBar() {
     })]);
   }
 
+  const onDefaultTagClick = (text) => {
+    setComponentText(false);
+    setSelectedDate(picker[text]);
+    
+    setShowYears(false);
+    setShowMonths(false);
+    setShowHalfYears(false);
+    setShowDays(false);
+    setShowQuarters(false);
+    setShowWeeks(false);
+  }
+
   const SelectTag = (data) => (
     <CheckableTag className='date-search-tag'
       style={{ width: '14%' }}
-      onClick={() => setSelectedDate(picker[data.text])}>{data.text}</CheckableTag>
+      onClick={() => onDefaultTagClick(data.text)}>{data.text}</CheckableTag>
   )
   const DefaultSelectTag = (data) => (
     <CheckableTag className='date-search-tag'

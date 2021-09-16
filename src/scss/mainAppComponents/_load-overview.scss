@@ -3,7 +3,9 @@
     width: 100%;
     border-radius: 6px;
     background-color: $white;
-    margin-right: 2%;
+    border-radius: $medium-border;
+    height: 310px;
+    padding-bottom: 2rem;
     margin-bottom: 2rem;
     p {
         margin-left: 2rem;
@@ -11,21 +13,42 @@
 
     }
     hr{
-        height: 1rem !important; 
-        background-color: red !important;
-        // opacity: 0.1;
+        height: 0.1rem !important; 
+        background-color: black !important;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        opacity: 0.1;
     }
 
-    h2{
+    h3{
        margin-left: 2rem; 
+       margin-top: 1.6rem; 
     }
 
     @include media('>medium') {
-        width: 31%;
+        width: 31.6%;
     }
 }
 
 .load-overviews-row-table-data{
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+}
+.load-overview-tag-header-color-box {
+    height: 20px;
+    width: 20px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    background-color: red;
+  }
+  
+.load-overview-card-data__header{
+    display: flex;
+    flex-direction: row;
+    p{
+        margin-left: 2rem; 
+        margin-top: 1.6rem;
+        font-size: large;
+    }
 }

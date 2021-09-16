@@ -149,8 +149,8 @@ const getAllOrganizationDevices = (data) => {
           // Prevent process from repeating several times
           if (!device.name.includes(eachBranch.name)){
             device.usage_hour = addUsageHoursToDevice(eachBranch, device.name, eachBranch.name)
+            device.deviceName = device.name;
             device.name = eachBranch.name + ' ' + device.name;
-            device.nameOnly = device.name;
             device.branchName = eachBranch.name;
           }
         });

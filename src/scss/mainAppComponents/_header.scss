@@ -481,3 +481,24 @@
   display: flex;
   flex-direction: row;
 }
+
+
+.newTopbar-monitor{
+  @include media('>=medium') {
+    display: block;
+  }
+  @include media('<medium') {
+    display: none;
+  }
+}
+
+
+.old-top-bar-monitor{
+  @include media('>=medium') {
+    display: none;
+  }
+  @include media('<medium') {
+    display: block;
+  }
+  
+}

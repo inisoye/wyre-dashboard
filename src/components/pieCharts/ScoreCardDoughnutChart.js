@@ -52,6 +52,11 @@ const ScoreCardDoughnutChart = ({ data}) => {
     title: {
       display: false,
     },
+    plugins: {
+      outlabels: {
+        display: false,
+      },
+    },
     tooltips: {
       enabled: true,
       mode: 'index',

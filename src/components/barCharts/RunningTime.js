@@ -4,10 +4,9 @@ import { Tooltip } from 'antd';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
-import { numberFormatter } from '../../helpers/numberFormatter';
 import InformationIcon from '../../icons/InformationIcon';
 
-const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
+const RunningTime = ({ runningTimeData, dataMessage }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
 
@@ -26,14 +25,6 @@ const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
         label: function (tooltipItem, data) {
           return data['datasets'][0]['data'][tooltipItem['index']];
         },
-
-        // footer: function () {
-        //   const titleAndMessageArray = [
-        //     dataTitle+ ': ',
-        //     ...messageArray,
-        //   ];
-        //   return titleAndMessageArray;
-        // },
       },
       footerFontStyle: 'normal',
       footerMarginTop: 12,
@@ -57,7 +48,7 @@ const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
           scaleLabel: {
             display: true,
             padding: 10,
-            labelString: 'Wastage',
+            // labelString: 'Wastage',
             fontColor: 'black',
             fontSize: isMediumScreen ? 14 : 18,
           },
@@ -78,7 +69,6 @@ const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
           },
           scaleLabel: {
             display: true,
-            labelString: 'Days of the Month',
             fontColor: 'black',
             fontSize: isMediumScreen ? 14 : 18,
           },
@@ -87,37 +77,20 @@ const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
     },
   };
 
-  const {
-    chart,
-    estimated_time_wasted,
-    estimated_diesel_wasted,
-    estimated_cost,
-  } = operatingTimeData
-      ? operatingTimeData
-      : {
-        chart: {},
-        estimated_time_wasted: {},
-        estimated_diesel_wasted: {},
-        estimated_cost: {},
-      };
 
-  const chartValues = chart.values;
+  const chartValues = runningTimeData?.data;
+  const chartlabels = runningTimeData?.label;
 
-  const timeWasted =
-    estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
-
-  const dieselWasted =
-    estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
 
   const data = {
     labels: isMediumScreen
-      ? chart.dates && getLastArrayItems(chart.dates, 7)
+      ? chartlabels && getLastArrayItems(chartlabels, 7)
       : isLessThan1296
-        ? chart.dates && getLastArrayItems(chart.dates, 14)
-        : chart.dates,
+        ? chartlabels && getLastArrayItems(chartlabels, 14)
+        : chartlabels,
     datasets: [
       {
-        label: 'Wastage',
+        // label: 'Wastage',
         maxBarThickness: 60,
         data: chartValues,
         backgroundColor: '#6c00fa',
@@ -131,26 +104,14 @@ const RunningTime = ({ operatingTimeData, dataTitle, dataMessage }) => {
   return (
     <div className="score-card-bar-chart-container">
       <div className="h-flex">
-        <div style={{display: 'flex'}}>
-        <h2 className="score-card-heading">Running Time</h2>
-        <Tooltip placement='top' style={{ textAlign: 'justify' }}
-          overlayStyle={{ whiteSpace: 'pre-line' }} title={dataMessage}>
-          <p>
-            <InformationIcon className="info-icon" />
-          </p>
-        </Tooltip>
-        </div>
-        <div className="score-card-bar-chart__text-wrapper">
-          <p>
-            Total Waste: <strong>{dieselWasted}</strong>
-          </p>
-          <p>
-            Total Cost:{' '}
-            <strong>{`₦ ${numberFormatter(estimated_cost.value)}`}</strong>
-          </p>
-          <p>
-            Total Time: <strong>{timeWasted}</strong>
-          </p>
+        <div style={{ display: 'flex' }}>
+          <h2 className="score-card-heading">Running Time</h2>
+          <Tooltip placement='top' style={{ textAlign: 'justify' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={dataMessage}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
         </div>
       </div>
 
