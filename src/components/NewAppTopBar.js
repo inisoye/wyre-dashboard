@@ -419,7 +419,9 @@ function NewAppTopBar() {
           <div className='header-date-component' >
             <div style={{
               position: 'relative',
-              display: 'flex', flexDirection: 'row',
+              display: 'flex', flexDirection: 'row', 
+              marginTop: 5, 
+              marginLeft: 2
             }}>
               <div className='start-date'>
                 <Form.Item name="from" label="From">
@@ -443,6 +445,8 @@ function NewAppTopBar() {
             <div style={{
               position: 'relative',
               display: 'flex', flexDirection: 'row',
+              marginTop: 5, 
+              marginLeft: 2
             }}>
               <div className='end-date' >
                 <Form.Item name="to" label="To">
