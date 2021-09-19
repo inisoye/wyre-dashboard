@@ -64,6 +64,11 @@ function AddEquipment({ match }) {
   }
 
   let branchSelectorValue;
+  branchname && branchname.map(element => {
+    branchSelectorValue =  element.id
+     return element.id
+  });
+
   const branchSelector = (
         <Select style={branchSelectorStyle} 
         className="h-4-br" 
@@ -103,11 +108,12 @@ function AddEquipment({ match }) {
     };
 
    let submitData = equipmentHttpServices.add(newEquipmentData,branchSelectorValue,userId,token)
-  submitData.then((returnedEquipment) => {
-        // setAllEquipment(allEquipment.concat(returnedEquipment));
-        console.log(Object.assign({},returnedEquipment))
-        openNotificationWithIcon('success');
-      })
+    submitData.then((returnedEquipment) => {
+          // setAllEquipment(allEquipment.concat(returnedEquipment));
+          console.log(returnedEquipment)
+          // console.log(Object.assign({},returnedEquipment))
+          openNotificationWithIcon('success');
+        })
   submitData.catch((error) => {
       alert('An error occured, please try again.')
         console.log(error.response);
@@ -209,7 +215,7 @@ function AddEquipment({ match }) {
                 </p>
               </div>
 
-              <div className="cost-tracker-input-container">
+              {/* <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
                   htmlFor="equipment-branch"
@@ -217,7 +223,7 @@ function AddEquipment({ match }) {
                 Branch
                 </label>
               {branchSelector}
-            </div>
+            </div> */}
 
               <div className="cost-tracker-input-container">
                 <label
