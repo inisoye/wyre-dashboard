@@ -5,10 +5,13 @@ import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
 
 
-
-import { CHART_BACKGROUD_COLOR, SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 import RunningTime from '../components/barCharts/RunningTime';
 import LoadConsumptionPieChart from '../components/pieCharts/LoadConsumptionPieChart';
+import LoadOverviewDataTable from '../components/tables/LoadOverviewDataTable';
+import {
+  generateLoadCosumptionChartData,
+  generateRunningTimeChartData
+} from '../helpers/genericHelpers';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -27,7 +30,6 @@ function LoadOverview({ match }) {
 
   const {
     all_device_data,
-    usage_hours
   } = refinedRenderedData;
 
   useEffect(() => {
@@ -38,34 +40,12 @@ function LoadOverview({ match }) {
 
   useEffect(() => {
     if (all_device_data) {
-      console.log('==============>>>>>>>', all_device_data)
       const data = refineisLoadOverviewData(all_device_data);
       setAllisLoadDeviceData(Object.values(data));
     }
 
   }, [all_device_data]);
- console.log(allIsLoadDeviceData);
-  const generateChartData = (isLoadData, nonEmpty) => {
-    let label = [];
-    let data = []
-    let usageHours = {};
-    isLoadData.map((device) => {
-      if (nonEmpty) {
-        if (device.energy_consumption?.current) {
-          label.push(device.deviceName);
-          data.push(device.energy_consumption.current);
-          usageHours[device.deviceName] = device.usage_hour;
-        }
-      } else {
-        label.push(device.deviceName);
-        data.push(device.energy_consumption.current);
-        usageHours[device.deviceName] = device.usage_hour;
-      }
 
-    });
-
-    return { label, data, usageHours };
-  }
 
 
   const refineisLoadOverviewData = (all_device_data) => {
@@ -96,12 +76,12 @@ function LoadOverview({ match }) {
       {
         allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (<>
           <article className='score-card-row-3'>
-            <h2> {branch[0].branchName} </h2> 
+            <h2> {branch[0].branchName} </h2>
+            <hr />
           </article>
           <article className='score-card-row-3'>
-            <RunningTime runningTimeData={generateChartData(branch, false)}
+            <RunningTime runningTimeData={generateRunningTimeChartData(branch)}
               dataTitle='Operating Time'
-              dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
             />
           </article>
           <div className={'load-overviews-row-table-data'} style={{ marginBottom: '50px' }}>
@@ -112,42 +92,11 @@ function LoadOverview({ match }) {
                 </p>
               </div>
               <hr />
-              <LoadConsumptionPieChart loadCunsumptionData={generateChartData(branch, true)} />
+              <LoadConsumptionPieChart loadCunsumptionData={generateLoadCosumptionChartData(branch)} />
             </article>
             {branch
               .map((eachDeviceData, index) => {
-                return <article className={'load-overviews-table-data'}>
-                  <div className='load-overview-card-data__header'>
-                    <div style={{ backgroundColor: CHART_BACKGROUD_COLOR[index] || '#6C00FA' }}
-                      className='load-overview-tag-header-color-box red'>
-                    </div>
-                    <p>
-                      {eachDeviceData.deviceName}
-                    </p>
-                  </div>
-                  <div>
-                    <hr />
-                    <p>
-                      Consumption: {eachDeviceData.energy_consumption.usage}
-                    </p>
-                    <hr />
-                    <p>
-                      Maximum Demand: {eachDeviceData.dashboard.max_demand.value}
-                    </p>
-                    <hr />
-                    <p>
-                      Minimum Demand: {eachDeviceData.dashboard.min_demand.value}
-                    </p>
-                    <hr />
-                    <p>
-                      Average Demand: {eachDeviceData.dashboard.avg_demand.value}
-                    </p>
-                    <hr />
-                    <p>
-                      Running Time: {usage_hours.hours[usage_hours.devices.findIndex(branchName => branchName === eachDeviceData.branchName)] || 0}
-                    </p>
-                  </div>
-                </article>
+                return <LoadOverviewDataTable device={eachDeviceData} index={index} />
               })}
           </div>
         </>))

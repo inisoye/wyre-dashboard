@@ -17,7 +17,6 @@ const LoadConsumptionPieChart = ({ loadCunsumptionData }) => {
     labels: label,
     datasets: [
       {
-        label: 'Power Usage (Hours/Month)',
         data: data,
         backgroundColor: CHART_BACKGROUD_COLOR,
         borderColor: CHART_BORDER_COLOR,
@@ -48,13 +47,14 @@ const LoadConsumptionPieChart = ({ loadCunsumptionData }) => {
         text: function(content) {
             const newLineLable = content.labels[content.dataIndex].split(" ").join("\n");
             const v = parseFloat(content['percent']) * 100;
-            return `${newLineLable} \n ${v.toFixed(2).replace('.', ',')}%`;
+            return parseFloat(content['percent'])? `${newLineLable} \n ${v.toFixed(2).replace('.', ',')}%`: '';
         },
         font: {
           resizable: true,
           minSize: isMediumScreen ?  6: 12,
           maxSize: isMediumScreen? 10: 18,
         }
+        
       }
     },
     title: {

@@ -23,7 +23,7 @@ const RunningTime = ({ runningTimeData, dataMessage }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']];
+          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
         },
       },
       footerFontStyle: 'normal',
@@ -104,17 +104,11 @@ const RunningTime = ({ runningTimeData, dataMessage }) => {
   return (
     <div className="score-card-bar-chart-container">
       <div className="h-flex">
-        <div style={{ display: 'flex' }}>
+        <div className="load-overview-running-time-header" style={{ display: 'flex' }}>
           <h2 className="score-card-heading">Running Time</h2>
-          <Tooltip placement='top' style={{ textAlign: 'justify' }}
-            overlayStyle={{ whiteSpace: 'pre-line' }} title={dataMessage}>
-            <p>
-              <InformationIcon className="info-icon" />
-            </p>
-          </Tooltip>
         </div>
       </div>
-
+      <hr className="load-overview-header-border-line" />
       <div className="score-card-bar-chart__chart-wrapper">
         <Bar redraw data={data} options={options} />
       </div>

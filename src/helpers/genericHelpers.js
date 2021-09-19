@@ -474,6 +474,37 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
 
+
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers Start ---------------------------------------
+--------------------------------------------------------------------*/
+const generateLoadCosumptionChartData = (isLoadData) => {
+  let label = [];
+  let data = []
+  isLoadData.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.energy_consumption.current);
+  });
+
+  return { label, data };
+}
+
+const generateRunningTimeChartData = (isLoadData) => {
+  let label = [];
+  let data = []
+  isLoadData.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.usage_hour);
+  });
+
+  return { label, data };
+}
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers End  ----------------------------------------
+--------------------------------------------------------------------*/
+
 export {
   daysInMonth,
   getPeakToAverageMessage,
@@ -514,5 +545,7 @@ export {
   mergeTheData,
   allDeviceGenerators,
   roundToDecimalPLace,
-  sumOfArrayElements
+  sumOfArrayElements,
+  generateLoadCosumptionChartData,
+  generateRunningTimeChartData
 };
