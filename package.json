@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
+    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "dayjs": "^1.9.7",
     "html2canvas": "^1.0.0-rc.7",
     "html2pdf.js": "^0.9.2",

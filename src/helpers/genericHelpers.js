@@ -149,7 +149,9 @@ const getAllOrganizationDevices = (data) => {
           // Prevent process from repeating several times
           if (!device.name.includes(eachBranch.name)){
             device.usage_hour = addUsageHoursToDevice(eachBranch, device.name, eachBranch.name)
+            device.deviceName = device.name;
             device.name = eachBranch.name + ' ' + device.name;
+            device.branchName = eachBranch.name;
           }
         });
               
@@ -472,6 +474,37 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
 
+
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers Start ---------------------------------------
+--------------------------------------------------------------------*/
+const generateLoadCosumptionChartData = (isLoadData) => {
+  let label = [];
+  let data = []
+  isLoadData.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.energy_consumption.current);
+  });
+
+  return { label, data };
+}
+
+const generateRunningTimeChartData = (isLoadData) => {
+  let label = [];
+  let data = []
+  isLoadData.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.usage_hour);
+  });
+
+  return { label, data };
+}
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers End  ----------------------------------------
+--------------------------------------------------------------------*/
+
 export {
   daysInMonth,
   getPeakToAverageMessage,
@@ -512,5 +545,7 @@ export {
   mergeTheData,
   allDeviceGenerators,
   roundToDecimalPLace,
-  sumOfArrayElements
+  sumOfArrayElements,
+  generateLoadCosumptionChartData,
+  generateRunningTimeChartData
 };
