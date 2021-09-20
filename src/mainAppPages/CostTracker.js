@@ -47,7 +47,6 @@ function CostTracker({ match }) {
     ).then((req)=>{
       setOverviewData(req.data.data)
       setDieselPurchasedData(getDieselPurchaseData())
-      console.log(req.data.data)
     }).catch((err)=>{
       alert('Something un-expected happened, please reload page')
       console.log(err)
@@ -125,9 +124,10 @@ function CostTracker({ match }) {
 
     
     const DieselPurchasedCharts = (
-      dieselPurchasedData && dieselPurchasedData.map(e=>(
+      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
         <article
         className='cost-tracker-chart-container'
+        key={index}
       >
         <h3 className='cost-tracker-branch-name'>
             Diesel Purchased for {e[0]}
@@ -138,9 +138,10 @@ function CostTracker({ match }) {
     )
 
     const utilityPurchasedCharts = (
-      dieselPurchasedData && dieselPurchasedData.map(e=>(
+      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
         <article
         className='cost-tracker-chart-container'
+        key={index}
       >
         <h3 className='cost-tracker-branch-name'>
             Utility Purchased for {e[0]}
