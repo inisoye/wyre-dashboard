@@ -61,3 +61,24 @@
     margin-bottom: 15px;
     opacity: 0.1;
 }
+
+.load-overview-bar-chart-container {
+    position: relative;
+  
+    .h-flex {
+      justify-content: space-between;
+  
+      @include media('<406px') {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .load-overview-details__button{
+      border-radius: $small-border;
+      width: fit-content;
+      padding: 0.7rem 1rem;
+      height: auto;
+      font-weight: $bold;
+      margin-right: 4rem;
+  }

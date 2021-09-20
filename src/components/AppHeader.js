@@ -220,7 +220,7 @@ function Header() {
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-            <HeaderLink onClick={toggleNav} url="/load-overview" linkText="Load Overview" />
+            
             {/* {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}

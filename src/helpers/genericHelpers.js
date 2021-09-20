@@ -490,6 +490,23 @@ const generateLoadCosumptionChartData = (isLoadData) => {
   return { label, data };
 }
 
+const generateLoadOverviewChartData = (isLoadData) => {
+  let label = [];
+  let initailData = []
+  let data = []
+  isLoadData.map((device) => {
+    initailData.push(device.energy_consumption.current);
+  });
+  const sumData = sumOfArrayElements(initailData);
+  isLoadData.map((device) => {
+    const devicePercentage = calculatePercentage(device.energy_consumption.current, sumData);
+    label.push(device.deviceName);
+    data.push(devicePercentage);
+  });
+
+  return { label, data };
+}
+
 const generateRunningTimeChartData = (isLoadData) => {
   let label = [];
   let data = []
@@ -500,6 +517,22 @@ const generateRunningTimeChartData = (isLoadData) => {
 
   return { label, data };
 }
+
+const refineLoadOverviewData = (all_device_data) => {
+  let branchData = {};
+  Object.values(all_device_data).map((eachData) => {
+    const branchName = eachData.branchName;
+    if (eachData.is_load) {
+      if (branchData[branchName]) {
+        branchData[branchName].push(eachData);
+      } else {
+        branchData[branchName] = [eachData];
+      }
+    }
+  })
+  return branchData;
+}
+
 
 /* -------------------------------------------------------------------
 /* Load overview Helpers End  ----------------------------------------
@@ -547,5 +580,7 @@ export {
   roundToDecimalPLace,
   sumOfArrayElements,
   generateLoadCosumptionChartData,
-  generateRunningTimeChartData
+  generateRunningTimeChartData,
+  refineLoadOverviewData,
+  generateLoadOverviewChartData
 };

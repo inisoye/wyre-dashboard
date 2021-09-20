@@ -10,7 +10,8 @@ import LoadConsumptionPieChart from '../components/pieCharts/LoadConsumptionPieC
 import LoadOverviewDataTable from '../components/tables/LoadOverviewDataTable';
 import {
   generateLoadCosumptionChartData,
-  generateRunningTimeChartData
+  generateRunningTimeChartData,
+  refineLoadOverviewData
 } from '../helpers/genericHelpers';
 
 const breadCrumbRoutes = [
@@ -40,28 +41,13 @@ function LoadOverview({ match }) {
 
   useEffect(() => {
     if (all_device_data) {
-      const data = refineisLoadOverviewData(all_device_data);
+      const data = refineLoadOverviewData(all_device_data);
       setAllisLoadDeviceData(Object.values(data));
     }
 
   }, [all_device_data]);
 
 
-
-  const refineisLoadOverviewData = (all_device_data) => {
-    let branchData = {};
-    Object.values(all_device_data).map((eachData) => {
-      const branchName = eachData.branchName;
-      if (eachData.is_load) {
-        if (branchData[branchName]) {
-          branchData[branchName].push(eachData);
-        } else {
-          branchData[branchName] = [eachData];
-        }
-      }
-    })
-    return branchData;
-  }
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;

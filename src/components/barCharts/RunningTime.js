@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Tooltip } from 'antd';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
-import InformationIcon from '../../icons/InformationIcon';
 
 const RunningTime = ({ runningTimeData, dataMessage }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -90,7 +88,6 @@ const RunningTime = ({ runningTimeData, dataMessage }) => {
         : chartlabels,
     datasets: [
       {
-        // label: 'Wastage',
         maxBarThickness: 60,
         data: chartValues,
         backgroundColor: '#6c00fa',
