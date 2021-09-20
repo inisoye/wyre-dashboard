@@ -1,122 +1,85 @@
 import React from 'react'
-import { Table } from 'antd';
+import { Table, Typography  } from 'antd';
 
-const UtilityOverviewCostTrackerTable = () => {
+const UtilityOverviewCostTrackerTable = ({dataSource}) => {
+
+  const { Text } = Typography;
+
+  dataSource && dataSource.forEach(obj => {
+    for (const propertyName in obj) {
+      if(typeof obj[propertyName] === 'number'){
+        obj[propertyName] = obj[propertyName].toFixed(2);
+    }
+    }
+    return obj
+  });
+
     const columns = [
         {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
-          width:30
         },
         {
-          title: 'Inputed Usage(KWh)',
-          dataIndex: 'inputted_usage',
-          key: 'inputted_usage',
+          title: 'Purchased Energy (KWh)',
+          dataIndex: 'purchased_kwh',
+          key: 'purchased_kwh',
           sorter: {
-            compare: (a, b) => a.inputted_usage - b.inputted_usage,
+            compare: (a, b) => a.purchased_kwh - b.purchased_kwh,
             multiple: 3,
           },
         },
         {
-          title: 'Measured Usage (KWh)',
-          dataIndex: 'measured_usage',
-          key:"measured_usage",
+          title: 'Consumed Energy (KWh)',
+          dataIndex: 'energy_consumed_kwh',
+          key:"energy_consumed_kwh",
           sorter: {
-            compare: (a, b) => a.measured_usage - b.measured_usage,
+            compare: (a, b) => a.energy_consumed_kwh - b.energy_consumed_kwh,
           },
         },
         {
-          title: 'Inputted Cost (₦)',
-          dataIndex: 'inputted_cost',
-          key: 'inputted_cost',
+          title: 'Purchased Energy(₦)',
+          dataIndex: 'purchased_naira',
+          key: 'purchased_naira',
           sorter: {
-            compare: (a, b) => a.inputted_cost - b.inputted_cost,
+            compare: (a, b) => a.purchased_naira - b.purchased_naira,
           },
         },
         {
-            title: 'Measured Cost(₦)',
-            dataIndex: 'measured_cost',
-            key: 'measured_cost',
+            title: 'Consumed Energy(₦)',
+            dataIndex: 'energy_consumed_naira',
+            key: 'energy_consumed_naira',
             sorter: {
               compare: (a, b) => a.measured_cost - b.measured_cost,
             },
           },
           {
-            title: 'Usage Difference (Unit)',
-            dataIndex: 'usage_difference',
-            key: 'usage_difference',
+            title: 'Difference(Kwh)',
+            dataIndex: 'difference_kwh',
+            key: 'usage_didifference_kwhfference',
             sorter: {
-              compare: (a, b) => a.usage_difference - b.usage_difference,
+              compare: (a, b) => a.difference_kwh - b.difference_kwh,
               
             },
           },
           {
-            title: 'Cost Difference (₦)',
-            dataIndex: 'price_difference',
-            key: 'price_difference',
+            title: 'Difference (₦)',
+            dataIndex: 'difference_naira',
+            key: 'difference_naira',
             sorter: {
-              compare: (a, b) => a.price_difference - b.price_difference,
+              compare: (a, b) => a.difference_naira - b.difference_naira,
               
             },
           },
           {
-            title: 'Percentage Difference (%)',
-            dataIndex: 'percentage_difference',
-            key: 'percentage_difference',
+            title: 'Percentage Difference(%)',
+            dataIndex: 'percentage',
+            key: 'percentage',
             sorter: {
-              compare: (a, b) => a.percentage_difference - b.percentage_difference,
+              compare: (a, b) => a.percentage - b.percentage,
               
             },
           },
-      ];
-
-
-      const data = [
-        {
-          key: '1',
-          month: 'Jan 21',
-          inputted_usage: 98,
-          measured_cost:'400',
-          measured_usage:30,
-          price_difference: 160,
-          usage_difference:'30',
-          inputted_cost:200,
-          percentage_difference: 40,
-        },
-        {
-          key: '2',
-          month: 'Feb 21',
-          inputted_usage: 98,
-          measured_cost:'400',
-          measured_usage:30,
-          usage_difference:'30',
-          price_difference: 160,
-          inputted_cost:200,
-          percentage_difference: 40,
-        },
-        {
-          key: '3',
-          month: 'Mar 21',
-          usage_difference:'30',
-          inputted_usage: 98,
-          measured_cost:'800',
-          measured_usage:30,
-          price_difference: 202,
-          inputted_cost:200,
-          percentage_difference: 40,
-        },
-        {
-          key: '4',
-          month: 'Aug 21',
-          inputted_usage: 98,
-          measured_cost:'400',
-          usage_difference:'30',
-          measured_usage:30,
-          price_difference: 160,
-          inputted_cost:110,
-          percentage_difference: 20,
-        },
       ];
       
       function onChange(pagination, filters, sorter, extra) {
@@ -126,12 +89,49 @@ const UtilityOverviewCostTrackerTable = () => {
 
     return (
         <div>
-            <Table columns={columns} 
-                dataSource={data} 
+          <Table
+                columns={columns} 
+                dataSource={dataSource && dataSource} 
                 onChange={onChange} 
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
-                footer={() => `${data.length} entries in total`}/>
+                footer={() => `${dataSource && dataSource.length} entries in total`}
+                summary={pageData => {
+                  let Purchased = 0;
+                  let Consumed = 0;
+
+                  pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
+                    Purchased += purchased_kwh;
+                    Consumed += energy_consumed_kwh;
+                  });
+
+                  return (
+                    <>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell>
+                          <Text style={{fontSize:"12.5px"}}>Total Energy</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>Purchased</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>Consumed</Text>
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell></Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>{parseFloat(Purchased).toFixed(2)}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>{parseFloat(Consumed).toFixed(2)}</Text>
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                    </>
+                  );
+                }}
+              />
+
         </div>
     )
 }

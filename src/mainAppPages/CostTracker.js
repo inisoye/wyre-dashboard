@@ -47,6 +47,7 @@ function CostTracker({ match }) {
     ).then((req)=>{
       setOverviewData(req.data.data)
       setDieselPurchasedData(getDieselPurchaseData())
+      console.log(req.data.data)
     }).catch((err)=>{
       alert('Something un-expected happened, please reload page')
       console.log(err)
@@ -69,52 +70,11 @@ function CostTracker({ match }) {
     })
 
     let getDieselUtilityData = Object.entries(overviewData).filter(data=>{
-      return data[0] !== 'diesel_overview'
+      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
     })
 
     return getDieselUtilityData
   }
-
-  const comparisonData = organization.branches && organization.branches.map((eachValue)=>{
-   const {cost_tracker_monthly_diesel_purchase, cost_tracker_monthly_diesel_estimate, name} = eachValue
-    return {
-      'branchName': name,
-      'diesel_estimate': cost_tracker_monthly_diesel_estimate,
-      "diesel_purchase": cost_tracker_monthly_diesel_purchase
-    }
-  })
-
-  const dieselQuantityBarCharts =
-    cost_tracker_diesel_qty &&
-    cost_tracker_diesel_qty.map((eachBranch) => (
-      <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
-      >
-        <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Purchased at {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerDieselQuantityBarChart dieselQuantityData={eachBranch} />
-        </div>
-      </article>
-    ));
-
-  const dieselConsumptionBarCharts =
-    cost_tracker_consumption &&
-    cost_tracker_consumption.map((eachBranch) => (
-      <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
-      >
-        <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Consumed at {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerConsumptionGroupedBarChart consumptionData={eachBranch} />
-        </div>
-      </article>
-    ));
 
   const monthlyCostBarCharts =
     cost_tracker_monthly_cost &&
@@ -132,21 +92,6 @@ function CostTracker({ match }) {
       </article>
     ));
 
-    const DiselCostAndConsumptionComparison  =
-    comparisonData &&
-    comparisonData.map((eachBranch) => (
-      <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
-      >
-        <h3 className='cost-tracker-branch-name'>
-          {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <ComparisonBarChart comparisonData={eachBranch} />
-        </div>
-      </article>
-    ));
 
     const subHeaderStyle= {
       marginLeft:'20px',
@@ -158,13 +103,23 @@ function CostTracker({ match }) {
 
     const DieselOverViewCharts = (
       <article
-        className='cost-tracker-chart-container'
+        // className='cost-tracker-chart-container'
       >
         <h3 className='cost-tracker-branch-name'>
           Cost Overview
         </h3>
         <p style={subHeaderStyle}>Diesel Overview</p>
            <DieselOverviewCostTrackerTable dieselOverviewData={overviewData.diesel_overview}/> 
+      </article>
+    );
+
+    
+    const UtilityOverViewCharts =(
+      <article
+        className='cost-tracker-chart-container'
+      >
+        <p style={subHeaderStyle}>Utility Overview</p>
+          <UtilityOverviewCostTrackerTable dataSource={overviewData.utility_overview}/> 
       </article>
     );
 
@@ -194,18 +149,6 @@ function CostTracker({ match }) {
       </article>
       ))
     )
-
-
-    const UtilityOverViewCharts =(
-      <article
-        className='cost-tracker-chart-container'
-      >
-        <div className='cost-tracker-chart-wrapper'>
-        <p style={subHeaderStyle}>Utility Overview</p>
-          <UtilityOverviewCostTrackerTable/> 
-        </div>
-      </article>
-    );
   
    if (isAuthenticatedDataLoading) {
      return <Loader />;
@@ -220,7 +163,7 @@ function CostTracker({ match }) {
       <div>
       </div>
 
-      <section className="cost-tracker-section">
+      <section className="cost-tracker-chart-container">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
         {DieselOverViewCharts}
         {UtilityOverViewCharts}
@@ -241,7 +184,7 @@ function CostTracker({ match }) {
 
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {/* {monthlyCostBarCharts} */}
+        {monthlyCostBarCharts}
       </section>
     </>
   );

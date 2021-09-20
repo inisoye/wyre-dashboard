@@ -11,10 +11,10 @@ const UtilityPurchasedTable = ({ data }) => {
         },
         {
           title: 'Unit(Kwh)',
-          dataIndex: 'unit',
-          key: 'unit',
+          dataIndex: 'value',
+          key: 'value',
           sorter: {
-            compare: (a, b) => a.unit - b.unit,
+            compare: (a, b) => a.value - b.value,
             multiple: 3,
           },
         },
