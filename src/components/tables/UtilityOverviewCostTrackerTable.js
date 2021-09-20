@@ -82,17 +82,12 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           },
       ];
       
-      function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-      }
-      
 
     return (
         <div>
           <Table
                 columns={columns} 
                 dataSource={dataSource && dataSource} 
-                onChange={onChange} 
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
                 footer={() => `${dataSource && dataSource.length} entries in total`}

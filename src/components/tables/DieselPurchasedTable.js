@@ -1,7 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Table } from 'antd';
 
 const DieselPurchasedTable = ({ data }) => {
+    const getTariff = data.map(element => {
+      let tariff = element.price_per_litre / element.quantity
+      const newData = {
+        ...element,
+        tariff:tariff
+      }
+      return newData
+    });
+    
     const columns = [
         {
           title: 'Date',
@@ -38,10 +47,10 @@ const DieselPurchasedTable = ({ data }) => {
     return (
         <div>
             <Table columns={columns}
-                dataSource={data}
+                dataSource={getTariff}
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
-                footer={() => `${data && data.length} entries in total`}/>            
+                footer={() => `${getTariff && getTariff.length} entries in total`}/>            
         </div>
     )
 }
