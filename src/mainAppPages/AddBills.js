@@ -5,6 +5,7 @@ import moment from 'moment';
 import CompleteDataContext from '../Context';
 
 import billingHttpServices from '../services/bills'
+import axios from 'axios'
 
 import { CaretDownFilled } from '@ant-design/icons';
 
@@ -35,7 +36,7 @@ function AddBills({ match }) {
 
   const [images,setImages] = useState([])
 
-  console.log(images)
+  // console.log(images)
 
   useEffect(() => {
     if (match && match.url) {
@@ -177,7 +178,27 @@ const getBranchName = organization.branches && organization.branches.map((branch
   };
 
   const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
-    console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelBalance)
+    // console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelBalance)
+    // console.log(images)
+
+    let formData = new FormData()
+    formData.append('branch',defaultBranch)
+    formData.append('quantity',fuelBalance)
+    formData.append('date',fuelUsedDate.format('YYYY-MM-DD'))
+    formData.append('image',images)
+
+    axios.post(`https://wyreng.xyz/api/v1/add_month_end_cost/${userId}/`, formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `bearer ${token}`,
+        }
+      }).then(res=>{
+        openNotificationWithIcon('success', 'Form submitted successfully');
+      }).catch(e=>{
+        alert('An error occured,Please try again!!!')
+        console.log(e.response)
+      })
+    
 
     // Reset form fields. Controller value is set manually
     setValueUsedTracker('fuelUsedDate', undefined);
@@ -733,7 +754,9 @@ const getBranchName = organization.branches && organization.branches.map((branch
                   type="file"
                   accept="image/png, image/jpeg"
                   name="flowMeterSnapshot"
-                  onChange={(e)=>setImages(e.target.files)}
+                  onChange={(e)=>{
+                   setImages(e.target.files[0])
+                  }}
                   id="flow-meter-snapshot"
                   ref={registerUsedTracker({
                     required: true,
