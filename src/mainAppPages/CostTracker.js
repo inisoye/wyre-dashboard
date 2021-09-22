@@ -22,7 +22,16 @@ const breadCrumbRoutes = [
 function CostTracker({ match }) {
   
   const [overviewData, setOverviewData] = useState([])
-  const [dieselPurchasedData, setDieselPurchasedData] = useState([])
+  // const [dieselPurchasedData, setDieselPurchasedData] = useState([])
+
+
+  const subHeaderStyle= {
+    marginLeft:'20px',
+    fontSize:'1.5rem',
+    fontWeight:'500',
+    marginTop:'20px',
+  }
+
 
   const {
     refinedRenderedData,
@@ -46,7 +55,7 @@ function CostTracker({ match }) {
       }}
     ).then((req)=>{
       setOverviewData(req.data.data)
-      setDieselPurchasedData(getDieselPurchaseData())
+      // setDieselPurchasedData(getDieselPurchaseData())
     }).catch((err)=>{
       alert('Something un-expected happened, please reload page')
       console.log(err)
@@ -54,45 +63,26 @@ function CostTracker({ match }) {
   }, [match, setCurrentUrl,token,userId]);
 
 
-  const getDieselPurchaseData = ()=>{
-    let branchesData = overviewData && Object.keys(overviewData).filter(key=>{
-      return key !== 'diesel_overview'
-    })
-    const getData = branchesData.map(keys=>{
-      return overviewData[keys]
-    })
+  // const getDieselPurchaseData = ()=>{
+  //   // let branchesData = overviewData && Object.keys(overviewData).filter(key=>{
+  //   //   return key !== 'diesel_overview'
+  //   // })
+  //   // const getData = branchesData.map(keys=>{
+  //   //   return overviewData[keys]
+  //   // })
 
-    let getDieselUtilityData = Object.entries(overviewData).filter(data=>{
-      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
-    })
+  //   let getDieselUtilityData = Object.entries(overviewData).filter(data=>{
+  //     return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
+  //   })
 
-    return getDieselUtilityData
-  }
+  //   return getDieselUtilityData
+  // }
 
-  console.log(overviewData)
-  
-  const monthlyCostBarCharts =
-    dieselPurchasedData && dieselPurchasedData.map(e=>(
-      <article
-        className='cost-tracker-chart-container'
-      >
-        <h3 className='cost-tracker-branch-name'>
-          Monthly Cost at {e[0]}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart  DieselData={e[1].diesel} utilityData={e[1].utility}/>
-        </div>
-      </article>
+  let dieselPurchasedData = Object.entries(overviewData).filter(data=>{
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
+  })
 
-    ))
-      
-
-    const subHeaderStyle= {
-      marginLeft:'20px',
-      fontSize:'1.5rem',
-      fontWeight:'500',
-      marginTop:'20px',
-    }
+  console.log('PurchasedData:',dieselPurchasedData)      
 
 
     const DieselOverViewCharts = (
@@ -146,6 +136,26 @@ function CostTracker({ match }) {
       ))
     )
   
+    const getMonthlyDataCharts = Object.entries(overviewData).filter(data=>{
+      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
+    })
+
+    console.log('monthly data charts',getMonthlyDataCharts)
+    const monthlyCostBarCharts =
+    getMonthlyDataCharts && getMonthlyDataCharts.map(e=>(
+      <article
+        className='cost-tracker-chart-container'
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Monthly Cost at {e[0]}
+        </h3>
+        <div className='cost-tracker-chart-wrapper'>
+          <CostTrackerMonthlyCostBarChart  DieselData={e[1].diesel} utilityData={e[1].utility}/>
+        </div>
+      </article>
+    ))
+
+
    if (isAuthenticatedDataLoading) {
      return <Loader />;
    }
