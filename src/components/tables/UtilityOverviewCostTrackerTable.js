@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Table, Typography  } from 'antd';
+import CompleteDataContext from '../../Context';
 
 const UtilityOverviewCostTrackerTable = ({dataSource}) => {
-
+  
+  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
   const { Text } = Typography;
 
   dataSource && dataSource.forEach(obj => {
@@ -94,6 +96,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
                 summary={pageData => {
                   let Purchased = 0;
                   let Consumed = 0;
+                  // console.log(pageData)
 
                   pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
                     Purchased += purchased_kwh;
