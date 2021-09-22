@@ -2,20 +2,11 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
-import moment from 'moment'
 import dayjs from 'dayjs';
 
 
-const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityData}) => {
+const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
-  const formattedDates = monthlyCostData && monthlyCostData.dates;
-
-  const monthlyCostValues = monthlyCostData && monthlyCostData.values;
-  const monthlyCostUnit = monthlyCostData && monthlyCostData.units;
-
-  // console.log('dieselData:', DieselData)
-  // console.log('utlity data:',utilityData) 
 
   let formattedDataForDiesel = {}
   let formattedUtilData = {}
@@ -56,11 +47,8 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityDat
     }
   })
 
-  // console.log('dieselData:',formattedDataForDiesel)
-  // console.log('utilData',formattedUtilData)
-
   let chartsData = {}
-  
+
   for (const key in formattedUtilData) {
       if(Object.keys(formattedDataForDiesel).includes(key)){
         if(isNaN(formattedDataForDiesel[key])){
