@@ -76,9 +76,6 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityDat
   }
 
   
-  // console.log('utilData',formattedUtilData)
-  console.log('Charts data:',chartsData)
-  
   const options = {
     layout: {
       padding: {
