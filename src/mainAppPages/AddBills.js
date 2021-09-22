@@ -36,8 +36,6 @@ function AddBills({ match }) {
 
   const [images,setImages] = useState([])
 
-  // console.log(images)
-
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -178,9 +176,6 @@ const getBranchName = organization.branches && organization.branches.map((branch
   };
 
   const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
-    // console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelBalance)
-    // console.log(images)
-
     let formData = new FormData()
     formData.append('branch',defaultBranch)
     formData.append('quantity',fuelBalance)
