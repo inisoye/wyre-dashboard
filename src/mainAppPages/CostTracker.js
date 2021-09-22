@@ -69,10 +69,8 @@ function CostTracker({ match }) {
     return getDieselUtilityData
   }
 
-  const DieselData = dieselPurchasedData.map((e)=>{
-    return e
-  })
-
+  console.log(overviewData)
+  
   const monthlyCostBarCharts =
     dieselPurchasedData && dieselPurchasedData.map(e=>(
       <article
