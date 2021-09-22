@@ -56,7 +56,7 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityDat
     }
   })
 
-  console.log('dieselData:',formattedDataForDiesel)
+  // console.log('dieselData:',formattedDataForDiesel)
   // console.log('utilData',formattedUtilData)
 
   let chartsData = {}
@@ -76,8 +76,8 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityDat
   }
 
   
-  console.log('utilData',formattedUtilData)
-  console.log('Charts data:', chartsData)
+  // console.log('utilData',formattedUtilData)
+  console.log('Charts data:',chartsData)
   
   const options = {
     layout: {
@@ -146,16 +146,12 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData, DieselData,utilityDat
   };
 
   const data = {
-    labels: isMediumScreen
-      ? formattedDates && getLastArrayItems(formattedDates, 7)
-      : isLessThan1296
-      ? formattedDates && getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+    labels: Object.keys(chartsData),
     datasets: [
       {
-        label: `Amount in ${monthlyCostUnit}`,
+        label: `Amount in Naira`,
         maxBarThickness: 60,
-        data: monthlyCostValues,
+        data: Object.values(chartsData),
         backgroundColor: '#00C7E6',
         borderColor: '#00C7E6',
         borderWidth: 1,
