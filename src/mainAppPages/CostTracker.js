@@ -53,12 +53,6 @@ function CostTracker({ match }) {
     })
   }, [match, setCurrentUrl,token,userId]);
 
-  const {
-    cost_tracker_diesel_qty,
-    cost_tracker_monthly_cost,
-    cost_tracker_consumption,
-  } = refinedRenderedData;
-
 
   const getDieselPurchaseData = ()=>{
     let branchesData = overviewData && Object.keys(overviewData).filter(key=>{
@@ -75,22 +69,25 @@ function CostTracker({ match }) {
     return getDieselUtilityData
   }
 
+  const DieselData = dieselPurchasedData.map((e)=>{
+    return e
+  })
+
   const monthlyCostBarCharts =
-    cost_tracker_monthly_cost &&
-    cost_tracker_monthly_cost.map((eachBranch) => (
+    dieselPurchasedData && dieselPurchasedData.map(e=>(
       <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
         <h3 className='cost-tracker-branch-name'>
-          Monthly Cost at {eachBranch.branchName}
+          Monthly Cost at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart monthlyCostData={eachBranch} />
+          <CostTrackerMonthlyCostBarChart  DieselData={e[1].diesel} utilityData={e[1].utility}/>
         </div>
       </article>
-    ));
 
+    ))
+      
 
     const subHeaderStyle= {
       marginLeft:'20px',

@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Table } from 'antd';
 
 const DieselPurchasedTable = ({ data }) => {
+  
     const getTariff = data.map(element => {
       let tariff = element.price_per_litre / element.quantity
       const newData = {
