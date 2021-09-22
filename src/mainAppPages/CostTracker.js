@@ -22,7 +22,6 @@ const breadCrumbRoutes = [
 function CostTracker({ match }) {
   
   const [overviewData, setOverviewData] = useState([])
-  // const [dieselPurchasedData, setDieselPurchasedData] = useState([])
 
 
   const subHeaderStyle= {
@@ -34,10 +33,8 @@ function CostTracker({ match }) {
 
 
   const {
-    refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
-    organization,
     token,
     userId
   } = useContext(CompleteDataContext);
@@ -55,39 +52,18 @@ function CostTracker({ match }) {
       }}
     ).then((req)=>{
       setOverviewData(req.data.data)
-      // setDieselPurchasedData(getDieselPurchaseData())
     }).catch((err)=>{
       alert('Something un-expected happened, please reload page')
       console.log(err)
     })
   }, [match, setCurrentUrl,token,userId]);
 
-
-  // const getDieselPurchaseData = ()=>{
-  //   // let branchesData = overviewData && Object.keys(overviewData).filter(key=>{
-  //   //   return key !== 'diesel_overview'
-  //   // })
-  //   // const getData = branchesData.map(keys=>{
-  //   //   return overviewData[keys]
-  //   // })
-
-  //   let getDieselUtilityData = Object.entries(overviewData).filter(data=>{
-  //     return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
-  //   })
-
-  //   return getDieselUtilityData
-  // }
-
   let dieselPurchasedData = Object.entries(overviewData).filter(data=>{
     return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
   })
 
-  console.log('PurchasedData:',dieselPurchasedData)      
-
-
     const DieselOverViewCharts = (
       <article
-        // className='cost-tracker-chart-container'
       >
         <h3 className='cost-tracker-branch-name'>
           Cost Overview
@@ -140,7 +116,6 @@ function CostTracker({ match }) {
       return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
     })
 
-    console.log('monthly data charts',getMonthlyDataCharts)
     const monthlyCostBarCharts =
     getMonthlyDataCharts && getMonthlyDataCharts.map(e=>(
       <article
