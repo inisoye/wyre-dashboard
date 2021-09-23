@@ -16,6 +16,7 @@ import {
   refineLoadOverviewData,
   calculatePercentageTwoDecimal
 } from '../helpers/genericHelpers';
+import { numberFormatter } from '../helpers/numberFormatter';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -77,8 +78,8 @@ function LoadOverview({ match }) {
           <article className='score-card-row-3'>
             <div className='load-overview-total-cards-container' >
               <TotalCard title='Building Energy'
-                data={`${generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName) || 0} KwH`} />
-              <TotalCard title='Load Consumption' data={`${generateSumLoadConsumption(branch)} KwH`} />
+                data={`${numberFormatter(generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName)) || 0} KwH`} />
+              <TotalCard title='Load Consumption' data={`${numberFormatter(generateSumLoadConsumption(branch))} KwH`} />
               <TotalCard title='Percentage Load'
                 data={`${calculatePercentageTwoDecimal(generateSumLoadConsumption(branch),
                   generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName))} %`} />
