@@ -11,7 +11,10 @@ import LoadOverviewDataTable from '../components/tables/LoadOverviewDataTable';
 import {
   generateLoadCosumptionChartData,
   generateRunningTimeChartData,
-  refineLoadOverviewData
+  generateSumLoadConsumption,
+  generateSumOfIsSource,
+  refineLoadOverviewData,
+  calculatePercentageTwoDecimal
 } from '../helpers/genericHelpers';
 
 const breadCrumbRoutes = [
@@ -22,16 +25,12 @@ const breadCrumbRoutes = [
 
 function LoadOverview({ match }) {
   const {
-    refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
+    allCheckedOrSelectedDevice
   } = useContext(CompleteDataContext);
 
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
-
-  const {
-    all_device_data,
-  } = refinedRenderedData;
 
   useEffect(() => {
     if (match && match.url) {
@@ -40,13 +39,22 @@ function LoadOverview({ match }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    if (all_device_data) {
-      const data = refineLoadOverviewData(all_device_data);
+    if (allCheckedOrSelectedDevice) {
+      const data = refineLoadOverviewData(allCheckedOrSelectedDevice);
       setAllisLoadDeviceData(Object.values(data));
     }
 
-  }, [all_device_data]);
+  }, [allCheckedOrSelectedDevice]);
 
+
+  const TotalCard = ({ title, data }) => (
+    <div className='load-overview-total-card'>
+      <div className='load-overview-total-content'>
+        <h4>{title}</h4>
+        <p >{data}</p>
+      </div>
+    </div>
+  );
 
 
   if (isAuthenticatedDataLoading) {
@@ -60,12 +68,22 @@ function LoadOverview({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
       {
-        allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (<>
+        allIsLoadDeviceData && allIsLoadDeviceData.length > 0 ? allIsLoadDeviceData.map((branch) =>
+        (<div key={branch[0].branchName}>
           <article className='score-card-row-3'>
             <h2> {branch[0].branchName} </h2>
             <hr />
           </article>
           <article className='score-card-row-3'>
+            <div className='load-overview-total-cards-container' >
+              <TotalCard title='Building Energy'
+                data={`${generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName) || 0} KwH`} />
+              <TotalCard title='Load Consumption' data={`${generateSumLoadConsumption(branch)} KwH`} />
+              <TotalCard title='Percentage Load'
+                data={`${calculatePercentageTwoDecimal(generateSumLoadConsumption(branch),
+                  generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName))} %`} />
+            </div>
+            <hr className='load-overview__hr' />
             <RunningTime runningTimeData={generateRunningTimeChartData(branch)}
               dataTitle='Operating Time'
             />
@@ -82,10 +100,14 @@ function LoadOverview({ match }) {
             </article>
             {branch
               .map((eachDeviceData, index) => {
-                return <LoadOverviewDataTable device={eachDeviceData} index={index} />
+                return <LoadOverviewDataTable device={eachDeviceData} key={index} index={index} />
               })}
           </div>
-        </>))
+        </ div>)) :
+          <article className='score-card-row-3'>
+            <h2> No Data Available </h2>
+            <hr />
+          </article>
       }
     </>
 

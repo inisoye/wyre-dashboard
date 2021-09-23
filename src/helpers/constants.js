@@ -16,7 +16,7 @@ export const SCORE_CARD_TOOLTIP_MESSAGES = {
 
     The aim is to score as close to 1 as possible.`,
 
-    BASE_ENERGY: `This is an algorithm that forecasts energy consumption, benchmarking energy use, weather and number of days to set a baseline usage.
+    BASE_ENERGY: `This is an algorithm that forecasts energy consumption by benchmarking energy use, weather and number of days to set a baseline usage.
 
     Baseline usage is compared to actual consumption to score energy performance.`,
 

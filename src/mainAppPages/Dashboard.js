@@ -19,8 +19,7 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import RunningTime from "../components/barCharts/RunningTime";
-import { generateLoadCosumptionChartData, generateLoadOverviewChartData, refineLoadOverviewData } from "../helpers/genericHelpers";
+import {  generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 
 
@@ -63,8 +62,7 @@ function Dashboard({ match }) {
     cost_of_energy,
     today,
     yesterday,
-    daily_kwh,
-    all_device_data
+    daily_kwh
   } = refinedRenderedData;
 
   useEffect(() => {
@@ -74,15 +72,12 @@ function Dashboard({ match }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    if (all_device_data) {
-      const data = refineLoadOverviewData(all_device_data);
-      Object.values(data).map(branch => {
-
-      } )
+    if (allCheckedOrSelectedDevice) {
+      const data = refineLoadOverviewData(allCheckedOrSelectedDevice);
       setAllisLoadDeviceData(Object.values(data));
     }
 
-  }, [all_device_data]);
+  }, [allCheckedOrSelectedDevice]);
 
 
 
@@ -247,14 +242,20 @@ function Dashboard({ match }) {
         </div>
         <div className="dashboard-bar-container">
           {
-            allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (<>
-              <article className='score-card-row-3'>
-                <LoadOverviewPercentBarChart
-                  runningPercentageData={generateLoadOverviewChartData(branch)}
-                  dataTitle='Operating Time'
-                />
-              </article>
-            </>))
+            // allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (
+            allIsLoadDeviceData && allIsLoadDeviceData.length > 0  && (
+              <>
+                <article className='score-card-row-3'>
+                  <LoadOverviewPercentBarChart
+                    runningPercentageData={allIsLoadDeviceData.length > 1 ?
+                      generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
+                      : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                    dataTitle='Operating Time'
+                  />
+                </article>
+              </>
+            )
+            // ))
           }
         </div>
       </section>
