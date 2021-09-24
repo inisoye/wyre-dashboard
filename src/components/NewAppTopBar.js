@@ -11,7 +11,7 @@ const { RangePicker } = DatePicker;
 // default pickers
 const picker = {
   Today: [moment().startOf('day'), moment()],
-  'Yesterday': [moment('00:00:00', 'HH:mm:ss').subtract(1, 'days'), moment()],
+  'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
   'Past Week': [moment('00:00:00', 'HH:mm:ss').subtract(7, 'days'), moment()],
   'Past Month': [moment('00:00:00', 'HH:mm:ss').subtract(1, 'months'), moment()],
   'Past Quarter': [moment().quarter(moment().quarter()).startOf('quarter').startOf('day'), moment()],
@@ -28,7 +28,6 @@ function NewAppTopBar() {
 
 
   const [selectedDate, setSelectedDate] = useState([moment().startOf('day'), moment()]);
-  const [selectedTime, setSelectedTime] = useState([moment().startOf('day'), moment()]);
   const [showMonths, setShowMonths] = useState(false);
   const [showDays, setShowDays] = useState(false);
   const [showQuarters, setShowQuarters] = useState(false);
@@ -43,11 +42,11 @@ function NewAppTopBar() {
     form.setFieldsValue({
       from: selectedDate[0],
       to: selectedDate[1],
-      timeFrom: selectedTime[0],
-      timeTo: selectedTime[1],
+      timeFrom: selectedDate[0],
+      timeTo: selectedDate[1],
     })
 
-  }, [selectedDate, selectedTime]);
+  }, [selectedDate]);
 
 
   const setDateValueOnSelect = (startDate, endDate) => {
@@ -229,19 +228,35 @@ function NewAppTopBar() {
   // handle when user select a calendar 
   const onFirstCalendarClick = (date) => {
     setComponentText(false);
-    setSelectedDate(setDateValueOnSelect(date, selectedDate[1]));
+    if (moment(date).isBefore(moment())) {
+      return setSelectedDate(setDateValueOnSelect(moment(date).endOf('day'), selectedDate[1]));
+    }
+
+    const currentTime = moment();
+    setSelectedDate(setDateValueOnSelect(moment(date).set({
+      hour: currentTime.get('hour'),
+      minute: currentTime.get('minute'),
+      second: currentTime.get('second')
+    }), selectedDate[1]));
   }
 
   // handle when user select the second calendar 
   const onSecondCalendarClick = (date) => {
     setComponentText(false);
-    setSelectedDate(setDateValueOnSelect(selectedDate[0], date));
+    if (moment(date).isBefore(moment())) {
+      return setSelectedDate(setDateValueOnSelect(selectedDate[0], moment(date).endOf('day')));
+    }
+    const currentTime = moment();
+    return setSelectedDate(setDateValueOnSelect(selectedDate[0], moment(date).set({
+      hour: currentTime.get('hour'),
+      minute: currentTime.get('minute'),
+      second: currentTime.get('second')
+    })));
   }
 
   // handle when user select the first time 
   const onFirstTimeClick = (time) => {
     setComponentText(false);
-    setSelectedTime([time, selectedTime[1]]);
     setSelectedDate([moment(selectedDate[0]).set({
       hour: time.get('hour'),
       minute: time.get('minute'),
@@ -252,7 +267,6 @@ function NewAppTopBar() {
   // handle when user select the first second
   const onSecondTimeClick = (time) => {
     setComponentText(false);
-    setSelectedTime([selectedTime[0], time]);
     setSelectedDate([selectedDate[0], moment(selectedDate[1]).set({
       hour: time.get('hour'),
       minute: time.get('minute'),
@@ -263,7 +277,7 @@ function NewAppTopBar() {
   const onDefaultTagClick = (text) => {
     setComponentText(false);
     setSelectedDate(picker[text]);
-    
+
     setShowYears(false);
     setShowMonths(false);
     setShowHalfYears(false);
@@ -344,7 +358,7 @@ function NewAppTopBar() {
   // the date that are disabled
   const disabledDate = (current) => current.isAfter(moment()) || null;
 
-  const getPopupContainer = (trigger) => trigger.parentElement;
+  const getPopupContainer = (trigger) => trigger.parentNode;
 
 
   const Content = () => (
@@ -412,15 +426,15 @@ function NewAppTopBar() {
           initialValues={{
             from: selectedDate[0],
             to: selectedDate[1],
-            timeFrom: selectedTime[0],
-            timeTo: selectedTime[1]
+            timeFrom: selectedDate[0],
+            timeTo: selectedDate[1]
           }}
         >
           <div className='header-date-component' >
             <div style={{
               position: 'relative',
-              display: 'flex', flexDirection: 'row', 
-              marginTop: 5, 
+              display: 'flex', flexDirection: 'row',
+              marginTop: 5,
               marginLeft: 2
             }}>
               <div className='start-date'>
@@ -445,7 +459,7 @@ function NewAppTopBar() {
             <div style={{
               position: 'relative',
               display: 'flex', flexDirection: 'row',
-              marginTop: 5, 
+              marginTop: 5,
               marginLeft: 2
             }}>
               <div className='end-date' >
