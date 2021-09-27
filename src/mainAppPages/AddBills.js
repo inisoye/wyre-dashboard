@@ -37,7 +37,7 @@ function AddBills({ match }) {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-  }, [match, setCurrentUrl]);
+  }, [match, setCurrentUrl, token, userId]);
 
   const {
     register: registerPurchaseTracker,
@@ -136,11 +136,17 @@ function AddBills({ match }) {
 
   let defaultBranch;
 
-const getBranchName = organization.branches && organization.branches.map((branch)=>{
-  defaultBranch = branch.id
-  return branch.id
-})
-
+  if(organization.branches <=1){
+    organization.branches && organization.branches.map((branch)=>{
+      defaultBranch = branch.id
+      console.log(defaultBranch)
+      return branch.id
+    })
+  }
+  else{
+    defaultBranch = null
+    console.log('branches are more than one', defaultBranch)
+  }
 
   const onPurchaseTrackerSubmit = ({
     fuelQuantity,
