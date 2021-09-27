@@ -68,7 +68,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     });
     const combineArray = [].concat(...mapKeyToEachData)
     setData(combineArray)
-  },[listOfEquipmentData])
+  },[listOfEquipmentData, userId, token])
 
   const openNotificationWithIcon = (type, message) => {
     notification[type]({

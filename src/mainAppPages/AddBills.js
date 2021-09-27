@@ -136,10 +136,10 @@ function AddBills({ match }) {
 
   let defaultBranch;
 
-  if(organization.branches <=1){
+  if(organization.branches === 1){
     organization.branches && organization.branches.map((branch)=>{
       defaultBranch = branch.id
-      console.log(defaultBranch)
+      console.log('Default branch is:',defaultBranch)
       return branch.id
     })
   }
@@ -154,23 +154,25 @@ function AddBills({ match }) {
     fuelPurchaseDate,
     fuelType,
   }) => {
-    const DieselCostData = {
-      branch : defaultBranch,
-      quantity : fuelQuantity,
-      price_per_litre : fuelPricePerLitre,
-      date : fuelPurchaseDate.format('YYYY-MM-DD')
-    }
     
-    billingHttpServices
-    .addCostForDiesel(DieselCostData, token, userId, fuelType)
-    .then(()=>{  
-      openNotificationWithIcon('success', 'fuel purchase tracker');
-    })
-    .catch((err)=>{
-      console.log(err)
-      alert('An error occured, Please try again!!')
-    })
-
+    if (defaultBranch != null){
+      const DieselCostData = {
+        branch : defaultBranch,
+        quantity : fuelQuantity,
+        price_per_litre : fuelPricePerLitre,
+        date : fuelPurchaseDate.format('YYYY-MM-DD')
+      }
+      
+      billingHttpServices
+      .addCostForDiesel(DieselCostData, token, userId, fuelType)
+      .then(()=>{  
+        openNotificationWithIcon('success', 'fuel purchase tracker');
+      })
+      .catch((err)=>{
+        console.log(err)
+        alert('An error occured, Please try again!!')
+      }) 
+    }
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -193,24 +195,25 @@ function AddBills({ match }) {
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
-    const prePaidData = {
-      branch : defaultBranch,
-      value : utilityPaymentPreValue,
-      amount : utilityPaymentPreAmount,
-      tariff : utilityPaymentPreTariff,
-      date : utilityPaymentPreDate.format('YYYY-MM-DD')
+    if (defaultBranch != null){
+      const prePaidData = {
+        branch : defaultBranch,
+        value : utilityPaymentPreValue,
+        amount : utilityPaymentPreAmount,
+        tariff : utilityPaymentPreTariff,
+        date : utilityPaymentPreDate.format('YYYY-MM-DD')
+      }
+      billingHttpServices
+        .addCostPrePaid(prePaidData,token,userId)
+        .then(()=>{  
+          openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+        })
+        .catch(err=>{
+          console.log(err.response)
+          alert(err.response, 'Please try again!!!')
+        })
     }
-
-    billingHttpServices
-      .addCostPrePaid(prePaidData,token,userId)
-      .then(()=>{  
-        openNotificationWithIcon('success', 'pre-paid utility payment tracker');
-      })
-      .catch(err=>{
-        console.log(err.response)
-        alert(err.response, 'Please try again!!!')
-      })
-
+    
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPreDate', undefined);
     resetPaymentTrackerPre();
@@ -232,6 +235,7 @@ function AddBills({ match }) {
 
    let FormattedDate = convertDate(utilityPaymentPostDate)
 
+   if (defaultBranch != null){
     const postPaidData = {
       branch : defaultBranch,
       value : utilityPaymentPostValue,
@@ -250,10 +254,11 @@ function AddBills({ match }) {
       alert('An error occured,Please try again!!!')
       console.log(error.response)
     })
+  }  
 
     // // Reset form fields. Controller value is set manually
-    // setValuePurchaseTracker('utilityPaymentPostDate', undefined);
-    // resetPaymentTrackerPost();
+    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {

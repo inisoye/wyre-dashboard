@@ -139,7 +139,7 @@ function TopBar() {
         </div>
       </div>
 
-      { organization.branches && organization.branches.length <= 1 ?
+      { organization.branches && organization.branches.length === 1 ?
         <div
           className={
             isTopBarCostTrackerRightDisplayed
@@ -157,8 +157,8 @@ function TopBar() {
             Add Equipment
           </Link>
         </div>
-      : ''
-      }
+         : ''
+        }
       <div
         className={
           isTopBarUserBranchesRightDisplayed
