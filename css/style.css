@@ -1867,7 +1867,7 @@ thead.ant-table-thead tr th {
 --------------------------------------------------------------*/
 @media (min-width: 768px) {
   .main-container {
-    width: calc(100% - 300.45px);
+    width: calc(100% - 250.45px);
   }
   .main-container.h-full-width {
     width: 100%;

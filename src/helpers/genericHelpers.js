@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { numberFormatter } from './numberFormatter';
 
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
@@ -10,15 +11,14 @@ function removeDuplicateDatas(value, index, self) {
 
 
 const mergeTheData = (arr) => {
-      return [...new Set([].concat(...arr))];
+  return [...new Set([].concat(...arr))];
 }
 
-const truncateEmail = (str, num)=>{
-  if(str.length <= num)
-  {
+const truncateEmail = (str, num) => {
+  if (str.length <= num) {
     return str
   }
-  return str.slice(0,num) + '...'
+  return str.slice(0, num) + '...'
 }
 
 const toCamelCase = (str) =>
@@ -61,7 +61,7 @@ const daysInMonth = () => {
   const currentMonth = date.getMonth();
   const currentYear = date.getFullYear();
   //const numberOfDaysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
-  return new Date(currentYear, currentMonth+1, 0).getDate();
+  return new Date(currentYear, currentMonth + 1, 0).getDate();
 }
 
 /*
@@ -77,9 +77,9 @@ const sumArrayOfArrays = (arrayOfArrays) =>
   }, []);
 
 const calculateRatio = (avg, peak) => {
-  let peak_ratio =  Number(avg)/Number(peak)
+  let peak_ratio = Number(avg) / Number(peak)
 
-  if(peak_ratio && isFinite(peak_ratio)){
+  if (peak_ratio && isFinite(peak_ratio)) {
     return peak_ratio.toFixed(2)
   }
   return 0;
@@ -88,36 +88,45 @@ const calculateRatio = (avg, peak) => {
 const getPeakToAverageMessage = (peakRatio) => {
   let peakMessage;
   let peakMessageColor;
-  if (peakRatio > 0.7){
+  if (peakRatio > 0.7) {
     peakMessage = 'Efficient';
     peakMessageColor = '#008000';
-  }else if (peakRatio >= 0.5){
+  } else if (peakRatio >= 0.5) {
     peakMessage = 'Fairly efficient';
     peakMessageColor = '#FFBF00';
-  }else{
+  } else {
     peakMessage = 'Inefficient - Higher is better';
     peakMessageColor = '#fa0303';
   }
-  return {message: peakMessage, color: peakMessageColor}
+  return { message: peakMessage, color: peakMessageColor }
 }
 
 const getBaselineEnergyColor = (inbound) => {
   let peakMessageColor;
-  if (Number(inbound) > 0){
+  if (Number(inbound) > 0) {
     peakMessageColor = '#008000';
-  }else{
+  } else {
     peakMessageColor = '#fa0303';
   }
-  return {color: peakMessageColor}
+  return { color: peakMessageColor }
 }
 
-const calculatePercentage = (num_1, num_2) => { 
+const calculatePercentage = (num_1, num_2) => {
   const percentage = ((num_1 / num_2) * 100).toFixed() || 0;
 
   if (isNaN(percentage)) {
     return 0;
   }
-  return percentage 
+  return percentage
+};
+
+const calculatePercentageTwoDecimal = (num_1, num_2) => {
+  const percentage = ((num_1 / num_2) * 100).toFixed(2) || 0;
+
+  if (isNaN(percentage)) {
+    return 0;
+  }
+  return percentage
 };
 // -------------------------------------------------------------------
 
@@ -147,12 +156,14 @@ const getAllOrganizationDevices = (data) => {
         // Add branch name to each device name
         eachBranch.devices.forEach((device) => {
           // Prevent process from repeating several times
-          if (!device.name.includes(eachBranch.name)){
+          if (!device.name.includes(eachBranch.name)) {
             device.usage_hour = addUsageHoursToDevice(eachBranch, device.name, eachBranch.name)
+            device.deviceName = device.name;
             device.name = eachBranch.name + ' ' + device.name;
+            device.branchName = eachBranch.name;
           }
         });
-              
+
         return eachBranch.devices;
       })
       .flat()
@@ -382,7 +393,7 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
     .reduce((acc, curr) => acc + curr, 0);
 };
 // round decimple to the legth specifile
-const roundToDecimalPLace = (number, length) => (!Number.isInteger(number) 
+const roundToDecimalPLace = (number, length) => (!Number.isInteger(number)
   ? number.toFixed(length) : number);
 
 const sumOfArrayElements = (array) => array.reduce((acc, curr) => acc + Number(curr), 0)
@@ -472,6 +483,115 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 /* Parameter Helpers End ---------------------------------------------
 --------------------------------------------------------------------*/
 
+
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers Start ---------------------------------------
+--------------------------------------------------------------------*/
+const generateLoadCosumptionChartData = (isLoadData) => {
+  let label = [];
+  let data = []
+  isLoadData.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.energy_consumption.usage);
+  });
+
+  return { label, data };
+}
+
+const generateLoadOverviewChartData = (isLoadData) => {
+  let label = [];
+  let initailData = []
+  let data = []
+  isLoadData.map((device) => {
+    initailData.push(device.energy_consumption.usage);
+  });
+  const sumData = sumOfArrayElements(initailData);
+  isLoadData.map((device) => {
+    const devicePercentage = calculatePercentageTwoDecimal(device.energy_consumption.usage, sumData);
+    label.push(device.deviceName);
+    data.push(devicePercentage);
+  });
+
+  return { label, data };
+}
+
+const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
+  let label = [];
+  let data = [];
+  let branchConsumptionKeyPair = {};
+  let totalConsumptionUnit = 0;
+
+  allBranch.map((branch) => {
+    let totalBranchUsage = 0
+    branch.map((device) => {
+      totalBranchUsage += device.energy_consumption.usage;
+      totalConsumptionUnit += device.energy_consumption.usage;
+    });
+    branchConsumptionKeyPair[branch[0].branchName] = totalBranchUsage;
+  });
+
+  Object.entries(branchConsumptionKeyPair).forEach(
+    ([key, value]) => {
+      const percentage = calculatePercentageTwoDecimal(value, totalConsumptionUnit);
+      label.push(key);
+      data.push(percentage);
+    }
+  );
+
+
+  return { label, data };
+}
+
+const generateRunningTimeChartData = (branch) => {
+  let label = [];
+  let data = []
+  branch.map((device) => {
+    label.push(device.deviceName);
+    data.push(device.usage_hour);
+  });
+
+  return { label, data };
+}
+const generateSumLoadConsumption = (branch) => {
+  let initailData = [];
+  branch.map((device) => {
+    initailData.push(device.energy_consumption.usage);
+  });
+  return sumOfArrayElements(initailData);
+}
+
+const refineLoadOverviewData = (allDeviceData) => {
+  let branchData = {};
+  allDeviceData.map((eachData) => {
+    const branchName = eachData.branchName;
+    if (eachData.is_load) {
+      if (branchData[branchName]) {
+        branchData[branchName].push(eachData);
+      } else {
+        branchData[branchName] = [eachData];
+      }
+    }
+  })
+  return branchData;
+}
+
+const generateSumOfIsSource = (allDeviceData, branchName) => {
+  let sum = 0;
+  allDeviceData.map((eachData) => {
+    if (eachData.branchName === branchName
+      && eachData.is_source) {
+      sum += eachData.energy_consumption.usage;
+    }
+  })
+  return sum;
+};
+
+
+/* -------------------------------------------------------------------
+/* Load overview Helpers End  ----------------------------------------
+--------------------------------------------------------------------*/
+
 export {
   daysInMonth,
   getPeakToAverageMessage,
@@ -483,6 +603,7 @@ export {
   sumArrayOfArrays,
   calculateRatio,
   calculatePercentage,
+  calculatePercentageTwoDecimal,
   getAllOrganizationDevices,
   sumObjectValuesUp,
   sumNestedObjectValuesUp,
@@ -512,5 +633,12 @@ export {
   mergeTheData,
   allDeviceGenerators,
   roundToDecimalPLace,
-  sumOfArrayElements
+  sumOfArrayElements,
+  generateLoadCosumptionChartData,
+  generateRunningTimeChartData,
+  refineLoadOverviewData,
+  generateLoadOverviewChartData,
+  generateMultipleBranchLoadOverviewChartData,
+  generateSumLoadConsumption,
+  generateSumOfIsSource
 };

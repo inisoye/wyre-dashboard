@@ -59,6 +59,9 @@ const ReportsPowerDemandPieChart = ({ data: rawData }) => {
       },
     },
     plugins: {
+      outlabels: {
+        display: false,
+      },
       datalabels: {
         formatter: (value) => {
           return `${value}hrs`;

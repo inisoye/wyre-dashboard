@@ -70,11 +70,11 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     setData(combineArray)
   },[listOfEquipmentData, userId, token])
 
-  const openNotificationWithIcon = (type, message) => {
+  const openNotificationWithIcon = (type, message,desc) => {
     notification[type]({
-      message: `Deleted`,
+      message: `${message}`,
       description:
-        `${message}`,
+        `${desc}`,
     });
   };
   
@@ -116,7 +116,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
         setData(newData);
         setEditingKey('');
         equipmentHttpServices.update(userId,token,item.branch_id,item.id,deleteSelectedData(updatedData))
-        openNotificationWithIcon('success','Equipment edited successfully.')
+        openNotificationWithIcon('success','Success','Equipment edited successfully.')
       } else {
         newData.push(row);
         setData(newData);
@@ -137,12 +137,12 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     const delData = equipmentHttpServices.del(userId,item.id,token,item.branch_id,deleteSelectedData(DataToBeDeleted))
 
     if((await delData).status === 200){
-      openNotificationWithIcon('info','Equipment successfully deleted')
+      openNotificationWithIcon('info','Deleted','Equipment successfully deleted')
     }
 
     delData.catch((err)=>{
       console.log(err)
-      openNotificationWithIcon('error', 'An error occured, please check your Internet and try again')
+      openNotificationWithIcon('error','Error','An error occured, please check your Internet and try again')
     })
   };
 
