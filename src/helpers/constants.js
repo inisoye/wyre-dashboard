@@ -20,9 +20,11 @@ export const SCORE_CARD_TOOLTIP_MESSAGES = {
 
     Baseline usage is compared to actual consumption to score energy performance.`,
 
-    SIZE_EFFICIENCY: `Generator Size Efficiency: This info-graph measures and scores the efficiency(b) or inefficiency of the generator’s size in comparison to power demanded by the facility. `,
+    SIZE_EFFICIENCY: `Generator Size Efficiency: This info-graph measures and scores the efficiency or inefficiency of the generator’s size in comparison to power demanded by the facility. `,
 
-    FUEL_EFFICIENCYL: `Fuel Consumption: (95% Accuracy) Estimated fuel consumed on each generator and the number of hours each generator has been operated for`,
+    FUEL_EFFICIENCYL: `Fuel Efficiency: This is an average kWh/liter ratio derived from real data of diesel consumed in a facility.
+    
+    The ratio is benchmarked against the ideal consumption of a well maintained and sized diesel generator.`,
 
     OPERATING_TIME: `Operating Time: Reports each event and duration generators are operated outside official hours, the diesel consumed and cost in Naira.`
 

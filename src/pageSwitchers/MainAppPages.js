@@ -32,7 +32,7 @@ import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
 
 function MainAppPages() {
-  const { currentUrl, isAuthenticatedDataLoading } = useContext(CompleteDataContext);
+  const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
 
   const isReportPageOpen = currentUrl.includes('report');
 

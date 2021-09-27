@@ -1,18 +1,15 @@
 import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { typeOf } from 'react-responsive';
 import { Tooltip } from 'antd';
 import CompleteDataContext from '../../Context';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 import { numberFormatter } from '../../helpers/numberFormatter';
 import InformationIcon from '../../icons/InformationIcon';
-import { SCORE_CARD_TOOLTIP_MESSAGES } from '../../helpers/constants';
 
 const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
-  const messageArray = dataMessage.split('(b)');
 
   const options = {
     legend: {
