@@ -3,11 +3,8 @@ import React, { useEffect, useContext, useState } from 'react';
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrackerDieselQuantityBarChart';
-import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import Loader from '../components/Loader';
-import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
 import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
 import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
 import axios from 'axios';

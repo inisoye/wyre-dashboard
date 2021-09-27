@@ -21,6 +21,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
+          width:'30%'
         },
         {
           title: 'Purchased Energy (KWh)',
@@ -90,44 +91,44 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           <Table
                 columns={columns} 
                 dataSource={dataSource && dataSource} 
-                // className='table-striped-rows' 
+                className='table-striped-rows' 
                 rowKey={(record) => record.id}
                 footer={() => `${dataSource && dataSource.length} entries in total`}
-                // summary={pageData => {
-                //   let Purchased = 0;
-                //   let Consumed = 0;
-                //   // console.log(pageData)
+                summary={pageData => {
+                  let Purchased = 0;
+                  let Consumed = 0;
+                  // console.log(pageData)
 
-                //   pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
-                //     Purchased += purchased_kwh;
-                //     Consumed += energy_consumed_kwh;
-                //   });
+                  pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
+                    Purchased += purchased_kwh;
+                    Consumed += energy_consumed_kwh;
+                  });
 
-                //   return (
-                //     <>
-                //       <Table.Summary.Row>
-                //         <Table.Summary.Cell>
-                //           <Text style={{fontSize:"12.5px"}}>Total Energy</Text>
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell>
-                //           <Text>Purchased</Text>
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell>
-                //           <Text>Consumed</Text>
-                //         </Table.Summary.Cell>
-                //       </Table.Summary.Row>
-                //       <Table.Summary.Row>
-                //         <Table.Summary.Cell></Table.Summary.Cell>
-                //         <Table.Summary.Cell>
-                //           <Text>{parseFloat(Purchased).toFixed(2)}</Text>
-                //         </Table.Summary.Cell>
-                //         <Table.Summary.Cell>
-                //           <Text>{parseFloat(Consumed).toFixed(2)}</Text>
-                //         </Table.Summary.Cell>
-                //       </Table.Summary.Row>
-                //     </>
-                //   );
-                // }}
+                  return (
+                    <>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell>
+                          <Text style={{fontSize:"12.5px"}}>Total Energy</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>Purchased</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>Consumed</Text>
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                      <Table.Summary.Row>
+                        <Table.Summary.Cell></Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>{parseFloat(Purchased).toFixed(2)}</Text>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell>
+                          <Text>{parseFloat(Consumed).toFixed(2)}</Text>
+                        </Table.Summary.Cell>
+                      </Table.Summary.Row>
+                    </>
+                  );
+                }}
               />
 
         </div>

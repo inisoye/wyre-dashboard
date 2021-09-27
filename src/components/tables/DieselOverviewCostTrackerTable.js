@@ -2,12 +2,22 @@ import React from 'react'
 import { Table } from 'antd';
 
 const DieselOverviewCostTrackerTable = ({ dieselOverviewData }) => {
+  
+    dieselOverviewData && dieselOverviewData.forEach(obj => {
+      for (const propertyName in obj) {
+        if(typeof obj[propertyName] === 'number'){
+          obj[propertyName] = obj[propertyName].toFixed(2);
+      }
+      }
+      return obj
+    });
+
     const columns = [
         {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
-          // width:30
+          width:'30%'
         },
         {
           title: 'Inputed Usage(Ltr)',

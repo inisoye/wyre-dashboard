@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 
 const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
-  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
+  const { isMediumScreen } = useContext(CompleteDataContext);
 
   let formattedDataForDiesel = {}
   let formattedUtilData = {}
