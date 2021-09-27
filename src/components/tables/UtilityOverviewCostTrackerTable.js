@@ -91,7 +91,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           <Table
                 columns={columns} 
                 dataSource={dataSource && dataSource} 
-                // className='table-striped-rows' 
+                className='table-striped-rows' 
                 rowKey={(record) => record.id}
                 footer={() => `${dataSource && dataSource.length} entries in total`}
                 summary={pageData => {

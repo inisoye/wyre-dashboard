@@ -29,10 +29,12 @@ const openNotificationWithIcon = (type, formName) => {
 };
 
 function AddBills({ match }) {
-  const { setCurrentUrl, isAuthenticatedDataLoading, token, userId, organization } = useContext(
+  const { setCurrentUrl, isAuthenticatedDataLoading, token, organization } = useContext(
     CompleteDataContext
   );
 
+  console.log(organization)
+  let userId = organization.id
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -136,10 +138,9 @@ function AddBills({ match }) {
 
   let defaultBranch;
 
-  if(organization.branches === 1){
+  if(organization.branches && organization.branches.length === 1){
     organization.branches && organization.branches.map((branch)=>{
       defaultBranch = branch.id
-      console.log('Default branch is:',defaultBranch)
       return branch.id
     })
   }
