@@ -7,7 +7,7 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData }) => {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
-          // width:30
+          width:'30%'
         },
         {
           title: 'Inputed Usage(Ltr)',
