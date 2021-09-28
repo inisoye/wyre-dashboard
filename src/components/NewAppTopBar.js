@@ -69,7 +69,6 @@ function NewAppTopBar() {
       moment(selectedDate[1]).set('date', day).endOf('day')));
   }
 
-
   // month select handler
   const onMonthSelect = (month) => {
     if (componentText === 'Select Month') {
@@ -96,7 +95,6 @@ function NewAppTopBar() {
     }
   }
   const onWeekSelect = (week) => {
-    console.log('here we go herkhjlskjhloksjlodkjdok', moment().subtract((week * 7) - 1, 'days').startOf('day'))
     if (componentText === 'Select Week') {
       return setSelectedDate([moment().subtract((week * 7) - 1, 'days').startOf('day'),
       moment().endOf('day')]);
@@ -140,21 +138,6 @@ function NewAppTopBar() {
     setShowHalfYears(false);
     setShowQuarters(false);
     setShowWeeks(false);
-  }
-
-  // open week select handler to open the component
-  const onOpenWeekSelectButton = (checked) => {
-    setComponentText('Select Week');
-    if (checked) {
-      // set the date to what to begining of day an dnow
-      setSelectedDate([moment().startOf('week').startOf('day'), moment()]);
-    }
-    setShowYears(checked);
-    setShowMonths(checked);
-    setShowWeeks(checked);
-    setShowDays(false);
-    setShowQuarters(false);
-    setShowHalfYears(false);
   }
 
   // open month select handler to open the component
@@ -298,7 +281,7 @@ function NewAppTopBar() {
   )
   const DefaultSelectTag = (data) => (
     <CheckableTag className='date-search-tag'
-      style={{ width: '16%' }}
+      style={{ width: '19%' }}
       checked={data.isChecked && data.text === componentText}
       onChange={data.clickCallBack}>{data.text}</CheckableTag>
   )
@@ -374,7 +357,7 @@ function NewAppTopBar() {
       <div>
         <div style={{ display: 'flex', flexDirection: 'row' }} >
           <DefaultSelectTag text='Select Day' isChecked={showDays} clickCallBack={openDaySelectButtonClick} />
-          <DefaultSelectTag text='Select Week' isChecked={showWeeks} clickCallBack={onOpenWeekSelectButton} />
+          {/* <DefaultSelectTag text='Select Week' isChecked={showWeeks} clickCallBack={onOpenWeekSelectButton} /> */}
           <DefaultSelectTag text='Select Month' isChecked={showMonths} clickCallBack={openMonthSelectButtonClick} />
           <DefaultSelectTag text='Select Quarter' isChecked={showQuarters} clickCallBack={onOpenQuarterSelectButton} />
           <DefaultSelectTag text='Select Half Year' isChecked={showHalfYears} clickCallBack={onOpenHalfYearSelectButton} />
@@ -446,6 +429,7 @@ function NewAppTopBar() {
                 <Form.Item name="from" label="From">
                   <DatePicker
                     getPopupContainer={getPopupContainer}
+                    getCalendarContainer={getPopupContainer}
                     dateRender={dateRender}
                     disabledDate={disabledDate}
                     open={true}
@@ -471,6 +455,7 @@ function NewAppTopBar() {
                 <Form.Item name="to" label="To">
                   <DatePicker
                     onChange={onSecondCalendarClick}
+                    getCalendarContainer={getPopupContainer}
                     dateRender={dateRender}
                     disabledDate={disabledDate}
                     className={'my-class'}

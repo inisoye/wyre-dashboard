@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
+import { Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 
 import CompleteDataContext from '../Context';
@@ -19,12 +20,14 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const { setUserData } = useContext(CompleteDataContext);
 
   const { register, handleSubmit, control } = useForm();
 
   const onSubmit = async ({ username, password }, values) => {
     try {
+      setIsAuthenticating(true);
       const user = await loginHttpServices.login({
         username: username,
         password: password,
@@ -35,7 +38,9 @@ function Login() {
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
       setUserData(user);
+      setIsAuthenticating(false)
     } catch (exception) {
+      setIsAuthenticating(false)
       setErrorMessage(exception.response.data.error);
     }
   };
@@ -46,6 +51,7 @@ function Login() {
 
   return (
     <div className='auth-page-container'>
+      <Spin spinning={isAuthenticating} >
       <form
         className='signup-login-contact-form'
         action='#'
@@ -98,8 +104,9 @@ function Login() {
 
         <button className='signup-login-contact-button'>Log in</button>
       </form>
-
+        
       <SocialCluster />
+      </Spin>
     </div>
   );
 }
