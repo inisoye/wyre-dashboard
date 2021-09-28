@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Tag, DatePicker, TimePicker, Form, Modal, Space } from 'antd';
 import CompleteDataContext from '../Context';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 import dataHttpServices from '../services/devices';
 
 const { CheckableTag } = Tag;
@@ -23,7 +23,9 @@ function NewAppTopBar() {
   const {
     isSidebarOpen,
     setUserDateRange,
-    setSelectedDateRange
+    setSelectedDateRange,
+    organization,
+    currentUrl
   } = useContext(CompleteDataContext);
 
 
@@ -37,6 +39,9 @@ function NewAppTopBar() {
   const [componentText, setComponentText] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [form] = Form.useForm();
+
+
+  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker');
 
   useEffect(() => {
     form.setFieldsValue({
@@ -522,6 +527,28 @@ function NewAppTopBar() {
         <Content />
       </Modal>
       {/* </div> */}
+
+      { organization.branches && organization.branches.length === 1 ?
+        <div
+          className={
+            isTopBarCostTrackerRightDisplayed
+              ? 'top-bar__right'
+              : 'top-bar__right h-hide'
+          }
+        >
+          <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
+            Add Bills
+          </Link>
+          <Link
+            className='top-bar-right__button'
+            to='/cost-tracker/add-equipment'
+          >
+            Add Equipment
+          </Link>
+        </div>
+         : null
+        }
+     
     </div>
   );
 }
