@@ -5,6 +5,7 @@ import moment from 'moment';
 import CompleteDataContext from '../Context';
 
 import billingHttpServices from '../services/bills'
+import axios from 'axios'
 
 import { CaretDownFilled } from '@ant-design/icons';
 
@@ -32,6 +33,8 @@ function AddBills({ match }) {
   const { setCurrentUrl, isAuthenticatedDataLoading, token, organization } = useContext(
     CompleteDataContext
   );
+
+  const [images,setImages] = useState([])
 
   console.log(organization)
   let userId = organization.id
@@ -181,12 +184,30 @@ function AddBills({ match }) {
     resetPurchaseTracker();
   };
 
-  const onUsedTrackerSubmit = ({fuelUsedDate, fuelUsedQuantity})=>{
-    console.log(fuelUsedDate.format('YYYY-MM-DD'), fuelUsedQuantity)
+  const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
+    let formData = new FormData()
+    formData.append('branch',defaultBranch)
+    formData.append('quantity',fuelBalance)
+    formData.append('date',fuelUsedDate.format('YYYY-MM-DD'))
+    formData.append('image',images)
+
+    axios.post(`https://wyreng.xyz/api/v1/add_month_end_cost/${userId}/`, formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `bearer ${token}`,
+        }
+      }).then(res=>{
+        openNotificationWithIcon('success', 'Form submitted successfully');
+      }).catch(e=>{
+        alert('An error occured,Please try again!!!')
+        console.log(e.response)
+      })
+    
 
     // Reset form fields. Controller value is set manually
     setValueUsedTracker('fuelUsedDate', undefined);
-    setValueUsedTracker('fuelUsedQuantity', undefined);
+    setValueUsedTracker('fuelBalance', undefined);
+    setValueUsedTracker('flowMeterSnapshot', undefined);
     resetUsedTracker();
   }
 
@@ -659,7 +680,7 @@ function AddBills({ match }) {
       
         <section className="cost-tracker-form-section add-bills-section">
           <h2 className="form-section-heading add-bills-section__heading">
-            Diesel/Petrol Used Tracker
+          End of Month Diesel/Petrol Balance
           </h2>
 
           <form
@@ -668,34 +689,8 @@ function AddBills({ match }) {
             onSubmit={handleUsedTracker(onUsedTrackerSubmit)}
           >
             <div className="cost-tracker-form-inputs-wrapper">
-              
-              <div className="cost-tracker-input-container">
-                <label
-                  className="generic-input-label cost-tracker-input-label"
-                  htmlFor="fuel-used-quantity"
-                >
-                  Quantity
-                </label>
-                <input
-                  className="generic-input"
-                  type="text"
-                  inputMode="decimal"
-                  name="fuelUsedQuantity"
-                  id="fuel-used-quantity"
-                  ref={registerUsedTracker({
-                    required: true,
-                    pattern: /^-?\d+\.?\d*$/,
-                  })}
-                  required
-                  autoFocus
-                />
-                <p className="input-error-message">
-                  {errorsPurchaseTracker.fuelUsedQuantity &&
-                    'Please enter a number'}
-                </p>
-              </div>
 
-              <div className="cost-tracker-input-container">
+            <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
                   htmlFor="fuel-purchase-date"
@@ -726,6 +721,59 @@ function AddBills({ match }) {
                     'Please enter a date'}
                 </p>
               </div>
+              
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-used-quantity"
+                >
+                  Balance
+                </label>
+                <input
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelBalance"
+                  id="fuel-used-quantity"
+                  ref={registerUsedTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
+                  required
+                  autoFocus
+                />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelBalance &&
+                    'Please enter a number'}
+                </p>
+              </div>
+            
+              <div className="cost-tracker-input-container" >
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="flow-meter-snapshot"
+                >
+                  Flow Meter Snapshot
+                </label>
+                <input
+                  style={{backgroundColor:'#C4C4C48A'}}
+                  className="generic-input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  name="flowMeterSnapshot"
+                  onChange={(e)=>{
+                   setImages(e.target.files[0])
+                  }}
+                  id="flow-meter-snapshot"
+                  ref={registerUsedTracker({
+                    required: true,
+                  })}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              
             </div>
             <button className="generic-submit-button cost-tracker-form-submit-button">
               Submit

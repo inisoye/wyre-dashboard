@@ -8,11 +8,27 @@ import {
   formatParametersDatetimes,
   formatParametersDates,
 } from '../../helpers/genericHelpers';
+import { numberFormatter } from '../../helpers/numberFormatter';
 
 const DashboardStackedBarChart = ({ data, organization }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
+    tooltips: {
+      enabled: true,
+      mode: 'index',
+      callbacks: {
+        title: function (tooltipItem, data) {
+          return data['labels'][tooltipItem[0]['index']];
+        },
+        label: function (tooltipItem, data) {
+          return data['datasets'][0]['data'][tooltipItem['index']] 
+          && (numberFormatter(data['datasets'][0]['data'][tooltipItem['index']]));
+        },
+      },
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
+    },
     layout: {
       padding: {
         left: isMediumScreen ? 5 : 25,
