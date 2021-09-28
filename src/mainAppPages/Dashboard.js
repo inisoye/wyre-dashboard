@@ -19,7 +19,7 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import {  generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
+import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 
 
@@ -240,24 +240,18 @@ function Dashboard({ match }) {
             </div>
           </article>
         </div>
-        <div className="dashboard-bar-container">
-          {
-            // allIsLoadDeviceData && allIsLoadDeviceData.map((branch) => (
-            allIsLoadDeviceData && allIsLoadDeviceData.length > 0  && (
-              <>
-                <article className='score-card-row-3'>
-                  <LoadOverviewPercentBarChart
-                    runningPercentageData={allIsLoadDeviceData.length > 1 ?
-                      generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
-                      : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
-                    dataTitle='Operating Time'
-                  />
-                </article>
-              </>
-            )
-            // ))
-          }
-        </div>
+        {allIsLoadDeviceData && allIsLoadDeviceData.length > 0 && (
+          <div className="dashboard-bar-container">
+              <article className='score-card-row-3'>
+                <LoadOverviewPercentBarChart
+                  runningPercentageData={allIsLoadDeviceData.length > 1 ?
+                    generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
+                    : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                  dataTitle='Operating Time'
+                />
+              </article>
+          </div>
+        )}
       </section>
     </>
   );
