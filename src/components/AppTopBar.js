@@ -157,7 +157,7 @@ function TopBar() {
             Add Equipment
           </Link>
         </div>
-         : ''
+         : null
         }
       <div
         className={
