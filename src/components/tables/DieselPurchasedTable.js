@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import CompleteDataContext from '../../Context';
 import { Table } from 'antd';
 
 const DieselPurchasedTable = ({ data }) => {
+  const {
+    isMediumScreen
+  } = useContext(CompleteDataContext);
   
     const getTariff = data.map(element => {
       let tariff = element.price_per_litre / element.quantity
@@ -51,6 +55,7 @@ const DieselPurchasedTable = ({ data }) => {
                 dataSource={getTariff}
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
+                scroll={ isMediumScreen && { x: 600, y: 300 }}
                 footer={() => `${getTariff && getTariff.length} entries in total`}/>            
         </div>
     )

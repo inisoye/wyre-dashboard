@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import CompleteDataContext from '../../Context';
 import { Table } from 'antd';
 
 
 const UtilityPurchasedTable = ({ data }) => {
+  const {
+    isMediumScreen
+  } = useContext(CompleteDataContext);
+
     const columns = [
         {
           title: 'Date',
@@ -51,6 +56,7 @@ const UtilityPurchasedTable = ({ data }) => {
                 dataSource={data}
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
+                scroll={ isMediumScreen && { x: 600, y: 300 }}
                 footer={() => `${data && data.length} entries in total`}/>            
         </div>
     )

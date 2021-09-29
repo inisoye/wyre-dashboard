@@ -21,7 +21,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
-          width:'30%'
+          width:'10%'
         },
         {
           title: 'Purchased Energy (KWh)',
@@ -94,6 +94,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
                 footer={() => `${dataSource && dataSource.length} entries in total`}
+                scroll={{ x: 1000, y: 300 }}
                 summary={pageData => {
                   let Purchased = 0;
                   let Consumed = 0;

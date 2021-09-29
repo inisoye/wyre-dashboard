@@ -17,7 +17,7 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData }) => {
           title: 'Month',
           dataIndex: 'month',
           key: 'month',
-          width:'30%'
+          width:'10%'
         },
         {
           title: 'Inputed Usage(Ltr)',
@@ -91,6 +91,7 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData }) => {
             <Table columns={columns}
                 dataSource={dieselOverviewData && dieselOverviewData}
                 onChange={onChange}
+                scroll={{ x: 1000, y: 300 }}
                 className='table-striped-rows' 
                 rowKey={(record) => record.id}
                 footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`}/>
