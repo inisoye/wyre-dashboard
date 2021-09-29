@@ -328,7 +328,7 @@ function ScoreCard({ match }) {
           </p>
         </article>
       </div>
-
+{/* 
       <article className={deviceLength > 0 ? 'score-card-row-2' : 'hideCard'}>
         <h2 className='changeover-lags-heading score-card-heading'>
           Change Over Lags
@@ -342,7 +342,7 @@ function ScoreCard({ match }) {
           dataTitle='Operating Time'
           dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
         />
-      </article>
+      </article> */}
       </>)
     }
     </>

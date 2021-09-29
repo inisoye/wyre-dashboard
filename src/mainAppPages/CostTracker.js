@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrackerDieselQuantityBarChart';
-import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import Loader from '../components/Loader';
-import {mergeTheData} from '../helpers/genericHelpers'
-import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
-
+import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
+import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
+import axios from 'axios';
+import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
+import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -17,100 +17,117 @@ const breadCrumbRoutes = [
 ];
 
 function CostTracker({ match }) {
+  
+  const [overviewData, setOverviewData] = useState([])
+
+
+  const subHeaderStyle= {
+    marginLeft:'20px',
+    fontSize:'1.5rem',
+    fontWeight:'500',
+    marginTop:'20px',
+  }
+
+
   const {
-    refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
-    organization
+    token,
+    userId
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-  }, [match, setCurrentUrl]);
 
-  const {
-    cost_tracker_diesel_qty,
-    cost_tracker_monthly_cost,
-    cost_tracker_consumption,
-  } = refinedRenderedData;
+    const requestUrl = `http://wyreng.xyz/api/v1/cost_tracker_overview/${userId}/`;
+    axios.get(requestUrl,  {
+      headers:{
+              'Content-Type': 'application/json',
+              Authorization: `bearer ${token}`,
+      }}
+    ).then((req)=>{
+      setOverviewData(req.data.data)
+    }).catch((err)=>{
+      alert('Something un-expected happened, please reload page')
+      console.log(err)
+    })
+  }, [match, setCurrentUrl,token,userId]);
 
-
-  const comparisonData = organization.branches && organization.branches.map((eachValue)=>{
-   const {cost_tracker_monthly_diesel_purchase, cost_tracker_monthly_diesel_estimate, name} = eachValue
-    return {
-      'branchName': name,
-      'diesel_estimate': cost_tracker_monthly_diesel_estimate,
-      "diesel_purchase": cost_tracker_monthly_diesel_purchase
-    }
+  let dieselPurchasedData = Object.entries(overviewData).filter(data=>{
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
   })
 
-  const dieselQuantityBarCharts =
-    cost_tracker_diesel_qty &&
-    cost_tracker_diesel_qty.map((eachBranch) => (
+    const DieselOverViewCharts = (
       <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
         <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Purchased at {eachBranch.branchName}
+          Cost Overview
         </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerDieselQuantityBarChart dieselQuantityData={eachBranch} />
-        </div>
+        <p style={subHeaderStyle}>Diesel Overview</p>
+           <DieselOverviewCostTrackerTable dieselOverviewData={overviewData.diesel_overview}/> 
       </article>
-    ));
+    );
 
-  const dieselConsumptionBarCharts =
-    cost_tracker_consumption &&
-    cost_tracker_consumption.map((eachBranch) => (
+    
+    const UtilityOverViewCharts =(
       <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
-        <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Consumed at {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerConsumptionGroupedBarChart consumptionData={eachBranch} />
-        </div>
+        <p style={subHeaderStyle}>Utility Overview</p>
+          <UtilityOverviewCostTrackerTable dataSource={overviewData.utility_overview}/> 
       </article>
-    ));
+    );
 
-  const monthlyCostBarCharts =
-    cost_tracker_monthly_cost &&
-    cost_tracker_monthly_cost.map((eachBranch) => (
-      <article
+    
+    const DieselPurchasedCharts = (
+      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
+        <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
+        key={index}
       >
         <h3 className='cost-tracker-branch-name'>
-          Monthly Cost at {eachBranch.branchName}
+            Diesel Purchased for {e[0]}
         </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart monthlyCostData={eachBranch} />
-        </div>
+          <DieselPurchasedTable data={e[1].diesel}/>
       </article>
-    ));
+      ))
+    )
 
-    const DiselCostAndConsumptionComparison  =
-    comparisonData &&
-    comparisonData.map((eachBranch) => (
-      <article
+    const utilityPurchasedCharts = (
+      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
+        <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
+        key={index}
       >
         <h3 className='cost-tracker-branch-name'>
-          {eachBranch.branchName}
+            Utility Purchased for {e[0]}
         </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <ComparisonBarChart comparisonData={eachBranch} />
-        </div>
+          <UtilityPurchasedTable data={e[1].utility}/>
       </article>
-    ));
-
+      ))
+    )
   
+    const getMonthlyDataCharts = Object.entries(overviewData).filter(data=>{
+      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
+    })
+
+    const monthlyCostBarCharts =
+    getMonthlyDataCharts && getMonthlyDataCharts.map(e=>(
+      <article
+        className='cost-tracker-chart-container'
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Monthly Cost at {e[0]}
+        </h3>
+        <div className='cost-tracker-chart-wrapper'>
+          <CostTrackerMonthlyCostBarChart  DieselData={e[1].diesel} utilityData={e[1].utility}/>
+        </div>
+      </article>
+    ))
+
+
    if (isAuthenticatedDataLoading) {
      return <Loader />;
    }
@@ -121,25 +138,31 @@ function CostTracker({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
+      <div>
+      </div>
+
+      <section className="cost-tracker-chart-container">
+        <h2 className='h-screen-reader-text'>Cost Overview</h2>
+        {DieselOverViewCharts}
+        {UtilityOverViewCharts}
+      </section>
+
+
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
-        {dieselQuantityBarCharts}
-      </section>
-
-      <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Quantity of Diesel Consumed</h2>
-        {dieselConsumptionBarCharts}
-      </section>
-
-      <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {monthlyCostBarCharts}
+          {DieselPurchasedCharts}
       </section>
 
       
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Estimated Monthly Cost</h2>
-        {DiselCostAndConsumptionComparison}
+        <h2 className='h-screen-reader-text'>Quantity of utility Purchased</h2>
+          {utilityPurchasedCharts}
+      </section>
+
+
+      <section className='cost-tracker-section'>
+        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+        {monthlyCostBarCharts}
       </section>
     </>
   );

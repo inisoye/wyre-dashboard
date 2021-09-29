@@ -5,6 +5,7 @@ import moment from 'moment';
 import CompleteDataContext from '../Context';
 
 import billingHttpServices from '../services/bills'
+import axios from 'axios'
 
 import { CaretDownFilled } from '@ant-design/icons';
 
@@ -29,15 +30,19 @@ const openNotificationWithIcon = (type, formName) => {
 };
 
 function AddBills({ match }) {
-  const { setCurrentUrl, isAuthenticatedDataLoading, token, userId, organization } = useContext(
+  const { setCurrentUrl, isAuthenticatedDataLoading, token, organization } = useContext(
     CompleteDataContext
   );
 
+  const [images,setImages] = useState([])
+
+  console.log(organization)
+  let userId = organization.id
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-  }, [match, setCurrentUrl]);
+  }, [match, setCurrentUrl, token, userId]);
 
   const {
     register: registerPurchaseTracker,
@@ -65,6 +70,15 @@ function AddBills({ match }) {
     control: controlPaymentTrackerPost,
     errors: errorsPaymentTrackerPost,
   } = useForm();
+
+  const {
+    register : registerUsedTracker,
+    handleSubmit : handleUsedTracker,
+    reset: resetUsedTracker,
+    setValue : setValueUsedTracker,
+    control: controlUsedTracker,
+    errors: errorsUsedTracker,
+  } = useForm()
 
   const fuelPurchaseDatePicker = (
     <DatePicker
@@ -127,11 +141,16 @@ function AddBills({ match }) {
 
   let defaultBranch;
 
-const getBranchName = organization.branches && organization.branches.map((branch)=>{
-  defaultBranch = branch.id
-  return branch.id
-})
-
+  if(organization.branches && organization.branches.length === 1){
+    organization.branches && organization.branches.map((branch)=>{
+      defaultBranch = branch.id
+      return branch.id
+    })
+  }
+  else{
+    defaultBranch = null
+    console.log('branches are more than one', defaultBranch)
+  }
 
   const onPurchaseTrackerSubmit = ({
     fuelQuantity,
@@ -139,23 +158,25 @@ const getBranchName = organization.branches && organization.branches.map((branch
     fuelPurchaseDate,
     fuelType,
   }) => {
-    const DieselCostData = {
-      branch : defaultBranch,
-      quantity : fuelQuantity,
-      price_per_litre : fuelPricePerLitre,
-      date : fuelPurchaseDate.format('YYYY-MM-DD')
-    }
     
-    billingHttpServices
-    .addCostForDiesel(DieselCostData, token, userId, fuelType)
-    .then(()=>{  
-      openNotificationWithIcon('success', 'fuel purchase tracker');
-    })
-    .catch((err)=>{
-      console.log(err)
-      alert('An error occured, Please try again!!')
-    })
-
+    if (defaultBranch != null){
+      const DieselCostData = {
+        branch : defaultBranch,
+        quantity : fuelQuantity,
+        price_per_litre : fuelPricePerLitre,
+        date : fuelPurchaseDate.format('YYYY-MM-DD')
+      }
+      
+      billingHttpServices
+      .addCostForDiesel(DieselCostData, token, userId, fuelType)
+      .then(()=>{  
+        openNotificationWithIcon('success', 'fuel purchase tracker');
+      })
+      .catch((err)=>{
+        console.log(err)
+        alert('An error occured, Please try again!!')
+      }) 
+    }
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -163,30 +184,58 @@ const getBranchName = organization.branches && organization.branches.map((branch
     resetPurchaseTracker();
   };
 
+  const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
+    let formData = new FormData()
+    formData.append('branch',defaultBranch)
+    formData.append('quantity',fuelBalance)
+    formData.append('date',fuelUsedDate.format('YYYY-MM-DD'))
+    formData.append('image',images)
+
+    axios.post(`https://wyreng.xyz/api/v1/add_month_end_cost/${userId}/`, formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `bearer ${token}`,
+        }
+      }).then(res=>{
+        openNotificationWithIcon('success', 'Form submitted successfully');
+      }).catch(e=>{
+        alert('An error occured,Please try again!!!')
+        console.log(e.response)
+      })
+    
+
+    // Reset form fields. Controller value is set manually
+    setValueUsedTracker('fuelUsedDate', undefined);
+    setValueUsedTracker('fuelBalance', undefined);
+    setValueUsedTracker('flowMeterSnapshot', undefined);
+    resetUsedTracker();
+  }
+
   const onUtilityPaymentTrackerPreSubmit = ({
     utilityPaymentPreAmount,
     utilityPaymentPreDate,
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
-    const prePaidData = {
-      branch : defaultBranch,
-      value : utilityPaymentPreValue,
-      amount : utilityPaymentPreAmount,
-      tariff : utilityPaymentPreTariff,
-      date : utilityPaymentPreDate.format('YYYY-MM-DD')
+    if (defaultBranch != null){
+      const prePaidData = {
+        branch : defaultBranch,
+        value : utilityPaymentPreValue,
+        amount : utilityPaymentPreAmount,
+        tariff : utilityPaymentPreTariff,
+        date : utilityPaymentPreDate.format('YYYY-MM-DD')
+      }
+      billingHttpServices
+        .addCostPrePaid(prePaidData,token,userId)
+        .then(()=>{  
+          openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+        })
+        .catch(err=>{
+          console.log(err.response)
+          alert(err.response, 'Please try again!!!')
+        })
     }
-
-    billingHttpServices
-      .addCostPrePaid(prePaidData,token,userId)
-      .then(()=>{  
-        openNotificationWithIcon('success', 'pre-paid utility payment tracker');
-      })
-      .catch(err=>{
-        console.log(err.response)
-        alert(err.response, 'Please try again!!!')
-      })
-
+    
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPreDate', undefined);
     resetPaymentTrackerPre();
@@ -208,6 +257,7 @@ const getBranchName = organization.branches && organization.branches.map((branch
 
    let FormattedDate = convertDate(utilityPaymentPostDate)
 
+   if (defaultBranch != null){
     const postPaidData = {
       branch : defaultBranch,
       value : utilityPaymentPostValue,
@@ -226,10 +276,11 @@ const getBranchName = organization.branches && organization.branches.map((branch
       alert('An error occured,Please try again!!!')
       console.log(error.response)
     })
+  }  
 
     // // Reset form fields. Controller value is set manually
-    // setValuePurchaseTracker('utilityPaymentPostDate', undefined);
-    // resetPaymentTrackerPost();
+    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {
@@ -626,6 +677,110 @@ const getBranchName = organization.branches && organization.branches.map((branch
             </button>
           </form>
         </section>
+      
+        <section className="cost-tracker-form-section add-bills-section">
+          <h2 className="form-section-heading add-bills-section__heading">
+          End of Month Diesel/Petrol Balance
+          </h2>
+
+          <form
+            className="cost-tracker-form"
+            action="#"
+            onSubmit={handleUsedTracker(onUsedTrackerSubmit)}
+          >
+            <div className="cost-tracker-form-inputs-wrapper">
+
+            <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-purchase-date"
+                >
+                  Date
+                </label>
+                <Controller
+                  as={fuelPurchaseDatePicker}
+                  name="fuelUsedDate"
+                  control={controlUsedTracker}
+                  defaultValue=""
+                  rules={{
+                    required: true,
+                  }}
+                  validateStatus={
+                    errorsUsedTracker.fuelUsedDate &&
+                    'Please enter a date'
+                      ? 'error'
+                      : ''
+                  }
+                  help={
+                    errorsUsedTracker.fuelUsedDate &&
+                    'Please enter a date'
+                  }
+                />
+                <p className="input-error-message">
+                  {errorsUsedTracker.fuelPurchaseDate &&
+                    'Please enter a date'}
+                </p>
+              </div>
+              
+              <div className="cost-tracker-input-container">
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="fuel-used-quantity"
+                >
+                  Balance
+                </label>
+                <input
+                  className="generic-input"
+                  type="text"
+                  inputMode="decimal"
+                  name="fuelBalance"
+                  id="fuel-used-quantity"
+                  ref={registerUsedTracker({
+                    required: true,
+                    pattern: /^-?\d+\.?\d*$/,
+                  })}
+                  required
+                  autoFocus
+                />
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.fuelBalance &&
+                    'Please enter a number'}
+                </p>
+              </div>
+            
+              <div className="cost-tracker-input-container" >
+                <label
+                  className="generic-input-label cost-tracker-input-label"
+                  htmlFor="flow-meter-snapshot"
+                >
+                  Flow Meter Snapshot
+                </label>
+                <input
+                  style={{backgroundColor:'#C4C4C48A'}}
+                  className="generic-input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  name="flowMeterSnapshot"
+                  onChange={(e)=>{
+                   setImages(e.target.files[0])
+                  }}
+                  id="flow-meter-snapshot"
+                  ref={registerUsedTracker({
+                    required: true,
+                  })}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              
+            </div>
+            <button className="generic-submit-button cost-tracker-form-submit-button">
+              Submit
+            </button>
+          </form>
+        </section>
+
       </div>
     </>
   );

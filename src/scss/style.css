@@ -1845,7 +1845,7 @@ thead.ant-table-thead tr th {
 --------------------------------------------------------------*/
 @media (min-width: 768px) {
   .main-container {
-    width: calc(100% - 300.45px);
+    width: calc(100% - 250.45px);
   }
 }
 
@@ -3048,7 +3048,7 @@ thead.ant-table-thead tr th {
   font-size: 1.4rem;
   height: 24px;
   padding: 8px 11px;
-  max-width: 54px;
+  /* max-width: 54px; */
   border-radius: 2px;
   margin: 0 10px;
 }
@@ -3105,7 +3105,7 @@ thead.ant-table-thead tr th {
 }
 
 .billing-bill-table-container {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   margin-top: 30px;
   overflow: auto;
   padding-bottom: 52px;

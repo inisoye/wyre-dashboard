@@ -9,7 +9,6 @@ const DateWidget = (
     className="generic-input"
     format="DD-MM-YYYY"
     id="equipment-purchase-date"
-    // onChange={(e)=>console.log(e.target.value)}
   />
 );
 
@@ -69,13 +68,13 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     });
     const combineArray = [].concat(...mapKeyToEachData)
     setData(combineArray)
-  },[listOfEquipmentData])
+  },[listOfEquipmentData, userId, token])
 
-  const openNotificationWithIcon = (type, message) => {
+  const openNotificationWithIcon = (type, message,desc) => {
     notification[type]({
-      message: `Deleted`,
+      message: `${message}`,
       description:
-        `${message}`,
+        `${desc}`,
     });
   };
   
@@ -117,7 +116,7 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
         setData(newData);
         setEditingKey('');
         equipmentHttpServices.update(userId,token,item.branch_id,item.id,deleteSelectedData(updatedData))
-        openNotificationWithIcon('success','Equipment edited successfully.')
+        openNotificationWithIcon('success','Success','Equipment edited successfully.')
       } else {
         newData.push(row);
         setData(newData);
@@ -138,12 +137,12 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
     const delData = equipmentHttpServices.del(userId,item.id,token,item.branch_id,deleteSelectedData(DataToBeDeleted))
 
     if((await delData).status === 200){
-      openNotificationWithIcon('info','Equipment successfully deleted')
+      openNotificationWithIcon('info','Deleted','Equipment successfully deleted')
     }
 
     delData.catch((err)=>{
       console.log(err)
-      openNotificationWithIcon('error', 'An error occured, please check your Internet and try again')
+      openNotificationWithIcon('error','Error','An error occured, please check your Internet and try again')
     })
   };
 
@@ -205,7 +204,6 @@ const ListOfEquipmentTable = ({listOfEquipmentData}) => {
           </Typography.Link>
           
           <Typography.Link disabled={editingKey !== ''} onClick={() => {
-            // edit(record)
             }} className="table-row-button" style={{width:'70px'}}>
             <Popconfirm title="Sure to delete?" onConfirm={()=>{
               handleDelete(record.key)
