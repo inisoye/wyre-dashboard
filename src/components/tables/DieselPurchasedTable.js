@@ -11,7 +11,7 @@ const DieselPurchasedTable = ({ data }) => {
       let tariff = element.price_per_litre / element.quantity
       const newData = {
         ...element,
-        tariff:tariff
+        tariff:tariff.toFixed(2)
       }
       return newData
     });

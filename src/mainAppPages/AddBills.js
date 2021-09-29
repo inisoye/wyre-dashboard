@@ -29,6 +29,14 @@ const openNotificationWithIcon = (type, formName) => {
   });
 };
 
+const NotAllowedNotification = () => {
+  notification.error({
+    message:'Request Error',
+    description:'NOT ALLOWED',
+    duration:6
+  })
+}
+
 function AddBills({ match }) {
   const { setCurrentUrl, isAuthenticatedDataLoading, token, organization } = useContext(
     CompleteDataContext
@@ -36,7 +44,6 @@ function AddBills({ match }) {
 
   const [images,setImages] = useState([])
 
-  console.log(organization)
   let userId = organization.id
   useEffect(() => {
     if (match && match.url) {
@@ -149,7 +156,7 @@ function AddBills({ match }) {
   }
   else{
     defaultBranch = null
-    console.log('branches are more than one', defaultBranch)
+    console.log('====>> More than one branches exists on this account')
   }
 
   const onPurchaseTrackerSubmit = ({
@@ -177,6 +184,9 @@ function AddBills({ match }) {
         alert('An error occured, Please try again!!')
       }) 
     }
+    else{
+      NotAllowedNotification();
+    }
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -185,24 +195,28 @@ function AddBills({ match }) {
   };
 
   const onUsedTrackerSubmit = ({fuelUsedDate, fuelBalance,flowMeterSnapshot})=>{
-    let formData = new FormData()
-    formData.append('branch',defaultBranch)
-    formData.append('quantity',fuelBalance)
-    formData.append('date',fuelUsedDate.format('YYYY-MM-DD'))
-    formData.append('image',images)
+    if (defaultBranch != null){
+      let formData = new FormData()
+      formData.append('branch',defaultBranch)
+      formData.append('quantity',fuelBalance)
+      formData.append('date',fuelUsedDate.format('YYYY-MM-DD'))
+      formData.append('image',images)
 
-    axios.post(`https://wyreng.xyz/api/v1/add_month_end_cost/${userId}/`, formData, {
-      headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `bearer ${token}`,
-        }
-      }).then(res=>{
-        openNotificationWithIcon('success', 'Form submitted successfully');
-      }).catch(e=>{
-        alert('An error occured,Please try again!!!')
-        console.log(e.response)
-      })
-    
+      axios.post(`https://wyreng.xyz/api/v1/add_month_end_cost/${userId}/`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `bearer ${token}`,
+          }
+        }).then(res=>{
+          openNotificationWithIcon('success', 'Form submitted successfully');
+        }).catch(e=>{
+          alert('An error occured,Please try again!!!')
+          console.log(e.response)
+        })
+    }
+    else{
+      NotAllowedNotification();
+    }
 
     // Reset form fields. Controller value is set manually
     setValueUsedTracker('fuelUsedDate', undefined);
@@ -235,7 +249,9 @@ function AddBills({ match }) {
           alert(err.response, 'Please try again!!!')
         })
     }
-    
+    else{
+      NotAllowedNotification();
+    }
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPreDate', undefined);
     resetPaymentTrackerPre();
@@ -277,6 +293,9 @@ function AddBills({ match }) {
       console.log(error.response)
     })
   }  
+  else{
+    NotAllowedNotification();
+  }
 
     // // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPostDate', undefined);

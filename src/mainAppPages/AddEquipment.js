@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, notification, Select } from 'antd';
-// import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
 
 import equipmentHttpServices from '../services/equipment';
@@ -101,6 +100,14 @@ function AddEquipment({ match }) {
     />
   );
 
+  
+  const NotAllowedNotification = () => {
+    notification.error({
+      message:'Request Error',
+      description:'NOT ALLOWED',
+      duration:6
+    })
+}
   const onSubmit = ({
     equipmentName,
     equipmentWattage,
@@ -126,7 +133,9 @@ function AddEquipment({ match }) {
           alert('An error occured, please try again.')
             console.log(error.response);
           });
-    
+    }
+    else{
+      NotAllowedNotification();
     }
    
     // Reset form fields. Controller value is set manually
