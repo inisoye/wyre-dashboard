@@ -8,6 +8,8 @@ const UtilityPurchasedTable = ({ data }) => {
     isMediumScreen
   } = useContext(CompleteDataContext);
 
+  data.sort( function ( a, b ) { return b.date - a.date; } );
+
     const columns = [
         {
           title: 'Date',
