@@ -4,13 +4,13 @@ import CompleteDataContext from '../../Context';
 
 import dayjs from 'dayjs';
 
-
 const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
 
   let formattedDataForDiesel = {}
   let formattedUtilData = {}
 
+  // eslint-disable-next-line array-callback-return
   const getDieselData = DieselData.map((e)=>{
     delete e.quantity
     const turnDateStringToWord = dayjs(e.date).format('MMM-YYYY')
@@ -27,7 +27,8 @@ const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
       formattedDataForDiesel = {...formattedDataForDiesel, [dates]:amount}
     }
   })
-
+ 
+  // eslint-disable-next-line array-callback-return
   const getUtilityData= utilityData.map(e=>{
     delete e.value
     delete e.tarrif
@@ -38,6 +39,7 @@ const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
     const amount = e.amount
 
     if(Object.keys(formattedUtilData).includes(e.date)){
+      // eslint-disable-next-line array-callback-return
       [formattedDataForDiesel].map((d)=>{
         d[e.date] +=amount
       })
