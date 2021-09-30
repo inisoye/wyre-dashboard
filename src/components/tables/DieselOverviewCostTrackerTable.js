@@ -92,7 +92,7 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData }) => {
                 dataSource={dieselOverviewData && dieselOverviewData}
                 onChange={onChange}
                 scroll={{ x: 1000, y: 300 }}
-                className='table-striped-rows' 
+                className='table-striped-rows utitily-overview-table' 
                 rowKey={(record) => record.id}
                 footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`}/>
         </div>

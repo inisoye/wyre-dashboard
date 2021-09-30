@@ -53,7 +53,7 @@ const DieselPurchasedTable = ({ data }) => {
         <div>
             <Table columns={columns}
                 dataSource={getTariff}
-                className='table-striped-rows' 
+                className='table-striped-rows utitily-overview-table' 
                 rowKey={(record) => record.id}
                 scroll={ isMediumScreen && { x: 600, y: 300 }}
                 footer={() => `${getTariff && getTariff.length} entries in total`}/>            

@@ -1,10 +1,7 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import { Table, Typography  } from 'antd';
-import CompleteDataContext from '../../Context';
 
 const UtilityOverviewCostTrackerTable = ({dataSource}) => {
-  
-  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
   const { Text } = Typography;
 
   dataSource && dataSource.forEach(obj => {
@@ -85,31 +82,42 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
           },
       ];
       
+      
+  let Purchased_total = 0;
+  let Consumed_total = 0;
+
+  dataSource.forEach(element => {
+    const purchased_numToInt = parseFloat(element.purchased_kwh)
+    const consumed_to_int  = parseFloat(element.energy_consumed_kwh)
+    Purchased_total += purchased_numToInt;
+    Consumed_total += consumed_to_int;
+    });
 
     return (
         <div>
           <Table
                 columns={columns} 
                 dataSource={dataSource && dataSource} 
-                className='table-striped-rows' 
+                className='table-striped-rows utitily-overview-table' 
                 rowKey={(record) => record.id}
                 footer={() => `${dataSource && dataSource.length} entries in total`}
-                scroll={{ x: 1000, y: 300 }}
+                scroll={{ x: 500 }}
                 summary={pageData => {
-                  let Purchased = 0;
-                  let Consumed = 0;
-                  // console.log(pageData)
+                  // let Purchased = 0;
+                  // let Consumed = 0;
 
-                  pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
-                    Purchased += purchased_kwh;
-                    Consumed += energy_consumed_kwh;
-                  });
+                  // // pageData.forEach(({ purchased_kwh, energy_consumed_kwh }) => {
+                  // //   const purchased_numToInt = parseFloat(purchased_kwh)
+                  // //   const consumed_to_int  = parseFloat(energy_consumed_kwh)
+                  // //   Purchased += purchased_numToInt;
+                  // //   Consumed += consumed_to_int;
+                  // // });
 
                   return (
                     <>
                       <Table.Summary.Row>
                         <Table.Summary.Cell>
-                          <Text style={{fontSize:"12.5px"}}>Total Energy</Text>
+                          <Text>Total:</Text>
                         </Table.Summary.Cell>
                         <Table.Summary.Cell>
                           <Text>Purchased</Text>
@@ -121,10 +129,10 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
                       <Table.Summary.Row>
                         <Table.Summary.Cell></Table.Summary.Cell>
                         <Table.Summary.Cell>
-                          <Text>{parseFloat(Purchased).toFixed(2)}</Text>
+                          <Text>{parseFloat(Purchased_total).toFixed(2)}</Text>
                         </Table.Summary.Cell>
                         <Table.Summary.Cell>
-                          <Text>{parseFloat(Consumed).toFixed(2)}</Text>
+                          <Text>{parseFloat(Consumed_total).toFixed(2)}</Text>
                         </Table.Summary.Cell>
                       </Table.Summary.Row>
                     </>
