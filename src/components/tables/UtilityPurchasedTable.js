@@ -56,7 +56,7 @@ const UtilityPurchasedTable = ({ data }) => {
         <div>
             <Table columns={columns}
                 dataSource={data}
-                className='table-striped-rows' 
+                className='table-striped-rows utitily-overview-table' 
                 rowKey={(record) => record.id}
                 scroll={ isMediumScreen && { x: 600, y: 300 }}
                 footer={() => `${data && data.length} entries in total`}/>            

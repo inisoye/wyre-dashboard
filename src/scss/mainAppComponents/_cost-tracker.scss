@@ -113,3 +113,9 @@
   color: scale-color($black, $lightness: 35%);
   border-radius: 4px !important;
 }
+
+.utitily-overview-table{
+  .ant-pagination{
+    margin-right: 20px;
+  }
+}
