@@ -33,7 +33,7 @@ const NotAllowedNotification = () => {
   notification.error({
     message:'Request Error',
     description:'NOT ALLOWED',
-    duration:6
+    duration:5
   })
 }
 
@@ -44,7 +44,7 @@ function AddBills({ match }) {
 
   const [images,setImages] = useState([])
 
-  let userId = organization.id
+  let userId = organization.user_id
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -150,8 +150,8 @@ function AddBills({ match }) {
 
   if(organization.branches && organization.branches.length === 1){
     organization.branches && organization.branches.map((branch)=>{
-      defaultBranch = branch.id
-      return branch.id
+      defaultBranch = branch.branch_id
+      return branch.branch_id
     })
   }
   else{

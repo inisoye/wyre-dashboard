@@ -66,9 +66,9 @@ function AddEquipment({ match }) {
 
   if(organization.branches.length === 1){
     organization.branches && organization.branches.map((branch)=>{
-      branchSelectorValue = branch.id
+      branchSelectorValue = branch.branch_id
       console.log('Default branch is:',branchSelectorValue)
-      return branch.id
+      return branch.branch_id
     })
   }
   else{
