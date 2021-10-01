@@ -6,16 +6,22 @@ export const LoadImbalanceColumns = [
     title: 'Max',
     dataIndex: 'max',
     width: '20%',
+    render: (data) => {
+      return `${Number(data).toFixed(2)}`;
+    }
   },
   {
     title: 'Min',
     dataIndex: 'min',
-    width: '15%',
+    width: '20%',
+    render: (data) => {
+      return `${Number(data).toFixed(2)}`;
+    }
   },
   {
     title: 'Imbalance',
     dataIndex: 'Imbalance',
-    width: '20%',
+    width: '25%',
   },
   {
     title: 'Date/Time',

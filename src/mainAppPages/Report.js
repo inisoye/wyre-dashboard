@@ -6,6 +6,7 @@ import BreadCrumb from '../components/BreadCrumb';
 
 
 import ReportHttpServices from '../services/report';
+import dataHttpServices from '../services/devices';
 
 import GenericReportTable from '../components/tables/reportTables/GenericReportTable';
 import ReportDailyConsumptionBar from '../components/barCharts/ReportDailyConsumptionBar';
@@ -20,12 +21,12 @@ import MiniDoubleCard from '../smallComponents/reports/MiniDoubleCard';
 import LargeDoubleCard from '../smallComponents/reports/LargeDoubleCard';
 import SourceConsumptionPieChart from '../smallComponents/reports/SourceConsumptionPieChart';
 import {
-  CostImplicationColumn, DemandAndStatisticsColumn, 
-  DemandAndStatisticsTwoColumn, 
+  CostImplicationColumn, DemandAndStatisticsColumn,
+  DemandAndStatisticsTwoColumn,
   FuelConsumption, GeneratorEfficiency,
   LoadImbalanceColumns, PowerDemandColumns, TimeOfUseColumns
 } from '../helpers/tableColumns';
-
+import Loader from '../components/Loader';
 
 
 const breadCrumbRoutes = [
@@ -36,7 +37,14 @@ const breadCrumbRoutes = [
 
 function Report({ match }) {
   const [reportPageData, setReportPageData] = useState({});
-  const { setCurrentUrl } = useContext(CompleteDataContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const {
+    setCurrentUrl,
+    token,
+    userId,
+    userDateRange
+  } = useContext(CompleteDataContext);
+
 
   useEffect(() => {
     if (match && match.url) {
@@ -45,11 +53,12 @@ function Report({ match }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    ReportHttpServices.getAll().then((returnedData) => {
+    ReportHttpServices.getAll(userId, token, userDateRange).then((returnedData) => {
+      setIsLoading(false);
       return setReportPageData(returnedData)
     }
     );
-  }, []);
+  }, [userDateRange]);
 
   const {
     period_score,
@@ -64,13 +73,16 @@ function Report({ match }) {
     cost_implication,
     daily_consumption,
     demand_statistic,
-  } = reportPageData;
-
+  } = Object.values(reportPageData)[0] ? Object.values(reportPageData)[0] : {};
 
   let powerDemand = []
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
   })
+
+  if (isLoading || !userId) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -109,14 +121,14 @@ function Report({ match }) {
             period_score &&
             <RecordCard {...period_score}
               header='Co2 Footprint'
-              footer="Carbondioxide Consumption"
+              footer="Carbondioxide Emmission"
               icon={CO2Icon} type='CO2Score' />
           }
           {
             period_score &&
             <LargeDoubleCard percentage={papr.percentage}
-              metrics={papr.metrics} type='paprScore' 
-              header='Baseline Consumption' 
+              metrics={papr.metrics} type='paprScore'
+              header='Baseline Consumption'
               icon={DownWithBaseLine} />
           }
         </div>
@@ -136,7 +148,7 @@ function Report({ match }) {
           </div>
           {(
             <div className="report-pie-container">
-              <div className="h-overflow-auto report-card">
+              <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Load Imbalance Occurence
                 </h2>
@@ -147,33 +159,34 @@ function Report({ match }) {
           )}
         </div>
       </div>
-      <div className="report-table-rows">
-        <div className="report-row-1__content">
-          {(
-            <div className="report-table-container">
-              <div className="h-overflow-auto report-card">
-                <h2 className="report-pie-heading">
-                  Fuel Consumption
-                </h2>
-                <GenericReportTable data={fuel_consumption}
-                  columnData={FuelConsumption} />
+      {fuel_consumption?.length > 0 && generator_efficiency?.length > 0 &&
+        <div className="report-table-rows">
+          <div className="report-row-1__content">
+            {(
+              <div className="report-table-container">
+                <div className="h-overflow-auto report-card-tabble__padding">
+                  <h2 className="report-pie-heading">
+                    Fuel Consumption
+                  </h2>
+                  <GenericReportTable data={fuel_consumption}
+                    columnData={FuelConsumption} />
+                </div>
               </div>
-            </div>
-          )}
-          {(
-            <div className="report-table-container">
-              <div className="h-overflow-auto report-card">
-                <h2 className="report-pie-heading">
-                  Generator Efficiency & Recommendation
-                </h2>
-                <GenericReportTable data={generator_efficiency}
-                  columnData={GeneratorEfficiency} />
+            )}
+            {(
+              <div className="report-table-container">
+                <div className="h-overflow-auto report-card-tabble__padding">
+                  <h2 className="report-pie-heading">
+                    Generator Efficiency & Recommendation
+                  </h2>
+                  <GenericReportTable data={generator_efficiency}
+                    columnData={GeneratorEfficiency} />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-
+      }
       <div className="report-full-width-rows">
         <div className="report-row-1__content">
           {daily_consumption && (
@@ -191,7 +204,7 @@ function Report({ match }) {
         <div className="report-row-1__content">
           {(
             <div className="report-demand-container">
-              <div className="h-overflow-auto report-card">
+              <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Demand and Statistics
                 </h2>
@@ -209,7 +222,7 @@ function Report({ match }) {
         <div className="report-row-1__content">
           {(
             <div className="report-chart-container">
-              <div className="h-overflow-auto report-card">
+              <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Cost Implication
                 </h2>
@@ -224,7 +237,7 @@ function Report({ match }) {
         <div className="report-row-1__content">
           {(
             <div className="report-table-container">
-              <div className="h-overflow-auto report-card">
+              <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Time of Use
                 </h2>
@@ -235,7 +248,7 @@ function Report({ match }) {
           )}
           {(
             <div className="report-table-container">
-              <div className="h-overflow-auto report-card">
+              <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Power Demand
                 </h2>

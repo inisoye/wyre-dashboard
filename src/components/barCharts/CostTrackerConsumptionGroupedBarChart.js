@@ -22,7 +22,6 @@ const CostTrackerConsumptionGroupedBarChart = ({ consumptionData }) => {
     ? consumptionData
     : { branchName: '', dates: [], units: '' };
 
-    // console.log(actualData)
   const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
   const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
 

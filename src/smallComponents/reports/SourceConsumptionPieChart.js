@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Pie } from 'react-chartjs-2';
-import ChartDataLabels from 'chartjs-plugin-piechart-outlabels';
+import ColorHash from 'color-hash'
+import CompleteDataContext from '../../Context';
+
+var colorHash = new ColorHash();
 
 const SourceConsumptionPieChart = ({ data }) => {
+  const { isMediumScreen } = useContext(CompleteDataContext);
   const labels = [];
   const values = [];
   Object.entries(data).map(([key, value]) => {
@@ -18,7 +22,7 @@ const SourceConsumptionPieChart = ({ data }) => {
       {
         label: 'Power Usage (Hours/Month)',
         data: values,
-        backgroundColor: ['#FF3DA1', '#FFC205', '#00C7E6', '#5616F5', '#0A267A'],
+        backgroundColor: labels.map(name => colorHash.hex(name)),
         borderColor: [
           'white',
         ],
@@ -28,9 +32,6 @@ const SourceConsumptionPieChart = ({ data }) => {
   };
 
   const options = {
-    legend: {
-      display: false
-    },
     layout: {
       padding: {
         left: 20,
@@ -39,9 +40,18 @@ const SourceConsumptionPieChart = ({ data }) => {
         bottom: 40,
       },
     },
+    legend: {
+      display: true,
+      labels: {
+        boxWidth: 10,
+        fontSize: isMediumScreen ? 6 : 10,
+        fontColor: 'black',
+        padding: 10,
+      },
+    },
     maintainAspectRatio: false,
     plugins: {
-      legend: false,
+      // legend: false,
       outlabels: {
         backgroundColor: "transparent", // Background color of Label
         color: 'black', // Font color
@@ -60,7 +70,6 @@ const SourceConsumptionPieChart = ({ data }) => {
       <Pie
         data={plottedData}
         options={options}
-        plugins={[ChartDataLabels]}
       />
     </>
   );

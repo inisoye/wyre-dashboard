@@ -52,7 +52,7 @@ function MainAppPages() {
           }
         >
           <div className='old-top-bar-monitor'>
-            <TopBar  />
+            <TopBar />
           </div>
           <div className='newTopbar-monitor'>
             <NewAppTopBar />
