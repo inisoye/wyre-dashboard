@@ -86,7 +86,7 @@ const UtilityOverviewCostTrackerTable = ({dataSource}) => {
   let Purchased_total = 0;
   let Consumed_total = 0;
 
-  dataSource.forEach(element => {
+  dataSource && dataSource.forEach(element => {
     const purchased_numToInt = parseFloat(element.purchased_kwh)
     const consumed_to_int  = parseFloat(element.energy_consumed_kwh)
     Purchased_total += purchased_numToInt;
