@@ -592,6 +592,28 @@ const generateSumOfIsSource = (allDeviceData, branchName) => {
 /* Load overview Helpers End  ----------------------------------------
 --------------------------------------------------------------------*/
 
+const validate2DecNo = (value, label) => {
+  const numbersOnly = (/^\s*-?\d+(\.\d{1,2})?\s*$/);
+  const validAmountReg = (/^\d{0,16}?(\.[0-9]{0,4})?$/);
+  if (value
+    && (!value.toString().match(numbersOnly))
+  ) {
+    return Promise.reject(new Error(`Please enter a valid ${label}`));
+  }
+  if (value
+    && (!value.toString().match(validAmountReg))) {
+    return Promise.reject(new Error('Limit connot be more than 999999999999999999.99'));
+  }
+  return Promise.resolve();
+};
+
+const sortArrayOfObjectByDate = (array) => {
+  return array.sort((a, b) => { 
+    return new Date(b.date) - new Date(a.date);
+  });
+}
+
+
 export {
   daysInMonth,
   getPeakToAverageMessage,
@@ -640,5 +662,7 @@ export {
   generateLoadOverviewChartData,
   generateMultipleBranchLoadOverviewChartData,
   generateSumLoadConsumption,
-  generateSumOfIsSource
+  generateSumOfIsSource,
+  validate2DecNo,
+  sortArrayOfObjectByDate
 };

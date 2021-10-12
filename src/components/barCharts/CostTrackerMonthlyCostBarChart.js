@@ -4,68 +4,101 @@ import CompleteDataContext from '../../Context';
 
 import dayjs from 'dayjs';
 
-const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
+const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
+
 
   let formattedDataForDiesel = {}
   let formattedUtilData = {}
 
-  // eslint-disable-next-line array-callback-return
-  const getDieselData = DieselData.map((e)=>{
-    delete e.quantity
-    const turnDateStringToWord = dayjs(e.date).format('MMM-YYYY')
-    e.date = turnDateStringToWord
-    const dates = e.date
-    const amount = e.price_per_litre
 
-    if(Object.keys(formattedDataForDiesel).includes(e.date)){
-      [formattedDataForDiesel].map((d)=>{
-        d[e.date] +=amount
+
+
+
+  // NOTE; Change this implmentation as it mutates the endpoint data
+  // Can be a major cause of untracable bugs
+  // eslint-disable-next-line array-callback-return
+  const getDieselData = DieselData.map((e) => {
+
+    // temporaty fix for the data mutation
+    const dData = { ...e };
+
+    // The data here is changing for all the cost tracker data
+    // Separate this implementation ASAP
+    const turnDateStringToWord = dayjs(e.date).format('DD-MMM-YYYY')
+    e.date = turnDateStringToWord
+
+
+    const turnDateStringToWordH = dayjs(dData.date).format('MMM-YYYY')
+    dData.date = turnDateStringToWordH
+
+    const dates = dData.date
+    const amount = dData.price_per_litre
+
+    if (Object.keys(formattedDataForDiesel).includes(dData.date)) {
+      [formattedDataForDiesel].map((d) => {
+        d[dData.date] += amount
       })
     }
-    else{
-      formattedDataForDiesel = {...formattedDataForDiesel, [dates]:amount}
+    else {
+      formattedDataForDiesel = { ...formattedDataForDiesel, [dates]: amount }
     }
   })
- 
-  // eslint-disable-next-line array-callback-return
-  const getUtilityData= utilityData.map(e=>{
-    delete e.value
-    delete e.tarrif
-    delete e.vat_inclusive_amount
-    const turnDateStringToWord = dayjs(e.date).format('MMM-YYYY')
-    e.date = turnDateStringToWord
-    const dates = e.date
-    const amount = e.amount
 
-    if(Object.keys(formattedUtilData).includes(e.date)){
+  // NOTE; Change this implmentation as it mutates the endpoint data
+  // Can be a major cause of untracable bugs
+  // eslint-disable-next-line array-callback-return
+  const getUtilityData = utilityData.map(e => {
+
+    // temporaty fix for the data mutation
+    const dData = { ...e };
+
+    // The data here is changing for all the cost tracker data
+    // Separate this implementation ASAP
+    const turnDateStringToWord = dayjs(e.date).format('DD-MMM-YYYY')
+    e.date = turnDateStringToWord
+
+
+    const turnDateStringToWordH = dayjs(dData.date).format('MMM-YYYY')
+    dData.date = turnDateStringToWordH
+
+    const dates = dData.date
+    const amount = dData.amount
+
+    if (Object.keys(formattedUtilData).includes(dData.date)) {
       // eslint-disable-next-line array-callback-return
-      [formattedDataForDiesel].map((d)=>{
-        d[e.date] +=amount
+      [formattedDataForDiesel].map((d) => {
+        d[dData.date] += amount
       })
     }
-    else{
-      formattedUtilData = {...formattedUtilData, [dates]:amount}
+    else {
+      formattedUtilData = { ...formattedUtilData, [dates]: amount }
     }
   })
 
   let chartsData = {}
 
   for (const key in formattedUtilData) {
-      if(Object.keys(formattedDataForDiesel).includes(key)){
-        if(isNaN(formattedDataForDiesel[key])){
-          formattedDataForDiesel[key] = 0
-        }
-        formattedDataForDiesel[key] += formattedUtilData[key]
-        chartsData = formattedDataForDiesel
+    if (Object.keys(formattedDataForDiesel).includes(key)) {
+      if (isNaN(formattedDataForDiesel[key])) {
+        formattedDataForDiesel[key] = 0
       }
-      else{
-        formattedDataForDiesel = {...formattedDataForDiesel, [key]: formattedUtilData[key] }
-        chartsData = formattedDataForDiesel
-      }
+      formattedDataForDiesel[key] += formattedUtilData[key]
+      chartsData = formattedDataForDiesel
+    }
+    else {
+      formattedDataForDiesel = { ...formattedDataForDiesel, [key]: formattedUtilData[key] }
+      chartsData = formattedDataForDiesel
+    }
+  }
+  const convertToOjectAndSort = (obj) => {
+    const data = Object.entries(obj).map(([key, value]) => ({ date: key, amount: value }));
+    const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const mapped = sortedData.map(item => ({ [item.date]: Number(item.amount).toFixed(2) }));
+
+    return Object.assign({}, ...mapped);
   }
 
-  
   const options = {
     layout: {
       padding: {
@@ -133,12 +166,12 @@ const CostTrackerMonthlyCostBarChart = ({DieselData,utilityData}) => {
   };
 
   const data = {
-    labels: Object.keys(chartsData),
+    labels: Object.keys(convertToOjectAndSort(chartsData)),
     datasets: [
       {
         label: `Amount in Naira`,
         maxBarThickness: 60,
-        data: Object.values(chartsData),
+        data: Object.values(convertToOjectAndSort(chartsData)),
         backgroundColor: '#00C7E6',
         borderColor: '#00C7E6',
         borderWidth: 1,
