@@ -62,7 +62,8 @@ function Dashboard({ match }) {
     cost_of_energy,
     today,
     yesterday,
-    daily_kwh
+    daily_kwh,
+    solar_hours
   } = refinedRenderedData;
 
   useEffect(() => {
@@ -137,6 +138,10 @@ function Dashboard({ match }) {
             <p className="total-energy_value">
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
               <span>{total_kwh && total_kwh.unit}</span>
+            </p>
+            <p className="total-energy_value solar-energy_value">
+              <span>{'('}Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
+              <span>{solar_hours && solar_hours.unit}{')'}</span>
             </p>
           </article>
 

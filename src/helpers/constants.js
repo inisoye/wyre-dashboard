@@ -62,3 +62,16 @@ export const CHART_BORDER_COLOR =[
     '#FFFFFF',
     '#FFFFFF',
 ];
+
+
+export const UPLOAD_PROPS = {
+    progress: {
+      strokeColor: {
+        '0%': '#108ee9',
+        '100%': '#87d068',
+      },
+      strokeWidth: 3,
+      format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
+    },
+  };
+  

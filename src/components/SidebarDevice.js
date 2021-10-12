@@ -47,6 +47,7 @@ function SidebarDevice({
   // Destructure dashboard data for device
   const {
     total_kwh,
+    solar_hours,
     min_demand,
     max_demand,
     avg_demand,
@@ -186,6 +187,7 @@ function SidebarDevice({
       name: modifiedDeviceName,
       // Dashboard data
       total_kwh,
+      solar_hours,
       min_demand,
       max_demand,
       avg_demand,

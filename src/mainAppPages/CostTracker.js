@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
+import { message, Spin } from 'antd';
 
 import CompleteDataContext from '../Context';
 
@@ -10,6 +11,8 @@ import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOvervie
 import axios from 'axios';
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
+// const baseUrl = `http://wyreng.xyz/api/v1/`;
+
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -17,17 +20,17 @@ const breadCrumbRoutes = [
 ];
 
 function CostTracker({ match }) {
-  
-  const [overviewData, setOverviewData] = useState([])
+
+  const [overviewData, setOverviewData] = useState([]);
+  const [isLoading, setIsLoading] = useState([])
 
 
-  const subHeaderStyle= {
-    marginLeft:'20px',
-    fontSize:'1.5rem',
-    fontWeight:'500',
-    marginTop:'20px',
+  const subHeaderStyle = {
+    marginLeft: '20px',
+    fontSize: '1.8rem',
+    fontWeight: '500',
+    marginTop: '20px',
   }
-
 
   const {
     setCurrentUrl,
@@ -40,97 +43,104 @@ function CostTracker({ match }) {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-
-    const requestUrl = `http://wyreng.xyz/api/v1/cost_tracker_overview/${userId}/`;
-    axios.get(requestUrl,  {
-      headers:{
-              'Content-Type': 'application/json',
-              Authorization: `bearer ${token}`,
-      }}
-    ).then((req)=>{
-      setOverviewData(req.data.data)
-    }).catch((err)=>{
-      alert('Something un-expected happened, please reload page')
+    setIsLoading(true);
+    const requestUrl = `${process.env.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
+    axios.get(requestUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${token}`,
+      }
+    }
+    ).then(async (res) => {
+      setOverviewData(res.data.data);
+      setIsLoading(false);
+    }).catch((err) => {
+      message.error('Something un-expected happened, please reload page')
       console.log(err)
+      setIsLoading(false);
     })
-  }, [match, setCurrentUrl,token,userId]);
+  }, []);
 
-  let dieselPurchasedData = Object.entries(overviewData).filter(data=>{
-    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
+
+  let dieselPurchasedData = Object.entries(overviewData).filter(data => {
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
   })
 
-    const DieselOverViewCharts = (
+  const DieselOverViewCharts = overviewData && (
+    <article
+    >
+      <h3 className='cost-tracker-branch-name'>
+        Cost Overview
+      </h3>
+      <p style={subHeaderStyle}>Diesel Overview</p>
+      <DieselOverviewCostTrackerTable isLoading={isLoading}
+        dieselOverviewData={overviewData.diesel_overview} />
+    </article>
+  );
+
+
+  const UtilityOverViewCharts = overviewData && (
+    <article
+      className='cost-tracker-chart-container'
+    >
+      <p style={subHeaderStyle}>Utility Overview</p>
+      <UtilityOverviewCostTrackerTable isLoading={isLoading}
+        dataSource={overviewData.utility_overview} />
+    </article>
+  );
+
+
+  const DieselPurchasedCharts = (
+    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
       <article
-      >
-        <h3 className='cost-tracker-branch-name'>
-          Cost Overview
-        </h3>
-        <p style={subHeaderStyle}>Diesel Overview</p>
-           <DieselOverviewCostTrackerTable dieselOverviewData={overviewData.diesel_overview}/> 
-      </article>
-    );
-
-    
-    const UtilityOverViewCharts =(
-      <article
-        className='cost-tracker-chart-container'
-      >
-        <p style={subHeaderStyle}>Utility Overview</p>
-          <UtilityOverviewCostTrackerTable dataSource={overviewData.utility_overview}/> 
-      </article>
-    );
-
-    
-    const DieselPurchasedCharts = (
-      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
-        <article
-        className='cost-tracker-chart-container'
-        key={index}
-      >
-        <h3 className='cost-tracker-branch-name'>
-            Diesel Purchased for {e[0]}
-        </h3>
-          <DieselPurchasedTable data={e[1].diesel}/>
-      </article>
-      ))
-    )
-
-    const utilityPurchasedCharts = (
-      dieselPurchasedData && dieselPurchasedData.map((e,index)=>(
-        <article
         className='cost-tracker-chart-container'
         key={index}
       >
         <h3 className='cost-tracker-branch-name'>
-            Utility Purchased for {e[0]}
+          Diesel Purchased for {e[0]}
         </h3>
-          <UtilityPurchasedTable data={e[1].utility}/>
+        <DieselPurchasedTable isLoading={isLoading} data={e[1].diesel} />
       </article>
-      ))
-    )
-  
-    const getMonthlyDataCharts = Object.entries(overviewData).filter(data=>{
-      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview" 
-    })
+    ))
+  )
 
-    const monthlyCostBarCharts =
-    getMonthlyDataCharts && getMonthlyDataCharts.map(e=>(
+  const utilityPurchasedCharts = (
+    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
       <article
+        className='cost-tracker-chart-container'
+        key={index}
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Utility Purchased for {e[0]}
+        </h3>
+        <UtilityPurchasedTable isLoading={isLoading} data={e[1].utility} />
+      </article>
+    ))
+  )
+
+  const getMonthlyDataCharts = Object.entries(overviewData).filter(data => {
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
+  })
+
+  const monthlyCostBarCharts =
+    getMonthlyDataCharts && getMonthlyDataCharts.map((e, index) => (
+      <article
+        key={index}
         className='cost-tracker-chart-container'
       >
         <h3 className='cost-tracker-branch-name'>
           Monthly Cost at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart  DieselData={e[1].diesel} utilityData={e[1].utility}/>
+          <CostTrackerMonthlyCostBarChart DieselData={e[1].diesel} utilityData={e[1].utility} />
         </div>
       </article>
     ))
 
 
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -150,21 +160,25 @@ function CostTracker({ match }) {
 
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
-          {DieselPurchasedCharts}
+        {DieselPurchasedCharts}
       </section>
 
-      
+
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of utility Purchased</h2>
-          {utilityPurchasedCharts}
+        {utilityPurchasedCharts}
       </section>
 
 
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {monthlyCostBarCharts}
+        <Spin spinning={isLoading}>
+          <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+          {monthlyCostBarCharts}
+        </Spin>
       </section>
+
     </>
+
   );
 }
 

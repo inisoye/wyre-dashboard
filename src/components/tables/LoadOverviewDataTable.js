@@ -36,7 +36,7 @@ function LoadOverviewDataTable({ device, index }) {
           </p>
           <hr />
           <p>
-            Running Time: {device.usage_hour || 0}Kw
+            Running Time: {device.usage_hour || 0}Hrs
           </p>
         </div>
       </article>
