@@ -2,6 +2,7 @@ import { Button, Form, Input, Upload } from "antd";
 import path from 'path';
 import { UploadOutlined } from '@ant-design/icons';
 import { UPLOAD_PROPS } from "../../helpers/constants";
+import EnvData from "../../config/EnvData";
 
 const LIMIT_60_CHAR = 'File name should not have more than 60 characters';
 const SUPPORTINGALLOWED = ['.png', '.jpg', '.jpeg'];
@@ -87,9 +88,9 @@ export const FlowMeterUpload = ({
       () => ({
         validator(rule, value) {
           if (value) {
-            if (value[0]?.size >= Number(process.env.REACT_APP_UPLOAD_LIMIT) * (1024 * 1024)) {
+            if (value[0]?.size >= Number(EnvData.REACT_APP_UPLOAD_LIMIT) * (1024 * 1024)) {
               return Promise.reject(new Error(
-                `The size of the files you are uploading is over the allowed limit of ${process.env
+                `The size of the files you are uploading is over the allowed limit of ${EnvData
                   .REACT_APP_UPLOAD_LIMIT}`,
               ));
             }

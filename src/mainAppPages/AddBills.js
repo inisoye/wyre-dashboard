@@ -11,6 +11,7 @@ import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
 import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
+import EnvData from '../config/EnvData';
 
 
 const breadCrumbRoutes = [
@@ -164,7 +165,7 @@ function AddBills({ match }) {
       formData.append('date', date.format('YYYY-MM-DD'))
       formData.append('image', flowMeterUpload[0])
 
-      axios.post(`${process.env.REACT_APP_API_URL}add_month_end_cost/${userId}/`, formData, {
+      axios.post(`${EnvData.REACT_APP_API_URL}add_month_end_cost/${userId}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `bearer ${token}`,

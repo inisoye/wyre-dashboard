@@ -11,6 +11,7 @@ import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOvervie
 import axios from 'axios';
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
+import EnvData from '../config/EnvData';
 // const baseUrl = `http://wyreng.xyz/api/v1/`;
 
 
@@ -44,7 +45,7 @@ function CostTracker({ match }) {
       setCurrentUrl(match.url);
     }
     setIsLoading(true);
-    const requestUrl = `${process.env.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
+    const requestUrl = `${EnvData.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
     axios.get(requestUrl, {
       headers: {
         'Content-Type': 'application/json',

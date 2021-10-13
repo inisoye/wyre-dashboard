@@ -1,6 +1,7 @@
 import axios from 'axios'
+import EnvData from '../config/EnvData';
 
-const BASE_URL = `${process.env.REACT_APP_API_URL}`;
+const BASE_URL = `${EnvData.REACT_APP_API_URL}`;
 const costTrackerUrl = `${BASE_URL}cost_tracker`;
 
 
