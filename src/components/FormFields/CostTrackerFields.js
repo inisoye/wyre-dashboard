@@ -81,15 +81,16 @@ export const FlowMeterUpload = ({
     label="Flow Meter Snapshot"
     name="flowMeterUpload"
     getValueFromEvent={normFile}
+    valuePropName={'fileList'}
     labelCol={{ span: 24 }}
     rules={[
       () => ({
         validator(rule, value) {
           if (value) {
-            if (value.size >= Number(process.env.UPLOAD_LIMIT) * (1024 * 1024)) {
+            if (value[0]?.size >= Number(process.env.REACT_APP_UPLOAD_LIMIT) * (1024 * 1024)) {
               return Promise.reject(new Error(
-                `The total size of the files you are uploading are over the allowed limit of ${process.env
-                  .UPLOAD_LIMIT}`,
+                `The size of the files you are uploading is over the allowed limit of ${process.env
+                  .REACT_APP_UPLOAD_LIMIT}`,
               ));
             }
           }
