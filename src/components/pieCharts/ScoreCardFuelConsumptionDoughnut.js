@@ -44,6 +44,11 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     title: {
       display: false,
     },
+    plugins: {
+      outlabels: {
+        display: false,
+      },
+    },
     tooltips: {
       enabled: false,
       mode: 'index',

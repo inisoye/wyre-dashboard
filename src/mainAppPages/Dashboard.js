@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
 import html2pdf from "html2pdf.js"
@@ -19,6 +19,8 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
+import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
+import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 
 
 const breadCrumbRoutes = [
@@ -41,18 +43,13 @@ const PDFDocument = () => (
 );
 
 function Dashboard({ match }) {
-  let { refinedRenderedData, isAuthenticatedDataLoading, 
-    allCheckedOrSelectedDevice  } = useContext(
-    CompleteDataContext
-  );
+  let { refinedRenderedData, isAuthenticatedDataLoading,
+    allCheckedOrSelectedDevice } = useContext(
+      CompleteDataContext
+    );
 
   const { setCurrentUrl } = useContext(CompleteDataContext);
-
-  useEffect(() => {
-    if (match && match.url) {
-      setCurrentUrl(match.url);
-    }
-  }, [match, setCurrentUrl]);
+  const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
 
   const {
     name,
@@ -66,9 +63,25 @@ function Dashboard({ match }) {
     today,
     yesterday,
     daily_kwh,
+    solar_hours
   } = refinedRenderedData;
 
- 
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
+  useEffect(() => {
+    if (allCheckedOrSelectedDevice) {
+      const data = refineLoadOverviewData(allCheckedOrSelectedDevice);
+      setAllisLoadDeviceData(Object.values(data));
+    }
+
+  }, [allCheckedOrSelectedDevice]);
+
+
+
 
   const pageRef = useRef();
 
@@ -126,6 +139,10 @@ function Dashboard({ match }) {
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
               <span>{total_kwh && total_kwh.unit}</span>
             </p>
+            <p className="total-energy_value solar-energy_value">
+              <span>{'('}Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
+              <span>{solar_hours && solar_hours.unit}{')'}</span>
+            </p>
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
@@ -172,14 +189,14 @@ function Dashboard({ match }) {
             allCheckedOrSelectedDevice
             && allCheckedOrSelectedDevice.map((eachDevice, index) => {
               return index < 6 && <article key={index} className="dashboard__total-energy-amount dashboard__banner--smallb">
-              <DashBoardAmountUsed key={index} name={eachDevice?.name}
-              deviceType={eachDevice.device_type}
-              totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh} 
-              amount={eachDevice.billing?.totals?.present_total?.value_naira
-              }
-              timeInUse={eachDevice?.usage_hour}
-              />
-            </article>
+                <DashBoardAmountUsed key={index} name={eachDevice?.name}
+                  deviceType={eachDevice.device_type}
+                  totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh}
+                  amount={eachDevice.billing?.totals?.present_total?.value_naira
+                  }
+                  timeInUse={eachDevice?.usage_hour}
+                />
+              </article>
             })
           }
         </div>
@@ -202,7 +219,7 @@ function Dashboard({ match }) {
               <h3 className="today-usage__heading">Today's Usage (KWh)</h3>
               <div className="usage-value-and-arrow">
                 <p className="today-usage__value">
-                  {numberFormatter(todaysValue)}
+                  {numberFormatter(todaysValue) || '0000'}
                 </p>
                 {isTodaysValueLessThanYesterdays ? (
                   <DashboardDownArrow />
@@ -217,7 +234,7 @@ function Dashboard({ match }) {
               </h3>
               <div className="usage-value-and-arrow">
                 <p className="yesterday-usage__value">
-                  {numberFormatter(yesterdaysValue)}
+                  {numberFormatter(yesterdaysValue) || '0000'}
                 </p>
                 {isTodaysValueLessThanYesterdays ? (
                   <DashboardUpArrow />
@@ -228,6 +245,18 @@ function Dashboard({ match }) {
             </div>
           </article>
         </div>
+        {allIsLoadDeviceData && allIsLoadDeviceData.length > 0 && (
+          <div className="dashboard-bar-container">
+              <article className='score-card-row-3'>
+                <LoadOverviewPercentBarChart
+                  runningPercentageData={allIsLoadDeviceData.length > 1 ?
+                    generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
+                    : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                  dataTitle='Operating Time'
+                />
+              </article>
+          </div>
+        )}
       </section>
     </>
   );

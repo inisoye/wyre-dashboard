@@ -1,14 +1,18 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
+import { message, Spin } from 'antd';
 
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-import CostTrackerDieselQuantityBarChart from '../components/barCharts/CostTrackerDieselQuantityBarChart';
-import CostTrackerConsumptionGroupedBarChart from '../components/barCharts/CostTrackerConsumptionGroupedBarChart';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import Loader from '../components/Loader';
-import {mergeTheData} from '../helpers/genericHelpers'
-import ComparisonBarChart from '../components/barCharts/ComparisonBarChart';
+import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
+import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
+import axios from 'axios';
+import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
+import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
+import EnvData from '../config/EnvData';
+// const baseUrl = `http://wyreng.xyz/api/v1/`;
 
 
 const breadCrumbRoutes = [
@@ -17,103 +21,127 @@ const breadCrumbRoutes = [
 ];
 
 function CostTracker({ match }) {
+
+  const [overviewData, setOverviewData] = useState([]);
+  const [isLoading, setIsLoading] = useState([])
+
+
+  const subHeaderStyle = {
+    marginLeft: '20px',
+    fontSize: '1.8rem',
+    fontWeight: '500',
+    marginTop: '20px',
+  }
+
   const {
-    refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
-    organization
+    token,
+    userId
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-  }, [match, setCurrentUrl]);
-
-  const {
-    cost_tracker_diesel_qty,
-    cost_tracker_monthly_cost,
-    cost_tracker_consumption,
-  } = refinedRenderedData;
-
-
-  const comparisonData = organization.branches && organization.branches.map((eachValue)=>{
-   const {cost_tracker_monthly_diesel_purchase, cost_tracker_monthly_diesel_estimate, name} = eachValue
-    return {
-      'branchName': name,
-      'diesel_estimate': cost_tracker_monthly_diesel_estimate,
-      "diesel_purchase": cost_tracker_monthly_diesel_purchase
+    setIsLoading(true);
+    const requestUrl = `${EnvData.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
+    axios.get(requestUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${token}`,
+      }
     }
+    ).then(async (res) => {
+      setOverviewData(res.data.data);
+      setIsLoading(false);
+    }).catch((err) => {
+      message.error('Something un-expected happened, please reload page')
+      console.log(err)
+      setIsLoading(false);
+    })
+  }, []);
+
+
+  let dieselPurchasedData = Object.entries(overviewData).filter(data => {
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
   })
 
-  const dieselQuantityBarCharts =
-    cost_tracker_diesel_qty &&
-    cost_tracker_diesel_qty.map((eachBranch) => (
-      <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
-      >
-        <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Purchased at {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerDieselQuantityBarChart dieselQuantityData={eachBranch} />
-        </div>
-      </article>
-    ));
+  const DieselOverViewCharts = overviewData && (
+    <article
+    >
+      <h3 className='cost-tracker-branch-name'>
+        Cost Overview
+      </h3>
+      <p style={subHeaderStyle}>Diesel Overview</p>
+      <DieselOverviewCostTrackerTable isLoading={isLoading}
+        dieselOverviewData={overviewData.diesel_overview} />
+    </article>
+  );
 
-  const dieselConsumptionBarCharts =
-    cost_tracker_consumption &&
-    cost_tracker_consumption.map((eachBranch) => (
+
+  const UtilityOverViewCharts = overviewData && (
+    <article
+      className='cost-tracker-chart-container'
+    >
+      <p style={subHeaderStyle}>Utility Overview</p>
+      <UtilityOverviewCostTrackerTable isLoading={isLoading}
+        dataSource={overviewData.utility_overview} />
+    </article>
+  );
+
+
+  const DieselPurchasedCharts = (
+    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
       <article
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
+        key={index}
       >
         <h3 className='cost-tracker-branch-name'>
-          Quantity of Diesel Consumed at {eachBranch.branchName}
+          Diesel Purchased for {e[0]}
         </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerConsumptionGroupedBarChart consumptionData={eachBranch} />
-        </div>
+        <DieselPurchasedTable isLoading={isLoading} data={e[1].diesel} />
       </article>
-    ));
+    ))
+  )
+
+  const utilityPurchasedCharts = (
+    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
+      <article
+        className='cost-tracker-chart-container'
+        key={index}
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Utility Purchased for {e[0]}
+        </h3>
+        <UtilityPurchasedTable isLoading={isLoading} data={e[1].utility} />
+      </article>
+    ))
+  )
+
+  const getMonthlyDataCharts = Object.entries(overviewData).filter(data => {
+    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
+  })
 
   const monthlyCostBarCharts =
-    cost_tracker_monthly_cost &&
-    cost_tracker_monthly_cost.map((eachBranch) => (
+    getMonthlyDataCharts && getMonthlyDataCharts.map((e, index) => (
       <article
+        key={index}
         className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
       >
         <h3 className='cost-tracker-branch-name'>
-          Monthly Cost at {eachBranch.branchName}
+          Monthly Cost at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart monthlyCostData={eachBranch} />
+          <CostTrackerMonthlyCostBarChart DieselData={e[1].diesel} utilityData={e[1].utility} />
         </div>
       </article>
-    ));
+    ))
 
-    const DiselCostAndConsumptionComparison  =
-    comparisonData &&
-    comparisonData.map((eachBranch) => (
-      <article
-        className='cost-tracker-chart-container'
-        key={eachBranch.branchName}
-      >
-        <h3 className='cost-tracker-branch-name'>
-          {eachBranch.branchName}
-        </h3>
-        <div className='cost-tracker-chart-wrapper'>
-          <ComparisonBarChart comparisonData={eachBranch} />
-        </div>
-      </article>
-    ));
 
-  
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -121,27 +149,37 @@ function CostTracker({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
 
+      <div>
+      </div>
+
+      <section className="cost-tracker-chart-container">
+        <h2 className='h-screen-reader-text'>Cost Overview</h2>
+        {DieselOverViewCharts}
+        {UtilityOverViewCharts}
+      </section>
+
+
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
-        {dieselQuantityBarCharts}
+        {DieselPurchasedCharts}
       </section>
 
-      <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Quantity of Diesel Consumed</h2>
-        {dieselConsumptionBarCharts}
-      </section>
 
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-        {monthlyCostBarCharts}
+        <h2 className='h-screen-reader-text'>Quantity of utility Purchased</h2>
+        {utilityPurchasedCharts}
       </section>
 
-      
+
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Estimated Monthly Cost</h2>
-        {DiselCostAndConsumptionComparison}
+        <Spin spinning={isLoading}>
+          <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+          {monthlyCostBarCharts}
+        </Spin>
       </section>
+
     </>
+
   );
 }
 

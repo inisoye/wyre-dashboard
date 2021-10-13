@@ -26,6 +26,11 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
     legend: {
       display: false,
     },
+    plugins: {
+      outlabels: {
+        display: false,
+      },
+    },
     maintainAspectRatio: false,
     title: {
       display: false,

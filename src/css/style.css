@@ -2314,7 +2314,7 @@ thead.ant-table-thead tr th {
 # Cost Tracker
 --------------------------------------------------------------*/
 .cost-tracker-section {
-  margin-bottom: 70px;
+  margin-bottom: 30px;
 }
 .cost-tracker-section:last-of-type {
   margin-bottom: 0;

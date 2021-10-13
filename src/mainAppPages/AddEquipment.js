@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { DatePicker, notification, Select } from 'antd';
-// import { v4 as uuidv4 } from 'uuid';
 import CompleteDataContext from '../Context';
 
 import equipmentHttpServices from '../services/equipment';
@@ -49,7 +48,7 @@ function AddEquipment({ match }) {
         console.log(error.response);
       });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [match, setCurrentUrl]);
+  }, [match, setCurrentUrl, token, userId]);
 
   const { Option } = Select
   let branchname = organization && organization.branches
@@ -64,6 +63,18 @@ function AddEquipment({ match }) {
   }
 
   let branchSelectorValue;
+
+  if(organization.branches.length === 1){
+    organization.branches && organization.branches.map((branch)=>{
+      branchSelectorValue = branch.branch_id
+      console.log('Default branch is:',branchSelectorValue)
+      return branch.branch_id
+    })
+  }
+  else{
+    branchSelectorValue = null
+    console.log('branches are more than one', branchSelectorValue)
+  }
   const branchSelector = (
         <Select style={branchSelectorStyle} 
         className="h-4-br" 
@@ -89,6 +100,14 @@ function AddEquipment({ match }) {
     />
   );
 
+  
+  const NotAllowedNotification = () => {
+    notification.error({
+      message:'Request Error',
+      description:'NOT ALLOWED',
+      duration:6
+    })
+}
   const onSubmit = ({
     equipmentName,
     equipmentWattage,
@@ -102,17 +121,23 @@ function AddEquipment({ match }) {
       date_purchased: equipmentPurchaseDate.format('YYYY-MM-DD'),
     };
 
-   let submitData = equipmentHttpServices.add(newEquipmentData,branchSelectorValue,userId,token)
-  submitData.then((returnedEquipment) => {
-        // setAllEquipment(allEquipment.concat(returnedEquipment));
-        console.log(Object.assign({},returnedEquipment))
-        openNotificationWithIcon('success');
-      })
-  submitData.catch((error) => {
-      alert('An error occured, please try again.')
-        console.log(error.response);
-      });
-
+    if(branchSelectorValue != null){
+      let submitData = equipmentHttpServices.add(newEquipmentData,branchSelectorValue,userId,token)
+      submitData.then((returnedEquipment) => {
+            // setAllEquipment(allEquipment.concat(returnedEquipment));
+            console.log(returnedEquipment)
+            // console.log(Object.assign({},returnedEquipment))
+            openNotificationWithIcon('success');
+          })
+      submitData.catch((error) => {
+          alert('An error occured, please try again.')
+            console.log(error.response);
+          });
+    }
+    else{
+      NotAllowedNotification();
+    }
+   
     // Reset form fields. Controller value is set manually
     setValue('equipmentPurchaseDate', undefined);
     reset();
@@ -208,16 +233,6 @@ function AddEquipment({ match }) {
                   {errors.equipmentPurchaseDate && 'Please select a date'}
                 </p>
               </div>
-
-              <div className="cost-tracker-input-container">
-                <label
-                  className="generic-input-label cost-tracker-input-label"
-                  htmlFor="equipment-branch"
-                >
-                Branch
-                </label>
-              {branchSelector}
-            </div>
 
               <div className="cost-tracker-input-container">
                 <label

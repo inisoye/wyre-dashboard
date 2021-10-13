@@ -68,6 +68,9 @@ const DashboardDoughnutChart = ({ data }) => {
     },
     maintainAspectRatio: false,
     plugins: {
+      outlabels: {
+        display: false,
+      },
       datalabels: {
         formatter: (value, context) => {
           let sum = 0;

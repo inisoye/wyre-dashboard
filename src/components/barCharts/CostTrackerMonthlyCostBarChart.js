@@ -2,18 +2,102 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
-// import { numberFormatter } from '../../helpers/numberFormatter';
+import dayjs from 'dayjs';
+
+const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
+  const { isMediumScreen } = useContext(CompleteDataContext);
 
 
-const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
-  const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
+  let formattedDataForDiesel = {}
+  let formattedUtilData = {}
 
-  const formattedDates = monthlyCostData && monthlyCostData.dates;
 
-  const monthlyCostValues = monthlyCostData && monthlyCostData.values;
-  const monthlyCostUnit = monthlyCostData && monthlyCostData.units;
 
+
+
+  // NOTE; Change this implmentation as it mutates the endpoint data
+  // Can be a major cause of untracable bugs
+  // eslint-disable-next-line array-callback-return
+  const getDieselData = DieselData.map((e) => {
+
+    // temporaty fix for the data mutation
+    const dData = { ...e };
+
+    // The data here is changing for all the cost tracker data
+    // Separate this implementation ASAP
+    const turnDateStringToWord = dayjs(e.date).format('DD-MMM-YYYY')
+    e.date = turnDateStringToWord
+
+
+    const turnDateStringToWordH = dayjs(dData.date).format('MMM-YYYY')
+    dData.date = turnDateStringToWordH
+
+    const dates = dData.date
+    const amount = dData.price_per_litre
+
+    if (Object.keys(formattedDataForDiesel).includes(dData.date)) {
+      [formattedDataForDiesel].map((d) => {
+        d[dData.date] += amount
+      })
+    }
+    else {
+      formattedDataForDiesel = { ...formattedDataForDiesel, [dates]: amount }
+    }
+  })
+
+  // NOTE; Change this implmentation as it mutates the endpoint data
+  // Can be a major cause of untracable bugs
+  // eslint-disable-next-line array-callback-return
+  const getUtilityData = utilityData.map(e => {
+
+    // temporaty fix for the data mutation
+    const dData = { ...e };
+
+    // The data here is changing for all the cost tracker data
+    // Separate this implementation ASAP
+    const turnDateStringToWord = dayjs(e.date).format('DD-MMM-YYYY')
+    e.date = turnDateStringToWord
+
+
+    const turnDateStringToWordH = dayjs(dData.date).format('MMM-YYYY')
+    dData.date = turnDateStringToWordH
+
+    const dates = dData.date
+    const amount = dData.amount
+
+    if (Object.keys(formattedUtilData).includes(dData.date)) {
+      // eslint-disable-next-line array-callback-return
+      [formattedDataForDiesel].map((d) => {
+        d[dData.date] += amount
+      })
+    }
+    else {
+      formattedUtilData = { ...formattedUtilData, [dates]: amount }
+    }
+  })
+
+  let chartsData = {}
+
+  for (const key in formattedUtilData) {
+    if (Object.keys(formattedDataForDiesel).includes(key)) {
+      if (isNaN(formattedDataForDiesel[key])) {
+        formattedDataForDiesel[key] = 0
+      }
+      formattedDataForDiesel[key] += formattedUtilData[key]
+      chartsData = formattedDataForDiesel
+    }
+    else {
+      formattedDataForDiesel = { ...formattedDataForDiesel, [key]: formattedUtilData[key] }
+      chartsData = formattedDataForDiesel
+    }
+  }
+  const convertToOjectAndSort = (obj) => {
+    const data = Object.entries(obj).map(([key, value]) => ({ date: key, amount: value }));
+    const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+    const mapped = sortedData.map(item => ({ [item.date]: Number(item.amount).toFixed(2) }));
+
+    return Object.assign({}, ...mapped);
+  }
 
   const options = {
     layout: {
@@ -48,7 +132,7 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
           scaleLabel: {
             display: true,
             padding: 10,
-            labelString: `Amount in ${monthlyCostUnit}`,
+            labelString: `Amount in Naira`,
             fontColor: 'black',
             fontSize: isMediumScreen ? 14 : 18,
           },
@@ -82,16 +166,12 @@ const CostTrackerMonthlyCostBarChart = ({ monthlyCostData }) => {
   };
 
   const data = {
-    labels: isMediumScreen
-      ? formattedDates && getLastArrayItems(formattedDates, 7)
-      : isLessThan1296
-      ? formattedDates && getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+    labels: Object.keys(convertToOjectAndSort(chartsData)),
     datasets: [
       {
-        label: `Amount in ${monthlyCostUnit}`,
+        label: `Amount in Naira`,
         maxBarThickness: 60,
-        data: monthlyCostValues,
+        data: Object.values(convertToOjectAndSort(chartsData)),
         backgroundColor: '#00C7E6',
         borderColor: '#00C7E6',
         borderWidth: 1,

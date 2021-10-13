@@ -16,7 +16,7 @@ export const SCORE_CARD_TOOLTIP_MESSAGES = {
 
     The aim is to score as close to 1 as possible.`,
 
-    BASE_ENERGY: `This is an algorithm that forecasts energy consumption, benchmarking energy use, weather and number of days to set a baseline usage.
+    BASE_ENERGY: `This is an algorithm that forecasts energy consumption by benchmarking energy use, weather and number of days to set a baseline usage.
 
     Baseline usage is compared to actual consumption to score energy performance.`,
 
@@ -32,3 +32,46 @@ export const SCORE_CARD_TOOLTIP_MESSAGES = {
 
 
 export const ALL_SCORE_CARD_TOTAL_NAME = ['Forecast', 'Peak', 'Estimated Value'];
+
+export const CHART_BACKGROUD_COLOR =[
+    '#FFC205',
+    '#6C00FA',
+    '#00C7E6',
+    '#FF3DA1',
+    '#82ca9d',
+    '#0A267A',
+    '#ff9b3d',
+    '#360259',
+    '#0371b5',
+    '#D90000',
+    '#757575',
+    '#FFE11A',
+];
+
+export const CHART_BORDER_COLOR =[
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+    '#FFFFFF',
+];
+
+
+export const UPLOAD_PROPS = {
+    progress: {
+      strokeColor: {
+        '0%': '#108ee9',
+        '100%': '#87d068',
+      },
+      strokeWidth: 3,
+      format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
+    },
+  };
+  
