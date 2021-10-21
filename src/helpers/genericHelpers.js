@@ -608,9 +608,13 @@ const validate2DecNo = (value, label) => {
 };
 
 const sortArrayOfObjectByDate = (array) => {
-  return array.sort((a, b) => { 
-    return new Date(b.date) - new Date(a.date);
-  });
+  if(array && array!== undefined && array.length > 0){
+    return array.sort((a, b) => { 
+      return new Date(b.date) - new Date(a.date);
+    });
+  }
+  return [];
+
 }
 
 

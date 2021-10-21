@@ -9,7 +9,7 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
     isMediumScreen
   } = useContext(CompleteDataContext);
 
-  const getTariff = data.map(element => {
+  const getTariff = data?.map(element => {
     let amount = (element.price_per_litre * element.quantity) || 0;
     const newData = {
       ...element,
@@ -86,7 +86,7 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
                   <Text>{parseFloat(quantitySum).toFixed(2) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat((tariffSum/getTariff.length) || 0).toFixed(2) || 0}</Text>
+                  <Text>{parseFloat((tariffSum/getTariff?.length) || 0).toFixed(2) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Text>{parseFloat((amountSum) || 0).toFixed(2)}</Text>
