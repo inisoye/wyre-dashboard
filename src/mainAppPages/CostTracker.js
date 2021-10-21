@@ -12,7 +12,6 @@ import axios from 'axios';
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
 import EnvData from '../config/EnvData';
-// const baseUrl = `http://wyreng.xyz/api/v1/`;
 
 
 const breadCrumbRoutes = [
@@ -92,7 +91,7 @@ function CostTracker({ match }) {
 
 
   const DieselPurchasedCharts = (
-    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
+    dieselPurchasedData && dieselPurchasedData.length > 0 && dieselPurchasedData.map((e, index) => (
       <article
         className='cost-tracker-chart-container'
         key={index}
@@ -124,7 +123,7 @@ function CostTracker({ match }) {
   })
 
   const monthlyCostBarCharts =
-    getMonthlyDataCharts && getMonthlyDataCharts.map((e, index) => (
+    getMonthlyDataCharts && getMonthlyDataCharts.length > 0  && getMonthlyDataCharts.map((e, index) => (
       <article
         key={index}
         className='cost-tracker-chart-container'

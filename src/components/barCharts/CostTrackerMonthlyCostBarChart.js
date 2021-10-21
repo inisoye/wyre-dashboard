@@ -18,7 +18,7 @@ const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
   // NOTE; Change this implmentation as it mutates the endpoint data
   // Can be a major cause of untracable bugs
   // eslint-disable-next-line array-callback-return
-  const getDieselData = DieselData.map((e) => {
+  const getDieselData = DieselData?.map((e) => {
 
     // temporaty fix for the data mutation
     const dData = { ...e };
@@ -48,7 +48,7 @@ const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
   // NOTE; Change this implmentation as it mutates the endpoint data
   // Can be a major cause of untracable bugs
   // eslint-disable-next-line array-callback-return
-  const getUtilityData = utilityData.map(e => {
+  const getUtilityData = utilityData?.map(e => {
 
     // temporaty fix for the data mutation
     const dData = { ...e };
