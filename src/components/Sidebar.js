@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import CompleteDataContext from '../Context';
-import { fetchSideBar } from './../redux/actions/sidebar/index.action';
+import { fetchSideBar } from '../redux/actions/sidebar/sidebar.action';
 
 import SidebarOrganization from './SidebarOrganization';
 

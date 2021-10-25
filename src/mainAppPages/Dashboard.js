@@ -23,7 +23,7 @@ import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
-import { fetchDashBoardData } from "../redux/actions/dashboard/index.action";
+import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
 
 
 const breadCrumbRoutes = [
