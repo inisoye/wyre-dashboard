@@ -617,6 +617,24 @@ const sortArrayOfObjectByDate = (array) => {
 
 }
 
+// Method for converting dates to endpoint format
+const convertDateRangeToEndpointFormat = (dateObjects) =>
+  dateObjects
+    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
+    .join('/');
+
+
+const generateAppDateRange = (newEndpointDateRange) => {
+  // Update endpoint if available
+  const datdata = newEndpointDateRange
+    ? convertDateRangeToEndpointFormat(newEndpointDateRange)
+    : (convertDateRangeToEndpointFormat([
+        dayjs().startOf('month'),
+        dayjs(),
+      ]));
+      return datdata;
+};
+
 
 export {
   daysInMonth,
@@ -668,5 +686,6 @@ export {
   generateSumLoadConsumption,
   generateSumOfIsSource,
   validate2DecNo,
-  sortArrayOfObjectByDate
+  sortArrayOfObjectByDate,
+  generateAppDateRange
 };

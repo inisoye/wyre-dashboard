@@ -77,5 +77,6 @@ export default {
   convertDateRangeToEndpointFormat,
   endpointDateRange,
   userId,
-  token
+  token,
+  endpointDataTimeInterval
 };

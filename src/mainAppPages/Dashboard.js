@@ -1,9 +1,11 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
+import { connect, useSelector } from 'react-redux';
 import html2pdf from "html2pdf.js"
 import * as html2canvas from "html2canvas";
 import CompleteDataContext from "../Context";
+// import 
 
 import BreadCrumb from "../components/BreadCrumb";
 import DashboardStackedBarChart from "../components/barCharts/DashboardStackedBarChart";
@@ -21,6 +23,7 @@ import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
+import { fetchDashBoardData } from "../redux/actions/dashboard/index.action";
 
 
 const breadCrumbRoutes = [
@@ -42,14 +45,17 @@ const PDFDocument = () => (
   </Document>
 );
 
-function Dashboard({ match }) {
+function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   let { refinedRenderedData, isAuthenticatedDataLoading,
     allCheckedOrSelectedDevice } = useContext(
       CompleteDataContext
     );
 
+  const dashBoardData = useSelector((state) => state.dashboard.dashBoardData);
+
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
+
 
   const {
     name,
@@ -64,7 +70,7 @@ function Dashboard({ match }) {
     yesterday,
     daily_kwh,
     solar_hours
-  } = refinedRenderedData;
+  } = dashBoardData;
 
   useEffect(() => {
     if (match && match.url) {
@@ -79,6 +85,11 @@ function Dashboard({ match }) {
     }
 
   }, [allCheckedOrSelectedDevice]);
+
+
+  useEffect(() => {
+    dashBoardDataFetch();
+  }, []);
 
 
 
@@ -247,14 +258,14 @@ function Dashboard({ match }) {
         </div>
         {allIsLoadDeviceData && allIsLoadDeviceData.length > 0 && (
           <div className="dashboard-bar-container">
-              <article className='score-card-row-3'>
-                <LoadOverviewPercentBarChart
-                  runningPercentageData={allIsLoadDeviceData.length > 1 ?
-                    generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
-                    : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
-                  dataTitle='Operating Time'
-                />
-              </article>
+            <article className='score-card-row-3'>
+              <LoadOverviewPercentBarChart
+                runningPercentageData={allIsLoadDeviceData.length > 1 ?
+                  generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
+                  : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                dataTitle='Operating Time'
+              />
+            </article>
           </div>
         )}
       </section>
@@ -262,4 +273,9 @@ function Dashboard({ match }) {
   );
 }
 
-export default Dashboard;
+const mapDispatchToProps = {
+  fetchDashBoardData,
+};
+
+
+export default connect(null, mapDispatchToProps)(Dashboard);

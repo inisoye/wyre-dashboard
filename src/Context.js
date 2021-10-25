@@ -202,7 +202,9 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
+        console.log('==============this is the organisation data=========>>>>>>>>', organization)
         const refindedData = getRefinedOrganizationData(organization)
+        console.log('==============here ius the refined data=========>>>>>>>>', refindedData)
         setRefinedRenderedData(refindedData);
         // set all the device into the needed data(bucket)
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));

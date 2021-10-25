@@ -146,7 +146,7 @@ function SidebarBranch({ branchData }) {
         })
       : '';
 
-  const refinedBranchData = getRefinedBranchData(branchData);
+  // const refinedBranchData = getRefinedBranchData(branchData);
 
   const handleCheck = (event) => {
     setIsChecked(!isChecked);
@@ -155,7 +155,7 @@ function SidebarBranch({ branchData }) {
       // Add this branch to list of rendered objects when checked
       setRenderedDataObjects({
         ...renderedDataObjects,
-        ...refinedBranchData,
+        // ...refinedBranchData,
       });
 
       // Add this branch to list of checked items
@@ -217,7 +217,7 @@ function SidebarBranch({ branchData }) {
         )}
       </div>
 
-      <ul className="sidebar-branch__devices">{deviceComponents}</ul>
+      {/* <ul className="sidebar-branch__devices">{deviceComponents}</ul> */}
     </li>
   );
 }

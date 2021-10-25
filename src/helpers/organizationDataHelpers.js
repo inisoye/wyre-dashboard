@@ -745,6 +745,37 @@ const getRefinedOrganizationData = (data) => {
 };
 
 
+const getDashBoardRefinedData = (data) => {    
+
+  return {
+    all_device_data : {...getAllOrganizationDevices(data)},
+    name: data.name,
+    // Dashboard Stuff
+    ...getOrganizationEnergyData(data),
+    daily_kwh: getOrganizationDailyKwh(data),
+    usage_hours: getOrganizationMonthlyUsage(data),
+    // Score Card Stuff
+    // organization_device_type : getOrganizationDeviceType(data),
+    // baseline_energy: getOrganizationBaselineEnergy(data),
+    // peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
+    // score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
+    // generator_size_efficiency: getOrgGeneratorSizeEfficiencyArray(data),
+    // change_over_lags: getOrganizationChangeOverLags(data),
+    // operating_time: getOrganizationOperatingTime(data),
+    // fuel_consumption: getOrganizationFuelConsumptionArray(data),
+    // // Power Quality Stuff
+    // power_quality: getOrganizationPowerQualityData(data),
+    // // Time of Use Stuff
+    // last_reading: getOrganizationLastReadingData(data),
+    // // Power Demand Stuff
+    // power_demand: getOrganizationPowerDemandData(data),
+    // // Time of Use Stuff
+    // time_of_use_chart: getOrganizationTimeOfUseChartData(data),
+    // time_of_use_table: getOrganizationTimeOfUseTableData(data),
+  };
+};
+
+
 /* -------------------------------------------------------------------
 /* Handles when a date search is made wit while some checkbox are ticked
 --------------------------------------------------------------------*/
@@ -790,5 +821,5 @@ const getRefinedOrganizationDataWithChekBox = ({
 
 
 export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, 
-  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox };
+  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox, getDashBoardRefinedData };
 
