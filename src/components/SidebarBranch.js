@@ -59,87 +59,87 @@ function SidebarBranch({ branchData }) {
             .replace(branchData.name, '')
             .trim();
 
-          const deviceDailyKwh = {
-            dates: branchData.daily_kwh.dates,
-            [modifiedDeviceName]: branchData.daily_kwh[originalDeviceName],
-          };
+          // const deviceDailyKwh = {
+          //   dates: branchData.daily_kwh.dates,
+          //   [modifiedDeviceName]: branchData.daily_kwh[originalDeviceName],
+          // };
 
-          const branchMonthlyUsage = branchData.usage_hours;
-          const deviceIndex = branchMonthlyUsage.devices.indexOf(
-            originalDeviceName
-          );
-          const deviceMonthlyUsage = {
-            // Use modified device name
-            devices: [
-              branchData.name + ' ' + branchMonthlyUsage.devices[deviceIndex],
-            ],
-            hours: [branchMonthlyUsage.hours[deviceIndex]],
-          };
+          // const branchMonthlyUsage = branchData.usage_hours;
+          // const deviceIndex = branchMonthlyUsage.devices.indexOf(
+          //   originalDeviceName
+          // );
+          // const deviceMonthlyUsage = {
+          //   // Use modified device name
+          //   devices: [
+          //     branchData.name + ' ' + branchMonthlyUsage.devices[deviceIndex],
+          //   ],
+          //   hours: [branchMonthlyUsage.hours[deviceIndex]],
+          // };
 
-          const modifiedBranchTimeOfUseTableData = getModifiedBranchLevelData(
-            branchData,
-            'time_of_use_table',
-            branchData.name
-          );
+          // const modifiedBranchTimeOfUseTableData = getModifiedBranchLevelData(
+          //   branchData,
+          //   'time_of_use_table',
+          //   branchData.name
+          // );
 
-          const modifiedBranchCostTrackerDieselQuantityData = getModifiedBranchLevelData(
-            branchData,
-            'cost_tracker_qty_of_diesel',
-            branchData.name
-          );
+          // const modifiedBranchCostTrackerDieselQuantityData = getModifiedBranchLevelData(
+          //   branchData,
+          //   'cost_tracker_qty_of_diesel',
+          //   branchData.name
+          // );
 
-          const modifiedBranchCostTrackerMonthlyCostData = getModifiedBranchLevelData(
-            branchData,
-            'cost_tracker_monthly_cost',
-            branchData.name
-          );
+          // const modifiedBranchCostTrackerMonthlyCostData = getModifiedBranchLevelData(
+          //   branchData,
+          //   'cost_tracker_monthly_cost',
+          //   branchData.name
+          // );
 
-          const modifiedBranchCostTrackerConsumptionData = getModifiedBranchLevelData(
-            branchData,
-            'cost_tracker_consumption_breakdown',
-            branchData.name
-          );
+          // const modifiedBranchCostTrackerConsumptionData = getModifiedBranchLevelData(
+          //   branchData,
+          //   'cost_tracker_consumption_breakdown',
+          //   branchData.name
+          // );
 
-          const modifiedBranchBillingTotalsData = getModifiedBranchLevelData(
-            branchData,
-            'billing_totals',
-            branchData.name
-          );
+          // const modifiedBranchBillingTotalsData = getModifiedBranchLevelData(
+          //   branchData,
+          //   'billing_totals',
+          //   branchData.name
+          // );
 
           return (
             <SidebarDevice
               originalDeviceName={originalDeviceName}
               modifiedDeviceName={modifiedDeviceName}
               deviceData={eachDevice}
-              deviceDailyKwh={deviceDailyKwh}
-              deviceMonthlyUsage={deviceMonthlyUsage}
-              deviceTimeOfUseTableData={modifiedBranchTimeOfUseTableData}
-              deviceCostTrackerDieselQuantityData={
-                modifiedBranchCostTrackerDieselQuantityData
-              }
-              deviceCostTrackerMonthlyCostData={
-                modifiedBranchCostTrackerMonthlyCostData
-              }
-              deviceCostTrackerConsumptionData={
-                modifiedBranchCostTrackerConsumptionData
-              }
-              deviceBillingTotalsData={{
-                ...modifiedBranchBillingTotalsData,
-                present_total: { usage_kwh: 0, value_naira: 0 },
-                previous_total: { usage_kwh: 0, value_naira: 0 },
-                usage: {
-                  previous_kwh: 0,
-                  present_kwh: 0,
-                  total_usage_kwh: 0,
-                },
-                metrics: {
-                  ipp_per_kwh: 0,
-                  diesel_per_kwh: 0,
-                  utility_per_kwh: 0,
-                  blended_cost_per_kwh: 0,
-                  unit: '₦',
-                },
-              }}
+              // deviceDailyKwh={deviceDailyKwh}
+              // deviceMonthlyUsage={deviceMonthlyUsage}
+              // deviceTimeOfUseTableData={modifiedBranchTimeOfUseTableData}
+              // deviceCostTrackerDieselQuantityData={
+              //   modifiedBranchCostTrackerDieselQuantityData
+              // }
+              // deviceCostTrackerMonthlyCostData={
+              //   modifiedBranchCostTrackerMonthlyCostData
+              // }
+              // deviceCostTrackerConsumptionData={
+              //   modifiedBranchCostTrackerConsumptionData
+              // }
+              // deviceBillingTotalsData={{
+              //   ...modifiedBranchBillingTotalsData,
+              //   present_total: { usage_kwh: 0, value_naira: 0 },
+              //   previous_total: { usage_kwh: 0, value_naira: 0 },
+              //   usage: {
+              //     previous_kwh: 0,
+              //     present_kwh: 0,
+              //     total_usage_kwh: 0,
+              //   },
+              //   metrics: {
+              //     ipp_per_kwh: 0,
+              //     diesel_per_kwh: 0,
+              //     utility_per_kwh: 0,
+              //     blended_cost_per_kwh: 0,
+              //     unit: '₦',
+              //   },
+              // }}
               key={eachDevice.id}
             />
           );
@@ -153,10 +153,10 @@ function SidebarBranch({ branchData }) {
     
     if (!isChecked) {
       // Add this branch to list of rendered objects when checked
-      setRenderedDataObjects({
-        ...renderedDataObjects,
+      // setRenderedDataObjects({
+        // ...renderedDataObjects,
         // ...refinedBranchData,
-      });
+      // });
 
       // Add this branch to list of checked items
       setCheckedItems({
@@ -171,11 +171,11 @@ function SidebarBranch({ branchData }) {
       });
     } else {
       // Delete this branch to list of rendered objects (and checked items) when unchecked
-      const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
-      delete modifiedRenderedDataObjects[branchData.name];
-      setRenderedDataObjects({
-        ...modifiedRenderedDataObjects,
-      });
+      // const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
+      // delete modifiedRenderedDataObjects[branchData.name];
+      // setRenderedDataObjects({
+      //   ...modifiedRenderedDataObjects,
+      // });
 
       const modifiedCheckedItems = cloneObject(checkedItems);
       delete modifiedCheckedItems[branchData.name];
@@ -217,7 +217,7 @@ function SidebarBranch({ branchData }) {
         )}
       </div>
 
-      {/* <ul className="sidebar-branch__devices">{deviceComponents}</ul> */}
+      <ul className="sidebar-branch__devices">{deviceComponents}</ul>
     </li>
   );
 }
