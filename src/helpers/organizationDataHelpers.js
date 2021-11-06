@@ -783,7 +783,8 @@ const getRefinedOrganizationDataWithChekBox = ({
   checkedBranches,
   checkedDevices,
   organization,
-  setRenderedDataObjects
+  setRenderedDataObjects,
+  isDashBoard=false,
 }) => {
 
   let branchAndDevice = {}
@@ -799,9 +800,8 @@ const getRefinedOrganizationDataWithChekBox = ({
       if (branches.length > 0) {
         // check whether the branch name is part of the branches array
         if (branches.includes(branch.name)) {
-          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch) }
+          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch, isDashBoard) }
         }
-
       }
       if (devices.length > 0) {
         branch.devices.forEach((device) => {
@@ -811,11 +811,13 @@ const getRefinedOrganizationDataWithChekBox = ({
             branchAndDevice = { ...branchAndDevice, ...getDeviceData({ branchData: branch, deviceData: device }) }
           }
         })
-
       }
     })
   }
-  setRenderedDataObjects(branchAndDevice);
+  if(setRenderedDataObjects){
+    setRenderedDataObjects(branchAndDevice);
+  }
+
   return branchAndDevice;
 }
 

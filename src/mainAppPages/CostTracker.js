@@ -1,17 +1,19 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { message, Spin } from 'antd';
+import { Spin } from 'antd';
+import { connect, useSelector } from 'react-redux';
 
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
-import Loader from '../components/Loader';
 import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
 import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
-import axios from 'axios';
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
-import EnvData from '../config/EnvData';
+import { fetchCostTrackerData } from '../redux/actions/constTracker/costTracker.action';
+import { allCostTrackerBranchesBaseline } from '../helpers/genericHelpers';
+import CostTrackerEnergyConsumptionBarChart from '../components/barCharts/CostTrackerEnergyConsumption';
+import Loader from '../components/Loader';
 
 
 const breadCrumbRoutes = [
@@ -19,10 +21,13 @@ const breadCrumbRoutes = [
   { url: '#', name: 'Cost Tracker', id: 2 },
 ];
 
-function CostTracker({ match }) {
+function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
 
   const [overviewData, setOverviewData] = useState([]);
-  const [isLoading, setIsLoading] = useState([])
+  const [branchInfo, setBranchInfo] = useState(false);
+  const [baseLineData, setBaseLineData] = useState(false);
+  const costTracker = useSelector((state) => state.costTracker);
+  const sideBar = useSelector((state) => state.sideBar);
 
 
   const subHeaderStyle = {
@@ -34,37 +39,33 @@ function CostTracker({ match }) {
 
   const {
     setCurrentUrl,
-    isAuthenticatedDataLoading,
-    token,
-    userId
   } = useContext(CompleteDataContext);
 
+
   useEffect(() => {
+    fetchCostTracker();
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
-    setIsLoading(true);
-    const requestUrl = `${EnvData.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
-    axios.get(requestUrl, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${token}`,
-      }
-    }
-    ).then(async (res) => {
-      setOverviewData(res.data.data);
-      setIsLoading(false);
-    }).catch((err) => {
-      message.error('Something un-expected happened, please reload page')
-      console.log(err)
-      setIsLoading(false);
-    })
   }, []);
 
+  useEffect(() => {
+    setOverviewData(costTracker.costTrackerData)
+  }, [costTracker.costTrackerData]);
 
-  let dieselPurchasedData = Object.entries(overviewData).filter(data => {
-    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
-  })
+  useEffect(() => {
+
+    const getBranchData = Object.entries(overviewData)?.filter(data => {
+      return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
+        && data[0] !== "has_generator"
+    })
+    if (getBranchData && getBranchData[0]) {
+      setBranchInfo(getBranchData);
+      setBaseLineData(allCostTrackerBranchesBaseline(sideBar?.selectedSideBar, getBranchData))
+    }
+
+  }, [overviewData, sideBar.selectedSideBar]);
+
 
   const DieselOverViewCharts = overviewData && (
     <article
@@ -73,7 +74,7 @@ function CostTracker({ match }) {
         Cost Overview
       </h3>
       <p style={subHeaderStyle}>Diesel Overview</p>
-      <DieselOverviewCostTrackerTable isLoading={isLoading}
+      <DieselOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
         dieselOverviewData={overviewData.diesel_overview} />
     </article>
   );
@@ -84,14 +85,14 @@ function CostTracker({ match }) {
       className='cost-tracker-chart-container'
     >
       <p style={subHeaderStyle}>Utility Overview</p>
-      <UtilityOverviewCostTrackerTable isLoading={isLoading}
+      <UtilityOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
         dataSource={overviewData.utility_overview} />
     </article>
   );
 
 
   const DieselPurchasedCharts = (
-    dieselPurchasedData && dieselPurchasedData.length > 0 && dieselPurchasedData.map((e, index) => (
+    branchInfo && branchInfo.length > 0 && branchInfo.map((e, index) => (
       <article
         className='cost-tracker-chart-container'
         key={index}
@@ -99,13 +100,13 @@ function CostTracker({ match }) {
         <h3 className='cost-tracker-branch-name'>
           Diesel Purchased for {e[0]}
         </h3>
-        <DieselPurchasedTable isLoading={isLoading} data={e[1].diesel} />
+        <DieselPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].diesel} />
       </article>
     ))
   )
 
   const utilityPurchasedCharts = (
-    dieselPurchasedData && dieselPurchasedData.map((e, index) => (
+    branchInfo && branchInfo.map((e, index) => (
       <article
         className='cost-tracker-chart-container'
         key={index}
@@ -113,17 +114,30 @@ function CostTracker({ match }) {
         <h3 className='cost-tracker-branch-name'>
           Utility Purchased for {e[0]}
         </h3>
-        <UtilityPurchasedTable isLoading={isLoading} data={e[1].utility} />
+        <UtilityPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].utility} />
       </article>
     ))
   )
 
-  const getMonthlyDataCharts = Object.entries(overviewData).filter(data => {
-    return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
-  })
+
 
   const monthlyCostBarCharts =
-    getMonthlyDataCharts && getMonthlyDataCharts.length > 0  && getMonthlyDataCharts.map((e, index) => (
+    branchInfo && branchInfo.length > 0 && [branchInfo[0]].map((e, index) => (
+      <article
+        key={index}
+        className='cost-tracker-chart-container'
+      >
+        <h3 className='cost-tracker-branch-name'>
+          Energy Consumption at {e[0]}
+        </h3>
+        <div className='cost-tracker-chart-wrapper'>
+          <CostTrackerEnergyConsumptionBarChart baseLineData={baseLineData} />
+        </div>
+      </article>
+    ))
+
+  const monthlyEnergyConsumptionBarCharts =
+    branchInfo && branchInfo.length > 0 && [branchInfo[0]].map((e, index) => (
       <article
         key={index}
         className='cost-tracker-chart-container'
@@ -137,17 +151,15 @@ function CostTracker({ match }) {
       </article>
     ))
 
-
-  if (isAuthenticatedDataLoading) {
-    return <Loader />;
-  }
+    if (costTracker.fetchCostTrackerLoading) {
+      return <Loader />;
+    }
 
   return (
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
-
       <div>
       </div>
 
@@ -169,12 +181,14 @@ function CostTracker({ match }) {
         {utilityPurchasedCharts}
       </section>
 
-
       <section className='cost-tracker-section'>
-        <Spin spinning={isLoading}>
           <h2 className='h-screen-reader-text'>Monthly Cost</h2>
           {monthlyCostBarCharts}
-        </Spin>
+      </section>
+
+      <section className='cost-tracker-section'>
+          <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+          {monthlyEnergyConsumptionBarCharts}
       </section>
 
     </>
@@ -182,4 +196,8 @@ function CostTracker({ match }) {
   );
 }
 
-export default CostTracker;
+const mapDispatchToProps = {
+  fetchCostTrackerData
+};
+
+export default connect(null, mapDispatchToProps)(CostTracker);

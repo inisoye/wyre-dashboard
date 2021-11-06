@@ -123,7 +123,7 @@ const getDeviceData = ({
         change_over_lags,
         operating_time,
         fuel_consumption,
-    } = deviceData.score_card;
+    } = deviceData.score_card || {};
 
     // Add name to generator size efficiency & fuel consumption data
     if (generator_size_efficiency)
@@ -217,7 +217,7 @@ const getDeviceData = ({
         'consumption_naira'
     );
 
-    const { previous_total, present_total } = billing.totals;
+    const { previous_total, present_total } = billing?.totals || {}
 
     const devicePreviousTotal = {
         ...previous_total,

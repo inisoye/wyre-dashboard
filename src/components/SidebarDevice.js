@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
 
 import CompleteDataContext from '../Context';
@@ -9,6 +10,8 @@ import {
   // convertDateStringToObject,
   // convertParameterDateStringsToObjects,
 } from '../helpers/genericHelpers';
+import { setSelectedSideBar } from '../redux/actions/sidebar/actionCreators';
+
 
 function SidebarDevice({
   modifiedDeviceName,
@@ -23,6 +26,7 @@ function SidebarDevice({
   // deviceBillingTotalsData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     // renderedDataObjects,
@@ -253,10 +257,15 @@ function SidebarDevice({
         // ...refinedDeviceData,
       // });
       
-      setCheckedItems({
+
+      const newCheckedItems = {
         ...checkedItems,
         [modifiedDeviceName]: true,
-      });
+      }
+      dispatch(setSelectedSideBar(newCheckedItems));
+      setCheckedItems(
+        newCheckedItems
+      );
       setCheckedDevices({
         ...checkedDevices,
         [modifiedDeviceName]: true,
@@ -271,6 +280,7 @@ function SidebarDevice({
 
       const modifiedCheckedItems = cloneObject(checkedItems);
       delete modifiedCheckedItems[modifiedDeviceName];
+      dispatch(setSelectedSideBar(modifiedCheckedItems));
       setCheckedItems({
         ...modifiedCheckedItems,
       });

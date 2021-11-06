@@ -163,6 +163,7 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
+        
         const refindedData = getRefinedOrganizationData(copyOrganisation)
         // set all the device into the needed data(bucket)
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
@@ -170,7 +171,6 @@ const CompleteDataProvider = (props) => {
         setDeviceData(getOrganizationDeviceType(copyOrganisation));
 
       } else {
-
         const holdAllDevices = allDeviceGenerators(checkedItems, organization);
         setAllCheckedOrSelectedDevice(holdAllDevices);
         // const renderedDataArray = Object.values(renderedDataObjects);
@@ -224,8 +224,9 @@ const CompleteDataProvider = (props) => {
         const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
           checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
         })
-        const renderedDataArray = Object.values(dataWithCheckBoxes);
-        setRefinedRenderedData(getRenderedData(renderedDataArray));
+        const renderedDataArray = getRenderedData(Object.values(dataWithCheckBoxes));
+        
+        setRefinedRenderedData(renderedDataArray);
       }
     }
   }, [organization]);

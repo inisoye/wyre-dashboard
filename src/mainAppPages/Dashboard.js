@@ -21,9 +21,11 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
+import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
+import { getDashBoardRefinedData, getRefinedOrganizationDataWithChekBox } from "../helpers/organizationDataHelpers";
+import { getRenderedData } from "../helpers/renderedDataHelpers";
 
 
 const breadCrumbRoutes = [
@@ -46,8 +48,8 @@ const PDFDocument = () => (
 );
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
-  let { refinedRenderedData, isAuthenticatedDataLoading,
-    allCheckedOrSelectedDevice } = useContext(
+  let { isAuthenticatedDataLoading,
+    checkedItems, checkedBranches, checkedDevices } = useContext(
       CompleteDataContext
     );
 
@@ -55,7 +57,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
-
+  const [allCheckedDevice, setAllCheckedDevice] = useState(false);
+  const [refinedDashboardData, setRefinedDashboardData] = useState({});
 
   const {
     name,
@@ -69,8 +72,34 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     today,
     yesterday,
     daily_kwh,
-    solar_hours
-  } = dashBoardData;
+    solar_hours,
+    all_device_data
+  } = refinedDashboardData;
+
+
+  useEffect(() => {
+    if (all_device_data) {
+      const allChecked = allCheckedDeviceGenerators(checkedItems, all_device_data);
+      setAllCheckedDevice(allChecked)
+    }
+    const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardData));
+    if(dashBoardData){
+      if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
+        const refindedDashBoard = getRefinedOrganizationDataWithChekBox({
+          checkedBranches,
+          checkedDevices,
+          organization: copyDashBoardData,
+          setRenderedDataObjects: null,
+          isDashBoard: true
+        });
+        const renderedData = getRenderedData(Object.values(refindedDashBoard), true);
+        setRefinedDashboardData(renderedData);
+      }else{
+        setRefinedDashboardData(getDashBoardRefinedData(copyDashBoardData));
+      }
+    }
+
+  }, [checkedBranches, checkedDevices, dashBoardData]);
 
   useEffect(() => {
     if (match && match.url) {
@@ -79,12 +108,12 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    if (allCheckedOrSelectedDevice) {
-      const data = refineLoadOverviewData(allCheckedOrSelectedDevice);
+    if (allCheckedDevice) {
+      const data = refineLoadOverviewData(allCheckedDevice);
       setAllisLoadDeviceData(Object.values(data));
     }
 
-  }, [allCheckedOrSelectedDevice]);
+  }, [allCheckedDevice]);
 
 
   useEffect(() => {
@@ -197,12 +226,13 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         </div>
         <div className="dashboard-row-1b">
           {
-            allCheckedOrSelectedDevice
-            && allCheckedOrSelectedDevice.map((eachDevice, index) => {
-              return index < 6 && <article key={index} className="dashboard__total-energy-amount dashboard__banner--smallb">
+            allCheckedDevice
+            && allCheckedDevice.map((eachDevice, index) => {
+              return index < 6 && <article key={index}
+                className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
                   deviceType={eachDevice.device_type}
-                  totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh}
+                  totalKWH={eachDevice.dashboard?.total_kwh?.value}
                   amount={eachDevice.billing?.totals?.present_total?.value_naira
                   }
                   timeInUse={eachDevice?.usage_hour}

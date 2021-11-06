@@ -1,12 +1,13 @@
 
-import sidebarTypes from './sidebarTypes';
+import sidebarTypes from './sidebar.types';
 
 const INITIAL_STATE = {
     fetchSideBarLoading: false,
     sideBarData: {},
+    selectedSideBar: null,
 };
 
-const reducer = (state = INITIAL_STATE, action) => {
+const sideBarReducer = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
 
@@ -24,6 +25,11 @@ const reducer = (state = INITIAL_STATE, action) => {
               ...state, 
               sideBarData: action.payload,
            };
+           case sidebarTypes.SET_SELECTED_SIDE_BAR:
+           return {
+              ...state, 
+              selectedSideBar: action.payload,
+           };
 
          default: return state;
 
@@ -31,4 +37,4 @@ const reducer = (state = INITIAL_STATE, action) => {
 
 };
 
-export default reducer;
+export default sideBarReducer;

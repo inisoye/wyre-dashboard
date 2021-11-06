@@ -6,8 +6,7 @@ import { fetchSideBar } from '../redux/actions/sidebar/sidebar.action';
 import SidebarOrganization from './SidebarOrganization';
 
 function Sidebar({ fetchSideBar: fetchSideBarData}) {
-  const sideBarData = useSelector((state) => state.sidebar.sideBarData);
-  console.log('here is the side bar data =================', sideBarData)
+  const sideBarData = useSelector((state) => state.sideBar.sideBarData);
 
   useEffect(() => {
     fetchSideBarData();

@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
 import dashboard from './dashboard/dashboard.reducer';
-import sidebar from './sidebar/sidebar.reducer'
+import billingReducers from './billing/billing.reducer';
+import costTracker from './costTracker/costTracker.reducer';
+import sideBar from './sidebar/sidebar.reducer'
 
 const rootReducer = combineReducers({
     dashboard,
-    sidebar
+    billingReducers,
+    sideBar,
+    costTracker
 });
 
 export default rootReducer;

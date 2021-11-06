@@ -36,7 +36,6 @@ function Header() {
     setEmailModalData,
   } = useContext(CompleteDataContext);
 
-  console.log('i am rerenderingjskdhijo ==========')
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);

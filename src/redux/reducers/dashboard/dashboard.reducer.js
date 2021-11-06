@@ -1,9 +1,9 @@
-import { getDashBoardRefinedData } from '../../../helpers/organizationDataHelpers';
+
 import dashBoardType from './dashboard.types';
 
 const INITIAL_STATE = {
     fetchDashBoardLoading: false,
-    dashBoardData: {},
+    dashBoardData: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -22,7 +22,7 @@ const reducer = (state = INITIAL_STATE, action) => {
            case dashBoardType.FETCH_DASHBOARD_SUCCESS:
            return {
               ...state, 
-              dashBoardData: getDashBoardRefinedData(action.payload),
+              dashBoardData: action.payload,
            };
 
          default: return state;
