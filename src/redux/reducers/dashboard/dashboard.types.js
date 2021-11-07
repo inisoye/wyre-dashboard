@@ -1,0 +1,7 @@
+
+const dashBoardType = {
+    FETCH_DASHBOARD_LOADING: 'FETCH_DASHBOARD_LOADING',
+    FETCH_DASHBOARD_SUCCESS: 'FETCH_DASHBOARD_SUCCESS'
+}
+
+export default dashBoardType;

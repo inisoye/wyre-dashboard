@@ -313,7 +313,7 @@ const allDeviceGenerators = (checkedItems, organization) => {
       else if (name.startsWith(eachBranch.name) && (name.length > eachBranch.name.length)
       ) {
         eachBranch.devices.some((device) => {
-          if (device.name === name) {
+          if (name.includes(device.name)) {
             holdAllDevices.push(device);
             return false;
           }
@@ -323,6 +323,69 @@ const allDeviceGenerators = (checkedItems, organization) => {
   })
   return holdAllDevices;
 }
+
+const allCheckedDeviceGenerators = (checkedItems, allDevice) => {
+
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems);
+  const allDeviceMap = Object.values(allDevice);
+
+  if (!checkedItemsArray.length > 0) {
+    return allDeviceMap;
+  } else {
+    checkedItemsArray.map((name) => {
+      allDeviceMap.forEach((eachData) => {
+        if (eachData.branchName === name) {
+          holdAllDevices = [...holdAllDevices, eachData];
+        }
+        else if (name.startsWith(eachData.branchName) && name.endsWith(eachData.deviceName)
+        ) {
+          holdAllDevices.push(eachData);
+        }
+      })
+    })
+    return holdAllDevices;
+  }
+}
+
+// handle cost tracker baseline data flatner base on selected branch/devices
+const allCostTrackerBranchesBaseline = (checkedItems, allDevice) => {
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems || {});
+  if (!checkedItemsArray.length > 0) {
+    allDevice.map(([branchName, branchInfo]) => {
+      const baselineDataValues = Object.values(branchInfo.baseline);
+      baselineDataValues.map((data) => {
+        holdAllDevices = [...holdAllDevices, ...data];
+      })
+    });
+  } else {
+    checkedItemsArray.map((name) => {
+      allDevice.map(([branchName, branchInfo]) => {
+        const baselineDataValues = Object.values(branchInfo.baseline);
+        if (branchName === name) {
+          baselineDataValues.map((data) => {
+            holdAllDevices = [...holdAllDevices, ...data];
+          })
+        }
+        else if (name.startsWith(branchName)
+        ) {
+          Object.entries(branchInfo.baseline).map(([deviceName, value]) => {
+
+            if (name.endsWith(deviceName)) {
+              holdAllDevices.push(...value);
+            }
+          })
+        }
+      })
+    })
+  }
+  return holdAllDevices;
+}
+
+
+
+
 /* --------------------------------------------------------------------
 /* Dashboard Helpers End --------------------------------------------
 --------------------------------------------------------------------*/
@@ -339,17 +402,17 @@ const allDeviceGenerators = (checkedItems, organization) => {
 /* Score Card Helpers Begin ------------------------------------------
 --------------------------------------------------------------------*/
 const sumBaselineEnergies = (array) => {
-  const forecastValues = array.map((eachItem) => eachItem.forecast);
-  const usedValues = array.map((eachItem) => eachItem.used);
-  const forecastTotal = forecastValues.reduce((acc, curr) => acc + curr, 0);
-  const usedTotal = usedValues.reduce((acc, curr) => acc + curr, 0);
+  const forecastValues = array && array?.map((eachItem) => eachItem?.forecast);
+  const usedValues = array && array?.map((eachItem) => eachItem?.used);
+  const forecastTotal = forecastValues && forecastValues?.reduce((acc, curr) => acc + curr, 0);
+  const usedTotal =usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
 
   return { unit: 'kwh', forecast: forecastTotal, used: usedTotal };
 };
 
 const sumPeakToAveragePowerRatios = (array) => {
-  const peakValues = array.map((eachItem) => eachItem.peak);
-  const avgValues = array.map((eachItem) => eachItem.avg);
+  const peakValues = array?.map((eachItem) => eachItem?.peak);
+  const avgValues = array?.map((eachItem) => eachItem?.avg);
 
   const peakOfPeakValues = Math.max.apply(null, peakValues);
   const avgOfAvgValues =
@@ -359,8 +422,8 @@ const sumPeakToAveragePowerRatios = (array) => {
 };
 
 const sumScoreCardCarbonEmissions = (array) => {
-  const estimatedValues = array.map((eachItem) => eachItem.estimated_value);
-  const actualValues = array.map((eachItem) => eachItem.actual_value);
+  const estimatedValues = array.map((eachItem) => eachItem?.estimated_value);
+  const actualValues = array.map((eachItem) => eachItem?.actual_value);
 
   const estimatedTotal = estimatedValues.reduce((acc, curr) => acc + curr, 0);
   const actualTotal = actualValues.reduce((acc, curr) => acc + curr, 0);
@@ -376,8 +439,8 @@ const joinChangeOverLagsValues = (parentArray, nestedValue) => {
   return parentArray
     .map(
       (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags[nestedValue].values
+        eachDevice.score_card?.change_over_lags &&
+        eachDevice.score_card?.change_over_lags[nestedValue].values
     )
     .filter(Boolean);
 };
@@ -419,19 +482,19 @@ const convertDateStringToObject = (dateString) => {
 };
 
 const convertDateStringsToObjects = (dateStrings) => {
-  return dateStrings.map((eachDate) => dayjs(eachDate));
+  return dateStrings?.map((eachDate) => dayjs(eachDate));
 };
 
 const formatParametersDatetimes = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY h:mm A'));
+  return dateStrings?.map((eachDate) => eachDate.format('DD/MM/YYYY h:mm A'));
 };
 
 const formatParametersDates = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY'));
+  return dateStrings?.map((eachDate) => eachDate.format('DD/MM/YYYY'));
 };
 
 const formatParametersTimes = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('hh:mm A'));
+  return dateStrings?.map((eachDate) => eachDate.format('hh:mm A'));
 };
 
 const formatParameterTableData = (tableHeadings, tableValues) => {
@@ -467,16 +530,18 @@ const formatParameterTableData = (tableHeadings, tableValues) => {
 
 const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   // Create a copy of original parameter data
-  const parameterData = Object.assign({}, deviceData[parameterName]);
-  const { dates } = parameterData;
+  const parameterData = deviceData && parameterName && Object.assign({}, deviceData[parameterName]);
+  const { dates } = parameterData || {};
 
   // Convert dates to objects for easy manipulation
   const parameterDateObjects = convertDateStringsToObjects(
-    dates.dates || dates
+    dates?.dates || dates
   );
   // Add date objects and device name to data
-  parameterData.dates = parameterDateObjects;
-
+  if(parameterData){
+    parameterData.dates = parameterDateObjects || null;
+  }
+  
   return { ...parameterData, dates: parameterDateObjects };
 };
 
@@ -615,6 +680,51 @@ const generateSumOfIsSource = (allDeviceData, branchName) => {
 /* Load overview Helpers End  ----------------------------------------
 --------------------------------------------------------------------*/
 
+const validate2DecNo = (value, label) => {
+  const numbersOnly = (/^\s*-?\d+(\.\d{1,2})?\s*$/);
+  const validAmountReg = (/^\d{0,16}?(\.[0-9]{0,4})?$/);
+  if (value
+    && (!value.toString().match(numbersOnly))
+  ) {
+    return Promise.reject(new Error(`Please enter a valid ${label}`));
+  }
+  if (value
+    && (!value.toString().match(validAmountReg))) {
+    return Promise.reject(new Error('Limit connot be more than 999999999999999999.99'));
+  }
+  return Promise.resolve();
+};
+
+const sortArrayOfObjectByDate = (array) => {
+  if (array && array !== undefined && array.length > 0) {
+    return array.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+  }
+  return [];
+
+}
+
+// Method for converting dates to endpoint format
+const convertDateRangeToEndpointFormat = (dateObjects) =>
+  dateObjects
+    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
+    .join('/');
+
+
+const generateAppDateRange = (newEndpointDateRange) => {
+  // Update endpoint if available
+  const datdata = newEndpointDateRange
+    ? convertDateRangeToEndpointFormat(newEndpointDateRange)
+    : (convertDateRangeToEndpointFormat([
+      dayjs().startOf('month'),
+      dayjs(),
+    ]));
+  return datdata;
+};
+
+
+
 export {
   daysInMonth,
   getPeakToAverageMessage,
@@ -665,5 +775,10 @@ export {
   generateLoadOverviewChartData,
   generateMultipleBranchLoadOverviewChartData,
   generateSumLoadConsumption,
-  generateSumOfIsSource
+  generateSumOfIsSource,
+  validate2DecNo,
+  sortArrayOfObjectByDate,
+  generateAppDateRange,
+  allCheckedDeviceGenerators,
+  allCostTrackerBranchesBaseline
 };

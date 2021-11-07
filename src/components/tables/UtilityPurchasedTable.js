@@ -1,65 +1,112 @@
 import React, { useContext } from 'react'
 import CompleteDataContext from '../../Context';
-import { Table } from 'antd';
-
+import { Table, Typography } from 'antd';
+import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
+const { Text } = Typography;
 
 const UtilityPurchasedTable = ({ data }) => {
   const {
     isMediumScreen
   } = useContext(CompleteDataContext);
 
-    const columns = [
-        {
-          title: 'Date',
-          dataIndex: 'date',
-          key: 'date',
-        },
-        {
-          title: 'Unit(Kwh)',
-          dataIndex: 'value',
-          key: 'value',
-          sorter: {
-            compare: (a, b) => a.value - b.value,
-            multiple: 3,
-          },
-        },
-        {
-          title: 'Tariff(₦/Kwh)',
-          dataIndex: 'tarrif',
-          key:"tarrif",
-          sorter: {
-            compare: (a, b) => a.tarrif - b.tarrif,
-          },
-        },
-        {
-            title: 'Amount(₦)',
-            dataIndex: 'amount',
-            key:"amount",
-            sorter: {
-              compare: (a, b) => a.price_per_litre - b.price_per_litre,
-            },
-        },
-        
-        {
-            title: 'VAT Inclusive amount(₦)',
-            dataIndex: 'vat_inclusive_amount',
-            key:"vat_inclusive_amount",
-            sorter: {
-              compare: (a, b) => a.vat_inclusive_amount - b.vat_inclusive_amount,
-            },
-        },
-      ];
+  const sortedData = sortArrayOfObjectByDate(data);
 
-    return (
-        <div>
-            <Table columns={columns}
-                dataSource={data}
-                className='table-striped-rows' 
-                rowKey={(record) => record.id}
-                scroll={ isMediumScreen && { x: 600, y: 300 }}
-                footer={() => `${data && data.length} entries in total`}/>            
-        </div>
-    )
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      width: '20%',
+    },
+    {
+      title: 'Unit(Kwh)',
+      dataIndex: 'value',
+      key: 'value',
+      width: '20%',
+      render: (value) => {
+        return value? value.toFixed(2) : 0;
+      }
+    },
+    {
+      title: 'Tariff(₦/Kwh)',
+      dataIndex: 'tarrif',
+      key: "tarrif",
+      width: '20%',
+      render: (value) => {
+        return value? value.toFixed(2) : 0;
+      }
+    },
+    {
+      title: 'Amount(₦)',
+      dataIndex: 'amount',
+      key: "amount",
+      width: '20%',
+      render: (value) => {
+        return value? value.toFixed(2) : 0;
+      }
+    },
+
+    {
+      title: 'VAT Inclusive amount(₦)',
+      dataIndex: 'vat_inclusive_amount',
+      key: "vat_inclusive_amount",
+      width: '20%',
+      render: (value) => {
+        return value? value.toFixed(2) : 0;
+      }
+    },
+  ];
+
+  let valueSum = 0;
+  let tarrifSum = 0;
+  let amountSum = 0;
+  let vatInclusiveAmountSum = 0;
+
+
+  data && data.forEach(element => {
+    const value = parseFloat(element.value) || 0;
+    const tarrif = parseFloat(element.tarrif) || 0;
+    const amount = parseFloat(element.amount) || 0;
+    const vatInclusiveAmount = parseFloat(element.vat_inclusive_amount) || 0;
+
+    valueSum += value;
+    tarrifSum += tarrif;
+    amountSum += amount;
+    vatInclusiveAmountSum += vatInclusiveAmount;
+
+  });
+  return (
+    <div>
+      <Table columns={columns}
+        dataSource={sortedData}
+        className='table-striped-rows utitily-overview-table'
+        rowKey={(record) => record.id}
+        scroll={isMediumScreen && { x: 600, y: 300 }}
+        summary={pageData => {
+
+          return (
+            <>
+              <Table.Summary.Row>
+                <Table.Summary.Cell>Total</Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Text>{parseFloat(valueSum).toFixed(2)}</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Text>{parseFloat(tarrifSum).toFixed(2)}</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Text>{parseFloat(amountSum).toFixed(2)}</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Text>{parseFloat(vatInclusiveAmountSum).toFixed(2)}</Text>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </>
+          );
+        }}
+        footer={() => `${data && data.length} entries in total`} />
+    </div>
+  )
 }
 
 export default UtilityPurchasedTable

@@ -30,8 +30,8 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
-import NewAppTopBar from '../components/NewAppTopBar';
 import LoadOverview from '../mainAppPages/LoadOverview';
+import RevisedAppTopBar from '../components/RevisedAppTopBar';
 
 function MainAppPages() {
   const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
@@ -55,7 +55,7 @@ function MainAppPages() {
             <TopBar />
           </div>
           <div className='newTopbar-monitor'>
-            <NewAppTopBar />
+            <RevisedAppTopBar />
           </div>
           <ScrollToTop>
             <div className="page-content">

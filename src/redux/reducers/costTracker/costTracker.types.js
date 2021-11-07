@@ -1,0 +1,7 @@
+
+const costTrackerType = {
+    FETCH_COSTTRACKER_LOADING: 'FETCH_COSTTRACKER_LOADING',
+    FETCH_COSTTRACKER_SUCCESS: 'FETCH_COSTTRACKER_SUCCESS'
+}
+
+export default costTrackerType;

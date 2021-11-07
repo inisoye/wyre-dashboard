@@ -36,7 +36,7 @@ const CompleteDataProvider = (props) => {
     true
   );
   /*--------------------------------------------------------------------
-
+ 
   
 
 
@@ -155,29 +155,36 @@ const CompleteDataProvider = (props) => {
       Object.keys(organization).length > 0 &&
       organization.constructor === Object
     ) {
+      // make a copy of the data
+      const copyOrganisation = JSON.parse(JSON.stringify(organization));
       // If nothing is checked, render organization's data
       // Otherwise, render data from checked items
       if (
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        const refindedData = getRefinedOrganizationData(organization)
+        
+        const refindedData = getRefinedOrganizationData(copyOrganisation)
         // set all the device into the needed data(bucket)
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
         setRefinedRenderedData(refindedData);
-        setDeviceData(getOrganizationDeviceType(organization));
+        setDeviceData(getOrganizationDeviceType(copyOrganisation));
 
       } else {
-
         const holdAllDevices = allDeviceGenerators(checkedItems, organization);
         setAllCheckedOrSelectedDevice(holdAllDevices);
-        const renderedDataArray = Object.values(renderedDataObjects);
+        // const renderedDataArray = Object.values(renderedDataObjects);
+
+        const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
+          checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
+        })
+        const renderedDataArray = Object.values(dataWithCheckBoxes);
         const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
         setRefinedRenderedData(getRenderedData(renderedDataArray));
         setSelectedDevices(getDeviceType);
       }
     }
-  }, [checkedItems, renderedDataObjects]);
+  }, [checkedItems]);
 
   /*--------------------------------------------------------------------
 
@@ -196,26 +203,30 @@ const CompleteDataProvider = (props) => {
       Object.keys(organization).length > 0 &&
       organization.constructor === Object
     ) {
+      // make a copy of the organisation data
+      const copyOrganisation = JSON.parse(JSON.stringify(organization))
       // If nothing is checked, render organization's data
       // Otherwise, render data from checked items
       if (
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        const refindedData = getRefinedOrganizationData(organization)
+        // const copyOrganisation = {...organization};
+        const refindedData = getRefinedOrganizationData(copyOrganisation);
         setRefinedRenderedData(refindedData);
         // set all the device into the needed data(bucket)
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
       } else {
         // generate all the data for the devices selected
-        const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        const holdAllDevices = allDeviceGenerators(checkedItems, copyOrganisation);
         setAllCheckedOrSelectedDevice(holdAllDevices);
         // get the data to render
         const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
-          checkedBranches, checkedDevices, organization, setRenderedDataObjects
+          checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
         })
-        const renderedDataArray = Object.values(dataWithCheckBoxes);
-        setRefinedRenderedData(getRenderedData(renderedDataArray));
+        const renderedDataArray = getRenderedData(Object.values(dataWithCheckBoxes));
+        
+        setRefinedRenderedData(renderedDataArray);
       }
     }
   }, [organization]);

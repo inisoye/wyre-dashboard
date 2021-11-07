@@ -97,6 +97,7 @@ const getDeviceData = ({
     // Destructure dashboard data for device
     const {
         total_kwh,
+        solar_hours,
         min_demand,
         max_demand,
         avg_demand,
@@ -122,7 +123,7 @@ const getDeviceData = ({
         change_over_lags,
         operating_time,
         fuel_consumption,
-    } = deviceData.score_card;
+    } = deviceData.score_card || {};
 
     // Add name to generator size efficiency & fuel consumption data
     if (generator_size_efficiency)
@@ -216,7 +217,7 @@ const getDeviceData = ({
         'consumption_naira'
     );
 
-    const { previous_total, present_total } = billing.totals;
+    const { previous_total, present_total } = billing?.totals || {}
 
     const devicePreviousTotal = {
         ...previous_total,
@@ -236,6 +237,7 @@ const getDeviceData = ({
             name: modifiedDeviceName,
             // Dashboard data
             total_kwh,
+            solar_hours,
             min_demand,
             max_demand,
             avg_demand,

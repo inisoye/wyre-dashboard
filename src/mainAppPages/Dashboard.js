@@ -1,9 +1,11 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
+import { connect, useSelector } from 'react-redux';
 import html2pdf from "html2pdf.js"
 import * as html2canvas from "html2canvas";
 import CompleteDataContext from "../Context";
+// import 
 
 import BreadCrumb from "../components/BreadCrumb";
 import DashboardStackedBarChart from "../components/barCharts/DashboardStackedBarChart";
@@ -19,8 +21,11 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData } from "../helpers/genericHelpers";
+import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
+import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
+import { getDashBoardRefinedData, getRefinedOrganizationDataWithChekBox } from "../helpers/organizationDataHelpers";
+import { getRenderedData } from "../helpers/renderedDataHelpers";
 
 
 const breadCrumbRoutes = [
@@ -42,14 +47,18 @@ const PDFDocument = () => (
   </Document>
 );
 
-function Dashboard({ match }) {
-  let { refinedRenderedData, isAuthenticatedDataLoading,
-    allCheckedOrSelectedDevice } = useContext(
+function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
+  let { isAuthenticatedDataLoading,
+    checkedItems, checkedBranches, checkedDevices } = useContext(
       CompleteDataContext
     );
 
+  const dashBoardData = useSelector((state) => state.dashboard.dashBoardData);
+
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
+  const [allCheckedDevice, setAllCheckedDevice] = useState(false);
+  const [refinedDashboardData, setRefinedDashboardData] = useState({});
 
   const {
     name,
@@ -62,8 +71,35 @@ function Dashboard({ match }) {
     cost_of_energy,
     today,
     yesterday,
-    daily_kwh
-  } = refinedRenderedData;
+    daily_kwh,
+    solar_hours,
+    all_device_data
+  } = refinedDashboardData;
+
+
+  useEffect(() => {
+    if (all_device_data) {
+      const allChecked = allCheckedDeviceGenerators(checkedItems, all_device_data);
+      setAllCheckedDevice(allChecked)
+    }
+    const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardData));
+    if(dashBoardData){
+      if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
+        const refindedDashBoard = getRefinedOrganizationDataWithChekBox({
+          checkedBranches,
+          checkedDevices,
+          organization: copyDashBoardData,
+          setRenderedDataObjects: null,
+          isDashBoard: true
+        });
+        const renderedData = getRenderedData(Object.values(refindedDashBoard), true);
+        setRefinedDashboardData(renderedData);
+      }else{
+        setRefinedDashboardData(getDashBoardRefinedData(copyDashBoardData));
+      }
+    }
+
+  }, [checkedBranches, checkedDevices, dashBoardData]);
 
   useEffect(() => {
     if (match && match.url) {
@@ -72,12 +108,17 @@ function Dashboard({ match }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    if (allCheckedOrSelectedDevice) {
-      const data = refineLoadOverviewData(allCheckedOrSelectedDevice);
+    if (allCheckedDevice) {
+      const data = refineLoadOverviewData(allCheckedDevice);
       setAllisLoadDeviceData(Object.values(data));
     }
 
-  }, [allCheckedOrSelectedDevice]);
+  }, [allCheckedDevice]);
+
+
+  useEffect(() => {
+    dashBoardDataFetch();
+  }, []);
 
 
 
@@ -138,6 +179,10 @@ function Dashboard({ match }) {
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
               <span>{total_kwh && total_kwh.unit}</span>
             </p>
+            <p className="total-energy_value solar-energy_value">
+              <span>{'('}Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
+              <span>{solar_hours && solar_hours.unit}{')'}</span>
+            </p>
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
@@ -181,12 +226,13 @@ function Dashboard({ match }) {
         </div>
         <div className="dashboard-row-1b">
           {
-            allCheckedOrSelectedDevice
-            && allCheckedOrSelectedDevice.map((eachDevice, index) => {
-              return index < 6 && <article key={index} className="dashboard__total-energy-amount dashboard__banner--smallb">
+            allCheckedDevice
+            && allCheckedDevice.map((eachDevice, index) => {
+              return index < 6 && <article key={index}
+                className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
                   deviceType={eachDevice.device_type}
-                  totalKWH={eachDevice.billing?.totals?.present_total?.usage_kwh}
+                  totalKWH={eachDevice.dashboard?.total_kwh?.value}
                   amount={eachDevice.billing?.totals?.present_total?.value_naira
                   }
                   timeInUse={eachDevice?.usage_hour}
@@ -242,14 +288,14 @@ function Dashboard({ match }) {
         </div>
         {allIsLoadDeviceData && allIsLoadDeviceData.length > 0 && (
           <div className="dashboard-bar-container">
-              <article className='score-card-row-3'>
-                <LoadOverviewPercentBarChart
-                  runningPercentageData={allIsLoadDeviceData.length > 1 ?
-                    generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
-                    : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
-                  dataTitle='Operating Time'
-                />
-              </article>
+            <article className='score-card-row-3'>
+              <LoadOverviewPercentBarChart
+                runningPercentageData={allIsLoadDeviceData.length > 1 ?
+                  generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
+                  : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                dataTitle='Operating Time'
+              />
+            </article>
           </div>
         )}
       </section>
@@ -257,4 +303,9 @@ function Dashboard({ match }) {
   );
 }
 
-export default Dashboard;
+const mapDispatchToProps = {
+  fetchDashBoardData,
+};
+
+
+export default connect(null, mapDispatchToProps)(Dashboard);
