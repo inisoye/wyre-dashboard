@@ -25,7 +25,7 @@ const MiniDoubleCard = ({ percentage, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  roundToDecimalPLace(metrics?.peak) + metrics?.units}
+                  (roundToDecimalPLace(metrics?.peak).toFixed(2) + metrics?.units)}
               </span>
             </p>
 
@@ -36,7 +36,7 @@ const MiniDoubleCard = ({ percentage, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  roundToDecimalPLace(metrics?.average) + metrics?.units}
+                  roundToDecimalPLace(metrics?.average).toFixed(2) + metrics?.units}
               </span>
             </p>
           </div>

@@ -10,7 +10,7 @@ const RecordCard = ({ header, type, icon, value, rate, unit, footer }) => {
   const color = colorSelector[type]
   return (<div className="report-row-1-card report-card-1 report-card">
     <ReportWithRate header={header} icon={icon}
-      value={value} rate={rate}
+      value={value.toFixed(2)} rate={rate}
       unit={unit} color={color} />
     <p className="report-card-1-paragraph">
       {footer}

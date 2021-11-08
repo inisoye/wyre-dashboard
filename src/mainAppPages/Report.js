@@ -37,6 +37,7 @@ const breadCrumbRoutes = [
 
 function Report({ match }) {
   const [reportPageData, setReportPageData] = useState({});
+  const [timeOfUseData, setTimeOfUseData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const {
     setCurrentUrl,
@@ -55,10 +56,14 @@ function Report({ match }) {
   useEffect(() => {
     ReportHttpServices.getAll(userId, token, userDateRange).then((returnedData) => {
       setIsLoading(false);
-      return setReportPageData(returnedData)
+      setReportPageData(returnedData)
     }
     );
   }, [userDateRange]);
+
+
+
+
 
   const {
     period_score,
@@ -79,6 +84,19 @@ function Report({ match }) {
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
   })
+
+
+
+  useEffect(() => {
+    const timeOfUse = time_of_use && time_of_use.devices.map((deviceName, index) => {
+      return {
+        name: deviceName,
+        hour: time_of_use.hours[index],
+        blackOut: time_of_use.black_out - time_of_use.hours[index],
+      }
+    });
+    setTimeOfUseData(timeOfUse);
+  }, [reportPageData]);
 
   if (isLoading || !userId) {
     return <Loader />;
@@ -241,7 +259,7 @@ function Report({ match }) {
                 <h2 className="report-pie-heading">
                   Time of Use
                 </h2>
-                <GenericReportTable data={time_of_use}
+                <GenericReportTable data={timeOfUseData}
                   columnData={TimeOfUseColumns} />
               </div>
             </div>

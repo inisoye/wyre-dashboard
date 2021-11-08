@@ -21,7 +21,7 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
                 <Component style={{ stroke: color, fill: color.color }} className='report-card-icon' />
               </div>
               <p className="report-card-large-percentage">
-                {percentage.value + percentage.unit}
+                {Number(percentage.value).toFixed(2) + percentage.unit}
               </p>
             </div>
 
@@ -51,7 +51,7 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
               </span>
               <span className="report-card-2-topright-large__value">
                 {
-                  roundToDecimalPLace(metrics?.peak) + metrics?.units}
+                  roundToDecimalPLace(metrics?.peak).toFixed(2) + metrics?.units}
               </span>
             </p>
 
@@ -61,7 +61,7 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
               </span>
               <span className="report-card-2-topright__value">
                 {
-                  roundToDecimalPLace(metrics?.average) + metrics?.units}
+                  roundToDecimalPLace(metrics?.average).toFixed(2) + metrics?.units}
               </span>
             </p>
           </div>

@@ -15,7 +15,6 @@ const ReportDailyConsumptionBar = ({ dailyConsumptionData, dataMessage }) => {
     values.push(item.diesel_consumed);
   });
 
-  console.log('here is the lable and here we are', labels);
   const options = {
     legend: {
       display: false,

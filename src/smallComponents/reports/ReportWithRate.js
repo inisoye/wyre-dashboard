@@ -11,7 +11,7 @@ const ReportWithRate = ({ header, color, icon, value, rate, unit }) => {
           <Component style={{ stroke: color, fill: color.color }} className={'report-card-icon'} />
         </div>
         <p className="report-card-1-percentage">
-          {value + unit}
+          {Number(value).toFixed(2) + unit}
         </p>
       </div>
 

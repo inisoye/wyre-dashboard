@@ -33,17 +33,17 @@ export const LoadImbalanceColumns = [
 export const TimeOfUseColumns = [
   {
     title: 'Source',
-    dataIndex: 'device_name',
+    dataIndex: 'name',
     width: '20%'
   },
   {
     title: 'Hourse of Use',
-    dataIndex: 'hours_of_use',
+    dataIndex: 'hour',
     width: '15%',
   },
   {
     title: 'Blackout',
-    dataIndex: 'blackout',
+    dataIndex: 'blackOut',
     width: '20%',
   },
 ];
@@ -129,7 +129,7 @@ export const DemandAndStatisticsColumn = [
     width: '26%',
     render: (data) => {
       const { date, unit, value } = data;
-      const dateValues = modifyStatisTicDate(date);
+      const dateValues = date && date.length > 2 ? modifyStatisTicDate(date) : '';
       return `${value + unit} ${dateValues}`;
     }
   },
@@ -139,7 +139,7 @@ export const DemandAndStatisticsColumn = [
     width: '26%',
     render: (data) => {
       const { date, unit, value } = data;
-      const dateValues = modifyStatisTicDate(date);
+      const dateValues = date && date.length > 2 ? modifyStatisTicDate(date) : '';
       return `${value + unit} ${dateValues}`;
     }
   },
@@ -148,10 +148,10 @@ export const DemandAndStatisticsColumn = [
     dataIndex: 'peak_avg_usage_day',
     width: '17%',
     render: (data) => {
-      const { day, unit, value } = data;
-      // find way to remove s at the end if its there
-
-      return `${value + unit} (${day[0].toUpperCase()}${day.slice(1)})`
+      const { date, unit, value } = data;
+      // get the date with slash
+      const dateValues = date && date.length > 2 ? modifyStatisTicDate(date) : '';
+      return `${value + unit} ${dateValues}`;
     }
   },
 ];
@@ -167,10 +167,9 @@ export const DemandAndStatisticsTwoColumn = [
     dataIndex: 'min_avg_usage_day',
     width: '16%',
     render: (data) => {
-      const { day, unit, value } = data;
-      // find way to remove s at the end if its there
-
-      return `${value + unit} (${day[0].toUpperCase()}${day.slice(1)})`
+      const { date, unit, value } = data;
+      const dateValues = date && modifyStatisTicDateWithTime(date);
+      return `${value + unit}  ${date ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
     }
   },
   {
@@ -179,8 +178,8 @@ export const DemandAndStatisticsTwoColumn = [
     width: '26%',
     render: (data) => {
       const { day, unit, value } = data;
-      const dateValues = modifyStatisTicDateWithTime(day);
-      return `${value + unit} (${dateValues.deteOnly}), ${dateValues.timeOnly}`;
+      const dateValues = day && modifyStatisTicDateWithTime(day);
+      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
     }
   },
   {
@@ -189,8 +188,8 @@ export const DemandAndStatisticsTwoColumn = [
     width: '26%',
     render: (data) => {
       const { day, unit, value } = data;
-      const dateValues = modifyStatisTicDateWithTime(day);
-      return `${value + unit} (${dateValues.deteOnly}), ${dateValues.timeOnly}`;
+      const dateValues = day && modifyStatisTicDateWithTime(day);
+      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
     }
   },
   {
