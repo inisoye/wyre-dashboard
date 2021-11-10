@@ -281,10 +281,9 @@ function ScoreCard({ match }) {
           </p>
 
           <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
-            <div>
               <span>{message}</span>
               <EcoFriendlyIcon className="ecoFriendlyIcon" />
-            </div>
+
             {/* <span>{message}</span> */}
             {/* <span className='score-card-bottom-text-small'>
               {noOfTrees}

@@ -101,6 +101,23 @@ const getPeakToAverageMessage = (peakRatio) => {
   return { message: peakMessage, color: peakMessageColor }
 }
 
+const getGeneratorSizeMessage = (percent) => {
+  const ratio = (percent / 100);
+  let message;
+  let color;
+  if (ratio > 0.79) {
+    message = 'Overloaded';
+    color = '#008000';
+  } else if (ratio >= 0.6) {
+    message = 'Eficient Loading';
+    color = '#FFBF00';
+  } else {
+    message = 'Under Utilized';
+    color = '#fa0303';
+  }
+  return { message, color }
+}
+
 const getBaselineEnergyColor = (inbound) => {
   let peakMessageColor;
   if (Number(inbound) > 0) {
@@ -405,7 +422,7 @@ const sumBaselineEnergies = (array) => {
   const forecastValues = array && array?.map((eachItem) => eachItem?.forecast);
   const usedValues = array && array?.map((eachItem) => eachItem?.used);
   const forecastTotal = forecastValues && forecastValues?.reduce((acc, curr) => acc + curr, 0);
-  const usedTotal =usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
+  const usedTotal = usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
 
   return { unit: 'kwh', forecast: forecastTotal, used: usedTotal };
 };
@@ -538,10 +555,10 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
     dates?.dates || dates
   );
   // Add date objects and device name to data
-  if(parameterData){
+  if (parameterData) {
     parameterData.dates = parameterDateObjects || null;
   }
-  
+
   return { ...parameterData, dates: parameterDateObjects };
 };
 
@@ -557,14 +574,14 @@ const modifyStatisTicDateWithTime = (date) => {
   const dateWithoutBracket = date.replace(/[()]/g, '');
   const dateDay = dateWithoutBracket.split(" ")[0];
   const splitString = dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1).split(" ");
-  let deteOnlySlice = splitString.slice(0, splitString.length -1).join(' ');
+  let deteOnlySlice = splitString.slice(0, splitString.length - 1).join(' ');
   const deteOnly = new Date(deteOnlySlice).toLocaleDateString();
-  let timeOnly = splitString.slice(splitString.length -1)[0];
+  let timeOnly = splitString.slice(splitString.length - 1)[0];
 
-  if(timeOnly[timeOnly.length -1] === '.'){
+  if (timeOnly[timeOnly.length - 1] === '.') {
     timeOnly = timeOnly.substring(0, timeOnly.length - 1);
   }
-  return {dateDay, deteOnly, timeOnly}
+  return { dateDay, deteOnly, timeOnly }
 };
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
@@ -779,5 +796,6 @@ export {
   sortArrayOfObjectByDate,
   generateAppDateRange,
   allCheckedDeviceGenerators,
-  allCostTrackerBranchesBaseline
+  allCostTrackerBranchesBaseline,
+  getGeneratorSizeMessage
 };

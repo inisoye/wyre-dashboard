@@ -16,7 +16,7 @@ const RecordCard = ({ header, type, icon, value, rate, unit, footer }) => {
       {footer}
       {type === 'CO2Score' &&
         <p className='co2-footprint-footer-extra'>
-          Equivalent to {value * 6} large Acacia trees
+          Equivalent to {Number(value * 6).toFixed(2)} large Acacia trees
         </p>
       }
     </p>

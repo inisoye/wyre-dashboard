@@ -16,8 +16,9 @@ const getAll = (userId, token, dateRange) => {
   );
   return request.then((response) => response.data.data);
 };
+const dateData = deviceHttp.endpointDateRange.split('/')[0]
 
 // eslint-disable-next-line
 export default {
-  getAll,
+  getAll, dateData
 };

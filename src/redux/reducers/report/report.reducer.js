@@ -1,9 +1,11 @@
-
+import moment from 'moment';
 import reportType from './reducer.types';
 
 const INITIAL_STATE = {
   fetchReportLoading: false,
   reportData: false,
+  selectedDateType: 'month',
+  selectedDate: moment().format('DD-MM-YYYY'),
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -23,6 +25,16 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         reportData: action.payload,
+      };
+    case reportType.CHANGE_DATE_TYPE:
+      return {
+        ...state,
+        selectedDateType: action.payload,
+      };
+    case reportType.CHANGE_DATE:
+      return {
+        ...state,
+        selectedDate: action.payload,
       };
 
     default: return state;

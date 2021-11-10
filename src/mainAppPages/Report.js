@@ -1,12 +1,9 @@
 import React, { useEffect, useContext, useState } from 'react';
+import moment from 'moment';
 
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
-
-
-import ReportHttpServices from '../services/report';
-import dataHttpServices from '../services/devices';
 
 import GenericReportTable from '../components/tables/reportTables/GenericReportTable';
 import ReportDailyConsumptionBar from '../components/barCharts/ReportDailyConsumptionBar';
@@ -27,6 +24,9 @@ import {
   LoadImbalanceColumns, PowerDemandColumns, TimeOfUseColumns
 } from '../helpers/tableColumns';
 import Loader from '../components/Loader';
+import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
+import { connect, useSelector } from 'react-redux';
+import { fetchReportData } from '../redux/actions/report/report.action';
 
 
 const breadCrumbRoutes = [
@@ -35,15 +35,14 @@ const breadCrumbRoutes = [
 ];
 
 
-function Report({ match }) {
+function Report({ match, fetchReportData: fetchReport }) {
   const [reportPageData, setReportPageData] = useState({});
   const [timeOfUseData, setTimeOfUseData] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [serchDate, setSearchDate] = useState(moment().format('DD-MM-YYYY'));
+  // const [reportDateType, setReportDateType] = useState('month');
+  const report = useSelector((state) => state.report);
   const {
     setCurrentUrl,
-    token,
-    userId,
-    userDateRange
   } = useContext(CompleteDataContext);
 
 
@@ -54,15 +53,12 @@ function Report({ match }) {
   }, [match, setCurrentUrl]);
 
   useEffect(() => {
-    ReportHttpServices.getAll(userId, token, userDateRange).then((returnedData) => {
-      setIsLoading(false);
-      setReportPageData(returnedData)
-    }
-    );
-  }, [userDateRange]);
+    fetchReport(report.selectedDate, report.selectedDateType);
+  }, [report.selectedDateType, report.selectedDate]);
 
-
-
+  useEffect(() => {
+    setReportPageData(report.reportData)
+  }, [report.reportData]);
 
 
   const {
@@ -98,7 +94,7 @@ function Report({ match }) {
     setTimeOfUseData(timeOfUse);
   }, [reportPageData]);
 
-  if (isLoading || !userId) {
+  if (report.fetchReportLoading) {
     return <Loader />;
   }
 
@@ -170,7 +166,7 @@ function Report({ match }) {
                 <h2 className="report-pie-heading">
                   Load Imbalance Occurence
                 </h2>
-                <GenericReportTable data={load_imbalance}
+                <LoadImbalanceReportTable data={load_imbalance}
                   columnData={LoadImbalanceColumns} />
               </div>
             </div>
@@ -281,4 +277,8 @@ function Report({ match }) {
   );
 }
 
-export default Report;
+const mapDispatchToProps = {
+  fetchReportData
+};
+
+export default connect(null, mapDispatchToProps)(Report);

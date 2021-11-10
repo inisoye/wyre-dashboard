@@ -6,14 +6,13 @@ import CompleteDataContext from '../../Context';
 var colorHash = new ColorHash();
 
 const SourceConsumptionPieChart = ({ data }) => {
+
   const { isMediumScreen } = useContext(CompleteDataContext);
   const labels = [];
   const values = [];
-  Object.entries(data).map(([key, value]) => {
-    if (key.toLocaleLowerCase() !== 'unit') {
-      labels.push(key);
-      values.push(value);
-    }
+  data.map((eachData) => {
+      labels.push(eachData.name);
+      values.push(eachData.energy);
   });
 
   const plottedData = {

@@ -5,7 +5,7 @@ export const LoadImbalanceColumns = [
   {
     title: 'Max',
     dataIndex: 'max',
-    width: '20%',
+    width: '25%',
     render: (data) => {
       return `${Number(data).toFixed(2)}`;
     }
@@ -13,14 +13,14 @@ export const LoadImbalanceColumns = [
   {
     title: 'Min',
     dataIndex: 'min',
-    width: '20%',
+    width: '25%',
     render: (data) => {
       return `${Number(data).toFixed(2)}`;
     }
   },
   {
     title: 'Imbalance',
-    dataIndex: 'Imbalance',
+    dataIndex: 'imbalance',
     width: '25%',
   },
   {
