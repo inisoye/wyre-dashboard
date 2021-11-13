@@ -44,12 +44,7 @@ const MiniDoubleCard = ({ percentage, metrics, type, icon, header }) => {
       </div>
       <div className="report-card-2__bottom">
         <p>
-          You lost approximately sample text
-          <span className="report-card-2-bottom__value">
-            ₦
-            {/* {papr &&
-            numberFormatter(total_energy_consumed.amount_lost)} */}
-          </span>
+        PaPr- Percentage of average load to peak load at facility
         </p>
       </div>
     </div>

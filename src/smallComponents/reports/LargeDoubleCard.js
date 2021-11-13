@@ -34,7 +34,7 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
           </>
           <div className="report-card-1-paragraph">
             <p>
-              Total Energy Consumed
+              Forcast to rate percentage
               <span className="report-card-2-bottom__value">
                 ₦
                 {/* {papr &&
@@ -66,7 +66,7 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
           </div>
           <div className="report-card-2-large__bottom">
             <p>
-              You {(baseLine.consumption - baseLine.forcast) > 0? 'Lost': 'Gained'} Approximately
+              You {(baseLine.consumption - baseLine.forcast) > 0? 'Lost': 'Gained'} Approximately{' '}
               <span className="report-card-2-bottom__value">
                 ₦{(baseLine.consumption - baseLine.forcast) > 0? (baseLine.consumption - baseLine.forcast).toFixed(2) : (baseLine.forcast - baseLine.consumption).toFixed(2)  }
               </span>
