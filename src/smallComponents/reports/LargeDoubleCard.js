@@ -35,11 +35,6 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
           <div className="report-card-1-paragraph">
             <p>
               Forcast to rate percentage
-              <span className="report-card-2-bottom__value">
-                ₦
-                {/* {papr &&
-            numberFormatter(total_energy_consumed.amount_lost)} */}
-              </span>
             </p>
           </div>
         </div>
