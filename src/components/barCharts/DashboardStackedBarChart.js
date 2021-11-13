@@ -5,10 +5,9 @@ import CompleteDataContext from '../../Context';
 import {
   getLastArrayItems,
   convertDateStringsToObjects,
-  formatParametersDatetimes,
   formatParametersDates,
 } from '../../helpers/genericHelpers';
-import { numberFormatter } from '../../helpers/numberFormatter';
+
 
 const DashboardStackedBarChart = ({ data, organization }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -22,8 +21,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] 
-          && (numberFormatter(data['datasets'][0]['data'][tooltipItem['index']]));
+          return data['datasets'][0]['data'][tooltipItem['index']] && Number(tooltipItem.value).toFixed(2);
         },
       },
       footerFontStyle: 'normal',

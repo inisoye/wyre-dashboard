@@ -6,7 +6,7 @@ const colorSelector = {
   paprScore: { backgroundColor: '#FFFBE5', color: '#FFD400' }
 }
 
-const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
+const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
   const color = colorSelector[type];
   const Component = icon;
   return (
@@ -21,14 +21,14 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
                 <Component style={{ stroke: color, fill: color.color }} className='report-card-icon' />
               </div>
               <p className="report-card-large-percentage">
-                {Number(percentage.value).toFixed(2) + percentage.unit}
+                {(Number((baseLine.forcast / baseLine.consumption) * 100)) + '%'}
               </p>
             </div>
 
             <div className="report-card-1-rating">
               <Rate
                 allowHalf
-                value={percentage.rate}
+                value={baseLine.rate}
               />
             </div>
           </>
@@ -51,7 +51,7 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
               </span>
               <span className="report-card-2-topright-large__value">
                 {
-                  roundToDecimalPLace(metrics?.peak).toFixed(2) + metrics?.units}
+                  roundToDecimalPLace(baseLine.forcast) + baseLine?.unit}
               </span>
             </p>
 
@@ -60,16 +60,15 @@ const LargeDoubleCard = ({ percentage, metrics, type, icon, header }) => {
                 Savings{' '}
               </span>
               <span className="report-card-2-topright__value">
-                {
-                  roundToDecimalPLace(metrics?.average).toFixed(2) + metrics?.units}
+                {roundToDecimalPLace(baseLine.consumption) + baseLine.unit}
               </span>
             </p>
           </div>
           <div className="report-card-2-large__bottom">
             <p>
-              Total Energy Consumed
+              You {(baseLine.consumption - baseLine.forcast) > 0? 'Lost': 'Gained'} Approximately
               <span className="report-card-2-bottom__value">
-                ₦
+                ₦{(baseLine.consumption - baseLine.forcast) > 0? (baseLine.consumption - baseLine.forcast).toFixed(2) : (baseLine.forcast - baseLine.consumption).toFixed(2)  }
               </span>
             </p>
           </div>

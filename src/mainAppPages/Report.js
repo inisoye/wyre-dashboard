@@ -27,6 +27,8 @@ import Loader from '../components/Loader';
 import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
 import { connect, useSelector } from 'react-redux';
 import { fetchReportData } from '../redux/actions/report/report.action';
+import ReportBarAndLineChart from '../components/barCharts/ReportBarAndLineChart';
+import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 
 
 const breadCrumbRoutes = [
@@ -52,6 +54,13 @@ function Report({ match, fetchReportData: fetchReport }) {
     }
   }, [match, setCurrentUrl]);
 
+  const energyConsumptionCombined = (allArray) => {
+    const consumption= []
+    Object.values(allArray).map((data) => {
+      consumption.push(...data);
+    });
+    return consumption;
+  } 
   useEffect(() => {
     fetchReport(report.selectedDate, report.selectedDateType);
   }, [report.selectedDateType, report.selectedDate]);
@@ -66,6 +75,8 @@ function Report({ match, fetchReportData: fetchReport }) {
     total_energy_consumption,
     power_demand,
     papr,
+    baseline,
+    carbon_emmissions,
     source_consumption,
     load_imbalance,
     time_of_use,
@@ -74,6 +85,7 @@ function Report({ match, fetchReportData: fetchReport }) {
     cost_implication,
     daily_consumption,
     demand_statistic,
+    energy_consumption,
   } = Object.values(reportPageData)[0] ? Object.values(reportPageData)[0] : {};
 
   let powerDemand = []
@@ -81,18 +93,21 @@ function Report({ match, fetchReportData: fetchReport }) {
     powerDemand.push({ key, ...value })
   })
 
-
+  // Object.values(energy_consumption).map((data) => {
+  //   console.log('this is the way odj theoisjodkjoskj ===========================>>>>>>>>>>>>>>', data); 
+  // })
 
   useEffect(() => {
     const timeOfUse = time_of_use && time_of_use.devices.map((deviceName, index) => {
       return {
         name: deviceName,
         hour: time_of_use.hours[index],
-        blackOut: time_of_use.black_out - time_of_use.hours[index],
+        blackOut: Number(time_of_use.period_total_hours - time_of_use.hours[index]).toFixed(2),
       }
     });
     setTimeOfUseData(timeOfUse);
   }, [reportPageData]);
+
 
   if (report.fetchReportLoading) {
     return <Loader />;
@@ -132,16 +147,16 @@ function Report({ match, fetchReportData: fetchReport }) {
       <div className="report-row-1">
         <div className="report-row-1__content">
           {
-            period_score &&
-            <RecordCard {...period_score}
+            carbon_emmissions &&
+            <RecordCard {...carbon_emmissions}
               header='Co2 Footprint'
               footer="Carbondioxide Emmission"
               icon={CO2Icon} type='CO2Score' />
           }
           {
-            period_score &&
-            <LargeDoubleCard percentage={papr.percentage}
-              metrics={papr.metrics} type='paprScore'
+            baseline &&
+            <LargeDoubleCard baseLine={baseline}
+              metrics={baseline?.unit} type='paprScore'
               header='Baseline Consumption'
               icon={DownWithBaseLine} />
           }
@@ -209,6 +224,19 @@ function Report({ match, fetchReportData: fetchReport }) {
                 Daily Energy Consumption
               </h2>
               <ReportDailyConsumptionBar dailyConsumptionData={daily_consumption}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="report-full-width-rows-fit-content">
+        <div className="report-row-1__content">
+          {energy_consumption && (
+            <div className="report-double-chart-container">
+              <h2 className="report-pie-heading">
+                Energy Consumption
+              </h2>
+              <EnergyConsumptionMultipleChart energyData={energyConsumptionCombined(energy_consumption)}
               />
             </div>
           )}

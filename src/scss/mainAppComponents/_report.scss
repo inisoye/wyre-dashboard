@@ -178,10 +178,20 @@
 }
 
 .report-chart-container{
-  height: 240px;
+  min-height: 280px;
   background-color: $white;
   padding-bottom: 30px;
   border-radius: 10px;
+  width: 100%;
+  @include media('<1200px') {
+    width: 100%;
+  }
+}
+.report-double-chart-container{
+  min-height: 480px;
+  background-color: $white;
+  border-radius: 10px;
+  width: 100%;
   @include media('<1200px') {
     width: 100%;
   }
@@ -197,12 +207,6 @@
   padding: 0 10px 10px 10px;
 }
 
-.report-chart-container {
-  @include media('>=1200px') {
-    min-height: 280px;
-    width: 100%;
-  }
-}
 
 .report-table { 
   font-size: 1.6rem;
@@ -232,6 +236,11 @@
   width: 100%;
   margin-bottom: 30px;
   // height: 280px;
+}
+.report-full-width-rows-fit-content{
+  width: 100%;
+  margin-bottom: 30px;
+  height: fit-content;
 }
 
 .report-bar-chart__chart-wrapper {

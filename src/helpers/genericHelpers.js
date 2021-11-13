@@ -107,13 +107,15 @@ const getGeneratorSizeMessage = (percent) => {
   let color;
   if (ratio > 0.79) {
     message = 'Overloaded';
-    color = '#008000';
+    color = '#fa0303';
+    
   } else if (ratio >= 0.6) {
     message = 'Eficient Loading';
-    color = '#FFBF00';
+    color = '#008000';
   } else {
     message = 'Under Utilized';
-    color = '#fa0303';
+    color = '#FFBF00';
+    
   }
   return { message, color }
 }
@@ -739,6 +741,27 @@ const generateAppDateRange = (newEndpointDateRange) => {
   return datdata;
 };
 
+// data to combine multiple dates data of the same month
+const combineSameMonthData = (dateArray) => {
+  let forcastedData = {};
+  let usedData = {};
+  if (dateArray.length > 0) {
+    dateArray.map((data) => {
+      if (forcastedData[data.date] != null) {
+        forcastedData[data.date] = Number(data.forecast) + forcastedData[data.date];
+      } else {
+        forcastedData[data.date] = Number(data.forecast);
+      }
+      if (usedData[data.date] != null) {
+        usedData[data.date] = usedData[data.date] +  Number(data.used);
+      } else {
+        usedData[data.date] = Number(data.used);
+      }
+
+    })
+  }
+  return { forcastedData, usedData };
+}
 
 
 export {
@@ -797,5 +820,6 @@ export {
   generateAppDateRange,
   allCheckedDeviceGenerators,
   allCostTrackerBranchesBaseline,
-  getGeneratorSizeMessage
+  getGeneratorSizeMessage,
+  combineSameMonthData
 };

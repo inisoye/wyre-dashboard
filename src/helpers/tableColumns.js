@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { modifyStatisTicDate, 
   modifyStatisTicDateWithTime } from "./genericHelpers";
 
@@ -25,8 +26,11 @@ export const LoadImbalanceColumns = [
   },
   {
     title: 'Date/Time',
-    dataIndex: 'datetime',
+    dataIndex: 'time',
     key: 'datetime',
+    render: (date) => {
+      return moment(date).format('DD-MM-YYYY');
+    }
   },
 ];
 
@@ -54,13 +58,13 @@ export const FuelConsumption = [
     width: '20%',
   },
   {
-    title: 'Disle Consumed',
-    dataIndex: 'hours_of_use',
+    title: 'Diesle Consumed',
+    dataIndex: 'energy',
     width: '15%',
   },
   {
-    title: 'Cost',
-    dataIndex: 'diesel_consumed',
+    title: 'Cost(₦)',
+    dataIndex: 'cost',
     width: '20%',
   },
 
