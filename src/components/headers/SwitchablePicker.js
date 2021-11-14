@@ -30,7 +30,7 @@ const SwitchablePicker = ()=> {
         <Option value="month">Month</Option>
         <Option value="year">Year</Option>
       </Select>
-      <PickerWithType type={type} onChange={(value, b) => onDateSelect(value, type) } />
+      <PickerWithType type={type} onChange={(value, _) => onDateSelect(value, type) } />
     </Space>
   );
 };

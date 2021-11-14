@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import moment from 'moment';
+
+import { useDispatch } from 'react-redux'
 
 import CompleteDataContext from '../Context';
 
@@ -27,8 +28,9 @@ import Loader from '../components/Loader';
 import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
 import { connect, useSelector } from 'react-redux';
 import { fetchReportData } from '../redux/actions/report/report.action';
-import ReportBarAndLineChart from '../components/barCharts/ReportBarAndLineChart';
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
+import { loadReportPage } from '../redux/actions/setting/actionCreators';
+import { isEmpty } from '../helpers/authHelper';
 
 
 const breadCrumbRoutes = [
@@ -40,8 +42,7 @@ const breadCrumbRoutes = [
 function Report({ match, fetchReportData: fetchReport }) {
   const [reportPageData, setReportPageData] = useState({});
   const [timeOfUseData, setTimeOfUseData] = useState(false);
-  // const [serchDate, setSearchDate] = useState(moment().format('DD-MM-YYYY'));
-  // const [reportDateType, setReportDateType] = useState('month');
+  const [pageLoaded, setPageLoaded] = useState(false);
   const report = useSelector((state) => state.report);
   const {
     setCurrentUrl,
@@ -61,8 +62,19 @@ function Report({ match, fetchReportData: fetchReport }) {
     });
     return consumption;
   } 
+
   useEffect(() => {
-    fetchReport(report.selectedDate, report.selectedDateType);
+    if(!pageLoaded && isEmpty(report.reportData|| {})){
+      fetchReport(report.selectedDate, report.selectedDateType);
+      setPageLoaded(true);
+    }
+    setPageLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if(!isEmpty(report.reportData) > 0 && pageLoaded){
+      fetchReport(report.selectedDate, report.selectedDateType);
+    }
   }, [report.selectedDateType, report.selectedDate]);
 
   useEffect(() => {
@@ -92,10 +104,6 @@ function Report({ match, fetchReportData: fetchReport }) {
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
   })
-
-  // Object.values(energy_consumption).map((data) => {
-  //   console.log('this is the way odj theoisjodkjoskj ===========================>>>>>>>>>>>>>>', data); 
-  // })
 
   useEffect(() => {
     const timeOfUse = time_of_use && time_of_use.devices.map((deviceName, index) => {
