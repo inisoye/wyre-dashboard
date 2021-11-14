@@ -1,10 +1,13 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { getGeneratorSizeMessage } from '../../helpers/genericHelpers';
 
 const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
   const { size, usage, unit, name } = data
     ? data
     : { size: '', usage: '', unit: '', name: '' };
+
+  const colorAndMessage = getGeneratorSizeMessage(usage);
 
   const chartLabels = ['Used', 'Unused'];
   const chartData = [usage, 100 - usage];
@@ -85,7 +88,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
           {usage}
           {unit} Load
         </p>
-        <p className='h-green-text'>Good</p>
+        <p style={{ color: getGeneratorSizeMessage(usage).color }} >{getGeneratorSizeMessage(usage).message}</p>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-const CostTrackerEnergyConsumptionBarChart = ({ baseLineData = [] }) => {
+const EnergyConsumptionMultipleChart = ({ energyData = [] }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
   const [forcastedData, setForcastedData] = useState(false);
   const [usedData, setUsedData] = useState(false);
@@ -36,11 +36,11 @@ const CostTrackerEnergyConsumptionBarChart = ({ baseLineData = [] }) => {
     return Object.assign({}, ...mapped);
   }
   useEffect(() => {
-    const { forcastedData: forcast, usedData: used } = combineSameData(baseLineData);
+    const { forcastedData: forcast, usedData: used } = combineSameData(energyData);
     setForcastedData(forcast);
     setUsedData(used);
 
-  }, [baseLineData]);
+  }, [energyData]);
 
 
   const options = {
@@ -141,4 +141,4 @@ const CostTrackerEnergyConsumptionBarChart = ({ baseLineData = [] }) => {
   );
 };
 
-export default CostTrackerEnergyConsumptionBarChart;
+export default EnergyConsumptionMultipleChart;

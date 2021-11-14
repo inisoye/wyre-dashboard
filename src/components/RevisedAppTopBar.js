@@ -9,6 +9,7 @@ import dataHttpServices from '../services/devices';
 
 import { CaretDownFilled } from '@ant-design/icons';
 import NewAppTopBar from './NewAppTopBar';
+import SwitchablePicker from './headers/SwitchablePicker';
 
 const { Option } = Select;
 
@@ -36,11 +37,19 @@ function RevisedAppTopBar() {
     'time-of-use',
   ];
 
+  const pageWithSwitchablePicker = [
+    'report',
+  ];
+
   const isDateTimePickerDisplayed = pagesWithDateTimePickers.some((page) =>
     currentUrl.includes(page)
   );
 
   const isTimeIntervalSelectorDisplayed = pagesWithTimeIntervalSelector.some(
+    (page) => currentUrl.includes(page)
+  );
+
+  const isPageWithSwitchableSelector = pageWithSwitchablePicker.some(
     (page) => currentUrl.includes(page)
   );
 
@@ -103,7 +112,15 @@ function RevisedAppTopBar() {
             </Option>
           </Select>
         </div>
-
+        <div
+          className={
+            isPageWithSwitchableSelector
+              ? 'switch-table-picker-container'
+              : 'switch-table-picker-container h-hide'
+          }
+        >
+          <SwitchablePicker />
+        </div>
         <div
           className={
             isPlottedUnitSelectorDisplayed
@@ -139,7 +156,7 @@ function RevisedAppTopBar() {
         </div>
       </div>
 
-      { organization.branches && organization.branches.length === 1 ?
+      {organization.branches && organization.branches.length === 1 ?
         <div
           className={
             isTopBarCostTrackerRightDisplayed
@@ -157,8 +174,8 @@ function RevisedAppTopBar() {
             Add Equipment
           </Link>
         </div>
-         : null
-        }
+        : null
+      }
       <div
         className={
           isTopBarUserBranchesRightDisplayed

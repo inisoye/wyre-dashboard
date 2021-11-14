@@ -26,9 +26,10 @@ function Sidebar({ fetchSideBar: fetchSideBarData}) {
   return (
     <div
       className={
-        isReportPageOpen
-          ? 'h-hide'
-          : isSidebarOpen
+        // isReportPageOpen
+        //   ? 'h-hide'
+        //   : 
+          isSidebarOpen
           ? 'sidebar'
           : 'sidebar h-hidden-medium-down'
       }

@@ -1,12 +1,24 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3006/reportData';
+import deviceHttp from './devices';
 
-const getAll = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
+
+const baseUrl = process.env.REACT_APP_API_URL;
+
+const getAll = (userId, token, dateRange) => {
+  const dateData = dateRange.length > 0 ? deviceHttp.convertDateRangeToEndpointFormat(dateRange) : deviceHttp.endpointDateRange.split('/')[0]
+  const request = axios.get(`${baseUrl}get_reports/${userId}/${dateData}/month`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${token}`,
+      },
+    }
+  );
+  return request.then((response) => response.data.data);
 };
+const dateData = deviceHttp.endpointDateRange.split('/')[0]
 
 // eslint-disable-next-line
 export default {
-  getAll,
+  getAll, dateData
 };

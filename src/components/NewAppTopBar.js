@@ -116,8 +116,8 @@ function NewAppTopBar() {
   const onApplyClick = () => {
 
     setUserDateRange(selectedDate);
-    setSelectedDateRange([moment(selectedDate[0]).format('YYYY-MM-DD HH:mm'),
-    moment(selectedDate[1]).format('YYYY-MM-DD HH:mm')]);
+    setSelectedDateRange([moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'),
+    moment(selectedDate[1]).format('DD-MM-YYYY HH:mm')]);
     dataHttpServices.setEndpointDateRange(selectedDate);
     setOpenModal(false);
   }

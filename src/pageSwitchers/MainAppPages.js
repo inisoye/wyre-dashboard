@@ -47,11 +47,12 @@ function MainAppPages() {
 
         <main
           className={
-            isReportPageOpen ? 'main-container h-full-width' : 'main-container'
+            // isReportPageOpen ? 'main-container h-full-width' : 
+            'main-container'
           }
         >
           <div className='old-top-bar-monitor'>
-            <TopBar  />
+            <TopBar />
           </div>
           <div className='newTopbar-monitor'>
             <RevisedAppTopBar />

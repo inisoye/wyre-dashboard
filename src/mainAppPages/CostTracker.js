@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Spin } from 'antd';
 import { connect, useSelector } from 'react-redux';
 
 import CompleteDataContext from '../Context';
@@ -12,7 +11,7 @@ import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
 import { fetchCostTrackerData } from '../redux/actions/constTracker/costTracker.action';
 import { allCostTrackerBranchesBaseline } from '../helpers/genericHelpers';
-import CostTrackerEnergyConsumptionBarChart from '../components/barCharts/CostTrackerEnergyConsumption';
+import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import Loader from '../components/Loader';
 
 
@@ -131,7 +130,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
           Energy Consumption at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerEnergyConsumptionBarChart baseLineData={baseLineData} />
+          <EnergyConsumptionMultipleChart energyData={baseLineData} />
         </div>
       </article>
     ))

@@ -101,6 +101,25 @@ const getPeakToAverageMessage = (peakRatio) => {
   return { message: peakMessage, color: peakMessageColor }
 }
 
+const getGeneratorSizeMessage = (percent) => {
+  const ratio = (percent / 100);
+  let message;
+  let color;
+  if (ratio > 0.79) {
+    message = 'Overloaded';
+    color = '#fa0303';
+    
+  } else if (ratio >= 0.6) {
+    message = 'Eficient Loading';
+    color = '#008000';
+  } else {
+    message = 'Under Utilized';
+    color = '#FFBF00';
+    
+  }
+  return { message, color }
+}
+
 const getBaselineEnergyColor = (inbound) => {
   let peakMessageColor;
   if (Number(inbound) > 0) {
@@ -405,7 +424,7 @@ const sumBaselineEnergies = (array) => {
   const forecastValues = array && array?.map((eachItem) => eachItem?.forecast);
   const usedValues = array && array?.map((eachItem) => eachItem?.used);
   const forecastTotal = forecastValues && forecastValues?.reduce((acc, curr) => acc + curr, 0);
-  const usedTotal =usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
+  const usedTotal = usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
 
   return { unit: 'kwh', forecast: forecastTotal, used: usedTotal };
 };
@@ -538,11 +557,33 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
     dates?.dates || dates
   );
   // Add date objects and device name to data
-  if(parameterData){
+  if (parameterData) {
     parameterData.dates = parameterDateObjects || null;
   }
-  
+
   return { ...parameterData, dates: parameterDateObjects };
+};
+
+// modify date in report to the right format
+const modifyStatisTicDate = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const dateOnly = new Date(dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1)).toLocaleDateString();
+  return `(${dateDay}, ${dateOnly})`;
+};
+
+const modifyStatisTicDateWithTime = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const splitString = dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1).split(" ");
+  let deteOnlySlice = splitString.slice(0, splitString.length - 1).join(' ');
+  const deteOnly = new Date(deteOnlySlice).toLocaleDateString();
+  let timeOnly = splitString.slice(splitString.length - 1)[0];
+
+  if (timeOnly[timeOnly.length - 1] === '.') {
+    timeOnly = timeOnly.substring(0, timeOnly.length - 1);
+  }
+  return { dateDay, deteOnly, timeOnly }
 };
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
@@ -700,6 +741,27 @@ const generateAppDateRange = (newEndpointDateRange) => {
   return datdata;
 };
 
+// data to combine multiple dates data of the same month
+const combineSameMonthData = (dateArray) => {
+  let forcastedData = {};
+  let usedData = {};
+  if (dateArray.length > 0) {
+    dateArray.map((data) => {
+      if (forcastedData[data.date] != null) {
+        forcastedData[data.date] = Number(data.forecast) + forcastedData[data.date];
+      } else {
+        forcastedData[data.date] = Number(data.forecast);
+      }
+      if (usedData[data.date] != null) {
+        usedData[data.date] = usedData[data.date] +  Number(data.used);
+      } else {
+        usedData[data.date] = Number(data.used);
+      }
+
+    })
+  }
+  return { forcastedData, usedData };
+}
 
 
 export {
@@ -744,6 +806,8 @@ export {
   allDeviceGenerators,
   roundToDecimalPLace,
   sumOfArrayElements,
+  modifyStatisTicDate,
+  modifyStatisTicDateWithTime,
   generateLoadCosumptionChartData,
   generateRunningTimeChartData,
   refineLoadOverviewData,
@@ -755,5 +819,7 @@ export {
   sortArrayOfObjectByDate,
   generateAppDateRange,
   allCheckedDeviceGenerators,
-  allCostTrackerBranchesBaseline
+  allCostTrackerBranchesBaseline,
+  getGeneratorSizeMessage,
+  combineSameMonthData
 };

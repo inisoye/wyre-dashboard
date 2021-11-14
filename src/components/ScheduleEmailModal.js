@@ -321,7 +321,6 @@ export const ScheduleEmailModal = () => {
   //   </Menu>
   // );
 
-  console.log('ehere is the email data ==============>>>>>>>>>>', emailModalData)
 
   const frequencyDropDownList = (
     <Menu onClick={handleFrequencyMenuClick} selectedKeys={[frequencyDropdown]}>
