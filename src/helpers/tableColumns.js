@@ -29,7 +29,7 @@ export const LoadImbalanceColumns = [
     dataIndex: 'time',
     key: 'datetime',
     render: (date) => {
-      return moment(date).format('DD-MM-YYYY');
+      return moment(date).format('DD-MM-YYYY HH:MM:SS');
     }
   },
 ];
@@ -41,7 +41,7 @@ export const TimeOfUseColumns = [
     width: '20%'
   },
   {
-    title: 'Hourse of Use',
+    title: 'House of Use',
     dataIndex: 'hour',
     width: '15%',
   },
@@ -61,11 +61,13 @@ export const FuelConsumption = [
     title: 'Diesle Consumed',
     dataIndex: 'energy',
     width: '15%',
+    render: (energy) => energy.toFixed(2)
   },
   {
     title: 'Cost(₦)',
     dataIndex: 'cost',
     width: '20%',
+    render: (cost) => cost.toFixed(2)
   },
 
 ];
@@ -75,7 +77,7 @@ export const GeneratorEfficiency = [
     dataIndex: 'name',
   },
   {
-    title: 'Size Efficiencty',
+    title: 'Size Efficiency',
     dataIndex: 'size_efficiency',
   },
   {

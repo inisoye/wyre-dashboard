@@ -29,19 +29,29 @@
     width: 32%;
   }
 
-  &.report-card-2 {
-    height: auto;
+  // &.report-card-2 {
+  //   height: auto;
 
-    @include media('>=792px') {
-      height: 240px;
+  //   @include media('>=792px') {
+  //     height: 240px;
+  //   }
+  // }
+
+  @include media('>=792px', '<1076px') {
+
+    height: 300px !important;
+
+    .report-card-with-rate__icon-wrapper{
+      display: none;
     }
-  }
-
-  @include media('>=792px', '<970px') {
-    height: 300px;
 
     &.report-card-2 {
       height: 300px;
+    }
+  }
+  @include media('<792px') {
+    .report-card-with-rate__icon-wrapper{
+      display: flex;
     }
   }
 }
@@ -54,6 +64,12 @@
 .report-card-1-heading {
   font-weight: $semi-bold;
   font-size: 2.2rem;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
+  @include media('<760px') {
+    font-size: 2.5rem;
+  }
 }
 
 .report-card-icon {
@@ -74,6 +90,12 @@
   margin-bottom: auto;
   font-size: 4.8rem;
   font-weight: $medium;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
+  @include media('<380px') {
+    font-size: 2.5rem;
+  }
 }
 
 .report-card-1-rating {
@@ -116,6 +138,15 @@
 
   @include media('<380px') {
     margin: auto;
+  }
+  .report-card-2-topright__first, 
+  .report-card-2-topright__second{
+    @include media('>=792px', '<1076px') {
+      span{
+        font-size: 10px;
+      }
+    }
+
   }
 }
 .report-card-2__topleft-double {
@@ -160,6 +191,39 @@
     min-height: 280px;
     width: 100%;
     margin-bottom: 3rem;
+  }
+  @include media('<792px') {
+    margin-bottom: 3rem;
+  }
+}
+.report-after-pie-table-container{
+  height: 240px;
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  @include media('>=1200px') {
+    min-height: 320px;
+    width: 49%;
+  }
+
+  @include media('>=792px', '<1200px') {
+    min-height: 280px;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  @include media('<792px') {
+    margin-bottom: 3rem;
+    height: 280px;
+  }
+}
+
+.report-loadimbalance-table{
+  height: 200px;
+  @include media('>792px') {
+    height: 240px;
+  }
+  @include media('<1200px') {
+    height: 220px;
   }
 }
 
@@ -255,8 +319,14 @@
 
 .report-card-1-percentage {
   /* margin-top: 24px; */
-  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
   font-weight: 500;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
   @include media('<380px') {
     font-size: 2.5rem;
   }
@@ -268,6 +338,19 @@
   margin-bottom: 30px;
   height: 240px;
 
+  @include media('>=792px', '<1076px') {
+
+    height: 300px;
+
+    .report-card-with-rate__icon-wrapper{
+      display: none;
+    }
+
+    &.report-card-2 {
+      height: 300px;
+    }
+  }
+
   @include media('>=792px') {
     width: 66%;
   }
@@ -275,9 +358,9 @@
   &.report-card-2 {
     height: auto;
 
-    @include media('>=792px') {
-      height: 250px;
-    }
+    // @include media('>=792px') {
+    //   height: 250px;
+    // }
   }
 
   @include media('>=792px', '<970px') {
@@ -287,6 +370,18 @@
       height: 300px;
     }
   }
+
+  @include media('<792px') {
+    .report-card-with-rate__icon-wrapper{
+      display: flex;
+    }
+  }
+}
+
+.report-row-1-card {
+  margin-bottom: 30px;
+  height: 240px;
+
 }
 
 .report-card-2__topleft {
