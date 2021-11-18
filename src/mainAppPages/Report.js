@@ -1,7 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
 
-import { useDispatch } from 'react-redux'
-
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
@@ -56,15 +54,15 @@ function Report({ match, fetchReportData: fetchReport }) {
   }, [match, setCurrentUrl]);
 
   const energyConsumptionCombined = (allArray) => {
-    const consumption= []
+    const consumption = []
     Object.values(allArray).map((data) => {
       consumption.push(...data);
     });
     return consumption;
-  } 
+  }
 
   useEffect(() => {
-    if(!pageLoaded && isEmpty(report.reportData|| {})){
+    if (!pageLoaded && isEmpty(report.reportData || {})) {
       fetchReport(report.selectedDate, report.selectedDateType);
       setPageLoaded(true);
     }
@@ -72,7 +70,7 @@ function Report({ match, fetchReportData: fetchReport }) {
   }, []);
 
   useEffect(() => {
-    if(!isEmpty(report.reportData) > 0 && pageLoaded){
+    if (!isEmpty(report.reportData) > 0 && pageLoaded) {
       fetchReport(report.selectedDate, report.selectedDateType);
     }
   }, [report.selectedDateType, report.selectedDate]);
@@ -141,7 +139,7 @@ function Report({ match, fetchReportData: fetchReport }) {
           {
             total_energy_consumption &&
             <RecordCard {...total_energy_consumption}
-              header='Total Energy Consumption'
+              header='Total Consumption'
               footer="Total Energy Consumption accross sources"
               icon={ElectricSpark} type='energyConsumptionScore' />
           }
@@ -184,7 +182,7 @@ function Report({ match, fetchReportData: fetchReport }) {
             }
           </div>
           {(
-            <div className="report-pie-container">
+            <div className="report-after-pie-table-container">
               <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Load Imbalance Occurence
@@ -229,7 +227,7 @@ function Report({ match, fetchReportData: fetchReport }) {
           {daily_consumption && (
             <div className="report-chart-container">
               <h2 className="report-pie-heading">
-                Daily Energy Consumption
+                Daily fuel consumption
               </h2>
               <ReportDailyConsumptionBar dailyConsumptionData={daily_consumption}
               />

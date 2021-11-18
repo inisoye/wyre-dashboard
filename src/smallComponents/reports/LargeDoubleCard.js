@@ -21,7 +21,7 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
                 <Component style={{ stroke: color, fill: color.color }} className='report-card-icon' />
               </div>
               <p className="report-card-large-percentage">
-                {(Number((baseLine.forcast / baseLine.consumption) * 100)) + '%'}
+                {(Number((baseLine.forcast / baseLine.consumption) * 100)).toFixed(2) + '%'}
               </p>
             </div>
 

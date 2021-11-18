@@ -12,7 +12,7 @@ const LoadImbalanceReportTable  = ({ data, columnData }) =>{
       columns={columnData}
       pagination={false}
       style={{textAlign: 'center'}}
-      className='report-table'
+      className='report-loadimbalance-table'
       size={'middle'}
     />
   );

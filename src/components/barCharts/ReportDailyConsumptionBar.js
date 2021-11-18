@@ -53,7 +53,7 @@ const ReportDailyConsumptionBar = ({ dailyConsumptionData, dataMessage }) => {
           scaleLabel: {
             display: true,
             padding: 10,
-            labelString: 'Quantity of Diesel Consumed',
+            labelString: 'Qty of Diesel Consumed',
             fontColor: 'black',
             fontSize: isMediumScreen ? 8 : 10,
           },
