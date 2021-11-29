@@ -442,6 +442,7 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
 const getRefinedBranchData = (data, isDatshboard=false) => {
   return {
     [data.name]: {
+      isBranch: true,
       name: data.name,
       // Dashboard Stuff
       ...getBranchEnergyData(data),

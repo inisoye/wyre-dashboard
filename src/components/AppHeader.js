@@ -115,7 +115,7 @@ function Header() {
             <VerticalDots className="headerMenu-button__image dotmenu-button__image" />
           </button>
 
-          <div className="header-logo-container">
+          {/* <div className="header-logo-container">
             <Link className="header-logo" to="/">
               <Logo
                 className={
@@ -126,7 +126,7 @@ function Header() {
                 }
               />
             </Link>
-          </div>
+          </div> */}
 
           <button
             type="button"

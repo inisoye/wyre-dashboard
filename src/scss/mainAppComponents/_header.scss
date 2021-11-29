@@ -6,14 +6,14 @@
 
   @include media('>=medium') {
     align-items: center;
-    background-image: linear-gradient(
-      to right,
-      $purple,
-      $purple 250.45px,
-      $white 0%,
-      $white 100%
-    );
-    box-shadow: $grey-box-shadow;
+    // background-image: linear-gradient(
+    //   to right,
+    //   $purple,
+    //   $purple 250.45px,
+    //   $white 0%,
+    //   $white 100%
+    // );
+    // box-shadow: $grey-box-shadow;
     flex-direction: row;
     justify-content: space-between;
 
@@ -63,6 +63,7 @@
     display: block;
     width: 278.45px;
     height: 50px;
+    margin-bottom: 40px;
   }
 
   @include media('>=large') {
