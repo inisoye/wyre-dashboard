@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
+import Logo from '../icons/Logo';
 import { fetchSideBar } from '../redux/actions/sidebar/sidebar.action';
 
 import SidebarOrganization from './SidebarOrganization';
 
-function Sidebar({ fetchSideBar: fetchSideBarData}) {
+function Sidebar({ fetchSideBar: fetchSideBarData }) {
   const sideBarData = useSelector((state) => state.sideBar.sideBarData);
 
   useEffect(() => {
@@ -29,11 +31,23 @@ function Sidebar({ fetchSideBar: fetchSideBarData}) {
         // isReportPageOpen
         //   ? 'h-hide'
         //   : 
-          isSidebarOpen
+        isSidebarOpen
           ? 'sidebar'
           : 'sidebar h-hidden-medium-down'
       }
     >
+      <div className="header-logo-container">
+        <Link className="header-logo" to="/">
+          <Logo
+            className={
+              // isReportPageOpen
+              //   ? 'header-logo__image'
+              //   : 
+              'header-logo__image header- h-white-fill-medium-up'
+            }
+          />
+        </Link>
+      </div>
       {<ul className="sidebar-org-container">{organizationComponent}</ul>}
     </div>
   );

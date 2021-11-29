@@ -62,7 +62,7 @@ function ScoreCard({ match }) {
   if (Object.keys(refinedRenderedData).length !== 0) {
     date = new Date();
     ratio = calculateRatio(peak_to_avg_power_ratio.avg, peak_to_avg_power_ratio.peak);
-    savingdInbound = numberFormatter(baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth()));
+    savingdInbound = baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth());
     savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions.estimated_value - ((score_card_carbon_emissions.actual_value / date.getDate()) * daysInMonth())));
 
     getPeakResult = getPeakToAverageMessage(ratio);
@@ -168,7 +168,7 @@ function ScoreCard({ match }) {
             Savings Inbound {' '}
 
             {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
-              savingdInbound
+              numberFormatter(savingdInbound)
             }
             </span>
             }

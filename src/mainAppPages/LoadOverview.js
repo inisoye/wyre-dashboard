@@ -32,7 +32,6 @@ function LoadOverview({ match }) {
   } = useContext(CompleteDataContext);
 
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
-
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);

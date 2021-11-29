@@ -1028,7 +1028,7 @@ thead.ant-table-thead tr th {
   padding-bottom: 16px;
   padding-top: 16px;
 }
-
+/* 
 @media (min-width: 768px) {
   .header {
     -webkit-box-align: center;
@@ -1048,7 +1048,7 @@ thead.ant-table-thead tr th {
   .header.report-page-header {
     background-image: none;
   }
-}
+} */
 
 .header.h-no-linear-gradient {
   background-image: none;
@@ -1099,25 +1099,6 @@ thead.ant-table-thead tr th {
 @media (min-width: 1320px) {
   .header-group-1 {
     display: block;
-  }
-}
-
-.header-logo-container {
-  height: 40px;
-  /* Make logo width match sidebar */
-}
-
-@media (min-width: 768px) {
-  .header-logo-container {
-    display: block;
-    width: 278.45px;
-    height: 50px;
-  }
-}
-
-@media (min-width: 1012px) {
-  .header-logo-container {
-    width: 260.45px;
   }
 }
 
@@ -1508,22 +1489,6 @@ thead.ant-table-thead tr th {
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .sidebar {
-    -ms-flex-item-align: start;
-        align-self: flex-start;
-    background-color: #6c00fa;
-    border-top: #c4c4c4 solid 1px;
-    color: #ffffff;
-    min-height: 100vh;
-    min-width: 300.45px;
-    padding-right: 24px;
-    padding-top: 50px;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-  }
-}
 
 .sidebar-org-container {
   width: 100%;

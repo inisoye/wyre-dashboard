@@ -177,8 +177,8 @@ const CompleteDataProvider = (props) => {
 
         const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
           checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
-        })
-        const renderedDataArray = Object.values(dataWithCheckBoxes);
+        });
+        const renderedDataArray = Object.values(dataWithCheckBoxes?.branchAndDevice);
         const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
         setRefinedRenderedData(getRenderedData(renderedDataArray));
         setSelectedDevices(getDeviceType);
@@ -215,6 +215,7 @@ const CompleteDataProvider = (props) => {
         const refindedData = getRefinedOrganizationData(copyOrganisation);
         setRefinedRenderedData(refindedData);
         // set all the device into the needed data(bucket)
+        console.log('here is the all device data', Object.values(refindedData.all_device_data))
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
       } else {
         // generate all the data for the devices selected
@@ -224,7 +225,7 @@ const CompleteDataProvider = (props) => {
         const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
           checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
         })
-        const renderedDataArray = getRenderedData(Object.values(dataWithCheckBoxes));
+        const renderedDataArray = getRenderedData(Object.values(dataWithCheckBoxes?.branchAndDevice));
         
         setRefinedRenderedData(renderedDataArray);
       }

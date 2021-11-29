@@ -609,13 +609,14 @@ const generateLoadOverviewChartData = (isLoadData) => {
   let label = [];
   let initailData = []
   let data = []
+
   isLoadData.map((device) => {
-    initailData.push(device.energy_consumption.usage);
+    initailData.push(device.total_kwh.value);
   });
   const sumData = sumOfArrayElements(initailData);
   isLoadData.map((device) => {
-    const devicePercentage = calculatePercentageTwoDecimal(device.energy_consumption.usage, sumData);
-    label.push(device.deviceName);
+    const devicePercentage = calculatePercentageTwoDecimal(device.total_kwh.value, sumData);
+    label.push(device.name);
     data.push(devicePercentage);
   });
 
@@ -623,6 +624,7 @@ const generateLoadOverviewChartData = (isLoadData) => {
 }
 
 const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
+
   let label = [];
   let data = [];
   let branchConsumptionKeyPair = {};
@@ -630,11 +632,11 @@ const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
 
   allBranch.map((branch) => {
     let totalBranchUsage = 0
-    branch.map((device) => {
-      totalBranchUsage += device.energy_consumption.usage;
-      totalConsumptionUnit += device.energy_consumption.usage;
+    branch.devices.map((device) => {
+      totalBranchUsage += device.dashboard?.total_kwh?.value;
+      totalConsumptionUnit += device.dashboard?.total_kwh?.value;
     });
-    branchConsumptionKeyPair[branch[0].branchName] = totalBranchUsage;
+    branchConsumptionKeyPair[branch.name] = totalBranchUsage;
   });
 
   Object.entries(branchConsumptionKeyPair).forEach(

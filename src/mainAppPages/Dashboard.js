@@ -21,10 +21,17 @@ import { numberFormatter } from "../helpers/numberFormatter";
 
 import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
-import { generateLoadOverviewChartData, refineLoadOverviewData, generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators } from "../helpers/genericHelpers";
+import {
+  generateLoadOverviewChartData, refineLoadOverviewData,
+  generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators
+} from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
-import { getDashBoardRefinedData, getRefinedOrganizationDataWithChekBox } from "../helpers/organizationDataHelpers";
+import {
+  getDashBoardRefinedData,
+  getRefinedOrganizationDataWithChekBox,
+  getInitialAllDeviceRefinedOrganizationData
+} from "../helpers/organizationDataHelpers";
 import { getRenderedData } from "../helpers/renderedDataHelpers";
 
 
@@ -58,6 +65,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
   const [allCheckedDevice, setAllCheckedDevice] = useState(false);
+  const [allDeviceInfo, setAllDeviceInfo] = useState(false);
   const [refinedDashboardData, setRefinedDashboardData] = useState({});
 
   const {
@@ -82,20 +90,25 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       const allChecked = allCheckedDeviceGenerators(checkedItems, all_device_data);
       setAllCheckedDevice(allChecked)
     }
+
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardData));
-    if(dashBoardData){
+    if (dashBoardData) {
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
-        const refindedDashBoard = getRefinedOrganizationDataWithChekBox({
+
+        const { branchAndDevice, allDeviceData } = getRefinedOrganizationDataWithChekBox({
           checkedBranches,
           checkedDevices,
           organization: copyDashBoardData,
           setRenderedDataObjects: null,
           isDashBoard: true
         });
-        const renderedData = getRenderedData(Object.values(refindedDashBoard), true);
+
+        const renderedData = getRenderedData(Object.values(branchAndDevice), true);
         setRefinedDashboardData(renderedData);
-      }else{
+        setAllDeviceInfo(allDeviceData);
+      } else {
         setRefinedDashboardData(getDashBoardRefinedData(copyDashBoardData));
+        setAllDeviceInfo(getInitialAllDeviceRefinedOrganizationData({ organization: copyDashBoardData }));
       }
     }
 
@@ -226,8 +239,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         </div>
         <div className="dashboard-row-1b">
           {
-            allCheckedDevice
-            && allCheckedDevice.map((eachDevice, index) => {
+            allDeviceInfo
+            && Object.values(allDeviceInfo).map((eachDevice, index) => {
               return index < 6 && <article key={index}
                 className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
@@ -286,13 +299,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
           </article>
         </div>
-        {allIsLoadDeviceData && allIsLoadDeviceData.length > 0 && (
+        {dashBoardData && (
           <div className="dashboard-bar-container">
             <article className='score-card-row-3'>
               <LoadOverviewPercentBarChart
-                runningPercentageData={allIsLoadDeviceData.length > 1 ?
-                  generateMultipleBranchLoadOverviewChartData(allIsLoadDeviceData)
-                  : generateLoadOverviewChartData(allIsLoadDeviceData[0])}
+                runningPercentageData={dashBoardData.branches.length > 1 && (!checkedItems 
+                  || Object.keys(checkedItems).length === 0)?
+                  generateMultipleBranchLoadOverviewChartData(dashBoardData.branches)
+                  : generateLoadOverviewChartData(Object.values(allDeviceInfo))}
                 dataTitle='Operating Time'
               />
             </article>
