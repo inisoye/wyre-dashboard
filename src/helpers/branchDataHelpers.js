@@ -439,15 +439,18 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
 /* Branch Billing Calculations End -----------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedBranchData = (data) => {
+const getRefinedBranchData = (data, isDatshboard=false) => {
   return {
     [data.name]: {
+      isBranch: true,
       name: data.name,
       // Dashboard Stuff
       ...getBranchEnergyData(data),
       usage_hours: getBranchUsageHours(data),
       daily_kwh: getBranchDailyKwh(data),
+      
       // Score Card Stuff
+      ...(!isDatshboard && {
       baseline_energy: getBranchBaselineEnergy(data),
       peak_to_avg_power_ratio: getBranchPeakToAveragePowerRatio(data),
       score_card_carbon_emissions: getBranchScoreCardCarbonEmissions(data),
@@ -516,6 +519,7 @@ const getRefinedBranchData = (data) => {
         data,
         'present_total'
       ),
+      })
     },
   };
 };

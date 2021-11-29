@@ -30,4 +30,5 @@ const DeviceTypeIconSelector = ( deviceType ) => {
     return Component;
 }
 
+
 export default DeviceTypeIconSelector;

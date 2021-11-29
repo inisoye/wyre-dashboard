@@ -242,8 +242,8 @@ const getSelectionOperatingTime = (data) => {
 // Fuel Consumption
 const getSelectionFuelConsumptionArray = (data) => {
   const nestedFuelConsumptions = data.map((eachSelection) => {
-    return eachSelection.fuel_consumption
-      ? eachSelection.fuel_consumption
+    return eachSelection?.fuel_consumption
+      ? eachSelection?.fuel_consumption
       : false;
   });
 
@@ -320,11 +320,18 @@ const sumSelectionEnergyConsumptionValues = (data, valueName) => {
 /* Billing Calculations Begin ----------------------------------------
 --------------------------------------------------------------------*/
 const getSelectionBillingConsumptionNairaValues = (data) => {
-  const selectionConsumptionNairaDates =
-    data[0].billing_consumption_naira.dates;
 
+  const selectionConsumptionNairaDates =
+    data[0]?.billing_consumption_naira?.dates;
+
+    if(!selectionConsumptionNairaDates){
+      return {
+        date: null,
+        values: null
+      }
+    }
   const allSelectionsConsumptionNairaValues = data.map(
-    (eachSelection) => eachSelection.billing_consumption_naira.values
+    (eachSelection) => eachSelection?.billing_consumption_naira?.values
   );
 
   const selectionConsumptionNairaValues = sumArrayOfArrays(
@@ -339,7 +346,7 @@ const getSelectionBillingConsumptionNairaValues = (data) => {
 
 const getSelectionBillingTotals = (data) => {
   const allSelectionsBillingTotals = data.map(
-    (eachSelection) => eachSelection.overall_billing_totals
+    (eachSelection) => eachSelection?.overall_billing_totals
   );
 
   const extractSingleSelectionValueType = (
@@ -468,17 +475,21 @@ const getSelectionBillingTotals = (data) => {
 /* Billing Calculations End ------------------------------------------
 --------------------------------------------------------------------*/
 
-const getRenderedData = (data) => {
+const getRenderedData = (data, isDatshboard=false) => {
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
     daily_kwh: getSelectionDailyKwh(data),
     usage_hours: getSelectionMonthlyUsage(data),
-    // Score Card Stuff
+
+    ...(!isDatshboard && {
+          // Score Card Stuff
     baseline_energy: getSelectionBaselineEnergy(data),
     peak_to_avg_power_ratio: getSelectionPeakToAveragePowerRatio(data),
     score_card_carbon_emissions: getSelectionScoreCardCarbonEmissions(data),
     generator_size_efficiency: getSelectionGeneratorSizeEfficiencyArray(data),
+
+
     change_over_lags: getSelectionChangeOverLags(data),
     operating_time: getSelectionOperatingTime(data),
     fuel_consumption: getSelectionFuelConsumptionArray(data),
@@ -542,6 +553,7 @@ const getRenderedData = (data) => {
       data,
       'devices_present_billing_total'
     ),
+    }),
   };
 };
 

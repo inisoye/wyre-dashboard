@@ -16,6 +16,7 @@ function DateTimePicker({ isDateTimePickerDisabled }) {
 
   function onChange(value, dateString) {
     setUserDateRange(value);
+    console.log('hejkshjdlsjkolsdoj', dateString)
     setSelectedDateRange(dateString);
     dataHttpServices.setEndpointDateRange(value);
   }

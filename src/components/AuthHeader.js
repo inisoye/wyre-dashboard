@@ -20,7 +20,6 @@ function AuthHeader() {
         <Link className='header-logo--auth' to='/'>
           <Logo className='header-logo-image--auth' />
         </Link>
-
         <button
           className='hamburger-button--auth h-hidden-medium-up'
           onClick={toggleNav}

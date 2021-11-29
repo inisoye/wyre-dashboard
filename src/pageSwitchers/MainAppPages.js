@@ -30,8 +30,8 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
-import NewAppTopBar from '../components/NewAppTopBar';
 import LoadOverview from '../mainAppPages/LoadOverview';
+import RevisedAppTopBar from '../components/RevisedAppTopBar';
 
 function MainAppPages() {
   const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
@@ -40,21 +40,23 @@ function MainAppPages() {
 
   return (
     <div className="app">
-      <AppHeader />
+      {/* <AppHeader /> */}
 
       <div className="sidebar-and-content">
         <Sidebar />
 
         <main
           className={
-            isReportPageOpen ? 'main-container h-full-width' : 'main-container'
+            // isReportPageOpen ? 'main-container h-full-width' : 
+            'main-container'
           }
         >
-          <div className='old-top-bar-monitor'>
-            <TopBar  />
-          </div>
+          {/* <div className='old-top-bar-monitor'>
+            <TopBar />
+          </div> */}
           <div className='newTopbar-monitor'>
-            <NewAppTopBar />
+            {/* <RevisedAppTopBar /> */}
+            <AppHeader />
           </div>
           <ScrollToTop>
             <div className="page-content">

@@ -1,9 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
+import Logo from '../icons/Logo';
+import { fetchSideBar } from '../redux/actions/sidebar/sidebar.action';
 
 import SidebarOrganization from './SidebarOrganization';
 
-function Sidebar() {
+function Sidebar({ fetchSideBar: fetchSideBarData }) {
+  const sideBarData = useSelector((state) => state.sideBar.sideBarData);
+
+  useEffect(() => {
+    fetchSideBarData();
+  }, [])
+
   const { organization, isSidebarOpen, currentUrl } = useContext(
     CompleteDataContext
   );
@@ -11,23 +21,41 @@ function Sidebar() {
   const isReportPageOpen = currentUrl.includes('report');
 
   // Ensure data is loaded before sidebar is rendered
-  const organizationComponent = organization.name && (
-    <SidebarOrganization orgData={organization} />
+  const organizationComponent = sideBarData.name && (
+    <SidebarOrganization orgData={sideBarData} />
   );
 
   return (
     <div
       className={
-        isReportPageOpen
-          ? 'h-hide'
-          : isSidebarOpen
+        // isReportPageOpen
+        //   ? 'h-hide'
+        //   : 
+        isSidebarOpen
           ? 'sidebar'
           : 'sidebar h-hidden-medium-down'
       }
     >
+      <div className="header-logo-container">
+        <Link className="header-logo" to="/">
+          <Logo
+            className={
+              // isReportPageOpen
+              //   ? 'header-logo__image'
+              //   : 
+              'header-logo__image header- h-white-fill-medium-up'
+            }
+          />
+        </Link>
+      </div>
       {<ul className="sidebar-org-container">{organizationComponent}</ul>}
     </div>
   );
 }
 
-export default Sidebar;
+
+const mapDispatchToProps = {
+  fetchSideBar,
+};
+
+export default connect(null, mapDispatchToProps)(Sidebar);

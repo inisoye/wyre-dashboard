@@ -16,7 +16,6 @@
 .report-row-1__content {
   @include media('>=792px') {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
   }
@@ -24,25 +23,35 @@
 
 .report-row-1-card {
   margin-bottom: 30px;
-  height: 250px;
+  height: 240px;
 
   @include media('>=792px') {
     width: 32%;
   }
 
-  &.report-card-2 {
-    height: auto;
+  // &.report-card-2 {
+  //   height: auto;
 
-    @include media('>=792px') {
-      height: 250px;
+  //   @include media('>=792px') {
+  //     height: 240px;
+  //   }
+  // }
+
+  @include media('>=792px', '<1076px') {
+
+    height: 300px !important;
+
+    .report-card-with-rate__icon-wrapper{
+      display: none;
     }
-  }
-
-  @include media('>=792px', '<970px') {
-    height: 300px;
 
     &.report-card-2 {
       height: 300px;
+    }
+  }
+  @include media('<792px') {
+    .report-card-with-rate__icon-wrapper{
+      display: flex;
     }
   }
 }
@@ -53,22 +62,48 @@
 }
 
 .report-card-1-heading {
-  font-weight: $regular;
-  font-size: 1.8rem;
+  font-weight: $semi-bold;
+  font-size: 2.2rem;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
+  @include media('<760px') {
+    font-size: 2.5rem;
+  }
 }
 
-.report-card-1-percentage {
-  margin-top: 24px;
-  font-size: 4rem;
+.report-card-icon {
+  height: 40px;
+  width: 40px;
+}
+
+.report-table-rows{
+  margin-bottom: 30px;
+  // min-height: 280px;
+  @include media('<1166px') {
+    height: 100%;
+  }
+}
+
+.report-card-large-percentage{
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 4.8rem;
   font-weight: $medium;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
+  @include media('<380px') {
+    font-size: 2.5rem;
+  }
 }
 
 .report-card-1-rating {
-  margin-top: 21px;
+  margin-top: 16px;
 }
 
 .report-card-1-paragraph {
-  margin-top: 24px;
+  margin-top: 18px;
   font-size: 1.4rem;
 
   @include media('>=792px', '<1166px') {
@@ -88,19 +123,265 @@
 .report-card-2__top {
   display: flex;
   justify-content: space-between;
-
+  gap: 6%;
   @include media('<380px') {
     flex-direction: column;
   }
 }
+.report-card-2__top-margin {
+  margin-top: 1.5rem;
+  margin-left: 4rem;
+}
 
 .report-card-2__topleft,
 .report-card-2__topright {
-  max-width: 49%;
 
   @include media('<380px') {
     margin: auto;
   }
+  .report-card-2-topright__first, 
+  .report-card-2-topright__second{
+    @include media('>=792px', '<1076px') {
+      span{
+        font-size: 10px;
+      }
+    }
+
+  }
+}
+.report-card-2__topleft-double {
+  width: '50%'; margin-right: '5%';
+   display: 'flex'; 
+   flex-direction: 'column';
+   align-items: 'center';
+}
+
+.report-card-2__topleft {
+  max-width: 64%;
+}
+
+.report-card-with-rate__content-wrapper{
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem;
+  align-content: center;
+  margin-top: 1rem;
+}
+.report-card-with-rate__icon-wrapper{
+  width: 6.6rem;
+  height: 6.6rem;
+  border-radius: 50%;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-pie-container{
+  height: 240px;
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  @include media('>=1200px') {
+    min-height: 320px;
+    width: 49%;
+  }
+
+  @include media('>=792px', '<1200px') {
+    min-height: 280px;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  @include media('<792px') {
+    margin-bottom: 3rem;
+  }
+}
+.report-after-pie-table-container{
+  height: 240px;
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  @include media('>=1200px') {
+    min-height: 320px;
+    width: 49%;
+  }
+
+  @include media('>=792px', '<1200px') {
+    min-height: 280px;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  @include media('<792px') {
+    margin-bottom: 3rem;
+    height: 280px;
+  }
+}
+
+.report-loadimbalance-table{
+  height: 200px;
+  @include media('>792px') {
+    height: 240px;
+  }
+  @include media('<1200px') {
+    height: 220px;
+  }
+}
+
+.report-table-container{
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  @include media('>=1200px') {
+    width: 49%;
+  }
+
+  @include media('>=792px', '<1200px') {
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+}
+
+.report-chart-container{
+  min-height: 280px;
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  width: 100%;
+  @include media('<1200px') {
+    width: 100%;
+  }
+}
+.report-double-chart-container{
+  min-height: 480px;
+  background-color: $white;
+  border-radius: 10px;
+  width: 100%;
+  @include media('<1200px') {
+    width: 100%;
+  }
+}
+.report-demand-container{
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.report-card-tabble__padding{
+  padding: 0 10px 10px 10px;
+}
+
+
+.report-table { 
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: 'black';
+  text-align: center;
+}
+
+.report-table tr:nth-child(even) { 
+  background-color: $light-bluegrey;
+  
+}
+
+.report-pie-heading{
+  font-size: 2.1rem;
+  font-weight: $semi-bold;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+.report-full-width-rows{
+  width: 100%;
+  margin-bottom: 30px;
+  height: 280px;
+}
+.report-full-width-with-no-height-rows{
+  width: 100%;
+  margin-bottom: 30px;
+  // height: 280px;
+}
+.report-full-width-rows-fit-content{
+  width: 100%;
+  margin-bottom: 30px;
+  height: fit-content;
+}
+
+.report-bar-chart__chart-wrapper {
+  min-height: 200px;
+  padding-top: 40px;
+}
+
+.demand-statistic-space-hr{
+  height: 2rem;
+}
+
+
+.report-card-1-percentage {
+  /* margin-top: 24px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+  font-weight: 500;
+  @include media('<1200px') {
+    font-size: 2.0rem;
+  }
+  @include media('<380px') {
+    font-size: 2.5rem;
+  }
+}
+
+.report-card-double{
+  display: 'flex'; 
+  justify-content: 'space-evenly';
+  margin-bottom: 30px;
+  height: 240px;
+
+  @include media('>=792px', '<1076px') {
+
+    height: 300px;
+
+    .report-card-with-rate__icon-wrapper{
+      display: none;
+    }
+
+    &.report-card-2 {
+      height: 300px;
+    }
+  }
+
+  @include media('>=792px') {
+    width: 66%;
+  }
+
+  &.report-card-2 {
+    height: auto;
+
+    // @include media('>=792px') {
+    //   height: 250px;
+    // }
+  }
+
+  @include media('>=792px', '<970px') {
+    height: 300px;
+
+    &.report-card-2 {
+      height: 300px;
+    }
+  }
+
+  @include media('<792px') {
+    .report-card-with-rate__icon-wrapper{
+      display: flex;
+    }
+  }
+}
+
+.report-row-1-card {
+  margin-bottom: 30px;
+  height: 240px;
+
 }
 
 .report-card-2__topleft {
@@ -131,7 +412,7 @@
 }
 
 .report-card-2-decr {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   max-width: 156px;
   line-height: 22px;
 
@@ -144,12 +425,31 @@
   }
 }
 
-.report-energy-consumed-decr {
-  margin-top: 11px;
+.report-card-large-decr {
+  font-size: 1.8rem;
+  max-width: 206px;
+  line-height: 22px;
+  margin-bottom: 10px;
+
+  @include media('>=792px', '<970px') {
+    font-size: 1.3rem;
+  }
+
+  @include media('>=970px', '<1166px') {
+    font-size: 1.4rem;
+  }
 }
 
+
 .report-card-2-topright__second {
-  margin-top: 29px;
+  margin-top: 15px;
+
+  @include media('<970px') {
+    margin-top: 15px;
+  }
+}
+.report-card-2-topright-large__second {
+  margin-top: 30px;
 
   @include media('<970px') {
     margin-top: 15px;
@@ -157,10 +457,25 @@
 }
 
 .report-card-2-topright__value {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: $medium;
   line-height: 29px;
-  margin-top: 8px;
+  margin-top: 5px;
+  display: block;
+
+  @include media('>=792px', '<970px') {
+    font-size: 1.6rem;
+  }
+
+  @include media('>=970px', '<1166px') {
+    font-size: 2rem;
+  }
+}
+.report-card-2-topright-large__value {
+  font-size: 2.5rem;
+  font-weight: $medium;
+  line-height: 29px;
+  margin-top: 5px;
   display: block;
 
   @include media('>=792px', '<970px') {
@@ -174,7 +489,18 @@
 
 .report-card-2__bottom {
   font-size: 14px;
-  margin-top: 14px;
+  margin-top: 18px;
+}
+
+.report-card-2-large__bottom {
+  font-size: 14px;
+  margin-top: 18px;
+}
+
+.co2-footprint-footer-extra{
+  font-size: smaller;
+  color: red;
+  margin-top: 8px;
 }
 
 .report-card-2-bottom__value {

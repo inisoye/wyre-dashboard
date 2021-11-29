@@ -62,7 +62,7 @@ function ScoreCard({ match }) {
   if (Object.keys(refinedRenderedData).length !== 0) {
     date = new Date();
     ratio = calculateRatio(peak_to_avg_power_ratio.avg, peak_to_avg_power_ratio.peak);
-    savingdInbound = numberFormatter(baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth()));
+    savingdInbound = baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth());
     savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions.estimated_value - ((score_card_carbon_emissions.actual_value / date.getDate()) * daysInMonth())));
 
     getPeakResult = getPeakToAverageMessage(ratio);
@@ -125,7 +125,7 @@ function ScoreCard({ match }) {
       <div className='score-card-row-1'>
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Baseline Energy
             </h2>
             <div>
@@ -168,7 +168,7 @@ function ScoreCard({ match }) {
             Savings Inbound {' '}
 
             {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
-              savingdInbound
+              numberFormatter(savingdInbound)
             }
             </span>
             }
@@ -179,7 +179,7 @@ function ScoreCard({ match }) {
 
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Peak to Average Power Ratio
             </h2>
             <div>
@@ -226,7 +226,7 @@ function ScoreCard({ match }) {
 
         <article className='score-card-row-1__item'>
           <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading carbon-emission-container'>
+            <h2 className='score-card-heading'>
               Carbon Emission
             </h2>
             <div>
@@ -281,10 +281,9 @@ function ScoreCard({ match }) {
           </p>
 
           <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
-            <div>
               <span>{message}</span>
               <EcoFriendlyIcon className="ecoFriendlyIcon" />
-            </div>
+
             {/* <span>{message}</span> */}
             {/* <span className='score-card-bottom-text-small'>
               {noOfTrees}

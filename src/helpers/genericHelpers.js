@@ -101,6 +101,25 @@ const getPeakToAverageMessage = (peakRatio) => {
   return { message: peakMessage, color: peakMessageColor }
 }
 
+const getGeneratorSizeMessage = (percent) => {
+  const ratio = (percent / 100);
+  let message;
+  let color;
+  if (ratio > 0.79) {
+    message = 'Overloaded';
+    color = '#fa0303';
+    
+  } else if (ratio >= 0.6) {
+    message = 'Eficient Loading';
+    color = '#008000';
+  } else {
+    message = 'Under Utilized';
+    color = '#FFBF00';
+    
+  }
+  return { message, color }
+}
+
 const getBaselineEnergyColor = (inbound) => {
   let peakMessageColor;
   if (Number(inbound) > 0) {
@@ -313,7 +332,7 @@ const allDeviceGenerators = (checkedItems, organization) => {
       else if (name.startsWith(eachBranch.name) && (name.length > eachBranch.name.length)
       ) {
         eachBranch.devices.some((device) => {
-          if (device.name === name) {
+          if (name.includes(device.name)) {
             holdAllDevices.push(device);
             return false;
           }
@@ -323,6 +342,69 @@ const allDeviceGenerators = (checkedItems, organization) => {
   })
   return holdAllDevices;
 }
+
+const allCheckedDeviceGenerators = (checkedItems, allDevice) => {
+
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems);
+  const allDeviceMap = Object.values(allDevice);
+
+  if (!checkedItemsArray.length > 0) {
+    return allDeviceMap;
+  } else {
+    checkedItemsArray.map((name) => {
+      allDeviceMap.forEach((eachData) => {
+        if (eachData.branchName === name) {
+          holdAllDevices = [...holdAllDevices, eachData];
+        }
+        else if (name.startsWith(eachData.branchName) && name.endsWith(eachData.deviceName)
+        ) {
+          holdAllDevices.push(eachData);
+        }
+      })
+    })
+    return holdAllDevices;
+  }
+}
+
+// handle cost tracker baseline data flatner base on selected branch/devices
+const allCostTrackerBranchesBaseline = (checkedItems, allDevice) => {
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems || {});
+  if (!checkedItemsArray.length > 0) {
+    allDevice.map(([branchName, branchInfo]) => {
+      const baselineDataValues = Object.values(branchInfo.baseline);
+      baselineDataValues.map((data) => {
+        holdAllDevices = [...holdAllDevices, ...data];
+      })
+    });
+  } else {
+    checkedItemsArray.map((name) => {
+      allDevice.map(([branchName, branchInfo]) => {
+        const baselineDataValues = Object.values(branchInfo.baseline);
+        if (branchName === name) {
+          baselineDataValues.map((data) => {
+            holdAllDevices = [...holdAllDevices, ...data];
+          })
+        }
+        else if (name.startsWith(branchName)
+        ) {
+          Object.entries(branchInfo.baseline).map(([deviceName, value]) => {
+
+            if (name.endsWith(deviceName)) {
+              holdAllDevices.push(...value);
+            }
+          })
+        }
+      })
+    })
+  }
+  return holdAllDevices;
+}
+
+
+
+
 /* --------------------------------------------------------------------
 /* Dashboard Helpers End --------------------------------------------
 --------------------------------------------------------------------*/
@@ -339,17 +421,17 @@ const allDeviceGenerators = (checkedItems, organization) => {
 /* Score Card Helpers Begin ------------------------------------------
 --------------------------------------------------------------------*/
 const sumBaselineEnergies = (array) => {
-  const forecastValues = array.map((eachItem) => eachItem.forecast);
-  const usedValues = array.map((eachItem) => eachItem.used);
-  const forecastTotal = forecastValues.reduce((acc, curr) => acc + curr, 0);
-  const usedTotal = usedValues.reduce((acc, curr) => acc + curr, 0);
+  const forecastValues = array && array?.map((eachItem) => eachItem?.forecast);
+  const usedValues = array && array?.map((eachItem) => eachItem?.used);
+  const forecastTotal = forecastValues && forecastValues?.reduce((acc, curr) => acc + curr, 0);
+  const usedTotal = usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
 
   return { unit: 'kwh', forecast: forecastTotal, used: usedTotal };
 };
 
 const sumPeakToAveragePowerRatios = (array) => {
-  const peakValues = array.map((eachItem) => eachItem.peak);
-  const avgValues = array.map((eachItem) => eachItem.avg);
+  const peakValues = array?.map((eachItem) => eachItem?.peak);
+  const avgValues = array?.map((eachItem) => eachItem?.avg);
 
   const peakOfPeakValues = Math.max.apply(null, peakValues);
   const avgOfAvgValues =
@@ -359,8 +441,8 @@ const sumPeakToAveragePowerRatios = (array) => {
 };
 
 const sumScoreCardCarbonEmissions = (array) => {
-  const estimatedValues = array.map((eachItem) => eachItem.estimated_value);
-  const actualValues = array.map((eachItem) => eachItem.actual_value);
+  const estimatedValues = array.map((eachItem) => eachItem?.estimated_value);
+  const actualValues = array.map((eachItem) => eachItem?.actual_value);
 
   const estimatedTotal = estimatedValues.reduce((acc, curr) => acc + curr, 0);
   const actualTotal = actualValues.reduce((acc, curr) => acc + curr, 0);
@@ -376,8 +458,8 @@ const joinChangeOverLagsValues = (parentArray, nestedValue) => {
   return parentArray
     .map(
       (eachDevice) =>
-        eachDevice.score_card.change_over_lags &&
-        eachDevice.score_card.change_over_lags[nestedValue].values
+        eachDevice.score_card?.change_over_lags &&
+        eachDevice.score_card?.change_over_lags[nestedValue].values
     )
     .filter(Boolean);
 };
@@ -419,19 +501,19 @@ const convertDateStringToObject = (dateString) => {
 };
 
 const convertDateStringsToObjects = (dateStrings) => {
-  return dateStrings.map((eachDate) => dayjs(eachDate));
+  return dateStrings?.map((eachDate) => dayjs(eachDate));
 };
 
 const formatParametersDatetimes = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY h:mm A'));
+  return dateStrings?.map((eachDate) => eachDate.format('DD/MM/YYYY h:mm A'));
 };
 
 const formatParametersDates = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('DD/MM/YYYY'));
+  return dateStrings?.map((eachDate) => eachDate.format('DD/MM/YYYY'));
 };
 
 const formatParametersTimes = (dateStrings) => {
-  return dateStrings.map((eachDate) => eachDate.format('hh:mm A'));
+  return dateStrings?.map((eachDate) => eachDate.format('hh:mm A'));
 };
 
 const formatParameterTableData = (tableHeadings, tableValues) => {
@@ -467,17 +549,41 @@ const formatParameterTableData = (tableHeadings, tableValues) => {
 
 const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
   // Create a copy of original parameter data
-  const parameterData = Object.assign({}, deviceData[parameterName]);
-  const { dates } = parameterData;
+  const parameterData = deviceData && parameterName && Object.assign({}, deviceData[parameterName]);
+  const { dates } = parameterData || {};
 
   // Convert dates to objects for easy manipulation
   const parameterDateObjects = convertDateStringsToObjects(
-    dates.dates || dates
+    dates?.dates || dates
   );
   // Add date objects and device name to data
-  parameterData.dates = parameterDateObjects;
+  if (parameterData) {
+    parameterData.dates = parameterDateObjects || null;
+  }
 
   return { ...parameterData, dates: parameterDateObjects };
+};
+
+// modify date in report to the right format
+const modifyStatisTicDate = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const dateOnly = new Date(dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1)).toLocaleDateString();
+  return `(${dateDay}, ${dateOnly})`;
+};
+
+const modifyStatisTicDateWithTime = (date) => {
+  const dateWithoutBracket = date.replace(/[()]/g, '');
+  const dateDay = dateWithoutBracket.split(" ")[0];
+  const splitString = dateWithoutBracket.substr(dateWithoutBracket.indexOf(" ") + 1).split(" ");
+  let deteOnlySlice = splitString.slice(0, splitString.length - 1).join(' ');
+  const deteOnly = new Date(deteOnlySlice).toLocaleDateString();
+  let timeOnly = splitString.slice(splitString.length - 1)[0];
+
+  if (timeOnly[timeOnly.length - 1] === '.') {
+    timeOnly = timeOnly.substring(0, timeOnly.length - 1);
+  }
+  return { dateDay, deteOnly, timeOnly }
 };
 /* -------------------------------------------------------------------
 /* Parameter Helpers End ---------------------------------------------
@@ -503,13 +609,14 @@ const generateLoadOverviewChartData = (isLoadData) => {
   let label = [];
   let initailData = []
   let data = []
+
   isLoadData.map((device) => {
-    initailData.push(device.energy_consumption.usage);
+    initailData.push(device.total_kwh.value);
   });
   const sumData = sumOfArrayElements(initailData);
   isLoadData.map((device) => {
-    const devicePercentage = calculatePercentageTwoDecimal(device.energy_consumption.usage, sumData);
-    label.push(device.deviceName);
+    const devicePercentage = calculatePercentageTwoDecimal(device.total_kwh.value, sumData);
+    label.push(device.name);
     data.push(devicePercentage);
   });
 
@@ -517,6 +624,7 @@ const generateLoadOverviewChartData = (isLoadData) => {
 }
 
 const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
+
   let label = [];
   let data = [];
   let branchConsumptionKeyPair = {};
@@ -524,11 +632,11 @@ const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
 
   allBranch.map((branch) => {
     let totalBranchUsage = 0
-    branch.map((device) => {
-      totalBranchUsage += device.energy_consumption.usage;
-      totalConsumptionUnit += device.energy_consumption.usage;
+    branch.devices.map((device) => {
+      totalBranchUsage += device.dashboard?.total_kwh?.value;
+      totalConsumptionUnit += device.dashboard?.total_kwh?.value;
     });
-    branchConsumptionKeyPair[branch[0].branchName] = totalBranchUsage;
+    branchConsumptionKeyPair[branch.name] = totalBranchUsage;
   });
 
   Object.entries(branchConsumptionKeyPair).forEach(
@@ -608,9 +716,53 @@ const validate2DecNo = (value, label) => {
 };
 
 const sortArrayOfObjectByDate = (array) => {
-  return array.sort((a, b) => { 
-    return new Date(b.date) - new Date(a.date);
-  });
+  if (array && array !== undefined && array.length > 0) {
+    return array.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+  }
+  return [];
+
+}
+
+// Method for converting dates to endpoint format
+const convertDateRangeToEndpointFormat = (dateObjects) =>
+  dateObjects
+    .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
+    .join('/');
+
+
+const generateAppDateRange = (newEndpointDateRange) => {
+  // Update endpoint if available
+  const datdata = newEndpointDateRange
+    ? convertDateRangeToEndpointFormat(newEndpointDateRange)
+    : (convertDateRangeToEndpointFormat([
+      dayjs().startOf('month'),
+      dayjs(),
+    ]));
+  return datdata;
+};
+
+// data to combine multiple dates data of the same month
+const combineSameMonthData = (dateArray) => {
+  let forcastedData = {};
+  let usedData = {};
+  if (dateArray.length > 0) {
+    dateArray.map((data) => {
+      if (forcastedData[data.date] != null) {
+        forcastedData[data.date] = Number(data.forecast) + forcastedData[data.date];
+      } else {
+        forcastedData[data.date] = Number(data.forecast);
+      }
+      if (usedData[data.date] != null) {
+        usedData[data.date] = usedData[data.date] +  Number(data.used);
+      } else {
+        usedData[data.date] = Number(data.used);
+      }
+
+    })
+  }
+  return { forcastedData, usedData };
 }
 
 
@@ -656,6 +808,8 @@ export {
   allDeviceGenerators,
   roundToDecimalPLace,
   sumOfArrayElements,
+  modifyStatisTicDate,
+  modifyStatisTicDateWithTime,
   generateLoadCosumptionChartData,
   generateRunningTimeChartData,
   refineLoadOverviewData,
@@ -664,5 +818,10 @@ export {
   generateSumLoadConsumption,
   generateSumOfIsSource,
   validate2DecNo,
-  sortArrayOfObjectByDate
+  sortArrayOfObjectByDate,
+  generateAppDateRange,
+  allCheckedDeviceGenerators,
+  allCostTrackerBranchesBaseline,
+  getGeneratorSizeMessage,
+  combineSameMonthData
 };

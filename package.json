@@ -13,6 +13,7 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "chartjs-plugin-piechart-outlabels": "^0.1.4",
+    "color-hash": "^2.0.1",
     "dayjs": "^1.9.7",
     "html2canvas": "^1.0.0-rc.7",
     "html2pdf.js": "^0.9.2",
@@ -26,9 +27,13 @@
     "react-hook-form": "^6.13.1",
     "react-images-uploading": "^3.1.3",
     "react-onclickoutside": "^6.9.0",
+    "react-redux": "^7.2.5",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "redux": "^4.1.1",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "sass": "^1.34.0",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
@@ -44,7 +49,7 @@
     "admin-server": "json-server -p3004 --watch adminData.json",
     "alerts-server": "json-server -p3005 --watch alertsAndAlarmsData.json",
     "time-of-Use-Data": "json-server -p3006 --watch timeOfUseSampleData.json",
-    "report-server": "json-server -p3006 --watch reportData.json",
+    "report-server": "json-server -p3006 --watch reportData2.json",
     "score-card-sample-data": "json-server -p3007 --watch scoreCards-sampleData.json"
   },
   "eslintConfig": {
@@ -66,6 +71,7 @@
     ]
   },
   "devDependencies": {
-    "json-server": "^0.16.3"
+    "json-server": "^0.16.3",
+    "redux-devtools": "^3.7.0"
   }
 }

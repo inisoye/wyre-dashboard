@@ -80,25 +80,29 @@ function Header() {
 
   // const isOrganisationSapio =
   //   organisationName && organisationName.includes('Sapio');
-  
+
   var restricted_devices = ["Sapio", "Durosinmi", "Alpha"];
 
-  const checkOrganizationHasAccess = ((organization)=>{
+  const checkOrganizationHasAccess = ((organization) => {
 
-      // run the tests against every element in the array
-      if (organization){
-        return restricted_devices.some(el => organization.includes(el));
-      }
-      
+    // run the tests against every element in the array
+    if (organization) {
+      return restricted_devices.some(el => organization.includes(el));
+    }
+
   });
-  
+
 
   const doesUserHaveAccess =
     organisationName && checkOrganizationHasAccess(organisationName);
 
   return (
     <header
-      className={isReportPageOpen ? 'header report-page-header' : 'header'}
+      className={
+        // isReportPageOpen ? 'header report-page-header' : 
+        'header'
+      }
+
     >
       <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
@@ -111,17 +115,18 @@ function Header() {
             <VerticalDots className="headerMenu-button__image dotmenu-button__image" />
           </button>
 
-          <div className="header-logo-container">
+          {/* <div className="header-logo-container">
             <Link className="header-logo" to="/">
               <Logo
                 className={
-                  isReportPageOpen
-                    ? 'header-logo__image'
-                    : 'header-logo__image header- h-white-fill-medium-up'
+                  // isReportPageOpen
+                  //   ? 'header-logo__image'
+                  //   : 
+                  'header-logo__image header- h-white-fill-medium-up'
                 }
               />
             </Link>
-          </div>
+          </div> */}
 
           <button
             type="button"
@@ -138,7 +143,7 @@ function Header() {
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
             {/* {!doesUserHaveAccess && ( */}
-              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+            {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
               &&
               <HeaderLink
                 onClick={toggleNav}
@@ -188,8 +193,8 @@ function Header() {
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"
                     linkText="Time of Use"
-                    />
-                  )}
+                  />
+                )}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"
@@ -197,18 +202,13 @@ function Header() {
                 />
               </ul>
             </HeaderLinkWithDropdown>
-
-            {/* {!doesUserHaveAccess && (
-              <HeaderLink
-                onClick={toggleNav}
-                url="/dashboard"
-                // url="/report"
-                linkText="Report"
-              />
-            )} */}
-
+            <HeaderLink
+              onClick={toggleNav}
+              url="/report"
+              linkText="Report"
+            />
             {/* {!doesUserHaveAccess && ( */}
-              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+            {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
               &&
               <HeaderLink
                 onClick={toggleNav}
@@ -220,7 +220,7 @@ function Header() {
 
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-            
+
             {/* {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
@@ -293,7 +293,7 @@ function Header() {
                     className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
                     to="/dashboard"
-                    // to='/branches'
+                  // to='/branches'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
@@ -304,7 +304,7 @@ function Header() {
                     className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
                     to="/dashboard"
-                    // to='/password'
+                  // to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
@@ -392,7 +392,7 @@ function Header() {
               <Link
                 className="header-sublink avatar-sublink"
                 to="/dashboard"
-                // to='/branches'
+              // to='/branches'
               >
                 <OverviewIcon /> <span>Overview</span>
               </Link>
@@ -402,7 +402,7 @@ function Header() {
               <Link
                 className="header-sublink avatar-sublink"
                 to="/dashboard"
-                // to='/password'
+              // to='/password'
               >
                 <PadlockIcon /> <span>Password</span>
               </Link>

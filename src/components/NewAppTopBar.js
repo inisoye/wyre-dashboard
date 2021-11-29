@@ -116,8 +116,8 @@ function NewAppTopBar() {
   const onApplyClick = () => {
 
     setUserDateRange(selectedDate);
-    setSelectedDateRange([moment(selectedDate[0]).format('YYYY-MM-DD HH:mm'),
-    moment(selectedDate[1]).format('YYYY-MM-DD HH:mm')]);
+    setSelectedDateRange([moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'),
+    moment(selectedDate[1]).format('DD-MM-YYYY HH:mm')]);
     dataHttpServices.setEndpointDateRange(selectedDate);
     setOpenModal(false);
   }
@@ -480,7 +480,7 @@ function NewAppTopBar() {
   );
 
   return (
-    <div className={isSidebarOpen ? 'top-bar' : 'top-bar h-hidden-medium-down'}>
+    <div >
       {/* <div> */}
       {/* <Popover placement="rightBottom" trigger="click" content={content} width={'800px'} style={{ width: '100%' }} >
         <Button>RB</Button>
@@ -512,28 +512,6 @@ function NewAppTopBar() {
         <Content />
       </Modal>
       {/* </div> */}
-
-      { organization.branches && organization.branches.length === 1 ?
-        <div
-          className={
-            isTopBarCostTrackerRightDisplayed
-              ? 'top-bar__right'
-              : 'top-bar__right h-hide'
-          }
-        >
-          <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
-            Add Bills
-          </Link>
-          <Link
-            className='top-bar-right__button'
-            to='/cost-tracker/add-equipment'
-          >
-            Add Equipment
-          </Link>
-        </div>
-         : null
-        }
-     
     </div>
   );
 }

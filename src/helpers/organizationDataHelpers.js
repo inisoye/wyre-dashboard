@@ -159,7 +159,7 @@ const getOrganizationEnergyData = (data) => {
 --------------------------------------------------------------------*/
 // Baseline Energies
 
-const getOrganizationBaselineEnergy = (data) => {  
+const getOrganizationBaselineEnergy = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
   //console.log(allOrganizationDevices);
   const baselineEnergiesArray = allOrganizationDevices.map(
@@ -171,15 +171,15 @@ const getOrganizationBaselineEnergy = (data) => {
 //check if device is a generator or not
 const getOrganizationDeviceType = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
-  
+
   const deviceTypeArray = allOrganizationDevices.map(
-    (eachDevice) => 
+    (eachDevice) =>
       eachDevice.score_card ?
-    {
-      device_name : eachDevice.name,
-      is_gen : eachDevice.score_card.is_generator,
- 
-    } : false
+        {
+          device_name: eachDevice.name,
+          is_gen: eachDevice.score_card.is_generator,
+
+        } : false
   );
   return deviceTypeArray;
 }
@@ -212,9 +212,9 @@ const getOrgGeneratorSizeEfficiencyArray = (data) => {
   return allOrganizationDevices.map((eachDevice) =>
     eachDevice.score_card.generator_size_efficiency
       ? {
-          name: eachDevice.name,
-          ...eachDevice.score_card.generator_size_efficiency,
-        }
+        name: eachDevice.name,
+        ...eachDevice.score_card.generator_size_efficiency,
+      }
       : false
   );
 };
@@ -621,7 +621,7 @@ const getOrganizationBillingTotals = (data) => {
       'diesel_per_kwh'
     ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
-    const organizationMetricsIppPerKwh =
+  const organizationMetricsIppPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'ipp_per_kwh'
@@ -681,18 +681,18 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 /* Org Billing Calculations End --------------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedOrganizationData = (data) => {    
+const getRefinedOrganizationData = (data) => {
 
   getOrganizationDeviceType(data);
   return {
-    all_device_data : {...getAllOrganizationDevices(data)},
+    all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,
     // Dashboard Stuff
     ...getOrganizationEnergyData(data),
     daily_kwh: getOrganizationDailyKwh(data),
     usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
-    organization_device_type : getOrganizationDeviceType(data),
+    organization_device_type: getOrganizationDeviceType(data),
     baseline_energy: getOrganizationBaselineEnergy(data),
     peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
     score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
@@ -745,6 +745,37 @@ const getRefinedOrganizationData = (data) => {
 };
 
 
+const getDashBoardRefinedData = (data) => {
+
+  return {
+    all_device_data: { ...getAllOrganizationDevices(data) },
+    name: data.name,
+    // Dashboard Stuff
+    ...getOrganizationEnergyData(data),
+    daily_kwh: getOrganizationDailyKwh(data),
+    usage_hours: getOrganizationMonthlyUsage(data),
+    // Score Card Stuff
+    // organization_device_type : getOrganizationDeviceType(data),
+    // baseline_energy: getOrganizationBaselineEnergy(data),
+    // peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
+    // score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
+    // generator_size_efficiency: getOrgGeneratorSizeEfficiencyArray(data),
+    // change_over_lags: getOrganizationChangeOverLags(data),
+    // operating_time: getOrganizationOperatingTime(data),
+    // fuel_consumption: getOrganizationFuelConsumptionArray(data),
+    // // Power Quality Stuff
+    // power_quality: getOrganizationPowerQualityData(data),
+    // // Time of Use Stuff
+    // last_reading: getOrganizationLastReadingData(data),
+    // // Power Demand Stuff
+    // power_demand: getOrganizationPowerDemandData(data),
+    // // Time of Use Stuff
+    // time_of_use_chart: getOrganizationTimeOfUseChartData(data),
+    // time_of_use_table: getOrganizationTimeOfUseTableData(data),
+  };
+};
+
+
 /* -------------------------------------------------------------------
 /* Handles when a date search is made wit while some checkbox are ticked
 --------------------------------------------------------------------*/
@@ -752,10 +783,12 @@ const getRefinedOrganizationDataWithChekBox = ({
   checkedBranches,
   checkedDevices,
   organization,
-  setRenderedDataObjects
+  setRenderedDataObjects,
+  isDashBoard = false,
 }) => {
 
-  let branchAndDevice = {}
+  let branchAndDevice = {};
+  let allDeviceData = {};
   // convert branches to array using the object keys
   const branches = Object.keys(checkedBranches);
   // convert device to array using the object keys
@@ -768,27 +801,48 @@ const getRefinedOrganizationDataWithChekBox = ({
       if (branches.length > 0) {
         // check whether the branch name is part of the branches array
         if (branches.includes(branch.name)) {
-          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch) }
+          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch, isDashBoard) }
+          branch.devices.forEach((device) => {
+            allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
+          })
         }
-
       }
       if (devices.length > 0) {
         branch.devices.forEach((device) => {
           const combinedNames = `${branch.name} ${device.name}`;
-           // check whether the device name is part of the devices array
+          // check whether the device name is part of the devices array
           if (devices.includes(combinedNames)) {
+            allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
             branchAndDevice = { ...branchAndDevice, ...getDeviceData({ branchData: branch, deviceData: device }) }
           }
         })
-
       }
     })
   }
-  setRenderedDataObjects(branchAndDevice);
-  return branchAndDevice;
+  if (setRenderedDataObjects) {
+    setRenderedDataObjects(branchAndDevice);
+  }
+
+  return { branchAndDevice, allDeviceData };
+}
+const getInitialAllDeviceRefinedOrganizationData = ({
+  organization,
+}) => {
+  let allDeviceData = {};
+
+  organization.branches.forEach((branch) => {
+    branch.devices.forEach((device) => {
+      allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
+    });
+  })
+
+  return allDeviceData;
 }
 
 
-export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray, 
-  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox };
+export {
+  getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
+  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox, 
+  getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData
+};
 
