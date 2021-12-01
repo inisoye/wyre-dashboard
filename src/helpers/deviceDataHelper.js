@@ -238,6 +238,8 @@ const getDeviceData = ({
             // Dashboard data
             total_kwh,
             solar_hours,
+            is_load: deviceData?.is_load, 
+            is_source: deviceData?.is_source,
             min_demand,
             max_demand,
             avg_demand,

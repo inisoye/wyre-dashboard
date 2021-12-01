@@ -3,6 +3,8 @@ import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 import Logo from '../icons/Logo';
+
+import avatar from '../images/logo.png';
 import { fetchSideBar } from '../redux/actions/sidebar/sidebar.action';
 
 import SidebarOrganization from './SidebarOrganization';
@@ -14,7 +16,7 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
     fetchSideBarData();
   }, [])
 
-  const { organization, isSidebarOpen, currentUrl } = useContext(
+  const { isSidebarOpen, currentUrl } = useContext(
     CompleteDataContext
   );
 
@@ -46,6 +48,7 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
               'header-logo__image header- h-white-fill-medium-up'
             }
           />
+          {/* <img src={avatar} alt='' /> */}
         </Link>
       </div>
       {<ul className="sidebar-org-container">{organizationComponent}</ul>}

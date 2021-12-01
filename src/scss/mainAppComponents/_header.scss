@@ -140,7 +140,7 @@
   @include media('>=desktop-header-break') {
     display: flex;
     align-items: center;
-    padding-left: $large-gutter;
+    padding-left: 4px;
   }
 }
 
