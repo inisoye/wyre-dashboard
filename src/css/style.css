@@ -1041,13 +1041,7 @@ thead.ant-table-thead tr th {
     padding-left: 0;
   }
 }
-@media (min-width: 1320px) {
-  .header-nav-list {
-    display: flex;
-    align-items: center;
-    padding-left: 40px;
-  }
-}
+
 
 .header-nav-list__item {
   border-top: #f0f0f0 1px solid;

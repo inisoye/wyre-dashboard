@@ -61,6 +61,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     );
 
   const dashBoardData = useSelector((state) => state.dashboard.dashBoardData);
+  const dashBoardInfo = useSelector((state) => state.dashboard);
 
   const { setCurrentUrl } = useContext(CompleteDataContext);
   const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
@@ -169,7 +170,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     //   });
   };
 
-  if (isAuthenticatedDataLoading) {
+  if (dashBoardInfo.fetchDashBoardLoading) {
     return <Loader />;
   }
 
@@ -241,14 +242,15 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           {
             allDeviceInfo
             && Object.values(allDeviceInfo).map((eachDevice, index) => {
+
               return index < 6 && <article key={index}
                 className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
                   deviceType={eachDevice.device_type}
-                  totalKWH={eachDevice.dashboard?.total_kwh?.value}
+                  totalKWH={eachDevice?.total_kwh?.value}
                   amount={eachDevice.billing?.totals?.present_total?.value_naira
                   }
-                  timeInUse={eachDevice?.usage_hour}
+                  timeInUse={eachDevice?.usage_hours?.hours[0]}
                 />
               </article>
             })
@@ -299,19 +301,21 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
           </article>
         </div>
-        {dashBoardData && (
-          <div className="dashboard-bar-container">
-            <article className='score-card-row-3'>
-              <LoadOverviewPercentBarChart
-                runningPercentageData={dashBoardData.branches.length > 1 && (!checkedItems 
-                  || Object.keys(checkedItems).length === 0)?
-                  generateMultipleBranchLoadOverviewChartData(dashBoardData.branches)
-                  : generateLoadOverviewChartData(Object.values(allDeviceInfo))}
-                dataTitle='Operating Time'
-              />
-            </article>
-          </div>
-        )}
+        {(dashBoardData || allDeviceInfo) && ((dashBoardData.branches.length > 1 && (!checkedItems
+          || Object.keys(checkedItems).length === 0)) || (dashBoardData.branches.length === 1
+            && generateLoadOverviewChartData(Object.values(allDeviceInfo)).label > 0)) && (
+            <div className="dashboard-bar-container">
+              <article className='score-card-row-3'>
+                <LoadOverviewPercentBarChart
+                  runningPercentageData={dashBoardData.branches.length > 1 && (!checkedItems
+                    || Object.keys(checkedItems).length === 0) ?
+                    generateMultipleBranchLoadOverviewChartData(dashBoardData.branches)
+                    : generateLoadOverviewChartData(Object.values(allDeviceInfo))}
+                  dataTitle='Operating Time'
+                />
+              </article>
+            </div>
+          )}
       </section>
     </>
   );

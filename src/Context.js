@@ -215,7 +215,6 @@ const CompleteDataProvider = (props) => {
         const refindedData = getRefinedOrganizationData(copyOrganisation);
         setRefinedRenderedData(refindedData);
         // set all the device into the needed data(bucket)
-        console.log('here is the all device data', Object.values(refindedData.all_device_data))
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
       } else {
         // generate all the data for the devices selected
