@@ -108,14 +108,14 @@ const getGeneratorSizeMessage = (percent) => {
   if (ratio > 0.79) {
     message = 'Overloaded';
     color = '#fa0303';
-    
+
   } else if (ratio >= 0.6) {
     message = 'Eficient Loading';
     color = '#008000';
   } else {
     message = 'Under Utilized';
     color = '#FFBF00';
-    
+
   }
   return { message, color }
 }
@@ -610,15 +610,24 @@ const generateLoadOverviewChartData = (isLoadData) => {
   let initailData = []
   let data = []
 
-  isLoadData.map((device) => {
-    initailData.push(device.total_kwh.value);
-  });
-  const sumData = sumOfArrayElements(initailData);
-  isLoadData.map((device) => {
-    const devicePercentage = calculatePercentageTwoDecimal(device.total_kwh.value, sumData);
-    label.push(device.name);
-    data.push(devicePercentage);
-  });
+  
+
+  if(isLoadData){
+    isLoadData?.map((device) => {
+      if (device.is_source) {
+        initailData.push(device.total_kwh.value);
+      }
+  
+    });
+    const sumData = sumOfArrayElements(initailData);
+    isLoadData?.map((device) => {
+      if (device.is_source) {
+        const devicePercentage = calculatePercentageTwoDecimal(device.total_kwh.value, sumData);
+        label.push(device.name);
+        data.push(devicePercentage);
+      }
+    });
+  }
 
   return { label, data };
 }
@@ -755,7 +764,7 @@ const combineSameMonthData = (dateArray) => {
         forcastedData[data.date] = Number(data.forecast);
       }
       if (usedData[data.date] != null) {
-        usedData[data.date] = usedData[data.date] +  Number(data.used);
+        usedData[data.date] = usedData[data.date] + Number(data.used);
       } else {
         usedData[data.date] = Number(data.used);
       }

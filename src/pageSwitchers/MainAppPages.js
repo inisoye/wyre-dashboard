@@ -51,12 +51,13 @@ function MainAppPages() {
             'main-container'
           }
         >
-          {/* <div className='old-top-bar-monitor'>
+          <div className='old-top-bar-monitor'>
             <TopBar />
-          </div> */}
+          </div>
+          <AppHeader />
           <div className='newTopbar-monitor'>
-            {/* <RevisedAppTopBar /> */}
-            <AppHeader />
+            {/* <AppHeader /> */}
+            <RevisedAppTopBar />
           </div>
           <ScrollToTop>
             <div className="page-content">
