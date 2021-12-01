@@ -114,11 +114,10 @@ function NewAppTopBar() {
 
   // on date search submit(to make the api call)
   const onApplyClick = () => {
-
+    dataHttpServices.setEndpointDateRange(selectedDate);
     setUserDateRange(selectedDate);
     setSelectedDateRange([moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'),
     moment(selectedDate[1]).format('DD-MM-YYYY HH:mm')]);
-    dataHttpServices.setEndpointDateRange(selectedDate);
     setOpenModal(false);
   }
 

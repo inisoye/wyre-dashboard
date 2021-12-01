@@ -56,8 +56,8 @@ const PDFDocument = () => (
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   let { isAuthenticatedDataLoading,
-    checkedItems, checkedBranches, checkedDevices } = useContext(
-      CompleteDataContext
+    checkedItems, checkedBranches, checkedDevices, userDateRange, selectedDateRange } = useContext(
+      CompleteDataContext,
     );
 
   const dashBoardData = useSelector((state) => state.dashboard.dashBoardData);
@@ -131,8 +131,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
 
   useEffect(() => {
-    dashBoardDataFetch();
-  }, []);
+    dashBoardDataFetch(userDateRange);
+  }, [userDateRange]);
 
 
 
