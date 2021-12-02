@@ -61,10 +61,6 @@ function Report({ match, fetchReportData: fetchReport }) {
     return consumption;
   }
 
-  // useEffect(() => {
-
-  // }, []);
-
   useEffect(() => {
     if (!pageLoaded && isEmpty(report.reportData || {})) {
       fetchReport(report.selectedDate, report.selectedDateType);
