@@ -10,7 +10,6 @@ const DateRange = () => {
   const { selectedDateRange, userDateRange, organization } = useContext(CompleteDataContext)
   const scoreCardDate = organization.score_cards_date;
 
-      
   const defaultDateRange = dataHttpServices.endpointDateRange;
   const defaultStartDate = defaultDateRange.split(' ');
   // const reversedDate = defaultStartDate[1].split('').reverse().join('');
@@ -23,7 +22,7 @@ const DateRange = () => {
 
   const dateRangeStyles = {
     color: '#646464',
-    width:'200px'
+    width:'260px'
    };
 
    const rangeStyles = {
@@ -66,11 +65,11 @@ const DateRange = () => {
           <div style={rangeStyles}>
             <span>(</span>
             <span>{              
-              convertStartDate(selectedDateRange[0].split(' '))            
+              convertStartDate(selectedDateRange[0])            
             }</span>
             <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{
-              convertEndDate(selectedDateRange[1].split(' '))
+              convertEndDate(selectedDateRange[1])
               }</span>
             <span>)</span>
           </div>
