@@ -64,15 +64,12 @@ function Report({ match, fetchReportData: fetchReport }) {
   useEffect(() => {
     if (!pageLoaded && isEmpty(report.reportData || {})) {
       fetchReport(report.selectedDate, report.selectedDateType);
-      setPageLoaded(true);
     }
-    setPageLoaded(true);
-  }, []);
 
-  useEffect(() => {
     if (!isEmpty(report.reportData) > 0 && pageLoaded) {
       fetchReport(report.selectedDate, report.selectedDateType);
     }
+    setPageLoaded(true);
   }, [report.selectedDateType, report.selectedDate]);
 
   useEffect(() => {

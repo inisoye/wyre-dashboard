@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Tag, DatePicker, TimePicker, Form, Modal, Space } from 'antd';
 import CompleteDataContext from '../Context';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import dataHttpServices from '../services/devices';
 
 const { CheckableTag } = Tag;
@@ -21,15 +20,13 @@ const picker = {
 
 function NewAppTopBar() {
   const {
-    isSidebarOpen,
     setUserDateRange,
     setSelectedDateRange,
-    organization,
     currentUrl
   } = useContext(CompleteDataContext);
 
 
-  const [selectedDate, setSelectedDate] = useState([moment().startOf('day'), moment()]);
+  const [selectedDate, setSelectedDate] = useState([moment().startOf('month').startOf('day'), moment()]);
   const [showMonths, setShowMonths] = useState(false);
   const [showDays, setShowDays] = useState(false);
   const [showQuarters, setShowQuarters] = useState(false);
@@ -114,11 +111,10 @@ function NewAppTopBar() {
 
   // on date search submit(to make the api call)
   const onApplyClick = () => {
-
+    dataHttpServices.setEndpointDateRange(selectedDate);
     setUserDateRange(selectedDate);
     setSelectedDateRange([moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'),
     moment(selectedDate[1]).format('DD-MM-YYYY HH:mm')]);
-    dataHttpServices.setEndpointDateRange(selectedDate);
     setOpenModal(false);
   }
 

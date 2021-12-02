@@ -33,6 +33,7 @@ import {
   getInitialAllDeviceRefinedOrganizationData
 } from "../helpers/organizationDataHelpers";
 import { getRenderedData } from "../helpers/renderedDataHelpers";
+import { isEmpty } from "../helpers/authHelper";
 
 
 const breadCrumbRoutes = [
@@ -56,11 +57,10 @@ const PDFDocument = () => (
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   let { isAuthenticatedDataLoading,
-    checkedItems, checkedBranches, checkedDevices } = useContext(
-      CompleteDataContext
+    checkedItems, checkedBranches, checkedDevices, userDateRange, selectedDateRange } = useContext(
+      CompleteDataContext,
     );
 
-  const dashBoardData = useSelector((state) => state.dashboard.dashBoardData);
   const dashBoardInfo = useSelector((state) => state.dashboard);
 
   const { setCurrentUrl } = useContext(CompleteDataContext);
@@ -68,6 +68,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   const [allCheckedDevice, setAllCheckedDevice] = useState(false);
   const [allDeviceInfo, setAllDeviceInfo] = useState(false);
   const [refinedDashboardData, setRefinedDashboardData] = useState({});
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   const {
     name,
@@ -92,8 +93,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       setAllCheckedDevice(allChecked)
     }
 
-    const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardData));
-    if (dashBoardData) {
+    const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
+    if (dashBoardInfo.dashBoardData) {
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
 
         const { branchAndDevice, allDeviceData } = getRefinedOrganizationDataWithChekBox({
@@ -113,7 +114,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       }
     }
 
-  }, [checkedBranches, checkedDevices, dashBoardData]);
+  }, [checkedBranches, checkedDevices, dashBoardInfo.dashBoardData]);
 
   useEffect(() => {
     if (match && match.url) {
@@ -131,10 +132,15 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
 
   useEffect(() => {
-    dashBoardDataFetch();
-  }, []);
+    if (!pageLoaded && isEmpty(dashBoardInfo.dashBoardData || {})) {
+      dashBoardDataFetch(userDateRange);
+    }
 
-
+    if (!isEmpty(dashBoardInfo.dashBoardData) > 0 && pageLoaded) {
+      dashBoardDataFetch(userDateRange);
+    }
+    setPageLoaded(true);
+  }, [userDateRange]);
 
 
   const pageRef = useRef();
@@ -301,15 +307,15 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
           </article>
         </div>
-        {(dashBoardData || allDeviceInfo) && ((dashBoardData.branches.length > 1 && (!checkedItems
-          || Object.keys(checkedItems).length === 0)) || (dashBoardData.branches.length === 1
+        {(dashBoardInfo.dashBoardData || allDeviceInfo) && ((dashBoardInfo.dashBoardData.branches.length > 1 && (!checkedItems
+          || Object.keys(checkedItems).length === 0)) || (dashBoardInfo.dashBoardData.branches.length === 1
             && generateLoadOverviewChartData(Object.values(allDeviceInfo)).label > 0)) && (
             <div className="dashboard-bar-container">
               <article className='score-card-row-3'>
                 <LoadOverviewPercentBarChart
-                  runningPercentageData={dashBoardData.branches.length > 1 && (!checkedItems
+                  runningPercentageData={dashBoardInfo.dashBoardData.branches.length > 1 && (!checkedItems
                     || Object.keys(checkedItems).length === 0) ?
-                    generateMultipleBranchLoadOverviewChartData(dashBoardData.branches)
+                    generateMultipleBranchLoadOverviewChartData(dashBoardInfo.dashBoardData.branches)
                     : generateLoadOverviewChartData(Object.values(allDeviceInfo))}
                   dataTitle='Operating Time'
                 />
