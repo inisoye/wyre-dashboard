@@ -58,7 +58,7 @@ export const FuelConsumption = [
     width: '20%',
   },
   {
-    title: 'Diesle Consumed',
+    title: 'Diesel Consumed',
     dataIndex: 'energy',
     width: '15%',
     render: (energy) => energy.toFixed(2)

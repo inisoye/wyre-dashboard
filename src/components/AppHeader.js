@@ -22,7 +22,7 @@ import OverviewIcon from '../icons/OverviewIcon';
 import PadlockIcon from '../icons/PadlockIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import LogoutIcon from '../icons/LogoutIcon';
-import { SCORE_CARD_EXCLUDE_CLIENTS } from '../helpers/constants';
+import { SCORE_CARD_EXCLUDE_CLIENTS, BESPOKE_ADD_LIST } from '../helpers/constants';
 
 function Header() {
   const {
@@ -33,6 +33,7 @@ function Header() {
     setUserData,
     organization,
     currentUrl,
+    userData,
     setEmailModalData,
   } = useContext(CompleteDataContext);
 
@@ -93,6 +94,48 @@ function Header() {
   });
 
 
+  const renderComp = () => {
+    switch (userData.decodedUser.client_type) {
+
+      case 'STANDARD':
+        // all except billing and load overview
+        return <>
+          <HeaderLink onClick={toggleNav} url="/score-card" linkText="Score Card" />
+          <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
+          <HeaderLink onClick={toggleNav} url="/report" linkText="Report" />
+        </>
+      case 'RESELLER':
+        // only dashboard, parameters and billing
+        return <>
+          <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+        </>
+      case 'BESPOKE':
+        return <>
+
+          {
+            BESPOKE_ADD_LIST.SCORE_CARD.includes(userData.decodedUser.client) &&
+            <HeaderLink onClick={toggleNav} url="/score-card" linkText="Score Card"
+            />
+          }
+          {
+            BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.decodedUser.client) &&
+            <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
+          }
+          {
+            BESPOKE_ADD_LIST.REPORT.includes(userData.decodedUser.client) &&
+            <HeaderLink onClick={toggleNav} url="/report" linkText="Report" />
+          }
+          {
+            BESPOKE_ADD_LIST.BILLING.includes(userData.decodedUser.client) &&
+            <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+          }
+        </>
+      default:
+        <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+    }
+  }
+
+
   const doesUserHaveAccess =
     organisationName && checkOrganizationHasAccess(organisationName);
 
@@ -143,14 +186,14 @@ function Header() {
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
             {/* {!doesUserHaveAccess && ( */}
-            {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+            {/* {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
               &&
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
                 linkText="Score Card"
               />
-            }
+            } */}
             {/* )} */}
 
             <HeaderLinkWithDropdown
@@ -188,7 +231,7 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                {!doesUserHaveAccess && (
+                {userData.decodedUser.client_type !== 'RESELLER' && (
                   <HeaderSublink
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"
@@ -202,24 +245,25 @@ function Header() {
                 />
               </ul>
             </HeaderLinkWithDropdown>
-            <HeaderLink
+            {/* <HeaderLink
               onClick={toggleNav}
               url="/report"
               linkText="Report"
-            />
+            /> */}
+            {renderComp()}
             {/* {!doesUserHaveAccess && ( */}
-            {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+            {/* {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
               &&
               <HeaderLink
                 onClick={toggleNav}
                 url="/cost-tracker"
                 linkText="Cost Tracker"
               />
-            }
+            } */}
             {/* )} */}
 
 
-            <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+            {/* <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" /> */}
 
             {/* {!doesUserHaveAccess && (
             <HeaderLink

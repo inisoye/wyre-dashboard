@@ -459,7 +459,7 @@ const defaultDate = (data)=>{
               <li className="alerts-and-alarms-list-item">
                   <div className="alerts-and-alarms-question-container">
                     <label htmlFor="estimated-baseline-checkbox" className="alerts-and-alarms-question-container">
-                       When forcasted Baseline is Reached
+                       When forcasted baseline is reached
                     </label>
                     <div>
                     <Controller
