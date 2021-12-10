@@ -34,6 +34,7 @@ import {
 } from "../helpers/organizationDataHelpers";
 import { getRenderedData } from "../helpers/renderedDataHelpers";
 import { isEmpty } from "../helpers/authHelper";
+import { BESPOKE_ADD_LIST } from "../helpers/constants";
 
 
 const breadCrumbRoutes = [
@@ -85,6 +86,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     solar_hours,
     all_device_data
   } = refinedDashboardData;
+
 
 
   useEffect(() => {
@@ -309,13 +311,12 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
           </article>
         </div>
-        {(dashBoardInfo.dashBoardData || allDeviceInfo) && ( 
-          
+        {BESPOKE_ADD_LIST.LOAD_OVERVIEW.includes(userData.decodedUser.client) && (dashBoardInfo.dashBoardData || allDeviceInfo) && (
           (dashBoardInfo.dashBoardData.branches.length > 1 &&
-          (!checkedItems
-            || Object.keys(checkedItems).length === 0)) || 
-            (dashBoardInfo.dashBoardData.branches.length === 1
-              && generateLoadOverviewChartData(Object.values(allDeviceInfo)).label.length > 0)) && (
+            (!checkedItems
+              || Object.keys(checkedItems).length === 0)) ||
+          (dashBoardInfo.dashBoardData.branches.length === 1
+            && generateLoadOverviewChartData(Object.values(allDeviceInfo)).label.length > 0)) && (
             <div className="dashboard-bar-container">
               <article className='score-card-row-3'>
                 <LoadOverviewPercentBarChart
