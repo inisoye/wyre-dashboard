@@ -607,6 +607,8 @@ const generateLoadCosumptionChartData = (isLoadData) => {
 }
 
 const generateLoadOverviewChartData = (isLoadData) => {
+
+  
   let label = [];
   let initailData = []
   let data = []
@@ -616,6 +618,7 @@ const generateLoadOverviewChartData = (isLoadData) => {
   if(isLoadData){
     isLoadData?.map((device) => {
       if (device.is_source) {
+        
         initailData.push(device.total_kwh.value);
       }
   
@@ -629,7 +632,6 @@ const generateLoadOverviewChartData = (isLoadData) => {
       }
     });
   }
-
   return { label, data };
 }
 

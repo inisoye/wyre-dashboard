@@ -1,5 +1,14 @@
 export const SCORE_CARD_EXCLUDE_CLIENTS = ['Sapio Utilities'];
 
+
+export const BESPOKE_ADD_LIST = {
+  SCORE_CARD: ['Lennox Mall'],
+  REPORT: ['Lennox Mall'],
+  LOAD_OVERVIEW: ['Lennox Mall'],
+  COST_TRACKER: ['Lennox Mall'],
+  BILLING: [''],
+}
+
 export const SCORE_CARD_TOOLTIP_MESSAGES = {
     CARBON: `Carbon footprint on all sources.
 

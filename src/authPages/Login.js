@@ -3,6 +3,7 @@ import React, { useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
+import jwt from 'jwt-decode';
 
 import CompleteDataContext from '../Context';
 import loginHttpServices from '../services/login';
@@ -37,7 +38,7 @@ function Login() {
 
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
-      setUserData(user);
+      setUserData({ user, decodedUser: jwt(user.data.token)});
       setIsAuthenticating(false)
     } catch (exception) {
       setIsAuthenticating(false)
