@@ -66,6 +66,7 @@ function SidebarBranch({ branchData }) {
         const originalDeviceName = eachDevice.name
           .replace(branchData.name, '')
           .trim();
+        
 
         // const deviceDailyKwh = {
         //   dates: branchData.daily_kwh.dates,
@@ -115,6 +116,7 @@ function SidebarBranch({ branchData }) {
         // );
 
         return (
+          !eachDevice.is_load &&
           <SidebarDevice
             originalDeviceName={originalDeviceName}
             modifiedDeviceName={modifiedDeviceName}

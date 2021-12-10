@@ -1,5 +1,6 @@
 
 import React, { createContext, useEffect, useState } from 'react';
+import jwt from 'jwt-decode';
 
 import { useMediaQuery } from 'react-responsive';
 
@@ -243,7 +244,7 @@ const CompleteDataProvider = (props) => {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
-      setUserData(user);
+      setUserData({...user, decodedUser: jwt(user.data.token)});
       setToken(user.data.token);
       setUserId(user.data.id);
     }
