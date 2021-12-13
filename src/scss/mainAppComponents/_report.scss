@@ -231,7 +231,6 @@
   background-color: $white;
   padding-bottom: 30px;
   border-radius: 10px;
-  margin-bottom: 30px;
   @include media('>=1200px') {
     width: 49%;
   }
@@ -239,6 +238,21 @@
   @include media('>=792px', '<1200px') {
     width: 100%;
     margin-bottom: 3rem;
+  }
+}
+.report-table-bottom-container{
+  background-color: $white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  @include media('>=1200px') {
+    width: 49%;
+    margin-bottom: 10px;
+  }
+
+  @include media('>=792px', '<1200px') {
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }
 

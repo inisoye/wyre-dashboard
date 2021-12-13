@@ -284,7 +284,7 @@ function Report({ match, fetchReportData: fetchReport }) {
       <div className="report-table-rows">
         <div className="report-row-1__content">
           {(
-            <div className="report-table-container">
+            <div className="report-table-bottom-container">
               <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Time of Use
@@ -295,7 +295,7 @@ function Report({ match, fetchReportData: fetchReport }) {
             </div>
           )}
           {(
-            <div className="report-table-container">
+            <div className="report-table-bottom-container">
               <div className="h-overflow-auto report-card-tabble__padding">
                 <h2 className="report-pie-heading">
                   Power Demand
