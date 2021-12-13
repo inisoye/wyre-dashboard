@@ -45,7 +45,7 @@ const toSnakeCase = (str) =>
 const cloneObject = (object) => Object.assign({}, object);
 
 const getLastArrayItems = (array, numberOfItems) => {
-   console.log('here is the arrra dalkjdshdko', array);
+  console.log('here is the arrra dalkjdshdko', array);
   return array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
@@ -259,12 +259,13 @@ const sumNestedObjectValuesUp = (array, nestedObject, valueName) => {
 };
 
 const getMinDemandObject = (array) => {
-  const valuesArray = array.map((eachItem) => eachItem.min_demand.value);
+
+  const valuesArray = array.filter((eachItem) => eachItem.min_demand.value > 0);
 
   //Obtain min demand of all min demands
   const valuesArrayMin = Math.min.apply(null, valuesArray);
 
-  return { unit: 'kw', value: valuesArrayMin };
+  return { unit: 'kw', value: isFinite(valuesArrayMin)?  valuesArrayMin : 0  };
 };
 
 const getNestedMinDemandObject = (array, nestedObject) => {
@@ -608,20 +609,20 @@ const generateLoadCosumptionChartData = (isLoadData) => {
 
 const generateLoadOverviewChartData = (isLoadData) => {
 
-  
+
   let label = [];
   let initailData = []
   let data = []
 
-  
 
-  if(isLoadData){
+
+  if (isLoadData) {
     isLoadData?.map((device) => {
       if (device.is_source) {
-        
+
         initailData.push(device.total_kwh.value);
       }
-  
+
     });
     const sumData = sumOfArrayElements(initailData);
     isLoadData?.map((device) => {

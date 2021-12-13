@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'antd';
 
 
-const GenericReportTable  = ({ data, columnData }) =>{
+const GenericReportTable  = ({ data, columnData, summary= null }) =>{
 
   return (
     <Table
@@ -14,6 +14,7 @@ const GenericReportTable  = ({ data, columnData }) =>{
       className='report-table'
       // className='table-striped-rows'
       size={'middle'}
+      summary={pageData => summary && summary(pageData)}
     />
   );
 }

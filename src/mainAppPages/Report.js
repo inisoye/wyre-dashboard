@@ -29,6 +29,8 @@ import { fetchReportData } from '../redux/actions/report/report.action';
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import { loadReportPage } from '../redux/actions/setting/actionCreators';
 import { isEmpty } from '../helpers/authHelper';
+import ReportTimeOfUse from '../components/tables/reportTables/ReportTimeOfUse';
+import { ConstImplicationSummary } from '../components/tables/reportTables/TablesSummaries';
 
 
 const breadCrumbRoutes = [
@@ -42,6 +44,7 @@ function Report({ match, fetchReportData: fetchReport }) {
   const [timeOfUseData, setTimeOfUseData] = useState(false);
   const [pageLoaded, setPageLoaded] = useState(false);
   const report = useSelector((state) => state.report);
+  const sideBarData = useSelector((state) => state.sideBar.sideBarData);
   const {
     setCurrentUrl,
   } = useContext(CompleteDataContext);
@@ -263,7 +266,7 @@ function Report({ match, fetchReportData: fetchReport }) {
           )}
         </div>
       </div>
-      <div className="report-full-width-rows">
+      <div className="report-full-width-with-no-height-rows">
         <div className="report-row-1__content">
           {(
             <div className="report-chart-container">
@@ -272,7 +275,7 @@ function Report({ match, fetchReportData: fetchReport }) {
                   Cost Implication
                 </h2>
                 <GenericReportTable data={cost_implication}
-                  columnData={CostImplicationColumn} />
+                  columnData={CostImplicationColumn} summary={ConstImplicationSummary}/>
               </div>
             </div>
           )}
@@ -286,7 +289,7 @@ function Report({ match, fetchReportData: fetchReport }) {
                 <h2 className="report-pie-heading">
                   Time of Use
                 </h2>
-                <GenericReportTable data={timeOfUseData}
+                <ReportTimeOfUse data={timeOfUseData}
                   columnData={TimeOfUseColumns} />
               </div>
             </div>
