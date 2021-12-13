@@ -70,8 +70,10 @@ function Header() {
 
     // Go home
     history.push('/');
+
+    window.href = '/';
     // Refresh page
-    history.go(0);
+    // history.go(0);
   };
 
   const { image: orgImage } = organization

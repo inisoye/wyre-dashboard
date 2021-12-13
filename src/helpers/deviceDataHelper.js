@@ -17,6 +17,7 @@ const getDeviceData = ({
     deviceData
 }) => {
 
+    console.log('this is the device data ===============>>>>>>>>', deviceData);
     const modifiedDeviceName = !deviceData.name.includes(branchData.name)
         ? branchData.name + ' ' + deviceData.name
         : deviceData.name;
@@ -237,6 +238,7 @@ const getDeviceData = ({
             name: modifiedDeviceName,
             // Dashboard data
             total_kwh,
+            // total_kwh_is_source,
             solar_hours,
             is_load: deviceData?.is_load, 
             is_source: deviceData?.is_source,
