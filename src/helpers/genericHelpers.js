@@ -260,19 +260,18 @@ const sumNestedObjectValuesUp = (array, nestedObject, valueName) => {
 
 const getMinDemandObject = (array) => {
 
-  const valuesArray = array.filter((eachItem) => eachItem.min_demand.value > 0);
+  const valuesArray = array.map((eachItem) => eachItem.min_demand.value);
 
   //Obtain min demand of all min demands
   const valuesArrayMin = Math.min.apply(null, valuesArray);
 
-  return { unit: 'kw', value: isFinite(valuesArrayMin)?  valuesArrayMin : 0  };
+  return { unit: 'kw', value: isFinite(valuesArrayMin) ? valuesArrayMin : 0 };
 };
 
 const getNestedMinDemandObject = (array, nestedObject) => {
-  const valuesArray = array.map(
-    (eachItem) => eachItem[nestedObject].min_demand.value
-  );
-
+  const valuesArray = array.filter(
+    (eachItem) => eachItem[nestedObject].min_demand.value> 0
+  ).map((eachItem) => eachItem[nestedObject].min_demand.value);
   //Obtain min demand of all min demands
   const valuesArrayMin = Math.min.apply(null, valuesArray);
 
@@ -282,6 +281,7 @@ const getNestedMinDemandObject = (array, nestedObject) => {
 const getMaxDemandObject = (array) => {
   const valuesArray = array.map((eachItem) => eachItem.max_demand.value);
 
+  console.log('here is the max demand', valuesArray);
   //Obtain max demand of all max demands
   const valuesArrayMax = Math.max.apply(null, valuesArray);
 
@@ -618,7 +618,7 @@ const generateLoadOverviewChartData = (isLoadData) => {
 
   if (isLoadData) {
     isLoadData?.map((device) => {
-      if (device.is_source) {
+      if (device.is_load) {
 
         initailData.push(device.total_kwh.value);
       }
@@ -626,7 +626,7 @@ const generateLoadOverviewChartData = (isLoadData) => {
     });
     const sumData = sumOfArrayElements(initailData);
     isLoadData?.map((device) => {
-      if (device.is_source) {
+      if (device.is_load) {
         const devicePercentage = calculatePercentageTwoDecimal(device.total_kwh.value, sumData);
         label.push(device.name);
         data.push(devicePercentage);
@@ -646,8 +646,10 @@ const generateMultipleBranchLoadOverviewChartData = (allBranch) => {
   allBranch.map((branch) => {
     let totalBranchUsage = 0
     branch.devices.map((device) => {
-      totalBranchUsage += device.dashboard?.total_kwh?.value;
-      totalConsumptionUnit += device.dashboard?.total_kwh?.value;
+      if (device.is_load) {
+        totalBranchUsage += device.dashboard?.total_kwh?.value;
+        totalConsumptionUnit += device.dashboard?.total_kwh?.value;
+      }
     });
     branchConsumptionKeyPair[branch.name] = totalBranchUsage;
   });

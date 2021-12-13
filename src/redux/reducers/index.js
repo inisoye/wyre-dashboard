@@ -15,4 +15,12 @@ const rootReducer = combineReducers({
     setting
 });
 
+const generaReducer = (state, action) => {
+    if (action.type === 'USER_LOGOUT') {
+      return rootReducer(undefined, action)
+    }
+  
+    return rootReducer(state, action)
+  }
+
 export default rootReducer;
