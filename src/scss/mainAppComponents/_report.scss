@@ -231,6 +231,7 @@
   background-color: $white;
   padding-bottom: 30px;
   border-radius: 10px;
+  margin-bottom: 30px;
   @include media('>=1200px') {
     width: 49%;
   }
