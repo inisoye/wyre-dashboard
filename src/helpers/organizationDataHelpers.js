@@ -102,6 +102,7 @@ const getBranchEnergyDataArray = (data) => {
         eachBranch.devices,
         'dashboard'
       );
+      console.log('trensdsyodijosdij ==========>>>>>>.', branchEnergyData.min_demand);
       branchEnergyData.max_demand = getNestedMaxDemandObject(
         eachBranch.devices,
         'dashboard'
@@ -121,6 +122,7 @@ const getBranchEnergyDataArray = (data) => {
   ----------------*/
 const getOrganizationEnergyData = (data) => {
   const eachBranchEnergyDataArray = getBranchEnergyDataArray(data);
+
 
   const energyValueNames =
     eachBranchEnergyDataArray && Object.keys(eachBranchEnergyDataArray[0]);
@@ -682,7 +684,7 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
-
+console.log('here is the ogr data', data);
   getOrganizationDeviceType(data);
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
@@ -746,7 +748,7 @@ const getRefinedOrganizationData = (data) => {
 
 
 const getDashBoardRefinedData = (data) => {
-
+  console.log('here is the customer connect data customer customer customer', data);
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,

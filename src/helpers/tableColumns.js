@@ -41,12 +41,12 @@ export const TimeOfUseColumns = [
     width: '20%'
   },
   {
-    title: 'House of Use',
+    title: 'Hours of Use',
     dataIndex: 'hour',
     width: '15%',
   },
   {
-    title: 'Blackout',
+    title: 'Down Time',
     dataIndex: 'blackOut',
     width: '20%',
   },
