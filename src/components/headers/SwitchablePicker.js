@@ -12,7 +12,7 @@ const PickerWithType = ({ type, onChange }) =>{
 
 
 const SwitchablePicker = ()=> {
-  const [type, setType] = useState('month');
+  const [type, setType] = useState('monthly');
   const dispatch = useDispatch();
 
   const onTypeChange = (type) => {
@@ -27,8 +27,8 @@ const SwitchablePicker = ()=> {
   return (
     <Space>
       <Select value={type} onChange={onTypeChange}>
-        <Option value="month">Month</Option>
-        <Option value="year">Year</Option>
+        <Option value="monthly">Monthly</Option>
+        <Option value="yearly">Yearly</Option>
       </Select>
       <PickerWithType type={type} onChange={(value, _) => onDateSelect(value, type) } />
     </Space>

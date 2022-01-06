@@ -4,7 +4,7 @@ import reportType from './reducer.types';
 const INITIAL_STATE = {
   fetchReportLoading: false,
   reportData: false,
-  selectedDateType: 'month',
+  selectedDateType: 'monthly',
   selectedDate: moment().format('DD-MM-YYYY'),
 };
 
