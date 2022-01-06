@@ -6,7 +6,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 
 const getAll = (userId, token, dateRange) => {
   const dateData = dateRange.length > 0 ? deviceHttp.convertDateRangeToEndpointFormat(dateRange) : deviceHttp.endpointDateRange.split('/')[0]
-  const request = axios.get(`${baseUrl}get_reports/${userId}/${dateData}/month`,
+  const request = axios.get(`${baseUrl}get_reports/${userId}/${dateData}/monthly`,
     {
       headers: {
         'Content-Type': 'application/json',
