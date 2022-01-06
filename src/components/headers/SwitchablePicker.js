@@ -12,7 +12,7 @@ const PickerWithType = ({ type, onChange }) =>{
 
 
 const SwitchablePicker = ()=> {
-  const [type, setType] = useState('month');
+  const [type, setType] = useState('monthly');
   const dispatch = useDispatch();
 
   const onTypeChange = (type) => {
