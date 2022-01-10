@@ -129,6 +129,10 @@ function Header() {
             BESPOKE_ADD_LIST.BILLING.includes(userData.decodedUser.client) &&
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
           }
+          {
+            BESPOKE_ADD_LIST.BILLING.includes(userData.decodedUser.client) &&
+              <HeaderLink onClick={toggleNav} url="/alerts-and-alarms" linkText="Alerts and Alarms" />
+          }
         </>
       default:
         <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
@@ -251,6 +255,7 @@ function Header() {
               linkText="Report"
             /> */}
             {renderComp()}
+            <HeaderLink onClick={toggleNav} url="/alerts-and-alarms" linkText="Alerts and Alarms" />
             {/* {!doesUserHaveAccess && ( */}
             {/* {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
               &&
@@ -354,7 +359,7 @@ function Header() {
                   </Link>
                 </li>
 
-                <li className="header-sublinks-list__item avatar-sublink-item">
+                {/* <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
                     className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
@@ -362,7 +367,7 @@ function Header() {
                   >
                     <SettingsIcon /> <span>Alerts and Alarms</span>
                   </Link>
-                </li>
+                </li> */}
 
                 <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
@@ -452,14 +457,14 @@ function Header() {
               </Link>
             </li>
 
-            <li className="header-sublinks-list__item avatar-sublink-item">
+            {/* <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
                 className="header-sublink avatar-sublink"
                 to="/alerts-and-alarms"
               >
                 <SettingsIcon /> <span>Alerts and Alarms</span>
               </Link>
-            </li>
+            </li> */}
 
             <li className="header-sublinks-list__item avatar-sublink-item">
               <Link

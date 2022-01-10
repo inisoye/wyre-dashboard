@@ -40,15 +40,15 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
     >
       <div className="header-logo-container">
         <Link className="header-logo" to="/">
-          <Logo
+          {/* <Logo
             className={
               // isReportPageOpen
               //   ? 'header-logo__image'
               //   : 
               'header-logo__image header- h-white-fill-medium-up'
             }
-          />
-          {/* <img src={avatar} alt='' /> */}
+          /> */}
+          <img src={avatar} alt='' />
         </Link>
       </div>
       {<ul className="sidebar-org-container">{organizationComponent}</ul>}
