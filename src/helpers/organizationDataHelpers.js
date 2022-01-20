@@ -102,7 +102,7 @@ const getBranchEnergyDataArray = (data) => {
         eachBranch.devices,
         'dashboard'
       );
-      console.log('trensdsyodijosdij ==========>>>>>>.', branchEnergyData.min_demand);
+
       branchEnergyData.max_demand = getNestedMaxDemandObject(
         eachBranch.devices,
         'dashboard'
@@ -684,7 +684,6 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
-console.log('here is the ogr data', data);
   getOrganizationDeviceType(data);
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
