@@ -281,7 +281,6 @@ const getNestedMinDemandObject = (array, nestedObject) => {
 const getMaxDemandObject = (array) => {
   const valuesArray = array.map((eachItem) => eachItem.max_demand.value);
 
-  console.log('here is the max demand', valuesArray);
   //Obtain max demand of all max demands
   const valuesArrayMax = Math.max.apply(null, valuesArray);
 
