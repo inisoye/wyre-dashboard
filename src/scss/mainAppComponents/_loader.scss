@@ -30,3 +30,26 @@
     }
   }
 }
+
+.loader-new-logo {
+  transform: scale(2);
+  height: 30px;
+  height: 150px;
+  path {
+    animation: loaderPulse 2s ease infinite;
+  }
+
+  @keyframes loaderPulse {
+    0% {
+      fill: #c5d4e9;
+    }
+
+    50% {
+      fill: #9db6d9;
+    }
+
+    100% {
+      fill: #c5d4e9;
+    }
+  }
+}
