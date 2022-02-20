@@ -9,7 +9,7 @@ import {
 } from '../../helpers/genericHelpers';
 
 
-const DashboardStackedBarChart = ({ data, organization }) => {
+const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
   const options = {
@@ -110,16 +110,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
   const dataNames = Object.keys(values);
   const dataValues = Object.values(values);
   const colorsArray = [
-    '#6C00FA',
-    '#00C7E6',
-    '#FF3DA1',
-    '#82ca9d',
-    '#ff9b3d',
-    '#360259',
-    '#0371b5',
-    '#D90000',
-    '#757575',
-    '#FFE11A',
+    uiSettings.appPrimaryColor,
   ];
 
   const plottedDataSet = dataNames.map((_, index) => {

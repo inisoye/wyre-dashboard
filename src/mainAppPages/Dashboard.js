@@ -58,7 +58,7 @@ const PDFDocument = () => (
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   let {
-    checkedItems, checkedBranches, checkedDevices, userDateRange } = useContext(
+    checkedItems, checkedBranches, checkedDevices, userDateRange, uiSettings } = useContext(
       CompleteDataContext,
     );
 
@@ -254,6 +254,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <article className="dashboard-row-2 dashboard-bar-container">
           <DashboardStackedBarChart
+            uiSettings={uiSettings}
             className=""
             data={daily_kwh}
             organization={name}
@@ -262,7 +263,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
-            <DashboardDoughnutChart data={usage_hours} />
+            <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} />
           </article>
 
           <article className="dashboard-today-and-yesterday">
@@ -305,6 +306,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             <div className="dashboard-bar-container">
               <article className='score-card-row-3'>
                 <LoadOverviewPercentBarChart
+                  uiSettings={uiSettings}
                   runningPercentageData={dashBoardInfo.dashBoardData.branches.length > 1 && (!checkedItems
                     || Object.keys(checkedItems).length === 0) ?
                     generateMultipleBranchLoadOverviewChartData(dashBoardInfo.dashBoardData.branches)

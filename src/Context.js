@@ -1,5 +1,5 @@
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt from 'jwt-decode';
 
 import { useMediaQuery } from 'react-responsive';
@@ -259,11 +259,15 @@ const CompleteDataProvider = (props) => {
 
   const [PasswordVisibility, setPasswordVisibility] = useState(false)
 
+  const uiSettings = {
+      appPrimaryColor: '#5c3592'
+  }
 
   return (
     <CompleteDataContext.Provider
       value={{
         // Data Control
+        uiSettings,
         deviceData : deviceData,
         organization: organization,
         refinedRenderedData: refinedRenderedData,

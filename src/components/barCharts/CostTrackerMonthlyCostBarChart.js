@@ -4,9 +4,9 @@ import CompleteDataContext from '../../Context';
 
 import dayjs from 'dayjs';
 
-const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
+const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData, uiSettings }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
-
+  const { appPrimaryColor } = uiSettings;
 
   let formattedDataForDiesel = {}
   let formattedUtilData = {}
@@ -172,8 +172,8 @@ const CostTrackerMonthlyCostBarChart = ({ DieselData, utilityData }) => {
         label: `Amount in Naira`,
         maxBarThickness: 60,
         data: Object.values(convertToOjectAndSort(chartsData)),
-        backgroundColor: '#00C7E6',
-        borderColor: '#00C7E6',
+        backgroundColor: appPrimaryColor,
+        borderColor: appPrimaryColor,
         borderWidth: 1,
       },
     ],
