@@ -1,0 +1,414 @@
+.report-row-heading {
+    font-size: 2.4rem;
+    font-weight: 24px;
+    margin-bottom: 20px;
+  
+    &.h-first {
+      margin-bottom: 30px;
+    }
+  }
+  
+  .report-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+  
+  .report-row-1__content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+  }
+  
+  .report-row-1-card {
+    margin-bottom: 30px;
+    height: 240px;
+    width: 32%;
+  }
+  
+  .report-card-1 {
+    text-align: center;
+    padding: 16px 16px 40px;
+  }
+  
+  .report-card-1-heading {
+    font-weight: 600;
+    font-size: 2.2rem;
+  }
+  
+  .report-card-icon {
+    height: 40px;
+    width: 40px;
+  }
+  
+  .report-table-rows{
+    margin-bottom: 30px;
+  }
+  
+  .report-card-large-percentage{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 4.8rem;
+    font-weight: 24px;
+  }
+  
+  .report-card-1-rating {
+    margin-top: 16px;
+  }
+  
+  .report-card-1-paragraph {
+    margin-top: 18px;
+    font-size: 1.4rem;
+
+  }
+  
+  .report-card-2 {
+    padding: 16px;
+
+  }
+  
+  .report-card-2__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 6%;
+  }
+  .report-card-2__top-margin {
+    margin-top: 1.5rem;
+    margin-left: 4rem;
+  }
+  
+  .report-card-2__topleft-double {
+    width: '50%'; margin-right: '5%';
+     display: 'flex'; 
+     flex-direction: 'column';
+     align-items: 'center';
+  }
+  
+  .report-card-2__topleft {
+    max-width: 64%;
+  }
+  
+  .report-card-with-rate__content-wrapper{
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    align-content: center;
+    margin-top: 1rem;
+  }
+  .report-card-with-rate__icon-wrapper{
+    width: 6.6rem;
+    height: 6.6rem;
+    border-radius: 50%;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .report-pie-container{
+    height: 240px;
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    min-height: 320px;
+    width: 49%;
+  
+    min-height: 280px;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+  .report-after-pie-table-container{
+    height: 240px;
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    min-height: 320px;
+    width: 49%;
+
+  }
+  
+  .report-loadimbalance-table{
+    height: 240px;
+  }
+  
+  .report-table-container{
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    width: 49%;
+  }
+  .report-table-bottom-container{
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    width: 49%;
+    margin-bottom: 10px;
+  }
+  
+  .report-chart-container{
+    min-height: 280px;
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    width: 100%;
+  }
+  .report-double-chart-container{
+    min-height: 480px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 100%;
+
+  }
+  .report-demand-container{
+    background-color: #ffffff;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    width: 100%;
+  }
+  
+  .report-card-tabble__padding{
+    padding: 0 10px 10px 10px;
+  }
+  
+  
+  .report-table { 
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: 'black';
+    text-align: center;
+  }
+  
+  .report-table tr:nth-child(even) { 
+    background-color: #eef1f5;
+    
+  }
+  
+  .report-pie-heading{
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-top: 15px;
+  }
+  
+  .report-full-width-rows{
+    width: 100%;
+    margin-bottom: 30px;
+    height: 280px;
+  }
+  .report-full-width-with-no-height-rows{
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .report-full-width-rows-fit-content{
+    width: 100%;
+    margin-bottom: 30px;
+    height: fit-content;
+  }
+  
+  .report-bar-chart__chart-wrapper {
+    min-height: 200px;
+    padding-top: 40px;
+  }
+  
+  .demand-statistic-space-hr{
+    height: 2rem;
+  }
+  
+  
+  .report-card-1-percentage {
+    /* margin-top: 24px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3.5rem;
+    font-weight: 500;
+
+  }
+  
+  .report-card-double{
+    display: 'flex'; 
+    justify-content: 'space-evenly';
+    margin-bottom: 30px;
+    height: 240px;
+    width: 66%;
+  
+  
+    &.report-card-2 {
+      height: auto;
+
+    }
+
+  }
+  
+  .report-row-1-card {
+    margin-bottom: 30px;
+    height: 240px;
+  
+  }
+  
+  
+  .report-energy-consumed-value {
+    font-size: 4rem;
+    font-weight: 24px;
+    line-height: 49px;
+  
+  }
+  
+  .report-card-2-decr {
+    font-size: 1.5rem;
+    max-width: 156px;
+    line-height: 22px;
+  
+  }
+  
+  .report-card-large-decr {
+    font-size: 1.8rem;
+    max-width: 206px;
+    line-height: 22px;
+    margin-bottom: 10px;
+
+  }
+  
+  
+  .report-card-2-topright__second {
+    margin-top: 15px;
+  
+  }
+  .report-card-2-topright-large__second {
+    margin-top: 30px;
+  }
+  
+  .report-card-2-topright__value {
+    font-size: 2rem;
+    font-weight: 24px;
+    line-height: 29px;
+    margin-top: 5px;
+    display: block;
+  
+  }
+  .report-card-2-topright-large__value {
+    font-size: 2.5rem;
+    font-weight: 24px;
+    line-height: 29px;
+    margin-top: 5px;
+    display: block;
+
+  }
+  
+  .report-card-2__bottom {
+    font-size: 14px;
+    margin-top: 18px;
+  }
+  
+  .report-card-2-large__bottom {
+    font-size: 14px;
+    margin-top: 18px;
+  }
+  
+  .co2-footprint-footer-extra{
+    font-size: smaller;
+    color: red;
+    margin-top: 8px;
+  }
+  
+  .report-card-2-bottom__value {
+    font-weight: 24px;
+  }
+  
+  .report-card-3 {
+    padding: 16px;
+  }
+  
+  .report-card-3__heading {
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 22px;
+  }
+  
+  .report-card-3__content {
+    max-width: 80%;
+    margin: auto;
+  }
+  
+  .report-card-3__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0;
+    font-size: 1.4rem;
+    font-weight: 24px;
+  }
+  
+  .report-card-3__total {
+    font-size: 1.8rem;
+    line-height: 22px;
+    margin-top: 24px;
+  }
+  
+  .report-row-2,
+  .report-row-3,
+  .report-row-4,
+  .report-row-5,
+  .report-row-6,
+  .report-row-7,
+  .report-row-8 {
+    margin-top: 40px;
+  }
+  
+  .report-row-4__bar {
+    height: 360px;
+    min-height: 547px;
+  }
+  
+  .report-row-6-list__container {
+    padding: 24px;
+    padding-bottom: 53px;
+  }
+  
+  .report-row-6__list {
+    list-style-type: disc;
+  }
+  
+  .report-row-6__item {
+    line-height: 22px;
+    margin-top: 24px;
+  
+    &:first-of-type {
+      margin-top: 0;
+    }
+  
+    font-size: 1.8rem;
+  }
+  
+  .report-row-7__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .report-row-7-card {
+    height: 353px;
+    width: 49%;
+  
+  }
+  
+  .report-row-7__bar {
+    margin-bottom: 30px;
+  }
+  
+  .report-row-7__pie {
+    height: 298px;
+  }
+  
+  .report-row-7-pie__text {
+    font-size: 1.4rem;
+    max-width: 120px;
+    margin: auto;
+  
+    span {
+      margin-bottom: 6px;
+    }
+  
+    .h-bolder {
+      font-weight: 24px;
+    }
+  }
+  

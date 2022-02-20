@@ -37,7 +37,7 @@ function AuthPages() {
         </ScrollToTop>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

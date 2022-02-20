@@ -6,7 +6,7 @@ import sideBar from './sidebar/sidebar.reducer'
 import report from './report/report.reducer';
 import setting from './setting/setting.reducer';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     dashboard,
     billingReducers,
     sideBar,
@@ -15,5 +15,12 @@ const rootReducer = combineReducers({
     setting
 });
 
+const rootReducer = (state, action) => {
+    if (action.type === 'LOGOUT_USER') {
+      return appReducer(undefined, action)
+    }
+  
+    return appReducer(state, action)
+  }
 
 export default rootReducer;
