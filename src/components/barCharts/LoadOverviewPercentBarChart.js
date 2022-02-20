@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 
 import { getLastArrayItems } from '../../helpers/genericHelpers';
 
-const LoadOverviewPercentBarChart = ({ runningPercentageData }) => {
+const LoadOverviewPercentBarChart = ({ runningPercentageData, uiSettings }) => {
     const history = useHistory();
 
 
@@ -98,9 +98,9 @@ const LoadOverviewPercentBarChart = ({ runningPercentageData }) => {
                 : chartlabels,
         datasets: [
             {
-                maxBarThickness: 60,
+                maxBarThickness: 50,
                 data: chartValues,
-                backgroundColor: '#6c00fa',
+                backgroundColor:  uiSettings.appPrimaryColor,
                 borderColor: '#6c00fa',
                 borderWidth: 1,
             },
@@ -116,6 +116,7 @@ const LoadOverviewPercentBarChart = ({ runningPercentageData }) => {
                 </div>
                 <Button
                     className='load-overview-details__button'
+                    style={{ backgroundColor: uiSettings.appPrimaryColor }}
                     type='primary'
                     onClick={() => history.push('/load-overview')}
                     size='small'

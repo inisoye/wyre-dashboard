@@ -35,6 +35,7 @@ function ScoreCard({ match }) {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
+    uiSettings
   } = useContext(CompleteDataContext);
 
 
@@ -78,8 +79,8 @@ function ScoreCard({ match }) {
     generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
       eachDevice => eachDevice.is_gen === true
     );
-    
-   generatorSizeEffficiencyDoughnuts =
+
+    generatorSizeEffficiencyDoughnuts =
       generatorSizeEffficiencyData &&
       generatorSizeEffficiencyData.map((eachGenerator) => (
 
@@ -117,217 +118,220 @@ function ScoreCard({ match }) {
 
   return (
     <> {
-      dataPresent && (<> 
-      <div className='breadcrumb-and-print-buttons'>
-        <BreadCrumb routesArray={breadCrumbRoutes} />
-      </div>
+      dataPresent && (<>
+        <div className='breadcrumb-and-print-buttons'>
+          <BreadCrumb routesArray={breadCrumbRoutes} />
+        </div>
 
-      <div className='score-card-row-1'>
-        <article className='score-card-row-1__item'>
-          <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading'>
-              Baseline Energy
-            </h2>
-            <div>
-              <Tooltip placement='top' style={{ textAlign: 'justify' }}
-                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.BASE_ENERGY}>
-                <p>
-                  <InformationIcon className="info-icon" />
-                </p>
-              </Tooltip>
+        <div className='score-card-row-1'>
+          <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Baseline Energy
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.BASE_ENERGY}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
             </div>
-          </div>
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              data={baseline_energy}
-            />
+            <div className='score-card-doughnut-container'>
+              <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={baseline_energy}
+              />
 
-            <p className='doughnut-centre-text'>
-              <span>
-                {baseline_energy &&
-                  (calculatePercentage(
-                    baseline_energy.used,
-                    baseline_energy.forecast
-                  ) || `-`)}{baseline_energy.used && '%'}
-              </span>
-              <span>{baseline_energy.used && baseline_energy.forecast ? `used` : ' '}</span>
-            </p>
-          </div>
-
-          <p className='score-card-bottom-text'>
-            Baseline Forecast: {baseline_energy && numberFormatter(baseline_energy.forecast)}
-            {baseline_energy && baseline_energy.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-16'>
-            So far ({new Date().getDate()} Days): {baseline_energy && numberFormatter(baseline_energy.used)}
-            {baseline_energy && baseline_energy.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-24'>
-            Savings Inbound {' '}
-
-            {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
-              numberFormatter(savingdInbound)
-            }
-            </span>
-            }
-            {/* {baseline_energy && baseline_energy.unit} */}
-
-          </p>
-        </article>
-
-        <article className='score-card-row-1__item'>
-          <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading'>
-              Peak to Average Power Ratio
-            </h2>
-            <div>
-              <Tooltip placement='top' style={{ textAlign: 'justify' }}
-                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.PEAK_RATIO}>
-                <p>
-                  <InformationIcon className="info-icon" />
-                </p>
-              </Tooltip>
+              <p className='doughnut-centre-text'>
+                <span>
+                  {baseline_energy &&
+                    (calculatePercentage(
+                      baseline_energy.used,
+                      baseline_energy.forecast
+                    ) || `-`)}{baseline_energy.used && '%'}
+                </span>
+                <span>{baseline_energy.used && baseline_energy.forecast ? `used` : ' '}</span>
+              </p>
             </div>
-          </div>
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              data={peak_to_avg_power_ratio}
-            />
 
-            <p className='doughnut-centre-text'>
-              <span>
-                {peak_to_avg_power_ratio && (
-                  calculateRatio(
-                    peak_to_avg_power_ratio.avg,
-                    peak_to_avg_power_ratio.peak
-                  ) || `-`)}{' '}
-              </span>
+            <p className='score-card-bottom-text'>
+              Baseline Forecast: {baseline_energy && numberFormatter(baseline_energy.forecast)}
+              {baseline_energy && baseline_energy.unit}
             </p>
-          </div>
 
-          <p className='score-card-bottom-text'>
-            Average Load:{' '}
-            {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.avg)}
-            {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-16'>
-            Peak Load: {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.peak)}
-            {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
-          </p>
-
-          <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
-            <p style={{ color: arrowColor }}>{getPeakResult.message}</p>
-            <UpArrowIcon className={arrowColor} />
-          </div>
-        </article>
-
-        <article className='score-card-row-1__item'>
-          <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading'>
-              Carbon Emission
-            </h2>
-            <div>
-              <Tooltip placement='top' style={{ textAlign: 'justify' }}
-                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.CARBON}>
-                <p>
-                  <InformationIcon className="info-icon" />
-                </p>
-              </Tooltip>
-            </div>
-          </div>
-
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              data={score_card_carbon_emissions}
-            />
-
-            <p className='doughnut-centre-text'>
-              <span>
-                {score_card_carbon_emissions &&
-                  (calculatePercentage(
-                    score_card_carbon_emissions.actual_value,
-                    score_card_carbon_emissions.estimated_value
-                  ) || `-`)}{score_card_carbon_emissions.actual_value && '%'}
-              </span>{score_card_carbon_emissions.actual_value ? `used` : ' '}
+            <p className='score-card-bottom-text h-mt-16'>
+              So far ({new Date().getDate()} Days): {baseline_energy && numberFormatter(baseline_energy.used)}
+              {baseline_energy && baseline_energy.unit}
             </p>
-          </div>
 
-          <p style={{ padding: 0 }} className='score-card-bottom-text'>
-            Estimated:{' '}
-            {score_card_carbon_emissions &&
-              numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
-            {score_card_carbon_emissions && score_card_carbon_emissions.unit}
-          </p>
+            <p className='score-card-bottom-text h-mt-24'>
+              Savings Inbound {' '}
 
-          <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
-            Actual Emission:{' '}
-            {score_card_carbon_emissions &&
-              numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
-            {score_card_carbon_emissions && score_card_carbon_emissions.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
-            Savings Inbound {' '}
-            {savingdInboundCarbonEmmission && <span style={{
-              color: getBaselineEnergyColor(savingdInboundCarbonEmmission).color
-            }}>{
-                savingdInboundCarbonEmmission
+              {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
+                numberFormatter(savingdInbound)
               }
-            </span>
-            }
-          </p>
+              </span>
+              }
+              {/* {baseline_energy && baseline_energy.unit} */}
 
-          <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
+            </p>
+          </article>
+
+          <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Peak to Average Power Ratio
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.PEAK_RATIO}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+            <div className='score-card-doughnut-container'>
+              <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={peak_to_avg_power_ratio}
+              />
+
+              <p className='doughnut-centre-text'>
+                <span>
+                  {peak_to_avg_power_ratio && (
+                    calculateRatio(
+                      peak_to_avg_power_ratio.avg,
+                      peak_to_avg_power_ratio.peak
+                    ) || `-`)}{' '}
+                </span>
+              </p>
+            </div>
+
+            <p className='score-card-bottom-text'>
+              Average Load:{' '}
+              {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.avg)}
+              {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
+            </p>
+
+            <p className='score-card-bottom-text h-mt-16'>
+              Peak Load: {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.peak)}
+              {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
+            </p>
+
+            <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
+              <p style={{ color: arrowColor }}>{getPeakResult.message}</p>
+              <UpArrowIcon className={arrowColor} />
+            </div>
+          </article>
+
+          <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Carbon Emission
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.CARBON}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div className='score-card-doughnut-container'>
+              <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={score_card_carbon_emissions}
+              />
+
+              <p className='doughnut-centre-text'>
+                <span>
+                  {score_card_carbon_emissions &&
+                    (calculatePercentage(
+                      score_card_carbon_emissions.actual_value,
+                      score_card_carbon_emissions.estimated_value
+                    ) || `-`)}{score_card_carbon_emissions.actual_value && '%'}
+                </span>{score_card_carbon_emissions.actual_value ? `used` : ' '}
+              </p>
+            </div>
+
+            <p style={{ padding: 0 }} className='score-card-bottom-text'>
+              Estimated:{' '}
+              {score_card_carbon_emissions &&
+                numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
+              {score_card_carbon_emissions && score_card_carbon_emissions.unit}
+            </p>
+
+            <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
+              Actual Emission:{' '}
+              {score_card_carbon_emissions &&
+                numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
+              {score_card_carbon_emissions && score_card_carbon_emissions.unit}
+            </p>
+
+            <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
+              Savings Inbound {' '}
+              {savingdInboundCarbonEmmission && <span style={{
+                color: getBaselineEnergyColor(savingdInboundCarbonEmmission).color
+              }}>{
+                  savingdInboundCarbonEmmission
+                }
+              </span>
+              }
+            </p>
+
+            <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
               <span>{message}</span>
               <EcoFriendlyIcon className="ecoFriendlyIcon" />
 
-            {/* <span>{message}</span> */}
-            {/* <span className='score-card-bottom-text-small'>
+              {/* <span>{message}</span> */}
+              {/* <span className='score-card-bottom-text-small'>
               {noOfTrees}
             </span>{' '}
             <span>Acacia trees</span> */}
-          </p>
-        </article>
-      </div>
-      {/*{isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}*/}
-      <div className={deviceLength > 0 ? 'score-card-row-4' : 'hideCard'} style={{ marginBottom: '50px' }}>
-        <article className='score-card-row-4__left'>
-          {/* <h2 className='score-card-heading'>Generator Size Efficiency</h2> */}
-          <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading'>Generator Size Efficiency</h2>
-            <Tooltip placement='top' style={{ textAlign: 'justify' }}
-              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.SIZE_EFFICIENCY}>
-              <p>
-                <InformationIcon className="info-icon" />
-              </p>
-            </Tooltip>
-          </div>
-          {generatorSizeEffficiencyDoughnuts}
-          <p className='gen-efficiency-footer-text'>
-            Utilization Factor for Facility Generators
-          </p>
-        </article>
+            </p>
+          </article>
+        </div>
+        {/*{isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}*/}
+        <div className={deviceLength > 0 ? 'score-card-row-4' : 'hideCard'} style={{ marginBottom: '50px' }}>
+          <article className='score-card-row-4__left'>
+            {/* <h2 className='score-card-heading'>Generator Size Efficiency</h2> */}
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>Generator Size Efficiency</h2>
+              <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.SIZE_EFFICIENCY}>
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+            {generatorSizeEffficiencyDoughnuts}
+            <p className='gen-efficiency-footer-text'>
+              Utilization Factor for Facility Generators
+            </p>
+          </article>
 
-        <article className='score-card-row-4__right'>
-          <div className='doughnut-card-heading'>
-            <h2 className='score-card-heading'>Fuel Efficiency</h2>
-            <Tooltip placement='top' style={{ textAlign: 'justify' }}
-              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.FUEL_EFFICIENCYL}>
-              <p>
-                <InformationIcon className="info-icon" />
-              </p>
-            </Tooltip>
-          </div>
-          {fuelConsumptionDoughnuts}
-          <p className='fuel-consumption-footer-text'>
-            Estimated Fuel Consumption for Facility Generators
-          </p>
-        </article>
-      </div>
-{/* 
+          <article className='score-card-row-4__right'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>Fuel Efficiency</h2>
+              <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.FUEL_EFFICIENCYL}>
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+            {fuelConsumptionDoughnuts}
+            <p className='fuel-consumption-footer-text'>
+              Estimated Fuel Consumption for Facility Generators
+            </p>
+          </article>
+        </div>
+        {/* 
       <article className={deviceLength > 0 ? 'score-card-row-2' : 'hideCard'}>
         <h2 className='changeover-lags-heading score-card-heading'>
           Change Over Lags

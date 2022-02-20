@@ -57,16 +57,14 @@ const PDFDocument = () => (
 );
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
-  let { isAuthenticatedDataLoading,
-    checkedItems, checkedBranches, checkedDevices, userDateRange, selectedDateRange } = useContext(
+  let {
+    checkedItems, checkedBranches, checkedDevices, userDateRange, uiSettings } = useContext(
       CompleteDataContext,
     );
 
   const dashBoardInfo = useSelector((state) => state.dashboard);
 
   const { setCurrentUrl, userData } = useContext(CompleteDataContext);
-  const [allIsLoadDeviceData, setAllisLoadDeviceData] = useState(false);
-  const [allCheckedDevice, setAllCheckedDevice] = useState(false);
   const [allDeviceInfo, setAllDeviceInfo] = useState(false);
   const [refinedDashboardData, setRefinedDashboardData] = useState({});
   const [pageLoaded, setPageLoaded] = useState(false);
@@ -84,16 +82,11 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     yesterday,
     daily_kwh,
     solar_hours,
-    all_device_data
   } = refinedDashboardData;
 
 
 
   useEffect(() => {
-    if (all_device_data) {
-      const allChecked = allCheckedDeviceGenerators(checkedItems, all_device_data);
-      setAllCheckedDevice(allChecked)
-    }
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
     if (dashBoardInfo.dashBoardData) {
@@ -124,13 +117,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     }
   }, [match, setCurrentUrl]);
 
-  useEffect(() => {
-    if (allCheckedDevice) {
-      const data = refineLoadOverviewData(allCheckedDevice);
-      setAllisLoadDeviceData(Object.values(data));
-    }
-
-  }, [allCheckedDevice]);
 
 
   useEffect(() => {
@@ -178,7 +164,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     //   });
   };
 
-  if (dashBoardInfo.fetchDashBoardLoading) {
+  if (dashBoardInfo.fetchDashBoardLoading || !pageLoaded) {
     return <Loader />;
   }
 
@@ -268,6 +254,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <article className="dashboard-row-2 dashboard-bar-container">
           <DashboardStackedBarChart
+            uiSettings={uiSettings}
             className=""
             data={daily_kwh}
             organization={name}
@@ -276,7 +263,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
-            <DashboardDoughnutChart data={usage_hours} />
+            <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} />
           </article>
 
           <article className="dashboard-today-and-yesterday">
@@ -319,6 +306,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             <div className="dashboard-bar-container">
               <article className='score-card-row-3'>
                 <LoadOverviewPercentBarChart
+                  uiSettings={uiSettings}
                   runningPercentageData={dashBoardInfo.dashBoardData.branches.length > 1 && (!checkedItems
                     || Object.keys(checkedItems).length === 0) ?
                     generateMultipleBranchLoadOverviewChartData(dashBoardInfo.dashBoardData.branches)

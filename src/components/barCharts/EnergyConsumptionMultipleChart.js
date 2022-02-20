@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-const EnergyConsumptionMultipleChart = ({ energyData = [] }) => {
+const EnergyConsumptionMultipleChart = ({ energyData = [], uiSettings }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
   const [forcastedData, setForcastedData] = useState(false);
   const [usedData, setUsedData] = useState(false);
+  const { appPrimaryColor } = uiSettings;
 
   const combineSameData = (dateArray) => {
     let forcastedData = {};
@@ -18,7 +19,7 @@ const EnergyConsumptionMultipleChart = ({ energyData = [] }) => {
           forcastedData[data.date] = Number(data.forecast);
         }
         if (usedData[data.date] != null) {
-          usedData[data.date] = usedData[data.date] +  Number(data.used);
+          usedData[data.date] = usedData[data.date] + Number(data.used);
         } else {
           usedData[data.date] = Number(data.used);
         }
@@ -30,7 +31,7 @@ const EnergyConsumptionMultipleChart = ({ energyData = [] }) => {
   const sort = (data) => data.sort((a, b) => new Date(a.date) - new Date(b.date));
   const convertToOjectAndSort = (obj, name) => {
     const data = Object.entries(obj).map(([key, value]) => ({ date: key, [name]: value.toFixed(2) }));
-    
+
     const sortedData = sort(data);
     const mapped = sortedData.map(item => ({ [item.date]: Number(item[name]).toFixed(2) }));
     return Object.assign({}, ...mapped);
@@ -127,8 +128,8 @@ const EnergyConsumptionMultipleChart = ({ energyData = [] }) => {
         label: `Consumption (Kw)`,
         maxBarThickness: 60,
         data: Object.values(convertToOjectAndSort(usedData, 'used')),
-        backgroundColor: '#6c00fa',
-        borderColor: '#6c00fa',
+        backgroundColor: appPrimaryColor,
+        borderColor: appPrimaryColor,
         borderWidth: 1,
       },
     ],

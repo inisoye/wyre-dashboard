@@ -4,7 +4,7 @@ import CompleteDataContext from '../Context';
 
 import AuthHeaderLink from '../smallComponents/AuthHeaderLink';
 
-import Logo from '../icons/Logo';
+import LatestLogo from '../icons/LatestLogo';
 import Hamburger from '../icons/Hamburger';
 
 function AuthHeader() {
@@ -18,7 +18,7 @@ function AuthHeader() {
     <header className='header--auth'>
       <div className='header-logo-and-hamburger--auth'>
         <Link className='header-logo--auth' to='/'>
-          <Logo className='header-logo-image--auth' />
+          <LatestLogo className='header-logo-latest-image--auth' />
         </Link>
         <button
           className='hamburger-button--auth h-hidden-medium-up'
@@ -36,14 +36,14 @@ function AuthHeader() {
         }
       >
         <ul className='header-links-list--auth'>
-          <AuthHeaderLink onClick={toggleNav} url='#' linkText='About' />
-          <AuthHeaderLink onClick={toggleNav} url='#' linkText='Features' />
+          {/* <AuthHeaderLink onClick={toggleNav} url='#' linkText='About' /> */}
+          {/* <AuthHeaderLink onClick={toggleNav} url='#' linkText='Features' /> */}
           <AuthHeaderLink
             onClick={toggleNav}
             url='/contact'
             linkText='Contact'
           />
-          <AuthHeaderLink onClick={toggleNav} url='/log-in' linkText='Log in' />
+          {/* <AuthHeaderLink onClick={toggleNav} url='/log-in' linkText='Log in' /> */}
           <li className='header-nav-list__item--auth'>
             <Link
               onClick={toggleNav}

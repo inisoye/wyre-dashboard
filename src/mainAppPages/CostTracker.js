@@ -38,6 +38,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
 
   const {
     setCurrentUrl,
+    uiSettings
   } = useContext(CompleteDataContext);
 
 
@@ -130,7 +131,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
           Energy Consumption at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <EnergyConsumptionMultipleChart energyData={baseLineData} />
+          <EnergyConsumptionMultipleChart uiSettings={uiSettings} energyData={baseLineData} />
         </div>
       </article>
     ))
@@ -145,7 +146,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
           Monthly Cost at {e[0]}
         </h3>
         <div className='cost-tracker-chart-wrapper'>
-          <CostTrackerMonthlyCostBarChart DieselData={e[1].diesel} utilityData={e[1].utility} />
+          <CostTrackerMonthlyCostBarChart uiSettings={uiSettings} DieselData={e[1].diesel} utilityData={e[1].utility} />
         </div>
       </article>
     ))

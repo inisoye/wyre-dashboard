@@ -1724,11 +1724,6 @@ thead.ant-table-thead tr th {
   margin-left: 10px;
 }
 
-.power-icon__image {
-  height: 60px;
-  stroke: #9b51fc;
-  fill: #6c00fa;
-}
 
 .total-energy__heading {
   color: #143861;

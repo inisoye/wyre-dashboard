@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
+import LatestLogo from '../icons/LatestLogo';
 import Logo from '../icons/Logo';
 
 import avatar from '../images/logo.png';
@@ -48,7 +49,15 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
               'header-logo__image header- h-white-fill-medium-up'
             }
           /> */}
-          <img src={avatar} alt='' />
+          <LatestLogo fill="white"
+            // className={
+            //   // isReportPageOpen
+            //   //   ? 'header-logo__image'
+            //   //   : 
+            //   'header-logo__image header- h-white-fill-medium-up'
+            // }
+          />
+          {/* <img src={avatar} alt='' /> */}
         </Link>
       </div>
       {<ul className="sidebar-org-container">{organizationComponent}</ul>}

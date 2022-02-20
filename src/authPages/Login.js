@@ -29,6 +29,7 @@ function Login() {
   const onSubmit = async ({ username, password }, values) => {
     try {
       setIsAuthenticating(true);
+      localStorage.clear();
       const user = await loginHttpServices.login({
         username: username,
         password: password,
