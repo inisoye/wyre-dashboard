@@ -1,5 +1,5 @@
 import React from 'react';
-import avatar from '../images/logo.png';
+import avatar from '../images/ntower.png';
 
 
 /**
