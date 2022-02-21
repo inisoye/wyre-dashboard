@@ -3,7 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import CompleteDataContext from '../../Context';
 
-const DashboardDoughnutChart = ({ data }) => {
+const DashboardDoughnutChart = ({ data, uiSettings }) => {
   const { isMediumScreen, useMediaQuery } = useContext(CompleteDataContext);
 
   const isLessThan481 = useMediaQuery({ query: '(max-width: 481px)' });
@@ -19,7 +19,7 @@ const DashboardDoughnutChart = ({ data }) => {
         label: 'Power Usage (Hours/Month)',
         data: hours,
         backgroundColor: [
-          '#6C00FA',
+          uiSettings.appPrimaryColor,
           '#00C7E6',
           '#FF3DA1',
           '#82ca9d',

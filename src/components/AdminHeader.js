@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 
 import HeaderLink from '../smallComponents/HeaderLink';
 import HeaderIcon from '../smallComponents/HeaderIcon';
@@ -21,6 +22,7 @@ import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropd
 import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
 import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
 import LogoutIcon from '../icons/LogoutIcon';
+import { logoutUser } from '../redux/actions/auth/actionCreators';
 
 function Header() {
   const {
@@ -34,6 +36,8 @@ function Header() {
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -66,8 +70,10 @@ function Header() {
   };
 
   const logOut = () => {
+    dispatch(logoutUser());
     window.localStorage.removeItem('loggedWyreUser');
 
+    
     // Go home
     history.push('/');
 

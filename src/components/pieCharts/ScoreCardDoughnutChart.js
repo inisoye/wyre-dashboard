@@ -3,7 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { roundToDecimalPLace, 
   sumOfArrayElements } from '../../helpers/genericHelpers';
 
-const ScoreCardDoughnutChart = ({ data}) => {
+const ScoreCardDoughnutChart = ({ data, uiSettings }) => {
   const { unit, ...extractedDataObject } = data
     ? data
     : { unit: ['Empty'], others: ['Empty'] };
@@ -29,7 +29,7 @@ const ScoreCardDoughnutChart = ({ data}) => {
     datasets: [
       {
         data: extractedBuildData,
-        backgroundColor: ['#6c00fa', '#F0F0F0'],
+        backgroundColor: [uiSettings.appPrimaryColor, '#F0F0F0'],
         borderWidth: 0,
       },
     ],

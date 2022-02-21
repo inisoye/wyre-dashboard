@@ -747,7 +747,6 @@ const getRefinedOrganizationData = (data) => {
 
 
 const getDashBoardRefinedData = (data) => {
-  console.log('here is the customer connect data customer customer customer', data);
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,
