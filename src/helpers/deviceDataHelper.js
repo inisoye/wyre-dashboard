@@ -17,7 +17,6 @@ const getDeviceData = ({
     deviceData
 }) => {
 
-    console.log('this is the device data ===============>>>>>>>>', deviceData);
     const modifiedDeviceName = !deviceData.name.includes(branchData.name)
         ? branchData.name + ' ' + deviceData.name
         : deviceData.name;
