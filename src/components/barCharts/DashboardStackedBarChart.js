@@ -109,8 +109,18 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
 
   const dataNames = Object.keys(values);
   const dataValues = Object.values(values);
+
   const colorsArray = [
     uiSettings.appPrimaryColor,
+    '#00C7E6',
+    '#FF3DA1',
+    '#82ca9d',
+    '#ff9b3d',
+    '#360259',
+    '#0371b5',
+    '#D90000',
+    '#757575',
+    '#FFE11A',
   ];
 
   const plottedDataSet = dataNames.map((_, index) => {

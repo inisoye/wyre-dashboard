@@ -238,6 +238,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           {
             allDeviceInfo
             && Object.values(allDeviceInfo).filter(device => device.is_source).map((eachDevice, index) => {
+              console.log('this is the each Device', eachDevice);
               return index < 6 && eachDevice.is_source && <article key={index}
                 className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
