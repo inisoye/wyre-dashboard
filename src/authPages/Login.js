@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import jwt from 'jwt-decode';
