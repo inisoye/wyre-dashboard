@@ -206,7 +206,7 @@ const getDeviceData = ({
     /* -------------------------------------------------------------------
     /* Billing Begins ----------------------------------------------------
     --------------------------------------------------------------------*/
-    const { billing } = deviceData;
+    const { billing, device_type } = deviceData;
 
     const consumptionKwhWithoutName = convertParameterDateStringsToObjects(
         billing,
@@ -237,6 +237,7 @@ const getDeviceData = ({
             name: modifiedDeviceName,
             // Dashboard data
             total_kwh,
+            device_type,
             // total_kwh_is_source,
             solar_hours,
             is_load: deviceData?.is_load, 
