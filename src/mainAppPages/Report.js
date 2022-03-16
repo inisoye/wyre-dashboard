@@ -47,6 +47,7 @@ function Report({ match, fetchReportData: fetchReport }) {
   const sideBarData = useSelector((state) => state.sideBar.sideBarData);
   const {
     setCurrentUrl,
+    uiSettings
   } = useContext(CompleteDataContext);
 
 
@@ -242,7 +243,7 @@ function Report({ match, fetchReportData: fetchReport }) {
               <h2 className="report-pie-heading">
                 Energy Consumption
               </h2>
-              <EnergyConsumptionMultipleChart energyData={energyConsumptionCombined(energy_consumption)}
+              <EnergyConsumptionMultipleChart uiSettings={uiSettings} energyData={energyConsumptionCombined(energy_consumption)}
               />
             </div>
           )}
