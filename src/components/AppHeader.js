@@ -118,7 +118,7 @@ function Header() {
             />
           }
           {
-            BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.decodedUser.client) &&
+            // BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.decodedUser.client) &&
             <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
           }
           {
