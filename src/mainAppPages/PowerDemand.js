@@ -18,6 +18,8 @@ import Loader from '../components/Loader';
 
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
+import { exportToExcel } from '../helpers/exportToFile';
+
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -44,7 +46,7 @@ function PowerDemand({ match }) {
 
   let chartDemandValues, chartDates, chartDeviceNames, chartTooltipValues;
   let powerDemandUnit, powerDemandTableDataClone, arrayOfTableValues, formattedTableDataWithIndex;
-  let tableHeadings, csvHeaders, arrayOfFormattedTableData, formattedTableData;
+  let tableHeadings, csvHeaders, XLSXHeaders, arrayOfFormattedTableData, formattedTableData;
   if (power_demand) {
 
     chartDemandValues =
@@ -113,8 +115,8 @@ function PowerDemand({ match }) {
     formattedTableDataWithIndex =
       formattedTableData &&
       formattedTableData.map(function (currentValue, index) {
-        currentValue.index = index + 1;
-        return currentValue;
+        const { date, time, source, ...others } = currentValue;
+        return { index: (index+ 1), date, time, source, ...others};
       });
 
     csvHeaders = [
@@ -125,6 +127,9 @@ function PowerDemand({ match }) {
       { label: `Minimum ${powerDemandUnit}`, key: "min" },
       { label: `Maximum ${powerDemandUnit}`, key: "max" },
       { label: `Average ${powerDemandUnit}`, key: "avg" },
+    ]
+    XLSXHeaders = [["Index", "Date", "Time", "Source", `Minimum ${powerDemandUnit}`,
+      `Maximum ${powerDemandUnit}`, `Average ${powerDemandUnit}`]
     ]
   }
 
@@ -138,49 +143,50 @@ function PowerDemand({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
       </div>
       {power_demand && <>
-      <article className='parameters-stacked-bar-container'>
-        <PowerDemandStackedBarChart
-          chartDemandValues={chartDemandValues}
-          chartDeviceNames={chartDeviceNames}
-          chartTooltipValues={chartTooltipValues}
-          chartDates={chartDates}
-          powerDemandUnit={powerDemandUnit}
-        />
-      </article>
+        <article className='parameters-stacked-bar-container'>
+          <PowerDemandStackedBarChart
+            chartDemandValues={chartDemandValues}
+            chartDeviceNames={chartDeviceNames}
+            chartTooltipValues={chartTooltipValues}
+            chartDates={chartDates}
+            powerDemandUnit={powerDemandUnit}
+          />
+        </article>
 
-      <article className='table-with-header-container'>
-        <div className='table-header'>
-          <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
-              PDF
-            </button>
-            <ExportToCsv filename={"power-demand.csv"} csvHeaders={csvHeaders} csvData={formattedTableDataWithIndex}>
+        <article className='table-with-header-container'>
+          <div className='table-header'>
+            <div className='h-hidden-medium-down'>
               <button type='button' className='table-header__left-button'>
-                CSV
+                PDF
               </button>
-            </ExportToCsv>
+              <ExportToCsv filename={"power-demand.csv"} csvHeaders={csvHeaders} csvData={formattedTableDataWithIndex}>
+                <button type='button' className='table-header__left-button'>
+                  CSV
+                </button>
+              </ExportToCsv>
+            </div>
+
+            <h3 className='table-header__heading'>Raw Logs</h3>
+
+            <button
+              type='button'
+              onClick={() => exportToExcel({ data: formattedTableDataWithIndex, header: XLSXHeaders })}
+              className='table-header__right-button h-hidden-medium-down'
+            >
+              <ExcelIcon />
+              <span>Download in Excel</span>
+            </button>
           </div>
 
-          <h3 className='table-header__heading'>Raw Logs</h3>
-
-          <button
-            type='button'
-            className='table-header__right-button h-hidden-medium-down'
-          >
-            <ExcelIcon />
-            <span>Download in Excel</span>
-          </button>
-        </div>
-
-        <div className='power-demand-table-wrapper'>
-          <PowerDemandTable
-            powerDemandUnit={powerDemandUnit}
-            powerDemandData={formattedTableDataWithIndex}
-          />
-        </div>
-      </article>
+          <div className='power-demand-table-wrapper'>
+            <PowerDemandTable
+              powerDemandUnit={powerDemandUnit}
+              powerDemandData={formattedTableDataWithIndex}
+            />
+          </div>
+        </article>
       </>
-    }
+      }
     </>
   );
 }

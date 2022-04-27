@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { getGeneratorSizeMessage } from '../../helpers/genericHelpers';
 
-const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
+const ScoreCardGenEfficiencyDoughnut = ({ data, uiSettings }) => {
   const { size, usage, unit, name } = data
     ? data
     : { size: '', usage: '', unit: '', name: '' };
@@ -17,7 +17,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
     datasets: [
       {
         data: chartData,
-        backgroundColor: ['#6c00fa', '#F0F0F0'],
+        backgroundColor:[uiSettings.appPrimaryColor, '#F0F0F0'],
         borderWidth: 0,
       },
     ],

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
+const ScoreCardFuelConsumptionDoughnut = ({ data, uiSettings }) => {
   const {
     name,
     size,
@@ -28,7 +28,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     datasets: [
       {
         data: chartData,
-        backgroundColor: ['#6c00fa', '#F0F0F0'],
+        backgroundColor:[uiSettings.appPrimaryColor, '#F0F0F0'],
         borderWidth: 0,
       },
     ],
