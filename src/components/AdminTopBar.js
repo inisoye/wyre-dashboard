@@ -27,9 +27,10 @@ function TopBar() {
               : 'top-bar__right h-hide'
           }
         >
-          <Link className='top-bar-right__button h-extra-padding' to='#'>
+          <Link className='top-bar-right__button h-extra-padding'  to='/add-devices' >
             Add Client
           </Link>
+
         </div>
 
         <div

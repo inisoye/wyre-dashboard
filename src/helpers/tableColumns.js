@@ -110,7 +110,7 @@ export const CostImplicationColumn = [
     dataIndex: 'device',
   },
   {
-    title: '(Kwh)',
+    title: '(kWh)',
     dataIndex: 'demand',
   },
   {
@@ -125,12 +125,12 @@ export const DemandAndStatisticsColumn = [
     width: '15%'
   },
   {
-    title: 'Daily Avg Usage(Kwh)',
+    title: 'Daily Avg Usage(kWh)',
     dataIndex: 'daily_avg_usage',
     width: '16%'
   },
   {
-    title: 'Max Energy Usage (Kwh)',
+    title: 'Max Energy Usage (kWh)',
     dataIndex: 'max_energy_usage',
     width: '26%',
     render: (data) => {

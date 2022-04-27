@@ -22,7 +22,7 @@ function DashBoardAmountUsed (
                     <Component className="power-icon__image" />
                 </div>
                 <div className="total-right-energy-price total-energy-price__common">
-                    <p className="total-energy-price__kwh__text">{numberFormatter(totalKWH) || 0}KWh</p>
+                    <p className="total-energy-price__kwh__text">{numberFormatter(totalKWH) || 0}kWh</p>
                     <p className="total-energy-price__heading__text__hrs" >{timeInUse || 0}hrs</p>
                 </div>
             </div>

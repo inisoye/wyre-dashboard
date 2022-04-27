@@ -268,7 +268,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
           <article className="dashboard-today-and-yesterday">
             <div className="today-usage">
-              <h3 className="today-usage__heading">Today's Usage (KWh)</h3>
+              <h3 className="today-usage__heading">Today's Usage (kWh)</h3>
               <div className="usage-value-and-arrow">
                 <p className="today-usage__value">
                   {numberFormatter(todaysValue) || '0000'}
@@ -282,7 +282,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
             <div className="yesterday-usage">
               <h3 className="yesterday-usage__heading">
-                Yesterday's Usage (KWh)
+                Yesterday's Usage (kWh)
               </h3>
               <div className="usage-value-and-arrow">
                 <p className="yesterday-usage__value">

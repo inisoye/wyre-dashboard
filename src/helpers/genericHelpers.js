@@ -427,7 +427,7 @@ const sumBaselineEnergies = (array) => {
   const forecastTotal = forecastValues && forecastValues?.reduce((acc, curr) => acc + curr, 0);
   const usedTotal = usedValues && usedValues?.reduce((acc, curr) => acc + curr, 0);
 
-  return { unit: 'kwh', forecast: forecastTotal, used: usedTotal };
+  return { unit: 'kWh', forecast: forecastTotal, used: usedTotal };
 };
 
 const sumPeakToAveragePowerRatios = (array) => {
