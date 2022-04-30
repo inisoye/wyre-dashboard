@@ -38,7 +38,7 @@ import { isEmpty } from "../helpers/authHelper";
 // Tooltips
 import { Tooltip } from 'antd';
 import InformationIcon from '../icons/InformationIcon';
-import DASHBOARD_TOOLTIP_MESSAGES from '../helpers/constants';
+import DASHBOARD_TOOLTIP_MESSAGES from '../components/toolTips/Dashboard_Tooltip_Messages';
 
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
@@ -187,7 +187,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           <article className="dashboard__total-energy dashboard__banner--small">
             <div style={{ textAlign: "right", paddingRight: 20, marginLeft: "auto" }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
-                overlayStyle={{ whiteSpace: "pre-line" }} >
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TOTAL_ENERGY} >
                 <p>
                   <InformationIcon className="info-icon" />
                 </p>
@@ -209,7 +209,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           <article className="dashboard__demand-banner dashboard__banner--small">
             <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto", position: "absolute", marginBottom: 170 }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
-                overlayStyle={{ whiteSpace: "pre-line" }} >
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
                 <p>
                   <InformationIcon className="info-icon" />
                 </p>
@@ -275,7 +275,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         <article className="dashboard-row-2 dashboard-bar-container">
           <div style={{ textAlign: "right", paddingTop: 20, paddingLeft: 20, marginLeft: "auto" }}>
             <Tooltip placement="top" style={{ textAlign: "right" }}
-              overlayStyle={{ whiteSpace: "pre-line" }} >
+              overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.DAILY_ENERGY} >
               <p>
                 <InformationIcon className="info-icon" />
               </p>
@@ -291,9 +291,9 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
-            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, float: "right", marginBottom: -20 }}>
+            <div style={{ textAlign: "right", paddingTop: 10, paddingRight: 20, float: "right" }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
-                overlayStyle={{ whiteSpace: "pre-line" }} >
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.POWER_USAGE} >
                 <p>
                   <InformationIcon className="info-icon" />
                 </p>
@@ -306,7 +306,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             <div className="today-usage">
               <div style={{ textAlign: "right", paddingRight: 20, position: "relative" }}>
                 <Tooltip placement="top" style={{ textAlign: "right" }}
-                  overlayStyle={{ whiteSpace: "pre-line" }} >
+                  overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TODAY_VS_YESTERDAY} >
                   <p>
                     <InformationIcon className="info-icon" />
                   </p>

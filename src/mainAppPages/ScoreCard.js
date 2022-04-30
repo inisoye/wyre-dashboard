@@ -21,8 +21,8 @@ import {
 
 import { numberFormatter } from "../helpers/numberFormatter";
 
-
-import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
+import { SCORE_CARD_TOOLTIP_MESSAGES } from '../components/toolTips/Score_Card_Tooltip_Messages';
+// import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },

@@ -17,7 +17,7 @@ import Loader from '../components/Loader';
 // Tooltips
 import { Tooltip } from 'antd';
 import InformationIcon from '../icons/InformationIcon';
-import { COST_TRACKER_TOOLTIP_MESSAGES } from '../helpers/constants';
+import { COST_TRACKER_TOOLTIP_MESSAGES } from '../components/toolTips/Cost_Tracker_Tooltip_Messages';
 
 
 const breadCrumbRoutes = [
