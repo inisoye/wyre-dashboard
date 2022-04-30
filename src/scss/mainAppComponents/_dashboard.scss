@@ -1,5 +1,3 @@
-
-
 .dashboard-row-1 {
   width: 100%;
 
@@ -60,7 +58,7 @@
   margin-top: 15px;
 }
 
-.solar-energy_value{
+.solar-energy_value {
   color: #FFC205;
   font-size: 2.0rem !important;
 }
@@ -100,10 +98,12 @@
 
 .small-banner-section__value {
   margin-top: 23px;
+
   .value {
     font-size: 2rem;
     font-weight: $medium;
   }
+
   .unit {
     display: block;
     margin-top: 16px;
@@ -115,7 +115,7 @@
 --------------------------------------------------------------*/
 .dashboard-bar-container,
 .dashboard-pie-container {
-  height: 340px;
+  height: 430px;
   background-color: $white;
   margin-top: 30px;
   border-radius: $medium-border;
@@ -123,6 +123,7 @@
 
 .dashboard-bar-container {
   border-radius: $medium-border;
+
   @include media('>=medium') {
     height: 500px;
   }

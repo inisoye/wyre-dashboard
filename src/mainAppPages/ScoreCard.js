@@ -333,16 +333,16 @@ function ScoreCard({ match }) {
             </p>
           </article>
         </div>
-        
-      <article className={deviceLength > 0 ? 'score-card-row-2' : 'hideCard'}>
-        <h2 className='changeover-lags-heading score-card-heading'>
-          Change Over Lags
-        </h2>
-        <ScoreCardTable changeOverLagsData={change_over_lags} />
-      </article>
+
+        <article className={deviceLength > 0 ? 'score-card-row-2' : 'hideCard'}>
+          <h2 className='changeover-lags-heading score-card-heading'>
+            Change Over Lags
+          </h2>
+          <ScoreCardTable changeOverLagsData={change_over_lags} />
+        </article>
 
 
-      {/* <article className='score-card-row-3'>
+        {/* <article className='score-card-row-3'>
         <ScoreCardBarChart operatingTimeData={operating_time}
           dataTitle='Operating Time'
           dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}

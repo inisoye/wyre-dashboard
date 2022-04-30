@@ -35,6 +35,10 @@ import {
 import { getRenderedData } from "../helpers/renderedDataHelpers";
 import { isEmpty } from "../helpers/authHelper";
 
+// Tooltips
+import { Tooltip } from 'antd';
+import InformationIcon from '../icons/InformationIcon';
+import DASHBOARD_TOOLTIP_MESSAGES from '../helpers/constants';
 
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
@@ -181,6 +185,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
           <article className="dashboard__total-energy dashboard__banner--small">
+            <div style={{ textAlign: "right", paddingRight: 20, marginLeft: "auto" }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} >
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
             <h2 className="total-energy__heading">Total Energy</h2>
             <p className="total-energy_value">
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
@@ -195,6 +207,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto", position: "absolute", marginBottom: 170 }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} >
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
             <DashboardSmallBannerSection
               name="Max. Demand"
               value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
@@ -253,6 +273,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
+          <div style={{ textAlign: "right", paddingTop: 20, paddingLeft: 20, marginLeft: "auto" }}>
+            <Tooltip placement="top" style={{ textAlign: "right" }}
+              overlayStyle={{ whiteSpace: "pre-line" }} >
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           <DashboardStackedBarChart
             uiSettings={uiSettings}
             className=""
@@ -263,11 +291,27 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, float: "right", marginBottom: -20 }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} >
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
             <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} />
           </article>
 
           <article className="dashboard-today-and-yesterday">
             <div className="today-usage">
+              <div style={{ textAlign: "right", paddingRight: 20, position: "relative" }}>
+                <Tooltip placement="top" style={{ textAlign: "right" }}
+                  overlayStyle={{ whiteSpace: "pre-line" }} >
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
               <h3 className="today-usage__heading">Today's Usage (kWh)</h3>
               <div className="usage-value-and-arrow">
                 <p className="today-usage__value">
