@@ -81,11 +81,13 @@
 }
 
 .usage-and-metrics-tables {
+  margin-bottom: 30px;
   @include media('>=1210px') {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-bottom: 30px;
   }
 
   &.h-hide {

@@ -2996,6 +2996,7 @@ thead.ant-table-thead tr th {
     width: 100%;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-bottom: 30px;
   }
 }
 
