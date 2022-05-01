@@ -3128,6 +3128,7 @@ thead.ant-table-thead tr th {
   .usage-and-metrics-tables {
     display: -webkit-box;
     display: -ms-flexbox;
+    margin-bottom: 30px;
     display: flex;
     width: 100%;
     -ms-flex-wrap: wrap;
