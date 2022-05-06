@@ -19,6 +19,7 @@ import Loader from '../components/Loader';
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
 import { exportToExcel } from '../helpers/exportToFile';
+import jsPDF from "jspdf";
 
 
 const breadCrumbRoutes = [
@@ -46,7 +47,7 @@ function PowerDemand({ match }) {
 
   let chartDemandValues, chartDates, chartDeviceNames, chartTooltipValues;
   let powerDemandUnit, powerDemandTableDataClone, arrayOfTableValues, formattedTableDataWithIndex;
-  let tableHeadings, csvHeaders, XLSXHeaders, arrayOfFormattedTableData, formattedTableData;
+  let tableHeadings, csvHeaders, XLSXHeaders, PDFHeaders, arrayOfFormattedTableData, formattedTableData;
   if (power_demand) {
 
     chartDemandValues =
@@ -116,7 +117,7 @@ function PowerDemand({ match }) {
       formattedTableData &&
       formattedTableData.map(function (currentValue, index) {
         const { date, time, source, ...others } = currentValue;
-        return { index: (index+ 1), date, time, source, ...others};
+        return { index: (index + 1), date, time, source, ...others };
       });
 
     csvHeaders = [
@@ -129,6 +130,9 @@ function PowerDemand({ match }) {
       { label: `Average ${powerDemandUnit}`, key: "avg" },
     ]
     XLSXHeaders = [["Index", "Date", "Time", "Source", `Minimum ${powerDemandUnit}`,
+      `Maximum ${powerDemandUnit}`, `Average ${powerDemandUnit}`]
+    ]
+    PDFHeaders = [["Index", "Date", "Time", "Source", `Minimum ${powerDemandUnit}`,
       `Maximum ${powerDemandUnit}`, `Average ${powerDemandUnit}`]
     ]
   }

@@ -1858,8 +1858,9 @@ thead.ant-table-thead tr th {
 
 .dashboard__demand-banner,
 .dashboard__cost-emissions-banner {
-  display: flex;
-  justify-content: space-around;
+  /* display: flex; */
+  /* justify-content: space-around; */
+  /* flex-direction: column; */
   text-align: center;
   align-items: center;
   background-color: #ffffff;
@@ -1926,7 +1927,7 @@ thead.ant-table-thead tr th {
 
   .dashboard-row-3,
   .dashboard-row-2 {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     width: 100%;
   }
@@ -1960,7 +1961,7 @@ thead.ant-table-thead tr th {
 .today-usage,
 .yesterday-usage {
   text-align: center;
-  padding: 33px 0;
+  padding: 20px 0;
 }
 
 .today-usage {

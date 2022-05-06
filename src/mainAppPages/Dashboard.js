@@ -189,7 +189,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
               <Tooltip placement="top" style={{ textAlign: "right" }}
                 overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TOTAL_ENERGY} >
                 <p>
-                  <InformationIcon className="info-icon" />
+                  <InformationIcon className="info-icon" style={{ color: "white" }} />
                 </p>
               </Tooltip>
             </div>
@@ -207,7 +207,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
-            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto", position: "absolute", marginBottom: 170 }}>
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
                 overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
                 <p>
@@ -215,21 +215,23 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
                 </p>
               </Tooltip>
             </div>
-            <DashboardSmallBannerSection
-              name="Max. Demand"
-              value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
-              unit={max_demand && max_demand.unit}
-            />
-            <DashboardSmallBannerSection
-              name="Min. Demand"
-              value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
-              unit={min_demand && min_demand.unit}
-            />
-            <DashboardSmallBannerSection
-              name="Avg. Demand"
-              value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
-              unit={avg_demand && avg_demand.unit}
-            />
+            <div className="dashboard__demand-banner-- ">
+              <DashboardSmallBannerSection
+                name="Max. Demand"
+                value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
+                unit={max_demand && max_demand.unit}
+              />
+              <DashboardSmallBannerSection
+                name="Min. Demand"
+                value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
+                unit={min_demand && min_demand.unit}
+              />
+              <DashboardSmallBannerSection
+                name="Avg. Demand"
+                value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
+                unit={avg_demand && avg_demand.unit}
+              />
+            </div>
           </article>
 
           <article className="dashboard__cost-emissions-banner dashboard__banner--small">
@@ -273,7 +275,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
-          <div style={{ textAlign: "right", paddingTop: 20, paddingLeft: 20, marginLeft: "auto" }}>
+          <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
             <Tooltip placement="top" style={{ textAlign: "right" }}
               overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.DAILY_ENERGY} >
               <p>
@@ -291,7 +293,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
-            <div style={{ textAlign: "right", paddingTop: 10, paddingRight: 20, float: "right" }}>
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, float: "right" }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
                 overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.POWER_USAGE} >
                 <p>

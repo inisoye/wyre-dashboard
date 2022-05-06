@@ -11,6 +11,7 @@
   width: 100%;
   height: 174px;
   border-radius: $medium-border;
+  background-color: $white;
 
   @include media('>=medium') {
     height: 200px;
@@ -53,9 +54,9 @@
 }
 
 .total-energy_value {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: $medium;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .solar-energy_value {
@@ -65,12 +66,26 @@
 
 .dashboard__demand-banner,
 .dashboard__cost-emissions-banner {
+  // display: flex;
+  // justify-content: space-around;
+  // text-align: center;
+  // align-items: center;
+  background-color: $white;
+  margin-top: 30px;
+
+  @include media('>=1200px') {
+    margin-top: 0;
+  }
+}
+
+.dashboard__demand-banner--,
+.dashboard__cost-emissions-banner {
   display: flex;
   justify-content: space-around;
   text-align: center;
   align-items: center;
   background-color: $white;
-  margin-top: 30px;
+  margin-top: 10px;
 
   @include media('>=1200px') {
     margin-top: 0;
@@ -163,7 +178,7 @@
 .today-usage,
 .yesterday-usage {
   text-align: center;
-  padding: 33px 0;
+  padding: 20px 0;
 }
 
 .today-usage {
