@@ -23,6 +23,7 @@ import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDro
 import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
 import LogoutIcon from '../icons/LogoutIcon';
 import { logoutUser } from '../redux/actions/auth/actionCreators';
+import LatestLogo from '../icons/LatestLogo';
 
 function Header() {
   const {
@@ -97,10 +98,13 @@ function Header() {
             <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
           </button>
 
-          <div className='header-logo-container'>
-            <Link className='header-logo' to='/'>
+          <div className='admin-header-logo-container'>
+            {/* <Link className='header-logo' to='/'>
               <Logo className='header-logo__image' />
-            </Link>
+            </Link> */}
+            <Link className='header-logo--auth' to='/'>
+          <LatestLogo className='header-logo-latest-image--auth' />
+        </Link>
           </div>
 
           <button
@@ -139,8 +143,8 @@ function Header() {
               >
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/view-organisation'
-                  linkText='View Organisation'
+                  url='/view-client'
+                  linkText='View Client'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}

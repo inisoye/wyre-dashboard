@@ -342,12 +342,13 @@ function ScoreCard({ match }) {
         </article>
 
 
-        {/* <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time}
-          dataTitle='Operating Time'
-          dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
-        />
-      </article> */}
+        <article className='score-card-row-3'>
+          <ScoreCardBarChart operatingTimeData={operating_time}
+            uiSettings={uiSettings}
+            dataTitle='Operating Time'
+            dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
+          />
+        </article>
       </>)
     }
     </>

@@ -6,7 +6,7 @@ function TopBar() {
   const { isSidebarOpen, currentUrl } = useContext(CompleteDataContext);
 
   const isTopBarAdminOrganisationRightDisplayed = currentUrl.includes(
-    'view-organisation'
+    'view-client'
   );
 
   const isTopBarAdminDeviceRightDisplayed = currentUrl.includes('view-devices');

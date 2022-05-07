@@ -78,7 +78,7 @@ function LoadOverview({ match }) {
             <div className='load-overview-total-cards-container' >
               <TotalCard title='Building Energy'
                 data={`${numberFormatter(generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName)) || 0} kWh`} />
-              <TotalCard title='Load Consumption' data={`${numberFormatter(generateSumLoadConsumption(branch))} kWh`} />
+              <TotalCard title='Load Consumption' data={`${numberFormatter(generateSumLoadConsumption(branch))|| 0} kWh`} />
               <TotalCard title='Percentage Load'
                 data={`${calculatePercentageTwoDecimal(generateSumLoadConsumption(branch),
                   generateSumOfIsSource(allCheckedOrSelectedDevice, branch[0].branchName))} %`} />
