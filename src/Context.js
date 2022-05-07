@@ -244,7 +244,11 @@ const CompleteDataProvider = (props) => {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
-      setUserData({...user, decodedUser: jwt(user.data.token)});
+
+      const userInfo = jwt(user.data.token);
+      setUserData({...user, decodedUser: userInfo});
+      setIsUserAdmin(userInfo.role_text==='SUPER_ADMIN')
+      // setIsUserAdmin(userInfo.role_text==='MANAGER')
       setToken(user.data.token);
       setUserId(user.data.id);
     }
