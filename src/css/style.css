@@ -1745,10 +1745,11 @@ thead.ant-table-thead tr th {
 .dashboard__total-energy {
   background-color: #6c00fa;
   color: #ffffff;
-  display: flex;
+  text-align: center;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .dashboard-row-1b {

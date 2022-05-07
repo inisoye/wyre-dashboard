@@ -42,26 +42,28 @@
 .dashboard__total-energy {
   background-color: $purple;
   color: $white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
 }
 
 .total-energy__heading {
   color: $white;
-  font-size: 3rem;
+  font-size: 3.3rem;
+  margin-bottom: 0;
 }
 
 .total-energy_value {
-  font-size: 2.3rem;
+  font-size: 2rem;
   font-weight: $medium;
   margin-top: 10px;
 }
 
 .solar-energy_value {
   color: #FFC205;
-  font-size: 2.0rem !important;
+  font-size: 1.8rem !important;
 }
 
 .dashboard__demand-banner,

@@ -185,7 +185,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
           <article className="dashboard__total-energy dashboard__banner--small">
-            <div style={{ textAlign: "right", paddingRight: 20, marginLeft: "auto" }}>
+            <div style={{ textAlign: "right", paddingRight: 20, paddingTop: 20, marginLeft: "auto" }}>
               <Tooltip placement="top" style={{ textAlign: "right" }}
                 overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TOTAL_ENERGY} >
                 <p>
