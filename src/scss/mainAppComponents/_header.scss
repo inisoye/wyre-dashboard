@@ -71,6 +71,22 @@
   }
 }
 
+.admin-header-logo-container {
+  height: 40px;
+
+  /* Make logo width match sidebar */
+  @include media('>=medium') {
+    display: block;
+    width: 278.45px;
+    height: 50px;
+    margin-bottom: 30px;
+  }
+
+  @include media('>=large') {
+    width: 260.45px;
+  }
+}
+
 .header-logo {
   line-height: 1;
 

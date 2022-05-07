@@ -7,7 +7,7 @@ import { getLastArrayItems } from '../../helpers/genericHelpers';
 import { numberFormatter } from '../../helpers/numberFormatter';
 import InformationIcon from '../../icons/InformationIcon';
 
-const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
+const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
 
@@ -120,7 +120,7 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage }) => {
         label: 'Wastage',
         maxBarThickness: 60,
         data: chartValues,
-        backgroundColor: '#6c00fa',
+        backgroundColor: [uiSettings.appPrimaryColor, '#F0F0F0'],
         borderColor: '#6c00fa',
         borderWidth: 1,
       },

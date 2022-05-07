@@ -31,7 +31,7 @@
   width: 100px;
 
   @include media('>=medium') {
-    height: 120px;
+    height: 100px;
     width: 220px;
   }
 }

@@ -31,7 +31,7 @@ function AdminPages() {
               <Route path='/view-branches' component={ViewBranches} />
               <Route path='/add-clients' component={AddClients} />
               <Route path='/view-devices' component={ViewDevices} />
-              <Route path='/view-organisation' component={ViewOrganisation} />
+              <Route path='/view-client' component={ViewOrganisation} />
               <Route path='/messages' component={Messages} />
 
               <Route component={Error} />
