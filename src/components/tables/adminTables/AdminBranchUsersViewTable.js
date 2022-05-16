@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import listOfBranchUsersViewData from '../../../services/BranchUsersView-SampleData.json'
 
 class AdminBranchUsersViewTable extends React.Component {
     state = {
