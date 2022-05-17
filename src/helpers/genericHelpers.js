@@ -778,6 +778,12 @@ const combineSameMonthData = (dateArray) => {
   }
   return { forcastedData, usedData };
 }
+// data to combine multiple dates data of the same month
+const sortByDateTime = (data) => {
+  return data.sort(function(a,b){
+    return new Date(`${b.date} ${b.time}`) - new Date(`${a.date} ${a.time}`);
+  });
+}
 
 
 export {
@@ -837,5 +843,6 @@ export {
   allCheckedDeviceGenerators,
   allCostTrackerBranchesBaseline,
   getGeneratorSizeMessage,
-  combineSameMonthData
+  combineSameMonthData,
+  sortByDateTime
 };
