@@ -3,6 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { numberFormatter } from "../../helpers/numberFormatter";
+import { sortByDateTime } from '../../helpers/genericHelpers';
 
 class PowerQualityTable extends React.Component {
   state = {
@@ -94,7 +95,8 @@ class PowerQualityTable extends React.Component {
   };
 
   render() {
-    const data = this.props.powerQualityData.map((dataItem, key) => {
+    const sortedData = sortByDateTime( this.props.powerQualityData);
+    const data = sortedData.map((dataItem, key) => {
 
       const { l1, l2, l3, neutral, frequency, power_factor } = dataItem
 
