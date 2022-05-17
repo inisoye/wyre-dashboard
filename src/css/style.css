@@ -2852,6 +2852,12 @@ thead.ant-table-thead tr th {
   font-weight: 600;
 }
 
+.add_user_form_btn_align {
+  display: flex;
+  justify-content: end;
+  padding-right: 8px;
+}
+
 @media only screen and (min-width: 280px) and (max-width: 767px) {
   .branches-total_costs-card {
     padding: 1.5rem;

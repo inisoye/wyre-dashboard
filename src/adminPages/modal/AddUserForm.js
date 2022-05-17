@@ -1,75 +1,68 @@
-import React, { useState } from 'react';
-import { Modal, Select, Checkbox } from 'antd';
+import React from 'react';
+import { Form, Select, Row, Col, DatePicker } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import { CaretDownFilled } from '@ant-design/icons';
 function AddUserForm() {
-    const [visible, setVisible] = useState(false);
     // modal form 
     const { Option } = Select;
     const { register, handleSubmit, setValue, control, errors } = useForm();
-    const deviceTypeSelector = (
+    const branchSelector = (
         <Select
             className='cost-tracker-select h-4-br'
-            id='iconType-state'
+            id='branch-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
             onChange={(e) => setValue('iconType', e.target.value, true)}
         >
-            <Option className='active-state-option' value='EM133'>
-                EM 133
+            <Option className='active-state-option' value='Lekki'>
+                Lekki
             </Option>
-            <Option className='active-state-option' value='EM122'>
-                EM 122
-            </Option>
-            <Option className='active-state-option' value='EM111'>
-                EM 111
-            </Option>
-            <Option className='active-state-option' value='EM141'>
-                EM141
-            </Option>
-            <Option className='active-state-option' value='EM210'>
-                EM 210
+            <Option className='active-state-option' value='VI'>
+                Victoria Island
             </Option>
         </Select>
     );
-    const activeStateSelector = (
+    const roleSelector = (
         <Select
             className='cost-tracker-select h-4-br'
-            id='active-state'
+            id='role-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-            onChange={(e) => setValue('activeState', e.target.value, true)}
+            onChange={(e) => setValue('role', e.target.value, true)}
         >
-            <Option className='active-state-option' value='true'>
-                Active
+            <Option className='active-state-option' value='administrator'>
+                Administrator
             </Option>
-            <Option className='active-state-option' value='false'>
-                Inactive
+            <Option className='active-state-option' value='manager'>
+                Manager
+            </Option>
+            <Option className='active-state-option' value='viewer'>
+                Viewer
             </Option>
         </Select>
     );
-    const iconTypeSelector = (
+    const permissionSelector = (
         <Select
             className='cost-tracker-select h-4-br'
-            id='iconType-state'
+            id='permission-state'
             defaultValue='true'
             suffixIcon={<CaretDownFilled />}
-            onChange={(e) => setValue('iconType', e.target.value, true)}
+            onChange={(e) => setValue('permission', e.target.value, true)}
         >
-            <Option className='active-state-option' value='500kWh'>
-                500kWh
+            <Option className='active-state-option' value='1'>
+                1
             </Option>
-            <Option className='active-state-option' value='425Kwh'>
-                425Kwh
+            <Option className='active-state-option' value='2'>
+                2
             </Option>
-            <Option className='active-state-option' value='425Kwh'>
-                400Kwh
+            <Option className='active-state-option' value='3'>
+                3
             </Option>
-            <Option className='active-state-option' value='425Kwh'>
-                320Kwh
+            <Option className='active-state-option' value='4'>
+                4
             </Option>
-            <Option className='active-state-option' value='425Kwh'>
-                320Kwh
+            <Option className='active-state-option' value='5'>
+                5
             </Option>
         </Select>
     );
@@ -81,200 +74,193 @@ function AddUserForm() {
             onChange={(e) => setValue('dateAdded', e.target.value, true)}
         />
     );
-    const onSubmit = ({ deviceName, deviceIdentity, deviceType, activeState, iconType }) => {
-        console.log(deviceName, deviceIdentity, deviceType, activeState, iconType);
+
+    const onSubmit = ({ name, phoneNumber, emailAddress, branch, role, permission, dateAdded }) => {
+        console.log(name, phoneNumber, emailAddress, branch, role, permission, dateAdded);
     };
-    function onChange(e) {
-        console.log(`checked = ${e.target.checked}`);
-    }
     // modal functions ends
 
-    return <Modal visible={visible2}
-        onOk={() => setVisible2(false)}
-        onCancel={() => setVisible2(false)} width={1000} footer={null} >
-        <div className='cost-tracker-forms-content-wrapper'>
-            <h1 className='center-main-heading'>User Form</h1>
+    return <div className='cost-tracker-forms-content-wrapper'>
+        <h1 className='center-main-heading'>User Form</h1>
 
-            <section className='cost-tracker-form-section'>
-                <form
-                    className='cost-tracker-form'
-                    action='#'
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <div className='' >
-                        <Row>
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='deviceName'
-                                    >
-                                        Name
-                                    </label>
-                                    <input
-                                        className='generic-input'
-                                        type='text'
-                                        name='deviceName'
-                                        id='deviceName'
-                                        ref={register}
-                                        required
-                                        autoFocus
-                                    />
-                                </div>
-                            </Col>
+        <section className='cost-tracker-form-section'>
+            <Form
+                className='cost-tracker-form'
+                action='#'
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <div className='' >
+                    <Row>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='userName'
+                                >
+                                    Name
+                                </label>
+                                <input
+                                    className='generic-input'
+                                    type='text'
+                                    name='userName'
+                                    id='userName'
+                                    ref={register}
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                        </Col>
 
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='deviceIdentity'
-                                    >
-                                        Phone Number
-                                    </label>
-                                    <input
-                                        className='generic-input'
-                                        type='text'
-                                        name='deviceIdentity'
-                                        id='deviceIdentity'
-                                        ref={register}
-                                        required
-                                        autoFocus
-                                    />
-                                </div>
-                            </Col>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='phoneNumber'
+                                >
+                                    Phone Number
+                                </label>
+                                <input
+                                    className='generic-input'
+                                    type='text'
+                                    name='phoneNumber'
+                                    id='phoneNumber'
+                                    ref={register}
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                        </Col>
 
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='deviceIdentity'
-                                    >
-                                        Email Address
-                                    </label>
-                                    <input
-                                        className='generic-input'
-                                        type='text'
-                                        name='deviceIdentity'
-                                        id='deviceIdentity'
-                                        ref={register}
-                                        required
-                                        autoFocus
-                                    />
-                                </div>
-                            </Col>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='emailAddress'
+                                >
+                                    Email Address
+                                </label>
+                                <input
+                                    className='generic-input'
+                                    type='email'
+                                    name='emailAddress'
+                                    id='emailAddress'
+                                    ref={register}
+                                    required
+                                    autoFocus
+                                />
+                            </div>
+                        </Col>
 
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='active-state'
-                                    >
-                                        Branch
-                                    </label>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='branch-state'
+                                >
+                                    Branch
+                                </label>
 
-                                    <Controller
-                                        as={deviceTypeSelector}
-                                        name='deviceType'
-                                        control={control}
-                                        defaultValue=''
-                                        rules={{
-                                            required: true,
-                                        }}
-                                        help={errors.deviceType && 'Please select a value'}
-                                    />
-                                    <p className='input-error-message'>
-                                        {errors.deviceType && 'Please select a value'}
-                                    </p>
-                                </div>
-                            </Col>
+                                <Controller
+                                    as={branchSelector}
+                                    name='branch'
+                                    control={control}
+                                    defaultValue=''
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    help={errors.branch && 'Please select a value'}
+                                />
+                                <p className='input-error-message'>
+                                    {errors.branch && 'Please select a value'}
+                                </p>
+                            </div>
+                        </Col>
 
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='active-state'
-                                    >
-                                        Roles
-                                    </label>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='role-state'
+                                >
+                                    Roles
+                                </label>
 
-                                    <Controller
-                                        as={activeStateSelector}
-                                        name='activeState'
-                                        control={control}
-                                        defaultValue=''
-                                        rules={{
-                                            required: true,
-                                        }}
-                                        help={errors.activeState && 'Please select a value'}
-                                    />
-                                    <p className='input-error-message'>
-                                        {errors.activeState && 'Please select a value'}
-                                    </p>
-                                </div>
-                            </Col>
+                                <Controller
+                                    as={roleSelector}
+                                    name='role'
+                                    control={control}
+                                    defaultValue=''
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    help={errors.role && 'Please select a value'}
+                                />
+                                <p className='input-error-message'>
+                                    {errors.role && 'Please select a value'}
+                                </p>
+                            </div>
+                        </Col>
 
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='active-state'
-                                    >
-                                        Permissions
-                                    </label>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='permission-state'
+                                >
+                                    Permissions
+                                </label>
 
-                                    <Controller
-                                        as={iconTypeSelector}
-                                        name='iconType'
-                                        control={control}
-                                        defaultValue=''
-                                        rules={{
-                                            required: true,
-                                        }}
-                                        help={errors.iconType && 'Please select a value'}
-                                    />
-                                    <p className='input-error-message'>
-                                        {errors.iconType && 'Please select a value'}
-                                    </p>
-                                </div>
-                            </Col>
-                            <Col md={8}>
-                                <div className='cost-tracker-input-container'>
-                                    <label
-                                        className='generic-input-label cost-tracker-input-label'
-                                        htmlFor='equipment-purchase-date'
-                                    >
-                                        Date
-                                    </label>
-                                    <Controller
-                                        as={dateAddedPicker}
-                                        name='dateAdded'
-                                        control={control}
-                                        defaultValue=''
-                                        rules={{
-                                            required: true,
-                                        }}
-                                        validateStatus={
-                                            errors.dateAdded && 'Please enter a date' ? 'error' : ''
-                                        }
-                                        help={errors.dateAdded && 'Please enter a date'}
-                                    />
-                                    <p className='input-error-message'>
-                                        {errors.dateAdded && 'Please enter a date'}
-                                    </p>
-                                </div>
-                            </Col>
-                            <Col md={8}>
-                                <button className='generic-submit-button cost-tracker-form-submit-button'>
-                                    Add
-                                </button>
-                            </Col>
-                        </Row>
-
+                                <Controller
+                                    as={permissionSelector}
+                                    name='permission'
+                                    control={control}
+                                    defaultValue=''
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    help={errors.permission && 'Please select a value'}
+                                />
+                                <p className='input-error-message'>
+                                    {errors.permission && 'Please select a value'}
+                                </p>
+                            </div>
+                        </Col>
+                        <Col md={8}>
+                            <div className='cost-tracker-input-container'>
+                                <label
+                                    className='generic-input-label cost-tracker-input-label'
+                                    htmlFor='equipment-purchase-date'
+                                >
+                                    Date
+                                </label>
+                                <Controller
+                                    as={dateAddedPicker}
+                                    name='dateAdded'
+                                    control={control}
+                                    defaultValue=''
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    validateStatus={
+                                        errors.dateAdded && 'Please enter a date' ? 'error' : ''
+                                    }
+                                    help={errors.dateAdded && 'Please enter a date'}
+                                />
+                                <p className='input-error-message'>
+                                    {errors.dateAdded && 'Please enter a date'}
+                                </p>
+                            </div>
+                        </Col>
+                    </Row>
+                    <div className='add_user_form_btn_align'>
+                        <button className='generic-submit-button cost-tracker-form-submit-button'>
+                            Add
+                        </button>
                     </div>
-                </form>
-            </section>
-        </div>
-    </Modal>
+                </div>
+            </Form>
+        </section>
+    </div>
 }
 
 export default AddUserForm
