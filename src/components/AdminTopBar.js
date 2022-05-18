@@ -21,7 +21,7 @@ function TopBar() {
   const isTopBarAdminDeviceRightDisplayed = currentUrl.includes('view-devices');
   const isTopBarAdminDeviceRightDisplayed2 = currentUrl.includes('view-branches');
   const isTopBarAdminDeviceLeftDisplayed = currentUrl.includes('view-branches');
-  const isTopBarAdminDeviceRightDisplayed3 = currentUrl.includes('branch01');
+  const isTopBarAdminDeviceRightDisplayed3 = currentUrl.includes('view-branch');
 
 
   const isTopBarDisplayed = !currentUrl.includes('hide-top-bar');
