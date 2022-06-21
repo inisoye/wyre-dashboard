@@ -53,7 +53,7 @@ const DashboardDoughnutChart = ({ data, uiSettings }) => {
         left: 20,
         right: 20,
         top: 10,
-        bottom: 40,
+        bottom: 80,
       },
     },
     legend: {
@@ -94,7 +94,7 @@ const DashboardDoughnutChart = ({ data, uiSettings }) => {
       fontSize: 18,
       fontStyle: 'normal',
       fontColor: 'black',
-      padding: 20,
+      padding: 10,
     },
     tooltips: {
       enabled: true,

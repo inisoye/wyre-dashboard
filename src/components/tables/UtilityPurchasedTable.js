@@ -19,7 +19,7 @@ const UtilityPurchasedTable = ({ data }) => {
       width: '20%',
     },
     {
-      title: 'Unit(Kwh)',
+      title: 'Unit(kWh)',
       dataIndex: 'value',
       key: 'value',
       width: '20%',
@@ -28,7 +28,7 @@ const UtilityPurchasedTable = ({ data }) => {
       }
     },
     {
-      title: 'Tariff(₦/Kwh)',
+      title: 'Tariff(₦/kWh)',
       dataIndex: 'tarrif',
       key: "tarrif",
       width: '20%',

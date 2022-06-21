@@ -164,7 +164,7 @@ const CompleteDataProvider = (props) => {
         Object.keys(checkedItems).length === 0 &&
         checkedItems.constructor === Object
       ) {
-        
+
         const refindedData = getRefinedOrganizationData(copyOrganisation)
         // set all the device into the needed data(bucket)
         setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
@@ -226,7 +226,7 @@ const CompleteDataProvider = (props) => {
           checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
         })
         const renderedDataArray = getRenderedData(Object.values(dataWithCheckBoxes?.branchAndDevice));
-        
+
         setRefinedRenderedData(renderedDataArray);
       }
     }
@@ -244,7 +244,11 @@ const CompleteDataProvider = (props) => {
       const user = JSON.parse(loggedUserJSON);
       dataHttpServices.setUserId(user.data.id);
       dataHttpServices.setToken(user.data.token);
-      setUserData({...user, decodedUser: jwt(user.data.token)});
+
+      const userInfo = jwt(user.data.token);
+      setUserData({ ...user, decodedUser: userInfo });
+      setIsUserAdmin(userInfo.role_text === 'SUPERADMIN')
+      // setIsUserAdmin(userInfo.role_text==='MANAGER')
       setToken(user.data.token);
       setUserId(user.data.id);
     }
@@ -260,7 +264,7 @@ const CompleteDataProvider = (props) => {
   const [PasswordVisibility, setPasswordVisibility] = useState(false)
 
   const uiSettings = {
-      appPrimaryColor: '#5c3592'
+    appPrimaryColor: '#5c3592'
   }
 
   return (
@@ -268,7 +272,7 @@ const CompleteDataProvider = (props) => {
       value={{
         // Data Control
         uiSettings,
-        deviceData : deviceData,
+        deviceData: deviceData,
         organization: organization,
         refinedRenderedData: refinedRenderedData,
         renderedDataObjects: renderedDataObjects,
@@ -276,7 +280,7 @@ const CompleteDataProvider = (props) => {
         checkedItems: checkedItems,
         setCheckedItems: setCheckedItems,
         checkedBranches: checkedBranches,
-        selectedDevices : selectedDevices,
+        selectedDevices: selectedDevices,
         setCheckedBranches: setCheckedBranches,
         checkedDevices: checkedDevices,
         setCheckedDevices: setCheckedDevices,

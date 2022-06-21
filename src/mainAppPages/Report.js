@@ -174,7 +174,7 @@ function Report({ match, fetchReportData: fetchReport }) {
         <div className="report-row-1__content">
           <div className="report-pie-container">
             <h2 className='report-pie-heading'>
-              Source Consumption(Kwh)
+              Source Consumption(kWh)
             </h2>
             {
               source_consumption &&

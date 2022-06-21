@@ -2,12 +2,11 @@ import React from 'react';
 import { numberFormatter } from '../helpers/numberFormatter';
 import DeviceTypeIconSelector from './DeviceTypeIconSelector';
 
-
-function DashBoardAmountUsed (
+function DashBoardAmountUsed(
     { timeInUse,
-    name, amount,
-    totalKWH, deviceType 
-}){
+        name, amount,
+        totalKWH, deviceType
+    }) {
 
     let Component = DeviceTypeIconSelector(deviceType);
 
@@ -22,12 +21,12 @@ function DashBoardAmountUsed (
                     <Component className="power-icon__image" />
                 </div>
                 <div className="total-right-energy-price total-energy-price__common">
-                    <p className="total-energy-price__kwh__text">{numberFormatter(totalKWH) || 0}KWh</p>
+                    <p className="total-energy-price__kwh__text">{numberFormatter(totalKWH) || 0}kWh</p>
                     <p className="total-energy-price__heading__text__hrs" >{timeInUse || 0}hrs</p>
                 </div>
             </div>
             <div className="total-energy-price__footer total-energy-price__common">
-                <p className="total-energy-price__footer__text"> {numberFormatter(amount)? `₦ ${numberFormatter(amount)}` : '-'}</p>
+                <p className="total-energy-price__footer__text"> {numberFormatter(amount) ? `₦ ${numberFormatter(amount)}` : '-'}</p>
             </div>
         </>
     );

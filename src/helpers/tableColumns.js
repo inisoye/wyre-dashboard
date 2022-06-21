@@ -1,6 +1,8 @@
 import moment from 'moment';
-import { modifyStatisTicDate, 
-  modifyStatisTicDateWithTime } from "./genericHelpers";
+import {
+  modifyStatisTicDate,
+  modifyStatisTicDateWithTime
+} from "./genericHelpers";
 
 export const LoadImbalanceColumns = [
   {
@@ -95,8 +97,8 @@ export const PowerDemandColumns = [
     dataIndex: 'kva',
   },
   {
-    title: 'KW',
-    dataIndex: 'kw',
+    title: 'kW',
+    dataIndex: 'kW',
 
   }
 ];
@@ -110,7 +112,7 @@ export const CostImplicationColumn = [
     dataIndex: 'device',
   },
   {
-    title: '(Kwh)',
+    title: '(kWh)',
     dataIndex: 'demand',
   },
   {
@@ -125,12 +127,12 @@ export const DemandAndStatisticsColumn = [
     width: '15%'
   },
   {
-    title: 'Daily Avg Usage(Kwh)',
+    title: 'Daily Avg Usage(kWh)',
     dataIndex: 'daily_avg_usage',
     width: '16%'
   },
   {
-    title: 'Max Energy Usage (Kwh)',
+    title: 'Max Energy Usage (kWh)',
     dataIndex: 'max_energy_usage',
     width: '26%',
     render: (data) => {
@@ -175,7 +177,7 @@ export const DemandAndStatisticsTwoColumn = [
     render: (data) => {
       const { date, unit, value } = data;
       const dateValues = date && modifyStatisTicDateWithTime(date);
-      return `${value + unit}  ${date ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
+      return `${value + unit}  ${date ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly : ''}`;
     }
   },
   {
@@ -185,7 +187,7 @@ export const DemandAndStatisticsTwoColumn = [
     render: (data) => {
       const { day, unit, value } = data;
       const dateValues = day && modifyStatisTicDateWithTime(day);
-      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
+      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly : ''}`;
     }
   },
   {
@@ -195,7 +197,7 @@ export const DemandAndStatisticsTwoColumn = [
     render: (data) => {
       const { day, unit, value } = data;
       const dateValues = day && modifyStatisTicDateWithTime(day);
-      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly  : ''}`;
+      return `${value + unit}  ${day ? '(' + dateValues.deteOnly + '), ' + dateValues.timeOnly : ''}`;
     }
   },
   {

@@ -16,7 +16,7 @@ export const fetchDashBoardData = (userDateRange) => async (dispatch) => {
   if (loggedUserJSON) {
     const user = JSON.parse(loggedUserJSON);
     userId = user.data.id;
-    token = user.data.id;
+    token = user.data.token;
   }
   try {
     const response = await axios.get(

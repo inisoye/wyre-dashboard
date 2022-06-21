@@ -87,7 +87,7 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
           scaleLabel: {
             display: true,
             labelString: 'Days of the month',
-            padding: isMediumScreen ? 10 : 25,
+            padding: isMediumScreen ? 10 : 45,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
           },
@@ -139,8 +139,8 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
     labels: isMediumScreen
       ? getLastArrayItems(formattedDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+        ? getLastArrayItems(formattedDates, 14)
+        : formattedDates,
     datasets: plottedDataSet,
   };
 

@@ -50,12 +50,21 @@ const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
 };
 
 const getAllData = async () => {
-  // Add interval to url
+
+  const loggedUserJSON = localStorage.getItem('loggedWyreUser');
+  let userId;
+  let token;
+
+  if (loggedUserJSON) {
+    const user = JSON.parse(loggedUserJSON);
+    userId = user.data.id;
+    token = user.data.token;
+  }
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
   //const test =axios.get('https://wyreng.xyz/api/v1/dashboard/6/01-12-2021%2000:00/01-04-2021%2000:00/hourly');
   //console.log(test)
   const config = {
-    headers: { Authorization: token },
+    headers: { Authorization:`Bearer ${token}`  },
   };
 
   //const resp = await axios.get(test, config);

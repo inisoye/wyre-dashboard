@@ -14,6 +14,11 @@ import { allCostTrackerBranchesBaseline } from '../helpers/genericHelpers';
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import Loader from '../components/Loader';
 
+// Tooltips
+import { Tooltip } from 'antd';
+import InformationIcon from '../icons/InformationIcon';
+import { COST_TRACKER_TOOLTIP_MESSAGES } from '../components/toolTips/Cost_Tracker_Tooltip_Messages';
+
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -73,7 +78,17 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
       <h3 className='cost-tracker-branch-name'>
         Cost Overview
       </h3>
-      <p style={subHeaderStyle}>Diesel Overview</p>
+      <div className='doughnut-card-heading'>
+        <p style={subHeaderStyle}>Diesel Overview</p>
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.DIESEL_OVERVIEW}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
+      </div>
       <DieselOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
         dieselOverviewData={overviewData.diesel_overview} />
     </article>
@@ -84,7 +99,17 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
     <article
       className='cost-tracker-chart-container'
     >
-      <p style={subHeaderStyle}>Utility Overview</p>
+      <div className='doughnut-card-heading'>
+        <p style={subHeaderStyle}>Utility Overview</p>
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.UTILITY_OVERVIEW}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
+      </div>
       <UtilityOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
         dataSource={overviewData.utility_overview} />
     </article>
@@ -97,9 +122,18 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
         className='cost-tracker-chart-container'
         key={index}
       >
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.DIESEL_PURCHASED}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
         <h3 className='cost-tracker-branch-name'>
           Diesel Purchased for {e[0]}
         </h3>
+
         <DieselPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].diesel} />
       </article>
     ))
@@ -111,9 +145,18 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
         className='cost-tracker-chart-container'
         key={index}
       >
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.UTILITY_PAYMENTS}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
         <h3 className='cost-tracker-branch-name'>
-          Utility Purchased for {e[0]}
+          Utility Payments for {e[0]}
         </h3>
+
         <UtilityPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].utility} />
       </article>
     ))
@@ -127,6 +170,14 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
         key={index}
         className='cost-tracker-chart-container'
       >
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.BASELINE_TRACKER}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
         <h3 className='cost-tracker-branch-name'>
           Energy Consumption at {e[0]}
         </h3>
@@ -142,6 +193,14 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
         key={index}
         className='cost-tracker-chart-container'
       >
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.MONTHLY_COST}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
         <h3 className='cost-tracker-branch-name'>
           Monthly Cost at {e[0]}
         </h3>
@@ -151,9 +210,9 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
       </article>
     ))
 
-    if (costTracker.fetchCostTrackerLoading) {
-      return <Loader />;
-    }
+  if (costTracker.fetchCostTrackerLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -177,18 +236,18 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
 
 
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Quantity of utility Purchased</h2>
+        <h2 className='h-screen-reader-text'>Quantity of utility Payments</h2>
         {utilityPurchasedCharts}
       </section>
 
       <section className='cost-tracker-section'>
-          <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-          {monthlyCostBarCharts}
+        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+        {monthlyCostBarCharts}
       </section>
 
       <section className='cost-tracker-section'>
-          <h2 className='h-screen-reader-text'>Monthly Cost</h2>
-          {monthlyEnergyConsumptionBarCharts}
+        <h2 className='h-screen-reader-text'>Monthly Cost</h2>
+        {monthlyEnergyConsumptionBarCharts}
       </section>
 
     </>

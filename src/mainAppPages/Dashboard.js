@@ -35,6 +35,10 @@ import {
 import { getRenderedData } from "../helpers/renderedDataHelpers";
 import { isEmpty } from "../helpers/authHelper";
 
+// Tooltips
+import { Tooltip } from 'antd';
+import InformationIcon from '../icons/InformationIcon';
+import DASHBOARD_TOOLTIP_MESSAGES from '../components/toolTips/Dashboard_Tooltip_Messages';
 
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
@@ -181,6 +185,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
       <section id="page" ref={pageRef}>
         <div className="dashboard-row-1">
           <article className="dashboard__total-energy dashboard__banner--small">
+            <div style={{ textAlign: "right", paddingRight: 20, paddingTop: 20, marginLeft: "auto" }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TOTAL_ENERGY} >
+                <p>
+                  <InformationIcon className="info-icon" style={{ color: "white" }} />
+                </p>
+              </Tooltip>
+            </div>
             <h2 className="total-energy__heading">Total Energy</h2>
             <p className="total-energy_value">
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
@@ -195,21 +207,31 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
-            <DashboardSmallBannerSection
-              name="Max. Demand"
-              value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
-              unit={max_demand && max_demand.unit}
-            />
-            <DashboardSmallBannerSection
-              name="Min. Demand"
-              value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
-              unit={min_demand && min_demand.unit}
-            />
-            <DashboardSmallBannerSection
-              name="Avg. Demand"
-              value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
-              unit={avg_demand && avg_demand.unit}
-            />
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
+            <div className="dashboard__demand-banner-- ">
+              <DashboardSmallBannerSection
+                name="Max. Demand"
+                value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
+                unit={max_demand && max_demand.unit}
+              />
+              <DashboardSmallBannerSection
+                name="Min. Demand"
+                value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
+                unit={min_demand && min_demand.unit}
+              />
+              <DashboardSmallBannerSection
+                name="Avg. Demand"
+                value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
+                unit={avg_demand && avg_demand.unit}
+              />
+            </div>
           </article>
 
           <article className="dashboard__cost-emissions-banner dashboard__banner--small">
@@ -237,7 +259,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           {
             allDeviceInfo
             && Object.values(allDeviceInfo).filter(device => device.is_source).map((eachDevice, index) => {
-              console.log('this is the each Device', eachDevice);
               return index < 6 && eachDevice.is_source && <article key={index}
                 className="dashboard__total-energy-amount dashboard__banner--smallb">
                 <DashBoardAmountUsed key={index} name={eachDevice?.name}
@@ -253,6 +274,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         </div>
 
         <article className="dashboard-row-2 dashboard-bar-container">
+          <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
+            <Tooltip placement="top" style={{ textAlign: "right" }}
+              overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.DAILY_ENERGY} >
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           <DashboardStackedBarChart
             uiSettings={uiSettings}
             className=""
@@ -263,12 +292,28 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
         <div className="dashboard-row-3">
           <article className="dashboard-pie-container">
+            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, float: "right" }}>
+              <Tooltip placement="top" style={{ textAlign: "right" }}
+                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.POWER_USAGE} >
+                <p>
+                  <InformationIcon className="info-icon" />
+                </p>
+              </Tooltip>
+            </div>
             <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} />
           </article>
 
           <article className="dashboard-today-and-yesterday">
             <div className="today-usage">
-              <h3 className="today-usage__heading">Today's Usage (KWh)</h3>
+              <div style={{ textAlign: "right", paddingRight: 20, position: "relative" }}>
+                <Tooltip placement="top" style={{ textAlign: "right" }}
+                  overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.TODAY_VS_YESTERDAY} >
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+              <h3 className="today-usage__heading">Today's Usage (kWh)</h3>
               <div className="usage-value-and-arrow">
                 <p className="today-usage__value">
                   {numberFormatter(todaysValue) || '0000'}
@@ -282,7 +327,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
             <div className="yesterday-usage">
               <h3 className="yesterday-usage__heading">
-                Yesterday's Usage (KWh)
+                Yesterday's Usage (kWh)
               </h3>
               <div className="usage-value-and-arrow">
                 <p className="yesterday-usage__value">

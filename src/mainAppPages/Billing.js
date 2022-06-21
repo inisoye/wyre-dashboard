@@ -95,10 +95,10 @@ function Billing({ match }) {
     formatParametersDatetimes(billing_consumption_naira.dates);
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
-  
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+
+  if (isAuthenticatedDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -106,22 +106,6 @@ function Billing({ match }) {
         <BreadCrumb routesArray={breadCrumbRoutes} />
         <PrintButtons />
       </div>
-
-      <article className='billing-bar-container'>
-        <BillingConsumptionKwhBarChart
-          chartConsumptionValues={chartConsumptionKwhValues}
-          chartDeviceNames={allDeviceNames}
-          chartDates={chartConsumptionKwhDates}
-        />
-      </article>
-
-      <article className='billing-bar-container h-mt'>
-        <BillingConsumptionNairaBarChart
-          chartValues={chartConsumptionNairaValues}
-          chartDates={chartConsumptionNairaDates}
-        />
-      </article>
-
       <div className='billing-bill-tables'>
         <div className='billing-bill-table-container'>
           <table className='billing-table billing-bill-table'>
@@ -256,7 +240,24 @@ function Billing({ match }) {
           </table>
         </div>
       </div>
-  </>
+
+      <article className='billing-bar-container'>
+        <BillingConsumptionKwhBarChart
+          chartConsumptionValues={chartConsumptionKwhValues}
+          chartDeviceNames={allDeviceNames}
+          chartDates={chartConsumptionKwhDates}
+        />
+      </article>
+
+      <article className='billing-bar-container h-mt'>
+        <BillingConsumptionNairaBarChart
+          chartValues={chartConsumptionNairaValues}
+          chartDates={chartConsumptionNairaDates}
+        />
+      </article>
+
+
+    </>
   );
 }
 
