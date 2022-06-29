@@ -32,6 +32,7 @@ import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
 import LoadOverview from '../mainAppPages/LoadOverview';
 import RevisedAppTopBar from '../components/RevisedAppTopBar';
+import AddDieselEntry from '../mainAppPages/AddDieselEntry';
 
 function MainAppPages() {
   const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
@@ -73,6 +74,7 @@ function MainAppPages() {
                 <Route path="/billing" component={Billing} />
                 <Route exact path="/cost-tracker" component={CostTracker} />
                 <Route path="/cost-tracker/add-bills" component={AddBills} />
+                <Route path="/cost-tracker/add-diesel-entry" component={AddDieselEntry} />
                 <Route
                   path="/cost-tracker/add-equipment"
                   component={AddEquipment}
