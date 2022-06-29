@@ -498,7 +498,9 @@ function NewAppTopBar() {
           />
         </Space>
       </>
-      <Modal
+      {
+        openModal && 
+        <Modal
         onOk={onApplyClick}
         okText='Apply'
         onCancel={() => setOpenModal(!openModal)}
@@ -507,6 +509,8 @@ function NewAppTopBar() {
         visible={openModal} >
         <Content />
       </Modal>
+      }
+
       {/* </div> */}
     </div>
   );

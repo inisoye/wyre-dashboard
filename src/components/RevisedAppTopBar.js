@@ -167,6 +167,9 @@ function RevisedAppTopBar() {
           <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
             Add Bills
           </Link>
+          <Link className='top-bar-right__button' to='/cost-tracker/add-diesel-entry'>
+            Add Diesel Entry
+          </Link>
           <Link
             className='top-bar-right__button'
             to='/cost-tracker/add-equipment'
