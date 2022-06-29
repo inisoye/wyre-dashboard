@@ -45,7 +45,6 @@ const toSnakeCase = (str) =>
 const cloneObject = (object) => Object.assign({}, object);
 
 const getLastArrayItems = (array, numberOfItems) => {
-  console.log('here is the arrra dalkjdshdko', array);
   return array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
