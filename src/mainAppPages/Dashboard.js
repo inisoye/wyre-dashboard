@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useRef, useState } from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
 import { connect, useSelector } from 'react-redux';
-import html2pdf from "html2pdf.js"
 import * as html2canvas from "html2canvas";
 import CompleteDataContext from "../Context";
 // import 
@@ -145,7 +144,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
     const input = document.getElementById("page");
     const page = document.querySelector(".page-content")
-    html2pdf(page)
 
     // window
     // .open("", "PRINT", "height=650,width=900,top=100,left=100")
