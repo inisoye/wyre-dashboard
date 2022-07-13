@@ -20,7 +20,7 @@ function LoadOverviewDataTable({ device, index }) {
         <div>
           <hr />
           <p>
-            Consumption: {device.energy_consumption.usage}kW
+            Consumption: {device.energy_consumption.usage}kWh
           </p>
           <hr />
           <p>
