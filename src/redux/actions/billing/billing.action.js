@@ -3,6 +3,7 @@ import axios from "axios";
 import EnvData from "../../../config/EnvData";
 import { fetchDashBoardLoading, fetchDashBoardSuccess } from "./actionCreators";
 import dataHttpServices from '../../../services/devices';
+import jwtDecode from "jwt-decode";
 
 
 export const fetchDashBoardData = () => async (dispatch) => {
@@ -12,9 +13,10 @@ export const fetchDashBoardData = () => async (dispatch) => {
   let userId;
   let token;
   if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    userId = user.data.id;
-    token = user.data.token;
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
+    token = userToken.access;
   }
   try {
     const response = await axios.get(

@@ -95,7 +95,7 @@ function Header() {
 
 
   const renderComp = () => {
-    switch (userData.decodedUser.client_type) {
+    switch (userData.client_type) {
 
       case 'STANDARD':
         // all except billing and load overview
@@ -113,24 +113,24 @@ function Header() {
         return <>
 
           {
-            BESPOKE_ADD_LIST.SCORE_CARD.includes(userData.decodedUser.client) &&
+            BESPOKE_ADD_LIST.SCORE_CARD.includes(userData.client) &&
             <HeaderLink onClick={toggleNav} url="/score-card" linkText="Score Card"
             />
           }
           {
-            // BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.decodedUser.client) &&
+            // BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.client) &&
             <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
           }
           {
-            BESPOKE_ADD_LIST.REPORT.includes(userData.decodedUser.client) &&
+            BESPOKE_ADD_LIST.REPORT.includes(userData.client) &&
             <HeaderLink onClick={toggleNav} url="/report" linkText="Report" />
           }
           {
-            BESPOKE_ADD_LIST.BILLING.includes(userData.decodedUser.client) &&
+            BESPOKE_ADD_LIST.BILLING.includes(userData.client) &&
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
           }
           {
-            BESPOKE_ADD_LIST.BILLING.includes(userData.decodedUser.client) &&
+            BESPOKE_ADD_LIST.BILLING.includes(userData.client) &&
               <HeaderLink onClick={toggleNav} url="/alerts-and-alarms" linkText="Alerts and Alarms" />
           }
         </>
@@ -235,7 +235,7 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                {userData.decodedUser.client_type !== 'RESELLER' && (
+                {userData.client_type !== 'RESELLER' && (
                   <HeaderSublink
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"

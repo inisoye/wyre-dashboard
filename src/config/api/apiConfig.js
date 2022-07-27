@@ -1,10 +1,16 @@
 /* eslint-disable import/no-cycle */
 import axios from 'axios';
+import { getNewRefreshToken } from '../../redux/actions/auth/auth.action';
 
-import { logoutOnUnauthorized } from '../../helpers/authHelper';
+import { logoutOnUnauthorized, tokenIsExpired } from '../../helpers/authHelper';
 import EnvData from '../EnvData';
 
 export const instance = axios.create({
+    baseURL: EnvData.REACT_APP_API_URL,
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 200000,
+});
+export const instanceNoAuth = axios.create({
     baseURL: EnvData.REACT_APP_API_URL,
     headers: { 'Content-Type': 'application/json' },
     timeout: 200000,
@@ -13,10 +19,18 @@ export const instance = axios.create({
 
 
 const useConfig = async (config) => {
-    const customConfig = config;
-    if (localStorage.nibssPayJWToken) {
-        customConfig.headers.Authorization = `Bearer ${localStorage.loggedWyreUser}`;
+ 
+    // if access token has expire call refresh token
+    if (tokenIsExpired()) {
+        // call refresh right here
+        await getNewRefreshToken()
     }
+    const customConfig = config;
+    if (localStorage.loggedWyreUser) {
+        const user = JSON.parse(localStorage.loggedWyreUser);
+        customConfig.headers.Authorization = `Bearer ${user.access}`;
+    }
+
     return customConfig;
 };
 
@@ -49,5 +63,27 @@ export const APIService = {
 
     put(endpoint, data) {
         return instance.put(endpoint, data);
+    },
+};
+
+export const APIServiceNoAuth = {
+    get(endpoint, config = null) {
+        return config ? instanceNoAuth.get(endpoint, config) : instanceNoAuth.get(endpoint);
+    },
+
+    post(endpoint, data) {
+        return instanceNoAuth.post(endpoint, data);
+    },
+
+    patch(endpoint, data) {
+        return instanceNoAuth.patch(endpoint, data);
+    },
+
+    delete(endpoint) {
+        return instanceNoAuth.delete(endpoint);
+    },
+
+    put(endpoint, data) {
+        return instanceNoAuth.put(endpoint, data);
     },
 };

@@ -1,8 +1,35 @@
-import React from 'react'
-import { Table, Typography } from 'antd';
+import React, { useState } from 'react'
+import moment from 'moment';
+import { Modal, Table, Typography } from 'antd';
 const { Text } = Typography;
 
-const DieselOverviewCostTrackerTable = ({ dieselOverviewData, isLoading }) => {
+
+const DieselOverviewCostTrackerTable = (
+  { dieselOverviewData, isLoading,
+    fetchFuelConsumptionInfo }
+) => {
+
+  const [modalOpener, setModalOpener] = useState(false);
+  const [modalData, setModalData] = useState(false);
+  const [fuelDataLoading, setFuelDataLoading] = useState(false);
+
+  const fetchFuelData = async (date) => {
+    setModalData(false)
+    const startOfMonth = moment(date).startOf('month').format('YYYY-MM-DD');
+    const endOfMonth = moment(date).endOf('month').format('YYYY-MM-DD');
+
+
+    const queryString = `from_date=${startOfMonth}&to_date=${endOfMonth}`
+
+    setModalOpener(true);
+    setFuelDataLoading(true);
+    const fuelData = await fetchFuelConsumptionInfo(queryString);
+    if (fuelData && fuelData.fullfilled) {
+      setModalData(fuelData.data);
+    }
+    setFuelDataLoading(false);
+  }
+
 
   dieselOverviewData && dieselOverviewData.forEach(obj => {
     for (const propertyName in obj) {
@@ -18,7 +45,12 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData, isLoading }) => {
       title: 'Month',
       dataIndex: 'month',
       key: 'month',
-      width: '10%'
+      width: '10%',
+      render: (month) => {
+        // {month}
+        return (
+          <p onClick={() => fetchFuelData(month)} style={{ cursor: 'pointer' }} >{month}</p>)
+      }
     },
     {
       title: 'Inputed Usage(Ltr)',
@@ -54,6 +86,32 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData, isLoading }) => {
       title: 'Percentage Difference (%)',
       dataIndex: 'percentage_usage',
       key: 'percentage_usage',
+    },
+  ];
+
+
+
+  const fuelconsumptionColum = [
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      width: '10%',
+    },
+    {
+      title: 'Fuel type',
+      dataIndex: 'fuel_type',
+      key: 'fuel_type',
+    },
+    {
+      title: 'Start Date',
+      dataIndex: 'start_date',
+      key: "start_date",
+    },
+    {
+      title: 'End date',
+      dataIndex: 'start_date',
+      key: 'start_date',
     },
   ];
 
@@ -124,13 +182,28 @@ const DieselOverviewCostTrackerTable = ({ dieselOverviewData, isLoading }) => {
                   <Text>{parseFloat(costDifferenceSum).toFixed(2)}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{percentageUsageSum && parseFloat(percentageUsageSum/dieselOverviewData.length).toFixed(2)}</Text>
+                  <Text>{percentageUsageSum && parseFloat(percentageUsageSum / dieselOverviewData.length).toFixed(2)}</Text>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </>
           );
         }}
         footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`} />
+      <Modal
+        visible={modalOpener}
+        onCancel={() => setModalOpener(false)}
+        footer={null}
+      >
+        <Table
+          dataSource={modalData}
+          loading={fuelDataLoading}
+          rowKey="start_date"
+          columns={fuelconsumptionColum}
+          pagination={{
+            pageSize: 6,
+          }}
+        />
+      </Modal>
     </div>
   )
 }

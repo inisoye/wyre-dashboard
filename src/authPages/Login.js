@@ -30,7 +30,8 @@ function Login() {
     try {
       setIsAuthenticating(true);
       localStorage.clear();
-      const user = await loginHttpServices.login({
+
+      const user = await loginHttpServices.login2({
         username: username,
         password: password,
       });
