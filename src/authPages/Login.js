@@ -30,10 +30,12 @@ function Login() {
     try {
       setIsAuthenticating(true);
       localStorage.clear();
-      const user = await loginHttpServices.login({
+
+      const user = await loginHttpServices.login2({
         username: username,
         password: password,
       });
+      console.log('this i sthsn is oiskdjd======================>>>>>', user);
 
       window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
       window.location.href = 'dashboard';

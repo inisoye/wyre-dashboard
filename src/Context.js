@@ -14,6 +14,7 @@ import {
 
 import { getRenderedData } from './helpers/renderedDataHelpers';
 import { allDeviceGenerators } from './helpers/genericHelpers';
+import jwtDecode from 'jwt-decode';
 
 // create context
 const CompleteDataContext = React.createContext();
@@ -241,16 +242,20 @@ const CompleteDataProvider = (props) => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWyreUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      dataHttpServices.setUserId(user.data.id);
-      dataHttpServices.setToken(user.data.token);
+      try{
+        const userToken = JSON.parse(loggedUserJSON);
+        const user = jwtDecode(userToken.access);
+        dataHttpServices.setUserId(user.id);
+        dataHttpServices.setToken(userToken.access);
+        setUserData(user);
+        // setIsUserAdmin(userInfo.role_text === 'SUPERADMIN')
+        // setIsUserAdmin(userInfo.role_text==='MANAGER')
+        setToken(userToken.access);
+        setUserId(user.id);
+      }catch(error){
+        console.log('here is the error', error);
+      }
 
-      const userInfo = jwt(user.data.token);
-      setUserData({ ...user, decodedUser: userInfo });
-      // setIsUserAdmin(userInfo.role_text === 'SUPERADMIN')
-      // setIsUserAdmin(userInfo.role_text==='MANAGER')
-      setToken(user.data.token);
-      setUserId(user.data.id);
     }
   }, []);
   // State for Schedule Email Modal

@@ -4,6 +4,7 @@ import EnvData from "../../../config/EnvData";
 import { fetchDashBoardLoading, fetchDashBoardSuccess } from "./actionCreators";
 import dataHttpServices from '../../../services/devices';
 import moment from 'moment';
+import jwtDecode from "jwt-decode";
 
 
 export const fetchDashBoardData = (userDateRange) => async (dispatch) => {
@@ -14,9 +15,10 @@ export const fetchDashBoardData = (userDateRange) => async (dispatch) => {
   let token;
   const dateToUse = userDateRange && userDateRange.length > 0 ? `${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}` : dataHttpServices.endpointDateRange
   if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    userId = user.data.id;
-    token = user.data.token;
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
+    token = userToken.access;
   }
   try {
     const response = await axios.get(

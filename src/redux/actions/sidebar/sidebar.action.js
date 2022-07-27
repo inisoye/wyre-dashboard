@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import EnvData from "../../../config/EnvData";
 import { fetchSideBarLoading, fetchSideBarSuccess } from "./actionCreators";
 
@@ -11,9 +12,10 @@ export const fetchSideBar = () => async (dispatch) => {
   let userId;
   let token;
   if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    userId = user.data.id;
-    token = user.data.id;
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
+    token = userToken.access;
   }
   try {
     const response = await axios.get(
