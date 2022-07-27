@@ -19,6 +19,7 @@ export const getNewRefreshToken = async () => {
     }
   } catch (error) {
     console.log('expired');
+    localStorage.clear();
     window.href = '/'
   }
 

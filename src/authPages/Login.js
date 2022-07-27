@@ -35,7 +35,6 @@ function Login() {
         username: username,
         password: password,
       });
-      console.log('this i sthsn is oiskdjd======================>>>>>', user);
 
       window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
       window.location.href = 'dashboard';
