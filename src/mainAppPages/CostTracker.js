@@ -9,7 +9,7 @@ import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewC
 import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
-import { fetchCostTrackerData } from '../redux/actions/constTracker/costTracker.action';
+import { fetchCostTrackerData, fetchFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
 import { allCostTrackerBranchesBaseline } from '../helpers/genericHelpers';
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import Loader from '../components/Loader';
@@ -25,7 +25,7 @@ const breadCrumbRoutes = [
   { url: '#', name: 'Cost Tracker', id: 2 },
 ];
 
-function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
+function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelConsumptionData: fetchFuelConsumptionInfo }) {
 
   const [overviewData, setOverviewData] = useState([]);
   const [branchInfo, setBranchInfo] = useState(false);
@@ -89,8 +89,10 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
           </Tooltip>
         </div>
       </div>
-      <DieselOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
-        dieselOverviewData={overviewData.diesel_overview} />
+      <DieselOverviewCostTrackerTable
+        isLoading={costTracker.fetchCostTrackerLoading}
+        dieselOverviewData={overviewData.diesel_overview}
+        fetchFuelConsumptionInfo={fetchFuelConsumptionInfo} />
     </article>
   );
 
@@ -221,13 +223,11 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
       </div>
       <div>
       </div>
-
       <section className="cost-tracker-chart-container">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
         {DieselOverViewCharts}
         {UtilityOverViewCharts}
       </section>
-
 
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of Diesel Purchased</h2>
@@ -249,14 +249,13 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker }) {
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
         {monthlyEnergyConsumptionBarCharts}
       </section>
-
     </>
-
   );
 }
 
 const mapDispatchToProps = {
-  fetchCostTrackerData
+  fetchCostTrackerData,
+  fetchFuelConsumptionData,
 };
 
 export default connect(null, mapDispatchToProps)(CostTracker);

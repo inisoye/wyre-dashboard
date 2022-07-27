@@ -196,7 +196,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
               <span>{total_kwh && numberFormatter(total_kwh.value)}</span>
               <span>{total_kwh && total_kwh.unit}</span>
             </p>
-            {userData.decodedUser.client_type !== 'RESELLER' &&
+            {userData.client_type !== 'RESELLER' &&
               <p className="total-energy_value solar-energy_value">
                 <span>{'('}Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
                 <span>{solar_hours && solar_hours.unit}{')'}</span>
@@ -271,6 +271,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           }
         </div>
 
+          // this postion is not working well
         <article className="dashboard-row-2 dashboard-bar-container">
           <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
             <Tooltip placement="top" style={{ textAlign: "right" }}
@@ -340,7 +341,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
             </div>
           </article>
         </div>
-        {(userData.decodedUser.client_type === 'BESPOKE') && (dashBoardInfo.dashBoardData || allDeviceInfo) && (
+        {(userData.client_type === 'BESPOKE') && (dashBoardInfo.dashBoardData || allDeviceInfo) && (
           (dashBoardInfo.dashBoardData.branches.length > 1 &&
             (!checkedItems
               || Object.keys(checkedItems).length === 0)) ||

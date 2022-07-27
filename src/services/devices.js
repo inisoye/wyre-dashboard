@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import jwtDecode from 'jwt-decode';
 // import dashBoardMock from '../mock/dashboard';
 
 // Base URL prefix
@@ -56,9 +57,10 @@ const getAllData = async () => {
   let token;
 
   if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    userId = user.data.id;
-    token = user.data.token;
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
+    token = userToken.access;
   }
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
   //const test =axios.get('https://wyreng.xyz/api/v1/dashboard/6/01-12-2021%2000:00/01-04-2021%2000:00/hourly');

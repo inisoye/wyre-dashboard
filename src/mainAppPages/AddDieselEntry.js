@@ -1,17 +1,15 @@
 import React, { useEffect, useContext } from 'react';
-import { notification, Form, Spin, message } from 'antd';
-
+import { notification, Form, Spin } from 'antd';
+import { connect } from 'react-redux';
 import CompleteDataContext from '../Context';
 
-import billingHttpServices from '../services/bills'
-import axios from 'axios'
 
 
 import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
-import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
-import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
-import EnvData from '../config/EnvData';
+import { addFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
+import { DateField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
+
 
 
 const breadCrumbRoutes = [
@@ -35,18 +33,10 @@ const NotAllowedNotification = () => {
   })
 }
 
-function AddDieselEntry({ match }) {
-  const [dieslePurchaseForm] = Form.useForm();
-  const [prePaidForm] = Form.useForm();
-  const [postPaidForm] = Form.useForm();
+function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
   const [EOMBalanceForm] = Form.useForm();
-  const [badFileHeader, setBadFileHeader] = React.useState(false);
-  const [purchaseLoading, setPurchaseLoading] = React.useState(false);
-  const [prePaidLoading, setPrePaidLoading] = React.useState(false);
-  const [postPaidLoading, setPostPaidLoading] = React.useState(false);
-  const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
 
-  const { setCurrentUrl, isAuthenticatedDataLoading, token, organization, userId } = useContext(
+  const { setCurrentUrl, isAuthenticatedDataLoading, organization, userId } = useContext(
     CompleteDataContext
   );
 
@@ -57,17 +47,8 @@ function AddDieselEntry({ match }) {
       name: 'quantity',
       placeholder: 'Enter Quantity'
     },
-    pricePerLitter: {
-      label: 'Price/Litre',
-      name: 'pricePerLitre',
-      placeholder: 'Enter Price/Litre'
-    },
     purchaseDate: {
       label: 'Date',
-      name: 'date'
-    },
-    utitliyPurchaseDate: {
-      label: 'Date of Purchase',
       name: 'date'
     },
     fuelType: {
@@ -75,31 +56,7 @@ function AddDieselEntry({ match }) {
       label: 'Fuel Type',
       optionData: ['diesel'],
       placeholder: 'Select Fuel Type'
-    },
-    amount: {
-      label: 'Amount',
-      name: 'amount',
-      placeholder: 'Enter Amount'
-    },
-    value: {
-      label: 'Value (kWh)',
-      name: 'value',
-      placeholder: 'Enter value'
-    },
-    tariff: {
-      label: 'Tariff (vat inclusive))',
-      name: 'tariff',
-      placeholder: 'Calculated tariff'
-    },
-    periodCovered: {
-      label: 'Period Covered',
-      name: 'date'
-    },
-    balance: {
-      label: 'Flow meter reading',
-      name: 'balance',
-      placeholder: 'Enter meter reading'
-    },
+    }
   }
 
   useEffect(() => {
@@ -114,154 +71,31 @@ function AddDieselEntry({ match }) {
     defaultBranch = organization.branches[0].branch_id
   }
 
-  const onAmountOrValueChange = (event) => {
-    const { amount, value } = prePaidForm.getFieldsValue(true);
-    let newTariff = Number(amount / value || 0)?.toFixed(2) || 0;
-    newTariff = isFinite(newTariff) ? newTariff : 0;
-    prePaidForm.setFieldsValue({ tariff: newTariff })
-  }
-  const onPostpaidAmountOrValueChange = (event) => {
-    const { amount, value } = postPaidForm.getFieldsValue(true);
-    let newTariff = Number(amount / value || 0)?.toFixed(2) || 0;
-    newTariff = isFinite(newTariff) ? newTariff : 0;
-    postPaidForm.setFieldsValue({ tariff: newTariff })
-  }
 
-  const onPurchaseTrackerSubmit = ({
-    quantity,
-    pricePerLitre,
-    date,
-    fuelType,
-  }) => {
-
-    const DieselCostData = {
-      branch: defaultBranch,
-      quantity,
-      price_per_litre: pricePerLitre,
-      date: date.format('YYYY-MM-DD')
-    }
-    setPurchaseLoading(true);
-
-    billingHttpServices
-      .addCostForDiesel(DieselCostData, token, userId, fuelType)
-      .then(() => {
-        openNotificationWithIcon('success', 'fuel purchase tracker');
-        dieslePurchaseForm.resetFields();
-        setPurchaseLoading(false);
-      })
-      .catch((err) => {
-        console.log(err)
-        setPurchaseLoading(false);
-        message('An error occured, Please try again!!')
-      })
-  };
-
-  const onUsedTrackerSubmit = ({ date, balance, flowMeterUpload }) => {
+  const onUsedTrackerSubmit = async ({ date, quantity, fuelType }) => {
     if (defaultBranch != null) {
-      setEOMFlowReadingLoading(true);
-      let formData = new FormData()
-      formData.append('branch', defaultBranch)
-      formData.append('quantity', balance)
-      formData.append('date', date.format('YYYY-MM-DD'))
-      formData.append('image', flowMeterUpload[0])
 
-      axios.post(`${EnvData.REACT_APP_API_URL}add_month_end_cost/${userId}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `bearer ${token}`,
-        }
-      }).then(res => {
-        setEOMFlowReadingLoading(false);
-        openNotificationWithIcon('success', 'Form submitted successfully');
-        EOMBalanceForm.resetFields()
-      }).catch(e => {
-        setEOMFlowReadingLoading(false);
-        openNotificationWithIcon('error', 'An error occured,Please try again!!!')
-        EOMBalanceForm.resetFields()
-      })
-    }
-    else {
-      NotAllowedNotification();
-    }
-  }
+      const parameters = {
+        end_date: date.format('YYYY-MM-DD'),
+        start_date: date.format('YYYY-MM-DD'),
+        fuel_type: fuelType,
+        quantity: quantity
+      };
+      const request = await addFuelConsumption(parameters);
 
-  const onUtilityPaymentTrackerPreSubmit = ({
-    amount,
-    date,
-    tariff,
-    value,
-  }) => {
-    if (defaultBranch != null) {
-      setPrePaidLoading(true);
-      const prePaidData = {
-        branch: defaultBranch,
-        value,
-        amount,
-        tariff,
-        date: date.format('YYYY-MM-DD')
-      }
-      billingHttpServices
-        .addCostPrePaid(prePaidData, token, userId)
-        .then(() => {
-          setPrePaidLoading(false);
-          prePaidForm.resetFields()
-          openNotificationWithIcon('success', 'pre-paid utility payment tracker');
-        })
-        .catch(err => {
-          setPrePaidLoading(false);
-          console.log(err.response)
-          alert(err.response, 'Please try again!!!')
-        })
-    }
-    else {
-      NotAllowedNotification();
-    }
-  };
-
-  const onUtilityPaymentTrackerPostSubmit = ({
-    amount,
-    date,
-    tariff,
-    value,
-  }) => {
-
-    const convertDate = (dateObjects) => {
-      let formatObject = dateObjects.map((eachDateObject) => {
-        return eachDateObject.format('YYYY-MM-DD')
-      })
-      return formatObject
-    }
-
-    let FormattedDate = convertDate(date);
-
-    if (defaultBranch != null) {
-      setPostPaidLoading(true);
-      const postPaidData = {
-        branch: defaultBranch,
-        value,
-        amount,
-        tariff,
-        date: FormattedDate[0],
-        end_date: FormattedDate[1]
+      if (request.fullfilled) {
+        openNotificationWithIcon('success', 'diesel entry');
+        return EOMBalanceForm.resetFields();
       }
 
-      billingHttpServices
-        .addCostPostPaid(postPaidData, token, userId)
-        .then(() => {
-          setPostPaidLoading(false);
-          // reset the form fields
-          postPaidForm.resetFields();
-          openNotificationWithIcon('success', 'post-paid utility payment tracker');
-        })
-        .catch(error => {
-          setPostPaidLoading(false);
-          openNotificationWithIcon('error', 'An error occured,Please try again!!!')
-        })
+      openNotificationWithIcon('error', request.message|| 'An error occured,Please try again!!!')
+      return EOMBalanceForm.resetFields();
     }
     else {
       NotAllowedNotification();
     }
-  };
+  }
+
 
   // run loader if data is loading
   if (isAuthenticatedDataLoading) {
@@ -276,47 +110,66 @@ function AddDieselEntry({ match }) {
 
       <div className="cost-tracker-forms-content-wrapper">
 
-          <h1 className="center-main-heading">Add Diesel Entry</h1>
+        <h1 className="center-main-heading">Add Diesel Entry</h1>
 
-          {/* <section className="cost-tracker-form-section add-bills-section">
-          <Spin spinning={EOMFlowReadingLoading}>
+        <section className="cost-tracker-form-section add-bills-section">
+          <Spin spinning={false}>
             <h2 className="form-section-heading add-bills-section__heading">
-              End of Month Diesel flow meter reading
+              Diesel Entry
             </h2>
 
             <Form
               form={EOMBalanceForm}
               name="diesel-purchase"
+              initialValues={{
+                fuelType: 'diesel',
+              }}
               className="cost-tracker-form"
               onFinish={onUsedTrackerSubmit}
             >
               <div className="cost-tracker-form-inputs-wrapper">
 
                 <div className="cost-tracker-input-container">
-                  <DateField data={data.purchaseDate} />
+                  <Form.Item>
+                    <DateField data={data.purchaseDate} />
+                  </Form.Item>
                 </div>
                 <div className="cost-tracker-input-container">
-                  <InputField data={data.balance} />
+                  <Form.Item>
+                    <NumberField
+                      data={
+                        data.quantity
+                      }
+                    />
+                  </Form.Item>
+                </div>
+                <div className="cost-tracker-input-container">
+                  <Form.Item>
+                    <SelectField
+                      data={data.fuelType}
+                    />
+                  </Form.Item>
                 </div>
 
-                <div className="cost-tracker-input-container" >
-                  <FlowMeterUpload
-                    badFileHeader={badFileHeader}
-                    setBadFileHeader={setBadFileHeader}
-                    inputSize='large'
-                  />
-                </div>
               </div>
               <button className="generic-submit-button cost-tracker-form-submit-button">
                 Submit
               </button>
             </Form>
-            </Spin>
-          </section> */}
+          </Spin>
+        </section>
 
       </div>
     </>
   );
 }
 
-export default AddDieselEntry;
+// export default AddDieselEntry;
+
+
+const mapDispatchToProps = {
+  addFuelConsumptionData,
+};
+
+
+export default connect(null, mapDispatchToProps)(AddDieselEntry);

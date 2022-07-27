@@ -1,7 +1,10 @@
 
-import EnvData from "../../../config/EnvData";
-import { fetchCostTrackerLoading, fetchCostTrackerSuccess } from "./actionCreators";
+import {
+  fetchCostTrackerLoading, fetchCostTrackerSuccess, addFuelDataSuccess,
+  fetchFuelDataLoading, fetchFuelDataSuccess, addFuelDataLoading
+} from "./actionCreators";
 import { APIService } from "../../../config/api/apiConfig";
+import jwtDecode from "jwt-decode";
 
 
 export const fetchCostTrackerData = () => async (dispatch) => {
@@ -10,15 +13,48 @@ export const fetchCostTrackerData = () => async (dispatch) => {
   const loggedUserJSON = localStorage.getItem('loggedWyreUser');
   let userId;
   if (loggedUserJSON) {
-    const user = JSON.parse(loggedUserJSON);
-    userId = user.data.id;
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
   }
-  const requestUrl = `${EnvData.REACT_APP_API_URL}cost_tracker_overview/${userId}/`;
+  const requestUrl = `cost_tracker_overview/${userId}`;
   try {
     const response = await APIService.get(requestUrl);
     dispatch(fetchCostTrackerSuccess(response.data.data));
     dispatch(fetchCostTrackerLoading(false))
   } catch (error) {
     dispatch(fetchCostTrackerLoading(false));
+  }
+};
+
+
+export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
+  dispatch(fetchFuelDataLoading());
+  const requestUrl = `fuel_entry?${queryString}`;
+  try {
+    const response = await APIService.get(requestUrl);
+    dispatch(fetchFuelDataSuccess(response.data.data));
+    dispatch(fetchFuelDataLoading(false))
+    return {
+      fullfilled: true,
+      data: response.data
+    }
+  } catch (error) {
+    dispatch(fetchFuelDataLoading(false));
+  }
+};
+
+export const addFuelConsumptionData = (parameters) => async (dispatch) => {
+  dispatch(addFuelDataLoading());
+  const requestUrl = `fuel_entry`;
+  try {
+    const response = await APIService.post(requestUrl, parameters);
+    dispatch(addFuelDataSuccess(response.data.data));
+    dispatch(addFuelDataLoading(false))
+    return { fullfilled: true, message: response.data.detail }
+  } catch (error) {
+    dispatch(addFuelDataLoading(false));
+    console.log('this is the response data on errorerrorerror', error.response);
+    return { fullfilled: false, message: error.response.detail }
   }
 };
