@@ -684,7 +684,6 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 
 const getRefinedOrganizationData = (data) => {
   getOrganizationDeviceType(data);
-  console.log('getOrganizationDeviceTypegetOrganizationDeviceTypegetOrganizationDeviceType get rendered data', getOrganizationDailyKwh(data))
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,

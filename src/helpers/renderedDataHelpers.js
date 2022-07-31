@@ -476,7 +476,7 @@ const getSelectionBillingTotals = (data) => {
 --------------------------------------------------------------------*/
 
 const getRenderedData = (data, isDatshboard=false) => {
-  console.log('datadatadatadatadatadatadatadata get rendered data', getSelectionDailyKwh(data))
+
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
