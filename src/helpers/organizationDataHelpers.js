@@ -46,8 +46,7 @@ const getOrganizationDailyKwh = (data) => {
   const { dates, ...rest } = organizationDailyKwh;
   const allBranchesDailyKwh = Object.values(rest);
   const totalOrganizationDailyKwh = sumArrayOfArrays(allBranchesDailyKwh);
-  organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
-
+  // organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
   return organizationDailyKwh;
 };
 
@@ -685,6 +684,7 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 
 const getRefinedOrganizationData = (data) => {
   getOrganizationDeviceType(data);
+  console.log('getOrganizationDeviceTypegetOrganizationDeviceTypegetOrganizationDeviceType get rendered data', getOrganizationDailyKwh(data))
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,
