@@ -476,6 +476,7 @@ const getSelectionBillingTotals = (data) => {
 --------------------------------------------------------------------*/
 
 const getRenderedData = (data, isDatshboard=false) => {
+
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
