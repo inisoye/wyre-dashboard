@@ -97,9 +97,9 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
   };
 
   // ensure total(organization data) is removed from initial render
-  if (data) {
-    delete data[organization];
-  }
+  // if (data) {
+  //   delete data[organization];
+  // }
 
   // Destructure data conditionally
   const { dates: dateStrings, ...values } = data ? data : { dates: [] };

@@ -46,8 +46,7 @@ const getOrganizationDailyKwh = (data) => {
   const { dates, ...rest } = organizationDailyKwh;
   const allBranchesDailyKwh = Object.values(rest);
   const totalOrganizationDailyKwh = sumArrayOfArrays(allBranchesDailyKwh);
-  organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
-
+  // organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
   return organizationDailyKwh;
 };
 
