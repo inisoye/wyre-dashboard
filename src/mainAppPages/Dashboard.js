@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
+import moment from 'moment';
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
 import { connect, useSelector } from 'react-redux';
@@ -22,7 +23,9 @@ import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 import {
   generateLoadOverviewChartData, refineLoadOverviewData,
-  generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators
+  generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators, getNestedMinDemandObjectKVA,
+  getNestedMaxDemandObjectKva,
+  getNestedAvgDemandObjectKva
 } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
@@ -35,9 +38,10 @@ import { getRenderedData } from "../helpers/renderedDataHelpers";
 import { isEmpty } from "../helpers/authHelper";
 
 // Tooltips
-import { Tooltip } from 'antd';
+import { Spin, Tooltip } from 'antd';
 import InformationIcon from '../icons/InformationIcon';
 import DASHBOARD_TOOLTIP_MESSAGES from '../components/toolTips/Dashboard_Tooltip_Messages';
+import { fetchPowerFactor } from "../redux/actions/powerFactor/powerFactor.action";
 
 const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
@@ -58,18 +62,26 @@ const PDFDocument = () => (
   </Document>
 );
 
-function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
+function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
+  sideBar: sideDetails,
+  fetchPowerFactor:
+  fetchAllPowerFactor,
+}) {
   let {
     checkedItems, checkedBranches, checkedDevices, userDateRange, uiSettings } = useContext(
       CompleteDataContext,
     );
 
   const dashBoardInfo = useSelector((state) => state.dashboard);
+  const powerFactor = useSelector((state) => state.powerFactor);
 
   const { setCurrentUrl, userData } = useContext(CompleteDataContext);
   const [allDeviceInfo, setAllDeviceInfo] = useState(false);
   const [refinedDashboardData, setRefinedDashboardData] = useState({});
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [minKva, setMinKva] = useState(false);
+  const [maxKva, setMaxKva] = useState(false);
+  const [avgKva, setAvgKva] = useState(false);
 
   const {
     name,
@@ -84,13 +96,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
     yesterday,
     daily_kwh,
     solar_hours,
+    all_device_data
   } = refinedDashboardData;
-
 
 
   useEffect(() => {
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
+
     if (dashBoardInfo.dashBoardData) {
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
 
@@ -103,6 +116,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
         });
 
         const renderedData = getRenderedData(Object.values(branchAndDevice), true);
+        console.log('=============renderedDatarenderedDatarenderedDatarenderedData', renderedData);
         setRefinedDashboardData(renderedData);
         setAllDeviceInfo(allDeviceData);
       } else {
@@ -120,17 +134,48 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
   }, [match, setCurrentUrl]);
 
 
-
   useEffect(() => {
     if (!pageLoaded && isEmpty(dashBoardInfo.dashBoardData || {})) {
       dashBoardDataFetch(userDateRange);
+      // fetch the power factors here
     }
 
     if (!isEmpty(dashBoardInfo.dashBoardData) > 0 && pageLoaded) {
       dashBoardDataFetch(userDateRange);
+
+      // fetch the power factors here
     }
     setPageLoaded(true);
   }, [userDateRange]);
+
+  useEffect(() => {
+    if (Object.keys(sideDetails.sideBarData).length > 0) {
+
+      let allDevices = [];
+      sideDetails.sideBarData.branches.forEach((branch) => {
+        branch.devices.forEach((device) => {
+          allDevices.push(device.device_id)
+        })
+      })
+      const start_date = moment().startOf('month').format('YYYY-MM-DD');
+      const end_date = moment().startOf('month').format('YYYY-MM-DD');
+      fetchAllPowerFactor(allDevices, { start_date, end_date })
+      // fetch the power factors here
+    }
+  }, [sideDetails.sideBarData, userDateRange]);
+
+
+  useEffect(() => {
+
+    if (powerFactor.allPowerFactor.length > 0 && all_device_data) {
+      const minKVAData = getNestedMinDemandObjectKVA(all_device_data, 'dashboard', powerFactor.allPowerFactor);
+      const maxKVAData = getNestedMaxDemandObjectKva(all_device_data, 'dashboard', powerFactor.allPowerFactor);
+      const avgKVAData = getNestedAvgDemandObjectKva(all_device_data, 'dashboard', powerFactor.allPowerFactor);
+      setMinKva(minKVAData)
+      setMaxKva(maxKVAData)
+      setAvgKva(avgKVAData)
+    }
+  }, [powerFactor.allPowerFactor, all_device_data]);
 
 
   const pageRef = useRef();
@@ -205,31 +250,33 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
-            <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
-              <Tooltip placement="top" style={{ textAlign: "right" }}
-                overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
-                <p>
-                  <InformationIcon className="info-icon" />
-                </p>
-              </Tooltip>
-            </div>
-            <div className="dashboard__demand-banner-- ">
-              <DashboardSmallBannerSection
-                name="Max. Demand"
-                value={max_demand && numberFormatter(max_demand.value.toFixed(2))}
-                unit={max_demand && max_demand.unit}
-              />
-              <DashboardSmallBannerSection
-                name="Min. Demand"
-                value={min_demand && numberFormatter(min_demand.value.toFixed(2))}
-                unit={min_demand && min_demand.unit}
-              />
-              <DashboardSmallBannerSection
-                name="Avg. Demand"
-                value={avg_demand && numberFormatter(avg_demand.value.toFixed(2))}
-                unit={avg_demand && avg_demand.unit}
-              />
-            </div>
+            <Spin spinning={!maxKva}>
+              <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
+                <Tooltip placement="top" style={{ textAlign: "right" }}
+                  overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+              <div className="dashboard__demand-banner-- ">
+                <DashboardSmallBannerSection
+                  name="Max. Demand"
+                  value={maxKva && numberFormatter(maxKva.value.toFixed(2))}
+                  unit={maxKva && maxKva.unit}
+                />
+                <DashboardSmallBannerSection
+                  name="Min. Demand"
+                  value={minKva && numberFormatter(minKva.value.toFixed(2))}
+                  unit={minKva && minKva.unit}
+                />
+                <DashboardSmallBannerSection
+                  name="Avg. Demand"
+                  value={avgKva && numberFormatter(avgKva.value.toFixed(2))}
+                  unit={avgKva && avgKva.unit}
+                />
+              </div>
+            </Spin>
           </article>
 
           <article className="dashboard__cost-emissions-banner dashboard__banner--small">
@@ -367,7 +414,11 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch }) {
 
 const mapDispatchToProps = {
   fetchDashBoardData,
+  fetchPowerFactor,
 };
+const mapStateToProps = (state) => ({
+  sideBar: state.sideBar,
+  powerFactor: state.powerFactor
+});
 
-
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

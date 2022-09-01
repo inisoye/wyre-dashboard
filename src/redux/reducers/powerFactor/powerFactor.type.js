@@ -1,0 +1,7 @@
+
+const powerFactorType = {
+    FETCH_POWER_FACTOR_LOADING: 'FETCH_POWER_FACTOR_LOADING',
+    FETCH_POWER_FACTOR_SUCCESS: 'FETCH_POWER_FACTOR_SUCCESS',
+}
+
+export default powerFactorType;

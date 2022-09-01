@@ -276,6 +276,20 @@ const getNestedMinDemandObject = (array, nestedObject) => {
 
   return { unit: 'kW', value: valuesArrayMin };
 };
+const getNestedMinDemandObjectKVA = (allDeviceData, nestedObject, powerFactorData) => {
+  const valuesArray = Object.values(allDeviceData).filter(
+    (eachItem) => eachItem[nestedObject].min_demand.value > 0
+  ).map((eachItem) => {
+    const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+    return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (powerFactor.data.data.avg_pf * eachItem[nestedObject].min_demand.value) : 0;
+  }
+  );
+
+  //Obtain min demand of all min demands
+  const valuesArrayMin = Math.min.apply(null, valuesArray);
+
+  return { unit: 'kva', value: valuesArrayMin };
+};
 
 const getMaxDemandObject = (array) => {
   const valuesArray = array.map((eachItem) => eachItem.max_demand.value);
@@ -295,6 +309,20 @@ const getNestedMaxDemandObject = (array, nestedObject) => {
   const valuesArrayMax = Math.max.apply(null, valuesArray);
 
   return { unit: 'kW', value: valuesArrayMax };
+};
+const getNestedMaxDemandObjectKva = (allDeviceData, nestedObject, powerFactorData) => {
+  const valuesArray = Object.values(allDeviceData).map(
+    (eachItem) => {
+    
+      const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (powerFactor.data.data.avg_pf * eachItem[nestedObject].max_demand.value) : 0;
+    }
+  );
+
+  //Obtain max demand of all max demands
+  const valuesArrayMax = Math.max.apply(null, valuesArray);
+
+  return { unit: 'kva', value: valuesArrayMax };
 };
 
 const getAvgDemandObject = (array) => {
@@ -317,6 +345,23 @@ const getNestedAvgDemandObject = (array, nestedObject) => {
     valuesArray.reduce((acc, curr) => acc + curr, 0) / valuesArray.length;
 
   return { unit: 'kW', value: valuesArrayAvg };
+};
+const getNestedAvgDemandObjectKva = (allDeviceData, nestedObject, powerFactorData) => {
+  const valuesArray = Object.values(allDeviceData).map(
+    (eachItem) => 
+    {
+    
+      const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (powerFactor.data.data.avg_pf * eachItem[nestedObject].avg_demand.value) : 0;
+    }
+  
+  );
+
+  //Obtain avg demand of all avg demands
+  const valuesArrayAvg =
+    valuesArray.reduce((acc, curr) => acc + curr, 0) / valuesArray.length;
+
+  return { unit: 'kva', value: valuesArrayAvg };
 };
 
 const allDeviceGenerators = (checkedItems, organization) => {
@@ -779,7 +824,7 @@ const combineSameMonthData = (dateArray) => {
 }
 // data to combine multiple dates data of the same month
 const sortByDateTime = (data) => {
-  return data.sort(function(a,b){
+  return data.sort(function (a, b) {
     return new Date(`${b.date} ${b.time}`) - new Date(`${a.date} ${a.time}`);
   });
 }
@@ -843,5 +888,8 @@ export {
   allCostTrackerBranchesBaseline,
   getGeneratorSizeMessage,
   combineSameMonthData,
-  sortByDateTime
+  sortByDateTime,
+  getNestedMinDemandObjectKVA,
+  getNestedMaxDemandObjectKva,
+  getNestedAvgDemandObjectKva
 };
