@@ -5,6 +5,7 @@ import costTracker from './costTracker/costTracker.reducer';
 import sideBar from './sidebar/sidebar.reducer'
 import report from './report/report.reducer';
 import setting from './setting/setting.reducer';
+import powerFactor from './powerFactor/powerFactor.reducer';
 
 const appReducer = combineReducers({
     dashboard,
@@ -12,7 +13,8 @@ const appReducer = combineReducers({
     sideBar,
     costTracker,
     report,
-    setting
+    setting,
+    powerFactor,
 });
 
 const rootReducer = (state, action) => {

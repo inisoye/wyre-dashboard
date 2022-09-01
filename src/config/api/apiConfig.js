@@ -49,8 +49,8 @@ export const APIService = {
         return config ? instance.get(endpoint, config) : instance.get(endpoint);
     },
 
-    post(endpoint, data) {
-        return instance.post(endpoint, data);
+    post(endpoint, data, config={}) {
+        return instance.post(endpoint, data, config);
     },
 
     patch(endpoint, data) {
