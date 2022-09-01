@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     allPowerFactor: [],
 };
 
-const feeSharingData = (state = INITIAL_STATE, action) => {
+const powerFactorData = (state = INITIAL_STATE, action) => {
 
     switch (action.type) {
 
@@ -31,4 +31,4 @@ const feeSharingData = (state = INITIAL_STATE, action) => {
 
 };
 
-export default feeSharingData;
+export default powerFactorData;
