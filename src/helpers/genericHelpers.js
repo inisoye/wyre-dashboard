@@ -352,7 +352,6 @@ const getNestedAvgDemandObjectKva = (allDeviceData, nestedObject, powerFactorDat
     {
     
       const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
-      console.log('eachItem[nestedObject].avg_demand.value', eachItem[nestedObject].avg_demand.value, (powerFactor.data.data.avg_pf * eachItem[nestedObject].avg_demand.value))
       return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].avg_demand.value/powerFactor.data.data.avg_pf) : 0;
     }
   
