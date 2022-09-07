@@ -281,7 +281,8 @@ const getNestedMinDemandObjectKVA = (allDeviceData, nestedObject, powerFactorDat
     (eachItem) => eachItem[nestedObject].min_demand.value > 0
   ).map((eachItem) => {
     const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
-    return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].avg_demand.value/powerFactor.data.data.avg_pf) : 0;
+    return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].min_demand.value/powerFactor.data.data.avg_pf) 
+    : (eachItem[nestedObject].min_demand.value/0.8) ;
   }
   );
 
@@ -313,9 +314,11 @@ const getNestedMaxDemandObject = (array, nestedObject) => {
 const getNestedMaxDemandObjectKva = (allDeviceData, nestedObject, powerFactorData) => {
   const valuesArray = Object.values(allDeviceData).map(
     (eachItem) => {
-    
+      console.log('here is each item=============>>>>>>', eachItem);
       const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
-      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].avg_demand.value/powerFactor.data.data.avg_pf) : 0;
+      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].max_demand.value/powerFactor.data.data.avg_pf) 
+      : (eachItem[nestedObject].max_demand.value/0.8);
+      // return eachItem[nestedObject].max_demand.value;
     }
   );
 
@@ -352,7 +355,10 @@ const getNestedAvgDemandObjectKva = (allDeviceData, nestedObject, powerFactorDat
     {
     
       const powerFactor = powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
-      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].avg_demand.value/powerFactor.data.data.avg_pf) : 0;
+      return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf? (eachItem[nestedObject].avg_demand.value/powerFactor.data.data.avg_pf) 
+      : (eachItem[nestedObject].avg_demand.value/0.8);
+
+      // return eachItem[nestedObject].avg_demand.value;
     }
   
   );
