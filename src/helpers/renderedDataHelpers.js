@@ -7,6 +7,9 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
+  getMinDemandObjectKVA,
+  getMaxDemandObjectKVA,
+  getAvgDemandObjectKVA,
 } from './genericHelpers';
 
 
@@ -44,7 +47,7 @@ const getSelectionMonthlyUsage = (data) => {
   return SelectionMonthlyUsage;
 };
 
-const getRefinedEnergyData = (data) => {
+const getRefinedEnergyData = (data, powerFactorData = null) => {
   // Ensure data isn't falsy
   const refinedEnergyDataArray = data[0] && data;
 
@@ -61,12 +64,20 @@ const getRefinedEnergyData = (data) => {
       ));
     });
 
+    console.log('this is the way to the application =================>>>>>>>>refinedEnergyDataArrayrefinedEnergyDataArrayrefinedEnergyDataArray', refinedEnergyDataArray)
   refinedEnergyData.min_demand =
     refinedEnergyDataArray && getMinDemandObject(refinedEnergyDataArray);
   refinedEnergyData.max_demand =
     refinedEnergyDataArray && getMaxDemandObject(refinedEnergyDataArray);
   refinedEnergyData.avg_demand =
     refinedEnergyDataArray && getAvgDemandObject(refinedEnergyDataArray);
+
+  refinedEnergyData.min_demand_with_power_factor =
+    refinedEnergyDataArray && getMinDemandObjectKVA(refinedEnergyDataArray);
+  refinedEnergyData.max_demand_with_power_factor =
+    refinedEnergyDataArray && getMaxDemandObjectKVA(refinedEnergyDataArray);
+  refinedEnergyData.avg_demand_with_power_factor =
+    refinedEnergyDataArray && getAvgDemandObjectKVA(refinedEnergyDataArray);
 
   return refinedEnergyData;
 };

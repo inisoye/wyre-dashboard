@@ -6,17 +6,19 @@ const colorSelector = {
   paprScore: { backgroundColor: '#FFECF6', color: '#FF3DA1'}
 }
 
-const MiniDoubleCard = ({ percentage, metrics, type, icon, header }) => {
+const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
   const color = colorSelector[type];
   return (
-    <div className="report-row-1-card report-card-2 report-card">
-      <div className="report-card-2__top">
+    // <div className="report-row-1-card report-card-2 report-card">
+    <div className="report-card-double report-card ">
+      {/* <div className="report-card-2__top"> */}
+      <div className="report-card-2__top report-card-2__top-margin">
         <div className="report-card-2__topleft">
           <ReportWithRate header={header} icon={icon}
-            value={percentage.value} rate={percentage.rate}
-            unit={percentage.unit} color={color} />
+            value={paprRatio} rate={paprRatio}
+            unit={''} color={color} />
         </div>
-        <div className="report-card-2__topright">
+        <div className="report-card-2__topright report-card-2__topleft-double" style={{ width: '50%', marginRight: '5%' }}>
           <div>
             <p className="report-card-2-topright__first">
               <span className="h-block report-card-2-decr">

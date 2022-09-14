@@ -19,6 +19,12 @@ import {
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
+  getMinDemandObjectKVA,
+  getMaxDemandObjectKVA,
+  getAvgDemandObjectKVA,
+  getNestedAvgDemandObjectKva,
+  getNestedMaxDemandObjectKva,
+  getNestedMinDemandObjectKVA,
 } from './genericHelpers';
 
 
@@ -75,7 +81,7 @@ const getOrganizationMonthlyUsage = (data) => {
 /*----------------
    Collate dashboard energy data for each branch
   ----------------*/
-const getBranchEnergyDataArray = (data) => {
+const getBranchEnergyDataArray = (data, powerFactor = null) => {
   return (
     data.branches &&
     data.branches.map((eachBranch) => {
@@ -110,6 +116,22 @@ const getBranchEnergyDataArray = (data) => {
         eachBranch.devices,
         'dashboard'
       );
+      branchEnergyData.min_demand_with_power_factor = getNestedMinDemandObjectKVA(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
+      );
+
+      branchEnergyData.max_demand_with_power_factor = getNestedMaxDemandObjectKva(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
+      );
+      branchEnergyData.avg_demand_with_power_factor = getNestedAvgDemandObjectKva(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
+      );
 
       return branchEnergyData;
     })
@@ -119,9 +141,8 @@ const getBranchEnergyDataArray = (data) => {
 /*----------------
    Obtain dashboard energy data for organization
   ----------------*/
-const getOrganizationEnergyData = (data) => {
-  const eachBranchEnergyDataArray = getBranchEnergyDataArray(data);
-
+const getOrganizationEnergyData = (data, powerFactor = null) => {
+  const eachBranchEnergyDataArray = getBranchEnergyDataArray(data, powerFactor);
 
   const energyValueNames =
     eachBranchEnergyDataArray && Object.keys(eachBranchEnergyDataArray[0]);
@@ -136,6 +157,9 @@ const getOrganizationEnergyData = (data) => {
       ));
     });
 
+
+
+
   organizationEnergyData.min_demand = getMinDemandObject(
     eachBranchEnergyDataArray
   );
@@ -146,6 +170,18 @@ const getOrganizationEnergyData = (data) => {
     eachBranchEnergyDataArray
   );
 
+
+
+
+  organizationEnergyData.min_demand_with_power_factor = getMinDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
+  organizationEnergyData.max_demand_with_power_factor = getMaxDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
+  organizationEnergyData.avg_demand_with_power_factor = getAvgDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
   return organizationEnergyData;
 };
 /*----------------
@@ -745,12 +781,12 @@ const getRefinedOrganizationData = (data) => {
 };
 
 
-const getDashBoardRefinedData = (data) => {
+const getDashBoardRefinedData = (data, powerFactor) => {
   return {
     all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,
     // Dashboard Stuff
-    ...getOrganizationEnergyData(data),
+    ...getOrganizationEnergyData(data, powerFactor),
     daily_kwh: getOrganizationDailyKwh(data),
     usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
@@ -784,6 +820,7 @@ const getRefinedOrganizationDataWithChekBox = ({
   organization,
   setRenderedDataObjects,
   isDashBoard = false,
+  powerFactorData = null,
 }) => {
 
   let branchAndDevice = {};
@@ -800,9 +837,15 @@ const getRefinedOrganizationDataWithChekBox = ({
       if (branches.length > 0) {
         // check whether the branch name is part of the branches array
         if (branches.includes(branch.name)) {
-          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch, isDashBoard) }
+          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch, isDashBoard, powerFactorData) }
           branch.devices.forEach((device) => {
-            allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
           })
         }
       }
@@ -811,8 +854,21 @@ const getRefinedOrganizationDataWithChekBox = ({
           const combinedNames = `${branch.name} ${device.name}`;
           // check whether the device name is part of the devices array
           if (devices.includes(combinedNames)) {
-            allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
-            branchAndDevice = { ...branchAndDevice, ...getDeviceData({ branchData: branch, deviceData: device }) }
+
+            // find the power factor here
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+            branchAndDevice = {
+              ...branchAndDevice, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
           }
         })
       }
@@ -841,7 +897,7 @@ const getInitialAllDeviceRefinedOrganizationData = ({
 
 export {
   getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
-  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox, 
+  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox,
   getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData
 };
 

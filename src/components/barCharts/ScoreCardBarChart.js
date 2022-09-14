@@ -120,7 +120,7 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
         label: 'Wastage',
         maxBarThickness: 60,
         data: chartValues,
-        backgroundColor: [uiSettings.appPrimaryColor, '#F0F0F0'],
+        backgroundColor: uiSettings.appPrimaryColor,
         borderColor: '#6c00fa',
         borderWidth: 1,
       },

@@ -79,9 +79,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
   const [allDeviceInfo, setAllDeviceInfo] = useState(false);
   const [refinedDashboardData, setRefinedDashboardData] = useState({});
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [minKva, setMinKva] = useState(false);
-  const [maxKva, setMaxKva] = useState(false);
-  const [avgKva, setAvgKva] = useState(false);
+
 
   const {
     name,
@@ -96,15 +94,18 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
     yesterday,
     daily_kwh,
     solar_hours,
-    all_device_data
+    all_device_data,
+    min_demand_with_power_factor,
+    max_demand_with_power_factor, 
+    avg_demand_with_power_factor
   } = refinedDashboardData;
 
 
   useEffect(() => {
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
-
-    if (dashBoardInfo.dashBoardData) {
+    console.log('powerFactor.allPowerFactor', powerFactor.allPowerFactor)
+    if (powerFactor.allPowerFactor && powerFactor.allPowerFactor.length> 0 && dashBoardInfo.dashBoardData) {
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
 
         const { branchAndDevice, allDeviceData } = getRefinedOrganizationDataWithChekBox({
@@ -112,20 +113,21 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
           checkedDevices,
           organization: copyDashBoardData,
           setRenderedDataObjects: null,
-          isDashBoard: true
+          isDashBoard: true,
+          powerFactorData: powerFactor.allPowerFactor
         });
 
+        console.log('this here should have the power factor data', branchAndDevice);
         const renderedData = getRenderedData(Object.values(branchAndDevice), true);
-        console.log('=============renderedDatarenderedDatarenderedDatarenderedData', renderedData);
         setRefinedDashboardData(renderedData);
         setAllDeviceInfo(allDeviceData);
       } else {
-        setRefinedDashboardData(getDashBoardRefinedData(copyDashBoardData));
+        setRefinedDashboardData(getDashBoardRefinedData(copyDashBoardData, powerFactor.allPowerFactor));
         setAllDeviceInfo(getInitialAllDeviceRefinedOrganizationData({ organization: copyDashBoardData }));
       }
     }
 
-  }, [checkedBranches, checkedDevices, dashBoardInfo.dashBoardData]);
+  }, [checkedBranches, checkedDevices, dashBoardInfo.dashBoardData, powerFactor.allPowerFactor]);
 
   useEffect(() => {
     if (match && match.url) {
@@ -164,18 +166,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
     }
   }, [sideDetails.sideBarData, userDateRange]);
 
-
-  useEffect(() => {
-
-    if (powerFactor.allPowerFactor.length > 0 && all_device_data) {
-      const minKVAData = getNestedMinDemandObjectKVA(all_device_data, 'dashboard', powerFactor.allPowerFactor);
-      const maxKVAData = getNestedMaxDemandObjectKva(all_device_data, 'dashboard', powerFactor.allPowerFactor);
-      const avgKVAData = getNestedAvgDemandObjectKva(all_device_data, 'dashboard', powerFactor.allPowerFactor);
-      setMinKva(minKVAData)
-      setMaxKva(maxKVAData)
-      setAvgKva(avgKVAData)
-    }
-  }, [powerFactor.allPowerFactor, all_device_data]);
 
 
   const pageRef = useRef();
@@ -250,7 +240,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
           </article>
 
           <article className="dashboard__demand-banner dashboard__banner--small">
-            <Spin spinning={!maxKva}>
+            <Spin spinning={!max_demand_with_power_factor}>
               <div style={{ textAlign: "right", paddingTop: 20, paddingRight: 20, marginLeft: "auto" }}>
                 <Tooltip placement="top" style={{ textAlign: "right" }}
                   overlayStyle={{ whiteSpace: "pre-line" }} title={DASHBOARD_TOOLTIP_MESSAGES.MAX_MIN_AVERAGE} >
@@ -262,18 +252,18 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
               <div className="dashboard__demand-banner-- ">
                 <DashboardSmallBannerSection
                   name="Max. Demand"
-                  value={maxKva && numberFormatter(maxKva.value.toFixed(2))}
-                  unit={maxKva && maxKva.unit}
+                  value={max_demand_with_power_factor && numberFormatter(max_demand_with_power_factor.value.toFixed(2))}
+                  unit={max_demand_with_power_factor && max_demand_with_power_factor.unit}
                 />
                 <DashboardSmallBannerSection
                   name="Min. Demand"
-                  value={minKva && numberFormatter(minKva.value.toFixed(2))}
-                  unit={minKva && minKva.unit}
+                  value={min_demand_with_power_factor && numberFormatter(min_demand_with_power_factor.value.toFixed(2))}
+                  unit={min_demand_with_power_factor && min_demand_with_power_factor.unit}
                 />
                 <DashboardSmallBannerSection
                   name="Avg. Demand"
-                  value={avgKva && numberFormatter(avgKva.value.toFixed(2))}
-                  unit={avgKva && avgKva.unit}
+                  value={avg_demand_with_power_factor && numberFormatter(avg_demand_with_power_factor.value.toFixed(2))}
+                  unit={avg_demand_with_power_factor && avg_demand_with_power_factor.unit}
                 />
               </div>
             </Spin>
