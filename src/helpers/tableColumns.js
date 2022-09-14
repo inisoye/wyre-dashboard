@@ -93,12 +93,12 @@ export const PowerDemandColumns = [
     dataIndex: 'key',
   },
   {
-    title: 'KVA',
+    title: 'kVA',
     dataIndex: 'kva',
   },
   {
     title: 'kW',
-    dataIndex: 'kW',
+    dataIndex: 'kw',
 
   }
 ];

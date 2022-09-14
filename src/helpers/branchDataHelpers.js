@@ -11,6 +11,9 @@ import {
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
+  getNestedMinDemandObjectKVA,
+  getNestedMaxDemandObjectKva,
+  getNestedAvgDemandObjectKva,
 } from '../helpers/genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -46,7 +49,7 @@ Obtain dashboard monthly usage data for branch ends
 /*-----------------
 Obtain dashboard energy data for branch
 ----------------*/
-const getBranchEnergyData = (data) => {
+const getBranchEnergyData = (data, powerFactorData=null) => {
   // Place energy value names of one device and place in array
   // Ensure 'name' and 'id' are excluded form values placed in the array
   const energyValueNames = Object.keys(data.devices[0].dashboard).filter(
@@ -78,6 +81,23 @@ const getBranchEnergyData = (data) => {
   branchEnergyData.avg_demand = getNestedAvgDemandObject(
     data.devices,
     'dashboard'
+  );
+
+  branchEnergyData.min_demand_with_power_factor = getNestedMinDemandObjectKVA(
+    data.devices,
+    'dashboard',
+    powerFactorData
+  );
+
+  branchEnergyData.max_demand_with_power_factor = getNestedMaxDemandObjectKva(
+    data.devices,
+    'dashboard', 
+    powerFactorData
+  );
+  branchEnergyData.avg_demand_with_power_factor = getNestedAvgDemandObjectKva(
+    data.devices,
+    'dashboard',
+    powerFactorData
   );
 
   return branchEnergyData;
@@ -439,13 +459,13 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
 /* Branch Billing Calculations End -----------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedBranchData = (data, isDatshboard=false) => {
+const getRefinedBranchData = (data, isDatshboard=false, powerFactorData = null) => {
   return {
     [data.name]: {
       isBranch: true,
       name: data.name,
       // Dashboard Stuff
-      ...getBranchEnergyData(data),
+      ...getBranchEnergyData(data, powerFactorData),
       usage_hours: getBranchUsageHours(data),
       daily_kwh: getBranchDailyKwh(data),
       

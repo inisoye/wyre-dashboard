@@ -16,10 +16,10 @@ const ReportWithRate = ({ header, color, icon, value, rate, unit }) => {
       </div>
 
       <div className="report-card-1-rating">
-        <Rate
+        {/* <Rate
           allowHalf
           value={rate}
-        />
+        /> */}
       </div>
     </>
   )
