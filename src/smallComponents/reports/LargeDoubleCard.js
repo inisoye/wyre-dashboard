@@ -1,4 +1,4 @@
-import { Rate } from 'antd';
+// import { Rate } from 'antd';
 
 import { roundToDecimalPLace } from '../../helpers/genericHelpers';
 
@@ -26,10 +26,10 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
             </div>
 
             <div className="report-card-1-rating">
-              <Rate
+              {/* <Rate
                 allowHalf
                 value={baseLine.rate}
-              />
+              /> */}
             </div>
           </>
           <div className="report-card-1-paragraph">

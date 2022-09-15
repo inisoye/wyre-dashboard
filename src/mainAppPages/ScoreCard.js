@@ -1,6 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { Tooltip } from 'antd';
 import CompleteDataContext from '../Context';
+
+import { fetchPowerFactor } from "../redux/actions/powerFactor/powerFactor.action";
 
 import BreadCrumb from '../components/BreadCrumb';
 import ScoreCardDoughnutChart from '../components/pieCharts/ScoreCardDoughnutChart';
@@ -22,6 +24,7 @@ import {
 import { numberFormatter } from "../helpers/numberFormatter";
 
 import { SCORE_CARD_TOOLTIP_MESSAGES } from '../components/toolTips/Score_Card_Tooltip_Messages';
+import { connect } from 'react-redux';
 // import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 
 const breadCrumbRoutes = [
@@ -31,6 +34,8 @@ const breadCrumbRoutes = [
 
 
 function ScoreCard({ match }) {
+
+  const [peakToAverageKVa, setPeakToAverageKVA] = useState(null);
   const {
     refinedRenderedData,
     setCurrentUrl,
@@ -55,14 +60,27 @@ function ScoreCard({ match }) {
     fuel_consumption,
   } = refinedRenderedData;
 
+
+  useEffect(() => {
+    if (peak_to_avg_power_ratio) {
+      const pekToAvgData = {
+        unit: 'kVA',
+        peak: (peak_to_avg_power_ratio.peak) / 0.78,
+        avg: (peak_to_avg_power_ratio.avg) / 0.78,
+      }
+      setPeakToAverageKVA(pekToAvgData)
+    }
+  }, [peak_to_avg_power_ratio]);
+
   let date, ratio, savingdInbound, savingdInboundCarbonEmmission, arrowColor, getPeakResult;
   let noOfTrees, message, generatorSizeEffficiencyData, generatorSizeEffficiencyDoughnuts, fuelConsumptionData;
+  
   let deviceLength, fuelConsumptionDoughnuts;
 
   const dataPresent = Object.keys(refinedRenderedData).length !== 0;
   if (Object.keys(refinedRenderedData).length !== 0) {
     date = new Date();
-    ratio = calculateRatio(peak_to_avg_power_ratio.avg, peak_to_avg_power_ratio.peak);
+    ratio = peakToAverageKVa ? calculateRatio(peakToAverageKVa.avg, peakToAverageKVa.peak) : 0;
     savingdInbound = baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth());
     savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions.estimated_value - ((score_card_carbon_emissions.actual_value / date.getDate()) * daysInMonth())));
 
@@ -184,7 +202,7 @@ function ScoreCard({ match }) {
           <article className='score-card-row-1__item'>
             <div className='doughnut-card-heading'>
               <h2 className='score-card-heading'>
-                Peak to Average Power Ratio
+                Peak to Average Power Ratio <span style={{ fontSize: '13px' }}>(6months)</span>
               </h2>
               <div>
                 <Tooltip placement='top' style={{ textAlign: 'justify' }}
@@ -196,17 +214,17 @@ function ScoreCard({ match }) {
               </div>
             </div>
             <div className='score-card-doughnut-container'>
-              <ScoreCardDoughnutChart
+              {peakToAverageKVa && <ScoreCardDoughnutChart
                 uiSettings={uiSettings}
-                data={peak_to_avg_power_ratio}
-              />
+                data={peakToAverageKVa}
+              />}
 
               <p className='doughnut-centre-text'>
                 <span>
-                  {peak_to_avg_power_ratio && (
+                  {peakToAverageKVa && (
                     calculateRatio(
-                      peak_to_avg_power_ratio.avg,
-                      peak_to_avg_power_ratio.peak
+                      peakToAverageKVa.avg,
+                      peakToAverageKVa.peak
                     ) || `-`)}{' '}
                 </span>
               </p>
@@ -214,13 +232,13 @@ function ScoreCard({ match }) {
 
             <p className='score-card-bottom-text'>
               Average Load:{' '}
-              {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.avg)}
-              {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
+              {peakToAverageKVa && numberFormatter(peakToAverageKVa.avg)}
+              {peakToAverageKVa && 'kVA'}
             </p>
 
             <p className='score-card-bottom-text h-mt-16'>
-              Peak Load: {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.peak)}
-              {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
+              Peak Load: {peakToAverageKVa && numberFormatter(peakToAverageKVa.peak)}
+              {peakToAverageKVa && 'kVA'}
             </p>
 
             <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
@@ -356,4 +374,12 @@ function ScoreCard({ match }) {
   );
 }
 
-export default ScoreCard;
+const mapDispatchToProps = {
+  fetchPowerFactor,
+};
+const mapStateToProps = (state) => ({
+  powerFactor: state.powerFactor
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreCard);
+

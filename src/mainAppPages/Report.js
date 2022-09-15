@@ -31,6 +31,7 @@ import { loadReportPage } from '../redux/actions/setting/actionCreators';
 import { isEmpty } from '../helpers/authHelper';
 import ReportTimeOfUse from '../components/tables/reportTables/ReportTimeOfUse';
 import { ConstImplicationSummary } from '../components/tables/reportTables/TablesSummaries';
+import { calculateRatio } from '../helpers/genericHelpers';
 
 
 const breadCrumbRoutes = [
@@ -115,7 +116,6 @@ function Report({ match, fetchReportData: fetchReport }) {
     setTimeOfUseData(timeOfUse);
   }, [reportPageData]);
 
-
   if (report.fetchReportLoading) {
     return <Loader />;
   }
@@ -130,13 +130,13 @@ function Report({ match, fetchReportData: fetchReport }) {
           Top Management
         </h2>
         <div className="report-row-1__content">
-          {
+          {/* {
             period_score &&
             <RecordCard {...period_score}
               header='Period Score'
               footer="Score as compared to previous period"
               icon={StopWatch} type='periodScore' />
-          }
+          } */}
           {
             total_energy_consumption &&
             <RecordCard {...total_energy_consumption}
@@ -145,9 +145,9 @@ function Report({ match, fetchReportData: fetchReport }) {
               icon={ElectricSpark} type='energyConsumptionScore' />
           }
           {papr &&
-            <MiniDoubleCard percentage={papr.percentage}
+            <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.average, papr.metrics.peak)}
               metrics={papr.metrics} type='paprScore'
-              header='PAPR Score' icon={Plug} />
+              header='PAPR Ratio' icon={Plug} />
           }
         </div>
       </div>
@@ -276,7 +276,7 @@ function Report({ match, fetchReportData: fetchReport }) {
                   Cost Implication
                 </h2>
                 <GenericReportTable data={cost_implication}
-                  columnData={CostImplicationColumn} summary={ConstImplicationSummary}/>
+                  columnData={CostImplicationColumn} summary={ConstImplicationSummary} />
               </div>
             </div>
           )}

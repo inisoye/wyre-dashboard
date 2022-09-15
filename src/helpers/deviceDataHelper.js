@@ -14,9 +14,10 @@ import {
 
 const getDeviceData = ({
     branchData,
-    deviceData
+    deviceData,
+    powerFactor,
 }) => {
-
+    console.log('this is the device data ', deviceData);
     const modifiedDeviceName = !deviceData.name.includes(branchData.name)
         ? branchData.name + ' ' + deviceData.name
         : deviceData.name;
@@ -106,6 +107,16 @@ const getDeviceData = ({
         today,
         yesterday,
     } = deviceData.dashboard;
+
+
+    let avg_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (avg_demand.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (avg_demand.value / 0.) || 0 };
+    let max_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (max_demand.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (max_demand.value / 0.) || 0 };
+    let min_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (min_demand.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (min_demand.value / 0.) || 0 };
+
+
     /* -------------------------------------------------------------------
     /* Dashboard Ends ----------------------------------------------------
     --------------------------------------------------------------------*/
@@ -240,11 +251,14 @@ const getDeviceData = ({
             device_type,
             // total_kwh_is_source,
             solar_hours,
-            is_load: deviceData?.is_load, 
+            is_load: deviceData?.is_load,
             is_source: deviceData?.is_source,
             min_demand,
             max_demand,
             avg_demand,
+            max_demand_with_power_factor,
+            min_demand_with_power_factor,
+            avg_demand_with_power_factor,
             dashboard_carbon_emissions,
             cost_of_energy,
             today,
@@ -295,4 +309,4 @@ const getDeviceData = ({
     };
 }
 
-export { getDeviceData};
+export { getDeviceData };

@@ -53,7 +53,7 @@ const DieselOverviewCostTrackerTable = (
       }
     },
     {
-      title: 'Inputed Usage(Ltr)',
+      title: 'Inputted Usage(Ltr)',
       dataIndex: 'inputted_usage',
       key: 'inputted_usage',
     },
