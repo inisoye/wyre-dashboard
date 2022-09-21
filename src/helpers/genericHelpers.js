@@ -364,7 +364,7 @@ const getAvgDemandObjectKVA = (array) => {
   const valuesArrayAvg =
     valuesArray.reduce((acc, curr) => acc + curr, 0) / valuesArray.length;
 
-  return { unit: 'kW', value: valuesArrayAvg };
+  return { unit: 'kVA', value: valuesArrayAvg };
 };
 
 const getNestedAvgDemandObject = (array, nestedObject) => {
