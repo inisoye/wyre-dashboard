@@ -32,6 +32,9 @@ import { isEmpty } from '../helpers/authHelper';
 import ReportTimeOfUse from '../components/tables/reportTables/ReportTimeOfUse';
 import { ConstImplicationSummary } from '../components/tables/reportTables/TablesSummaries';
 import { calculateRatio } from '../helpers/genericHelpers';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { Button } from 'antd';
 
 
 const breadCrumbRoutes = [
@@ -50,6 +53,33 @@ function Report({ match, fetchReportData: fetchReport }) {
     setCurrentUrl,
     uiSettings
   } = useContext(CompleteDataContext);
+
+  const generatePdf = () => {
+    console.log("Generating PDFs");
+
+    const input = document.getElementById("page");
+    const page = document.querySelector(".page-content")
+
+    // window
+    // .open("", "PRINT", "height=650,width=900,top=100,left=100")
+    // .document.write("Testing PDfs")
+    // .document.close()
+    // .focus()
+    // .print()
+    // .close();
+
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        // const pdf = new jsPDF('p', 'px', 'a7');
+        const pdf = new jsPDF('p', 'px', [40,90]);
+        var width = pdf.internal.pageSize.getWidth();
+        var height = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, 'JPEG', 1, 1, width, height);
+        pdf.save("report.pdf");
+      });
+  };
 
 
   useEffect(() => {
@@ -121,194 +151,197 @@ function Report({ match, fetchReportData: fetchReport }) {
   }
 
   return (
-    <>
+    <div >
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
+        <Button onClick={generatePdf}>Download Report</Button>
       </div>
-      <div className="report-row-1">
-        <h2 className="report-row-1__heading report-row-heading h-first">
-          Top Management
-        </h2>
-        <div className="report-row-1__content">
-          {/* {
+      <div id='page'>
+        <div className="report-row-1">
+          {/* <h2 className="report-row-1__heading report-row-heading h-first">
+            Top Management
+          </h2> */}
+          <div className="report-row-1__content">
+            {/* {
             period_score &&
             <RecordCard {...period_score}
               header='Period Score'
               footer="Score as compared to previous period"
               icon={StopWatch} type='periodScore' />
           } */}
-          {
-            total_energy_consumption &&
-            <RecordCard {...total_energy_consumption}
-              header='Total Consumption'
-              footer="Total Energy Consumption accross sources"
-              icon={ElectricSpark} type='energyConsumptionScore' />
-          }
-          {papr &&
-            <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.average, papr.metrics.peak)}
-              metrics={papr.metrics} type='paprScore'
-              header='PAPR Ratio' icon={Plug} />
-          }
-        </div>
-      </div>
-      <div className="report-row-1">
-        <div className="report-row-1__content">
-          {
-            carbon_emmissions &&
-            <RecordCard {...carbon_emmissions}
-              header='Co2 Footprint'
-              footer="Carbondioxide Emmission"
-              icon={CO2Icon} type='CO2Score' />
-          }
-          {
-            baseline &&
-            <LargeDoubleCard baseLine={baseline}
-              metrics={baseline?.unit} type='paprScore'
-              header='Baseline Consumption'
-              icon={DownWithBaseLine} />
-          }
-        </div>
-      </div>
-
-      <div className="report-table-rows">
-        <div className="report-row-1__content">
-          <div className="report-pie-container">
-            <h2 className='report-pie-heading'>
-              Source Consumption(kWh)
-            </h2>
             {
-              source_consumption &&
-              <SourceConsumptionPieChart
-                data={source_consumption} />
+              total_energy_consumption &&
+              <RecordCard {...total_energy_consumption}
+                header='Total Consumption'
+                footer="Total Energy Consumption accross sources"
+                icon={ElectricSpark} type='energyConsumptionScore' />
+            }
+            {papr &&
+              <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.average, papr.metrics.peak)}
+                metrics={papr.metrics} type='paprScore'
+                header='PAPR' icon={Plug} />
             }
           </div>
-          {(
-            <div className="report-after-pie-table-container">
-              <div className="h-overflow-auto report-card-tabble__padding">
-                <h2 className="report-pie-heading">
-                  Load Imbalance Occurence
-                </h2>
-                <LoadImbalanceReportTable data={load_imbalance}
-                  columnData={LoadImbalanceColumns} />
-              </div>
-            </div>
-          )}
         </div>
-      </div>
-      {fuel_consumption?.length > 0 && generator_efficiency?.length > 0 &&
+        <div className="report-row-1">
+          <div className="report-row-1__content">
+            {
+              carbon_emmissions &&
+              <RecordCard {...carbon_emmissions}
+                header='Co2 Footprint'
+                footer="Carbondioxide Emmission"
+                icon={CO2Icon} type='CO2Score' />
+            }
+            {
+              baseline &&
+              <LargeDoubleCard baseLine={baseline}
+                metrics={baseline?.unit} type='paprScore'
+                header='Baseline Consumption'
+                icon={DownWithBaseLine} />
+            }
+          </div>
+        </div>
+
+        <div className="report-table-rows">
+          <div className="report-row-1__content">
+            <div className="report-pie-container">
+              <h2 className='report-pie-heading'>
+                Source Consumption(kWh)
+              </h2>
+              {
+                source_consumption &&
+                <SourceConsumptionPieChart
+                  data={source_consumption} />
+              }
+            </div>
+            {(
+              <div className="report-after-pie-table-container">
+                <div className="h-overflow-auto report-card-tabble__padding">
+                  <h2 className="report-pie-heading">
+                    Load Imbalance Occurence
+                  </h2>
+                  <LoadImbalanceReportTable data={load_imbalance}
+                    columnData={LoadImbalanceColumns} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        {fuel_consumption?.length > 0 && generator_efficiency?.length > 0 &&
+          <div className="report-table-rows">
+            <div className="report-row-1__content">
+              {(
+                <div className="report-table-container">
+                  <div className="h-overflow-auto report-card-tabble__padding">
+                    <h2 className="report-pie-heading">
+                      Fuel Consumption
+                    </h2>
+                    <GenericReportTable data={fuel_consumption}
+                      columnData={FuelConsumption} />
+                  </div>
+                </div>
+              )}
+              {(
+                <div className="report-table-container">
+                  <div className="h-overflow-auto report-card-tabble__padding">
+                    <h2 className="report-pie-heading">
+                      Generator Efficiency & Recommendation
+                    </h2>
+                    <GenericReportTable data={generator_efficiency}
+                      columnData={GeneratorEfficiency} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        }
+        <div className="report-full-width-rows">
+          <div className="report-row-1__content">
+            {daily_consumption && (
+              <div className="report-chart-container">
+                <h2 className="report-pie-heading">
+                  Daily fuel consumption
+                </h2>
+                <ReportDailyConsumptionBar dailyConsumptionData={daily_consumption}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="report-full-width-rows-fit-content">
+          <div className="report-row-1__content">
+            {energy_consumption && (
+              <div className="report-double-chart-container">
+                <h2 className="report-pie-heading">
+                  Energy Consumption
+                </h2>
+                <EnergyConsumptionMultipleChart uiSettings={uiSettings} energyData={energyConsumptionCombined(energy_consumption)}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="report-full-width-with-no-height-rows">
+          <div className="report-row-1__content">
+            {(
+              <div className="report-demand-container">
+                <div className="h-overflow-auto report-card-tabble__padding">
+                  <h2 className="report-pie-heading">
+                    Demand and Statistics
+                  </h2>
+                  <GenericReportTable data={demand_statistic}
+                    columnData={DemandAndStatisticsColumn} />
+                  <hr className='demand-statistic-space-hr' />
+                  <GenericReportTable data={demand_statistic}
+                    columnData={DemandAndStatisticsTwoColumn} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="report-full-width-with-no-height-rows">
+          <div className="report-row-1__content">
+            {(
+              <div className="report-chart-container">
+                <div className="h-overflow-auto report-card-tabble__padding">
+                  <h2 className="report-pie-heading">
+                    Cost Implication
+                  </h2>
+                  <GenericReportTable data={cost_implication}
+                    columnData={CostImplicationColumn} summary={ConstImplicationSummary} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
         <div className="report-table-rows">
           <div className="report-row-1__content">
             {(
-              <div className="report-table-container">
+              <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
                   <h2 className="report-pie-heading">
-                    Fuel Consumption
+                    Time of Use
                   </h2>
-                  <GenericReportTable data={fuel_consumption}
-                    columnData={FuelConsumption} />
+                  <ReportTimeOfUse data={timeOfUseData}
+                    columnData={TimeOfUseColumns} />
                 </div>
               </div>
             )}
             {(
-              <div className="report-table-container">
+              <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
                   <h2 className="report-pie-heading">
-                    Generator Efficiency & Recommendation
+                    Power Demand
                   </h2>
-                  <GenericReportTable data={generator_efficiency}
-                    columnData={GeneratorEfficiency} />
+                  <GenericReportTable data={powerDemand}
+                    columnData={PowerDemandColumns} />
                 </div>
               </div>
             )}
           </div>
         </div>
-      }
-      <div className="report-full-width-rows">
-        <div className="report-row-1__content">
-          {daily_consumption && (
-            <div className="report-chart-container">
-              <h2 className="report-pie-heading">
-                Daily fuel consumption
-              </h2>
-              <ReportDailyConsumptionBar dailyConsumptionData={daily_consumption}
-              />
-            </div>
-          )}
-        </div>
       </div>
-      <div className="report-full-width-rows-fit-content">
-        <div className="report-row-1__content">
-          {energy_consumption && (
-            <div className="report-double-chart-container">
-              <h2 className="report-pie-heading">
-                Energy Consumption
-              </h2>
-              <EnergyConsumptionMultipleChart uiSettings={uiSettings} energyData={energyConsumptionCombined(energy_consumption)}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="report-full-width-with-no-height-rows">
-        <div className="report-row-1__content">
-          {(
-            <div className="report-demand-container">
-              <div className="h-overflow-auto report-card-tabble__padding">
-                <h2 className="report-pie-heading">
-                  Demand and Statistics
-                </h2>
-                <GenericReportTable data={demand_statistic}
-                  columnData={DemandAndStatisticsColumn} />
-                <hr className='demand-statistic-space-hr' />
-                <GenericReportTable data={demand_statistic}
-                  columnData={DemandAndStatisticsTwoColumn} />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="report-full-width-with-no-height-rows">
-        <div className="report-row-1__content">
-          {(
-            <div className="report-chart-container">
-              <div className="h-overflow-auto report-card-tabble__padding">
-                <h2 className="report-pie-heading">
-                  Cost Implication
-                </h2>
-                <GenericReportTable data={cost_implication}
-                  columnData={CostImplicationColumn} summary={ConstImplicationSummary} />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="report-table-rows">
-        <div className="report-row-1__content">
-          {(
-            <div className="report-table-bottom-container">
-              <div className="h-overflow-auto report-card-tabble__padding">
-                <h2 className="report-pie-heading">
-                  Time of Use
-                </h2>
-                <ReportTimeOfUse data={timeOfUseData}
-                  columnData={TimeOfUseColumns} />
-              </div>
-            </div>
-          )}
-          {(
-            <div className="report-table-bottom-container">
-              <div className="h-overflow-auto report-card-tabble__padding">
-                <h2 className="report-pie-heading">
-                  Power Demand
-                </h2>
-                <GenericReportTable data={powerDemand}
-                  columnData={PowerDemandColumns} />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 

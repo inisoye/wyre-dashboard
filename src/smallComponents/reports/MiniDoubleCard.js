@@ -46,7 +46,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
       </div>
       <div className="report-card-2__bottom">
         <p>
-        PaPr- Percentage of average load to peak load at facility
+        PAPR- Ratio of average load to peak load.
         </p>
       </div>
     </div>
