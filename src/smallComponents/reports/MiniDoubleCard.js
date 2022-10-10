@@ -27,7 +27,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  (roundToDecimalPLace(metrics?.peak).toFixed(1) + metrics?.units)}
+                  (roundToDecimalPLace(metrics?.peak_to_avg_power_ratio.peak).toFixed(1) + metrics?.peak_to_avg_power_ratio.unit)}
               </span>
             </p>
 
@@ -38,7 +38,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  roundToDecimalPLace(metrics?.average).toFixed(1) + metrics?.units}
+                  roundToDecimalPLace(metrics?.peak_to_avg_power_ratio.avg).toFixed(1) + metrics?.peak_to_avg_power_ratio.unit}
               </span>
             </p>
           </div>
