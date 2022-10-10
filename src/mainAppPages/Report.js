@@ -131,8 +131,6 @@ function Report({ match, fetchReportData: fetchReport }) {
   } = Object.values(reportPageData)[0] ? Object.values(reportPageData)[0] : {};
 
 
-  console.log('this is papr ----------', papr)
-
   let powerDemand = []
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })

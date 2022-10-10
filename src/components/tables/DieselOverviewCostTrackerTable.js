@@ -49,7 +49,7 @@ const DieselOverviewCostTrackerTable = (
       render: (month) => {
         // {month}
         return (
-          <p onClick={() => fetchFuelData(month)} style={{ cursor: 'pointer' }} >{month}</p>)
+          <p onClick={() => fetchFuelData(month)} style={{ cursor: 'pointer', color: 'blue' }} >{month}</p>)
       }
     },
     {
