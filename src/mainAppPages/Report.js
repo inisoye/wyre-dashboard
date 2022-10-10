@@ -130,6 +130,9 @@ function Report({ match, fetchReportData: fetchReport }) {
     energy_consumption,
   } = Object.values(reportPageData)[0] ? Object.values(reportPageData)[0] : {};
 
+
+  console.log('this is papr ----------', papr)
+
   let powerDemand = []
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
@@ -177,7 +180,7 @@ function Report({ match, fetchReportData: fetchReport }) {
                 icon={ElectricSpark} type='energyConsumptionScore' />
             }
             {papr &&
-              <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.average, papr.metrics.peak)}
+              <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.peak_to_avg_power_ratio.avg, papr.metrics.peak_to_avg_power_ratio.peak)}
                 metrics={papr.metrics} type='paprScore'
                 header='PAPR' icon={Plug} />
             }
