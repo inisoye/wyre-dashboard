@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import jwt from 'jwt-decode';
@@ -23,6 +23,10 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const { setUserData } = useContext(CompleteDataContext);
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+
+  const from = query.get('from') || 'dashboard';
 
   const { register, handleSubmit, control } = useForm();
 
@@ -37,7 +41,7 @@ function Login() {
       });
 
       window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
-      window.location.href = 'dashboard';
+      window.location.href = from;
       // dataHttpServices.setUserId(user.data.id);
       // dataHttpServices.setToken(user.data.token);
       // setUserData({ user, decodedUser: jwt(user.data.token)});

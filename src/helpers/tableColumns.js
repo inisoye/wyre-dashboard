@@ -81,6 +81,9 @@ export const GeneratorEfficiency = [
   {
     title: 'Size Efficiency',
     dataIndex: 'size_efficiency',
+    render: (size_efficiency) => {
+      return <>{size_efficiency}%</>
+    }
   },
   {
     title: 'Recommendation',
