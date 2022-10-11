@@ -25,7 +25,7 @@ import {
 import Loader from '../components/Loader';
 import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
 import { connect, useSelector } from 'react-redux';
-import { fetchReportData } from '../redux/actions/report/report.action';
+import { fetchReportData, fetchBaseLineData } from '../redux/actions/report/report.action';
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import { loadReportPage } from '../redux/actions/setting/actionCreators';
 import { isEmpty } from '../helpers/authHelper';
@@ -43,8 +43,9 @@ const breadCrumbRoutes = [
 ];
 
 
-function Report({ match, fetchReportData: fetchReport }) {
+function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchReportBaseline }) {
   const [reportPageData, setReportPageData] = useState({});
+  const [reportBaselinePageData, setReportBaselinePageData] = useState({});
   const [timeOfUseData, setTimeOfUseData] = useState(false);
   const [pageLoaded, setPageLoaded] = useState(false);
   const report = useSelector((state) => state.report);
@@ -72,7 +73,7 @@ function Report({ match, fetchReportData: fetchReport }) {
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         // const pdf = new jsPDF('p', 'px', 'a7');
-        const pdf = new jsPDF('p', 'px', [40,90]);
+        const pdf = new jsPDF('p', 'px', [40, 90]);
         var width = pdf.internal.pageSize.getWidth();
         var height = pdf.internal.pageSize.getHeight();
 
@@ -99,10 +100,12 @@ function Report({ match, fetchReportData: fetchReport }) {
   useEffect(() => {
     if (!pageLoaded && isEmpty(report.reportData || {})) {
       fetchReport(report.selectedDate, report.selectedDateType);
+      fetchReportBaseline(report.selectedDate, report.selectedDateType);
     }
 
     if (!isEmpty(report.reportData) > 0 && pageLoaded) {
       fetchReport(report.selectedDate, report.selectedDateType);
+      fetchReportBaseline(report.selectedDate, report.selectedDateType);
     }
     setPageLoaded(true);
   }, [report.selectedDateType, report.selectedDate]);
@@ -111,13 +114,17 @@ function Report({ match, fetchReportData: fetchReport }) {
     setReportPageData(report.reportData)
   }, [report.reportData]);
 
+  useEffect(() => {
+    setReportBaselinePageData(report.reportBaselineData)
+  }, [report.reportBaselineData]);
+
 
   const {
     period_score,
     total_energy_consumption,
     power_demand,
     papr,
-    baseline,
+    // baseline,
     carbon_emmissions,
     source_consumption,
     load_imbalance,
@@ -130,7 +137,11 @@ function Report({ match, fetchReportData: fetchReport }) {
     energy_consumption,
   } = Object.values(reportPageData)[0] ? Object.values(reportPageData)[0] : {};
 
+  const {
+    baseline,
+  } = Object.values(reportBaselinePageData)[0] ? Object.values(reportBaselinePageData)[0] : {};
 
+  console.log('this is the way forward and here we goooo ===========>>>>>>>>>reportBaselinePageData>', baseline)
   let powerDemand = []
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
@@ -347,7 +358,8 @@ function Report({ match, fetchReportData: fetchReport }) {
 }
 
 const mapDispatchToProps = {
-  fetchReportData
+  fetchReportData,
+  fetchBaseLineData
 };
 
 export default connect(null, mapDispatchToProps)(Report);

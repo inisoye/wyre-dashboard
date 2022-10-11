@@ -20,3 +20,14 @@ export const changeSearchDate = payload => ({
   type: reportType.CHANGE_DATE,
   payload,
 });
+
+
+export const fetchReportBaseLineLoading = (payload = true) => ({
+  type: reportType.FETCH_REPORT_BASELINE_LOADING,
+  payload,
+});
+
+export const fetchReportBaselineSuccess = payload => ({
+  type: reportType.FETCH_REPORT_BASELINE_SUCCESS,
+  payload,
+});

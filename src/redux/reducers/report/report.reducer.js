@@ -3,7 +3,9 @@ import reportType from './reducer.types';
 
 const INITIAL_STATE = {
   fetchReportLoading: false,
+  fetchReportBaselineLoading: false,
   reportData: false,
+  reportBaselineData: false,
   selectedDateType: 'monthly',
   selectedDate: moment().format('DD-MM-YYYY'),
 };
@@ -25,6 +27,20 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         reportData: action.payload,
+      };
+    case reportType.FETCH_REPORT_BASELINE_LOADING:
+
+      return {
+
+        ...state,
+        fetchReportBaselineLoading: action.payload,
+
+      };
+
+    case reportType.FETCH_REPORT_BASELINE_SUCCESS:
+      return {
+        ...state,
+        reportBaselineData: action.payload,
       };
     case reportType.CHANGE_DATE_TYPE:
       return {

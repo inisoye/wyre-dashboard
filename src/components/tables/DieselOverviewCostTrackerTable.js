@@ -58,7 +58,7 @@ const DieselOverviewCostTrackerTable = (
       key: 'inputted_usage',
     },
     {
-      title: 'Forcasted Usage (Ltr)',
+      title: 'Forecasted Usage (Ltr)',
       dataIndex: 'forecasted_usage',
       key: "forecasted_usage",
     },
@@ -68,7 +68,7 @@ const DieselOverviewCostTrackerTable = (
       key: 'inputted_cost',
     },
     {
-      title: 'Forcasted Cost (₦)',
+      title: 'Forecasted Cost (₦)',
       dataIndex: 'forecasted_cost',
       key: 'forecasted_cost',
     },
