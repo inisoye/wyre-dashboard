@@ -9,6 +9,9 @@ const colorSelector = {
 const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
   const color = colorSelector[type];
   const Component = icon;
+
+  const ratio = baseLine.forecast & baseLine.consumption ? (Number((baseLine.consumption/ baseLine.forecast ))) : 0;
+
   return (
     <div className="report-card-double report-card ">
       <div className="report-card-2__top report-card-2__top-margin" >
@@ -20,8 +23,8 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
                 style={{ backgroundColor: color.backgroundColor }}>
                 <Component style={{ stroke: color, fill: color.color }} className='report-card-icon' />
               </div>
-              <p className="report-card-large-percentage">
-                { (baseLine.forcast & baseLine.consumption ? (Number((baseLine.forcast / baseLine.consumption) * 100)).toFixed(2) : 0) + '%'}
+              <p className="report-card-large-percentage" >
+                { (baseLine.forecast & baseLine.consumption ? (ratio * 100).toFixed(2) : 0) + '%'}
               </p>
             </div>
 
@@ -34,7 +37,7 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
           </>
           <div className="report-card-1-paragraph">
             <p>
-              Forcast to rate percentage
+              Forecast to consumption percentage
             </p>
           </div>
         </div>
@@ -42,11 +45,11 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
           <div>
             <p className="report-card-2-topright__first">
               <span className="h-block report-card-large-decr">
-                Forcasted Baseline{' '}
+                Forecasted Baseline{' '}
               </span>
               <span className="report-card-2-topright-large__value">
                 {
-                  roundToDecimalPLace(baseLine.forcast) + baseLine?.unit}
+                  roundToDecimalPLace(baseLine.forecast) + baseLine?.unit}
               </span>
             </p>
 
@@ -54,18 +57,19 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
               <span className="h-block report-card-large-decr">
                 Savings{' '}
               </span>
-              <span className="report-card-2-topright__value">
-                {roundToDecimalPLace(baseLine.consumption) + baseLine.unit}
+              <span className="report-card-2-topright__value" style={{color: ratio < 1? 'black': "red"}}>
+                {/* {roundToDecimalPLace(baseLine.consumption) + baseLine.unit} */}
+                {roundToDecimalPLace(baseLine.forecast - baseLine.consumption) + baseLine.unit}
               </span>
             </p>
           </div>
           <div className="report-card-2-large__bottom">
-            <p>
-              You {(baseLine.consumption - baseLine.forcast) > 0? 'Lost': 'Gained'} Approximately{' '}
+            {/* <p>
+              You {(baseLine.consumption - baseLine.forecast) > 0? 'Lost': 'Gained'} Approximately{' '}
               <span className="report-card-2-bottom__value">
-                ₦{(baseLine.consumption - baseLine.forcast) > 0? (baseLine.consumption - baseLine.forcast).toFixed(2) : (baseLine.forcast - baseLine.consumption).toFixed(2)  }
+                ₦{(baseLine.consumption - baseLine.forecast) > 0? (baseLine.consumption - baseLine.forecast).toFixed(2) : (baseLine.forecast - baseLine.consumption).toFixed(2)  }
               </span>
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
