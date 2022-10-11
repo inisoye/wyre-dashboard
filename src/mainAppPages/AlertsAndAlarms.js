@@ -459,7 +459,7 @@ const defaultDate = (data)=>{
               <li className="alerts-and-alarms-list-item">
                   <div className="alerts-and-alarms-question-container">
                     <label htmlFor="estimated-baseline-checkbox" className="alerts-and-alarms-question-container">
-                       When forcasted baseline is reached
+                       When forecasted baseline is reached
                     </label>
                     <div>
                     <Controller
@@ -548,7 +548,7 @@ const defaultDate = (data)=>{
                     htmlFor="eliminated-co2-checkbox"
                     className="alerts-and-alarms-question"
                   >
-                    When forcasted CO<sub>2</sub> is reached
+                    When forecasted CO<sub>2</sub> is reached
                   </label>{' '}
                   <div>
                     <Controller

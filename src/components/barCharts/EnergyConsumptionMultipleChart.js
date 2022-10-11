@@ -115,7 +115,7 @@ const EnergyConsumptionMultipleChart = ({ energyData = [], uiSettings }) => {
     datasets: [
       {
         type: 'line',
-        label: `Forcasted`,
+        label: `Forecasted`,
         data: Object.values(convertToOjectAndSort(forcastedData, 'forcasted')),
         backgroundColor: '#FFC205',
         borderColor: '#FFC205',
