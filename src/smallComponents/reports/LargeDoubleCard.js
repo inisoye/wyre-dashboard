@@ -1,6 +1,6 @@
 // import { Rate } from 'antd';
 
-import { roundToDecimalPLace } from '../../helpers/genericHelpers';
+import { daysInMonth, roundToDecimalPLace } from '../../helpers/genericHelpers';
 
 const colorSelector = {
   paprScore: { backgroundColor: '#FFFBE5', color: '#FFD400' }
@@ -9,8 +9,11 @@ const colorSelector = {
 const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
   const color = colorSelector[type];
   const Component = icon;
+  const date = new Date();
 
   const ratio = baseLine.forecast & baseLine.consumption ? (Number((baseLine.consumption/ baseLine.forecast ))) : 0;
+
+  const savings = baseLine.forecast - ((baseLine.consumption / date.getDate()) * daysInMonth());
 
   return (
     <div className="report-card-double report-card ">
@@ -59,7 +62,8 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
               </span>
               <span className="report-card-2-topright__value" style={{color: ratio < 1? 'black': "red"}}>
                 {/* {roundToDecimalPLace(baseLine.consumption) + baseLine.unit} */}
-                {roundToDecimalPLace(baseLine.forecast - baseLine.consumption) + baseLine.unit}
+                {/* {roundToDecimalPLace(baseLine.forecast - baseLine.consumption) + baseLine.unit} */}
+                {savings.toFixed(2) + baseLine.unit}
               </span>
             </p>
           </div>

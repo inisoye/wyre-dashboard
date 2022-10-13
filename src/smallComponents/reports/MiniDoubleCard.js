@@ -8,6 +8,8 @@ const colorSelector = {
 
 const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
   const color = colorSelector[type];
+  const averagePowerValue = 0.8;
+
   return (
     // <div className="report-row-1-card report-card-2 report-card">
     <div className="report-card-double report-card ">
@@ -27,7 +29,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  (roundToDecimalPLace(metrics?.peak_to_avg_power_ratio.peak).toFixed(1) + metrics?.peak_to_avg_power_ratio.unit)}
+                  ((metrics?.peak_to_avg_power_ratio.peak? metrics?.peak_to_avg_power_ratio.peak / averagePowerValue: 0).toFixed(1) + 'kVA')}
               </span>
             </p>
 
@@ -38,7 +40,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  roundToDecimalPLace(metrics?.peak_to_avg_power_ratio.avg).toFixed(1) + metrics?.peak_to_avg_power_ratio.unit}
+                  (metrics?.peak_to_avg_power_ratio.avg? metrics?.peak_to_avg_power_ratio.avg / averagePowerValue: 0).toFixed(1) + 'kVA'}
               </span>
             </p>
           </div>
