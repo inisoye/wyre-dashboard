@@ -200,8 +200,8 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
             {
               carbon_emmissions &&
               <RecordCard {...carbon_emmissions}
-                header='Co2 Footprint'
-                footer="Carbondioxide Emmission"
+                header='CO2 Footprint'
+                footer="Carbon Emmission"
                 icon={CO2Icon} type='CO2Score' />
             }
             {
