@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
+import moment from 'moment';
 
 import CompleteDataContext from '../Context';
 
@@ -83,6 +84,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
   };
 
 
+
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
@@ -99,7 +101,12 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
 
   useEffect(() => {
     if (!pageLoaded && isEmpty(report.reportData || {})) {
-      fetchReport(report.selectedDate, report.selectedDateType);
+
+      let search = window.location.search;
+      let params = new URLSearchParams(search);
+      let reportDate = params.get('reportDate') || '';
+      const defaultDataValue = reportDate ? moment(reportDate).format('DD-MM-YYYY') : report.selectedDate;
+      fetchReport(defaultDataValue, report.selectedDateType);
       fetchReportBaseline(report.selectedDate, report.selectedDateType);
     }
 
