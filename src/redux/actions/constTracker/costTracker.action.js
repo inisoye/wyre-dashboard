@@ -28,7 +28,7 @@ export const fetchCostTrackerData = () => async (dispatch) => {
 };
 
 
-export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
+export const fetchFuelConsumptionDataOLd = (queryString) => async (dispatch) => {
   dispatch(fetchFuelDataLoading());
   const requestUrl = `fuel_entry?${queryString}`;
   try {
@@ -38,6 +38,21 @@ export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
     return {
       fullfilled: true,
       data: response.data
+    }
+  } catch (error) {
+    dispatch(fetchFuelDataLoading(false));
+  }
+};
+export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
+  dispatch(fetchFuelDataLoading());
+  const requestUrl = `diesel_tracker_overview/${queryString}`;
+  try {
+    const response = await APIService.get(requestUrl);
+    dispatch(fetchFuelDataSuccess(response.data.data));
+    dispatch(fetchFuelDataLoading(false))
+    return {
+      fullfilled: true,
+      data: response.data.data
     }
   } catch (error) {
     dispatch(fetchFuelDataLoading(false));

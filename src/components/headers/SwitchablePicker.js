@@ -6,14 +6,20 @@ import { changeSearchDateType, changeSearchDate } from '../../redux/actions/repo
 
 const { Option } = Select;
 
-const PickerWithType = ({ type, onChange }) =>{
-  return <DatePicker style={{height: 40}} defaultValue={moment()} picker={type} onChange={onChange} />;
+const PickerWithType = ({ type, onChange, defaultData }) =>{
+  return <DatePicker style={{height: 40}} defaultValue={defaultData} picker={type} onChange={onChange} />;
 }
 
 
 const SwitchablePicker = ()=> {
   const [type, setType] = useState('month');
   const dispatch = useDispatch();
+
+
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+  let reportDate = params.get('reportDate') || '';
+  const defaultDataValue = reportDate ? moment(reportDate) : moment();
 
   const onTypeChange = (type) => {
     setType(type);
@@ -30,7 +36,7 @@ const SwitchablePicker = ()=> {
         <Option value="monthly">Monthly</Option>
         <Option value="yearly">Yearly</Option>
       </Select> */}
-      <PickerWithType type={type} onChange={(value, _) => onDateSelect(value, type) } />
+      <PickerWithType type={type} defaultData={defaultDataValue} onChange={(value, _) => onDateSelect(value, type) } />
     </Space>
   );
 };
