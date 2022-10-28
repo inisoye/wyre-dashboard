@@ -44,7 +44,6 @@ export const fetchFuelConsumptionDataOLd = (queryString) => async (dispatch) => 
   }
 };
 export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
-  console.log('calling the first end point ==========>>>>>>>', )
   dispatch(fetchFuelDataLoading());
   const requestUrl = `diesel_tracker_overview/${queryString}`;
   try {

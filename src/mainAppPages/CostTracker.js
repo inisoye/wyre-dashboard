@@ -47,7 +47,6 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
     userData
   } = useContext(CompleteDataContext);
 
-console.log('this is the user data and information of the user ==================>>>>>>>>>>>>>',userData)
   useEffect(() => {
     fetchCostTracker();
     if (match && match.url) {
