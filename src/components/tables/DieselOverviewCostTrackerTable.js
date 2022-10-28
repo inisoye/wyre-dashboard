@@ -6,20 +6,23 @@ const { Text } = Typography;
 
 const DieselOverviewCostTrackerTable = (
   { dieselOverviewData, isLoading,
+    userId,
     fetchFuelConsumptionInfo }
 ) => {
 
+  
   const [modalOpener, setModalOpener] = useState(false);
   const [modalData, setModalData] = useState(false);
   const [fuelDataLoading, setFuelDataLoading] = useState(false);
 
   const fetchFuelData = async (date) => {
     setModalData(false)
-    const startOfMonth = moment(date).startOf('month').format('YYYY-MM-DD');
-    const endOfMonth = moment(date).endOf('month').format('YYYY-MM-DD');
+    const year = moment(date).format('YYYY');
+    const month = moment(date).endOf('month').format('MM');
 
 
-    const queryString = `from_date=${startOfMonth}&to_date=${endOfMonth}`
+    // const queryString = `from_date=${startOfMonth}&to_date=${endOfMonth}`
+    const queryString = `${userId}/${year}/${month}`
 
     setModalOpener(true);
     setFuelDataLoading(true);
@@ -93,25 +96,36 @@ const DieselOverviewCostTrackerTable = (
 
   const fuelconsumptionColum = [
     {
+      title: 'date',
+      dataIndex: 'date',
+      key: "date",
+      width: '20%',
+    },
+    {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
-      width: '10%',
+      width: '15%',
     },
     {
-      title: 'Fuel type',
-      dataIndex: 'fuel_type',
-      key: 'fuel_type',
+      title: 'Hours',
+      dataIndex: 'hours_of_use',
+      width: '15%',
     },
     {
-      title: 'Start Date',
-      dataIndex: 'start_date',
-      key: "start_date",
+      title: 'Energy Consumed(kWh)',
+      dataIndex: 'litres_per_hour',
+      width: '15%',
     },
     {
-      title: 'End date',
-      dataIndex: 'start_date',
-      key: 'start_date',
+      title: 'Liters Per Hour',
+      dataIndex: 'litres_per_hour',
+      width: '15%',
+    },
+    {
+      title: 'kWh/L',
+      dataIndex: 'energy_per_litre',
+      width: '15%',
     },
   ];
 
@@ -193,6 +207,8 @@ const DieselOverviewCostTrackerTable = (
         visible={modalOpener}
         onCancel={() => setModalOpener(false)}
         footer={null}
+        width={800}
+
       >
         <Table
           dataSource={modalData}

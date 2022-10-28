@@ -43,9 +43,9 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
 
   const {
     setCurrentUrl,
-    uiSettings
+    uiSettings,
+    userData
   } = useContext(CompleteDataContext);
-
 
   useEffect(() => {
     fetchCostTracker();
@@ -92,6 +92,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
       <DieselOverviewCostTrackerTable
         isLoading={costTracker.fetchCostTrackerLoading}
         dieselOverviewData={overviewData.diesel_overview}
+        userId={userData.user_id}
         fetchFuelConsumptionInfo={fetchFuelConsumptionInfo} />
     </article>
   );
