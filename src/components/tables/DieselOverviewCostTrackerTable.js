@@ -96,13 +96,13 @@ const DieselOverviewCostTrackerTable = (
 
   const fuelconsumptionColum = [
     {
-      title: 'date',
+      title: 'Date',
       dataIndex: 'date',
       key: "date",
       width: '20%',
     },
     {
-      title: 'Quantity',
+      title: 'Quantity(L)',
       dataIndex: 'quantity',
       key: 'quantity',
       width: '15%',
@@ -113,12 +113,12 @@ const DieselOverviewCostTrackerTable = (
       width: '15%',
     },
     {
-      title: 'Energy Consumed(kWh)',
+      title: 'Energy(kWh)',
       dataIndex: 'litres_per_hour',
       width: '15%',
     },
     {
-      title: 'Liters Per Hour',
+      title: 'Liters/H',
       dataIndex: 'litres_per_hour',
       width: '15%',
     },
