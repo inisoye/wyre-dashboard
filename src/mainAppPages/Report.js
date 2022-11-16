@@ -73,10 +73,14 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
-        // const pdf = new jsPDF('p', 'px', 'a7');
-        const pdf = new jsPDF('p', 'px', [40, 90]);
+        // const pdf = new jsPDF('p', 'px', 'a2');
+        const pdf = new jsPDF('p', 'px', [595, 1342]);
+        // const pdf = new jsPDF('p', 'px', [475]);
+
+        // const pdf = new jsPDF('p', 'px', [40, 90]);
         var width = pdf.internal.pageSize.getWidth();
         var height = pdf.internal.pageSize.getHeight();
+
 
         pdf.addImage(imgData, 'JPEG', 1, 1, width, height);
         pdf.save("report.pdf");
