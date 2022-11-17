@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
 import moment from 'moment';
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+// import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 import { jsPDF } from "jspdf";
 import { connect, useSelector } from 'react-redux';
 import * as html2canvas from "html2canvas";
@@ -19,7 +19,7 @@ import DashboardUpArrow from "../icons/DashboardUpArrow";
 import DashboardDownArrow from "../icons/DashboardDownArrow";
 import { numberFormatter } from "../helpers/numberFormatter";
 
-import styles from "../pdfStyles/styles";
+// import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 import {
   generateLoadOverviewChartData, refineLoadOverviewData,
@@ -48,19 +48,19 @@ const breadCrumbRoutes = [
   { url: "/", name: "Dashboard", id: 2 },
 ];
 
-const PDFDocument = () => (
-  <Document>
-    <Page size="A4" styles={styles.page}>
-      <View>
-        <Text>Section #1</Text>
-      </View>
+// const PDFDocument = () => (
+//   <Document>
+//     <Page size="A4" styles={styles.page}>
+//       <View>
+//         <Text>Section #1</Text>
+//       </View>
 
-      <View>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-  </Document>
-);
+//       <View>
+//         <Text>Section #2</Text>
+//       </View>
+//     </Page>
+//   </Document>
+// );
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
   sideBar: sideDetails,
