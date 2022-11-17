@@ -1,4 +1,4 @@
-import ReactPDF from "@react-pdf/renderer";
+// import ReactPDF from "@react-pdf/renderer";
 import styles from "./styles";
 
 const compose = (classes) => {
