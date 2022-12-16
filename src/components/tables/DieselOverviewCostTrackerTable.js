@@ -114,7 +114,7 @@ const DieselOverviewCostTrackerTable = (
     },
     {
       title: 'Energy(kWh)',
-      dataIndex: 'litres_per_hour',
+      dataIndex: 'energy_consumed',
       width: '15%',
     },
     {
