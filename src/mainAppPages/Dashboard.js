@@ -104,7 +104,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
   useEffect(() => {
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
-    console.log('powerFactor.allPowerFactor', powerFactor.allPowerFactor)
+
     if (powerFactor.allPowerFactor && powerFactor.allPowerFactor.length> 0 && dashBoardInfo.dashBoardData) {
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
 

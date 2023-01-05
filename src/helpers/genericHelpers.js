@@ -271,7 +271,6 @@ const getMinDemandObject = (array) => {
   return { unit: 'kW', value: isFinite(valuesArrayMin) ? valuesArrayMin : 0 };
 };
 const getMinDemandObjectKVA = (array, powerFactorData) => {
-  console.log('this sithe shdd d.  d =========>>>>>>>>>arrayarrayarrayarrayarray', array)
   const valuesArray = array.map((eachItem) => eachItem.min_demand_with_power_factor.value);
 
   //Obtain min demand of all min demands

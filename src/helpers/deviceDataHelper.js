@@ -17,25 +17,26 @@ const getDeviceData = ({
     deviceData,
     powerFactor,
 }) => {
-    console.log('this is the device data ', deviceData);
+
     const modifiedDeviceName = !deviceData.name.includes(branchData.name)
         ? branchData.name + ' ' + deviceData.name
         : deviceData.name;
 
     // Creates name with parent branch name removed
-    const originalDeviceName = deviceData.name
+    const originalDeviceName = deviceData.name !== branchData.name? deviceData.name
         .replace(branchData.name, '')
-        .trim();
+        .trim(): deviceData.name;
 
     const deviceDailyKwh = {
         dates: branchData.daily_kwh.dates,
         [modifiedDeviceName]: branchData.daily_kwh[originalDeviceName],
     };
-
+ 
     const branchMonthlyUsage = branchData.usage_hours;
     const deviceIndex = branchMonthlyUsage.devices.indexOf(
         originalDeviceName
     );
+
     const deviceMonthlyUsage = {
         // Use modified device name
         devices: [
