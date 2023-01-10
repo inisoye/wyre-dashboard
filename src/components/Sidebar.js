@@ -12,7 +12,7 @@ import SidebarOrganization from './SidebarOrganization';
 
 function Sidebar({ fetchSideBar: fetchSideBarData }) {
   const sideBarData = useSelector((state) => state.sideBar.sideBarData);
-  console.log('this is the sideBar data', sideBarData);
+
   useEffect(() => {
     if (!sideBarData || !sideBarData.name) {
       fetchSideBarData();
