@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
 
@@ -26,7 +26,17 @@ function SidebarDevice({
   // deviceBillingTotalsData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
+  const [isScoreCard, setIsScoreCard] = useState(false);
   const dispatch = useDispatch();
+
+  // check if page is not score card
+
+  useEffect(() => {
+    const isScoreCardPage = window.location.pathname.includes('score-card');
+    setIsScoreCard(isScoreCardPage);
+  })
+  
+  console.log('this is the way fooisdjodkjok ==============>>>>>', window.location.pathname);
 
   const {
     // renderedDataObjects,
@@ -300,7 +310,7 @@ function SidebarDevice({
           className="sidebar-device__checkbox sidebar-checkbox"
           name={checkBoxName}
           onChange={handleCheck}
-          disabled={isAnyBranchChecked}
+          disabled={isAnyBranchChecked || isScoreCard}
         >
           {originalDeviceName}
         </Checkbox>
