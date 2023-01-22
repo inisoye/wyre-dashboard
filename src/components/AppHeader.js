@@ -310,7 +310,7 @@ function Header() {
                 <img
                   className="header-avatar__image"
                   src={
-                    organisationName ? `https://wyreng.xyz${avatarImage}` : ''
+                    organisationName ? `https://backend.wyreng.com${avatarImage}` : ''
                   }
                   alt={
                     organisationName
@@ -414,7 +414,7 @@ function Header() {
           >
             <img
               className="header-avatar__image"
-              src={organisationName ? `https://wyreng.xyz${avatarImage}` : ''}
+              src={organisationName ? `https://backend.wyreng.com${avatarImage}` : ''}
               alt={
                 organisationName ? `Avatar for ${organisationName}` : 'Avatar'
               }

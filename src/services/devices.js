@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 // import dashBoardMock from '../mock/dashboard';
 
 // Base URL prefix
-let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
+let baseUrlPrefix = `https://backend.wyreng.com/api/v1/dashboard`;
 
 // Handle determination of token
 let token = undefined;
@@ -63,7 +63,7 @@ const getAllData = async () => {
     token = userToken.access;
   }
   const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
-  //const test =axios.get('https://wyreng.xyz/api/v1/dashboard/6/01-12-2021%2000:00/01-04-2021%2000:00/hourly');
+  //const test =axios.get('https://backend.wyreng.com/api/v1/dashboard/6/01-12-2021%2000:00/01-04-2021%2000:00/hourly');
   //console.log(test)
   // const config = {
   //   headers: { Authorization:`Bearer ${token}`  },

@@ -88,7 +88,7 @@ function ScoreCard({ match }) {
     arrowColor = getPeakResult.color;
 
     //calculate number of trees for carbon emission
-    noOfTrees = (score_card_carbon_emissions.actual_value * 6).toFixed(2);
+    noOfTrees = (savingdInboundCarbonEmmission * 6).toFixed(2);
     message = "Equivalent to " + noOfTrees + " Acacia trees";
 
 
@@ -104,6 +104,7 @@ function ScoreCard({ match }) {
 
         <ScoreCardGenEfficiencyDoughnut
           data={eachGenerator}
+          peakData={peakToAverageKVa}
           key={eachGenerator.name}
           uiSettings={uiSettings}
 
