@@ -269,7 +269,8 @@ const CompleteDataProvider = (props) => {
   const [PasswordVisibility, setPasswordVisibility] = useState(false)
 
   const uiSettings = {
-    appPrimaryColor: '#5c3592'
+    appPrimaryColor: '#5c3592',
+    
   }
 
   return (

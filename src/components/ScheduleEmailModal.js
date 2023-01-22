@@ -40,12 +40,12 @@ export const ScheduleEmailModal = () => {
 
 
 
-  const getemailModalDataUrl = `https://wyreng.xyz/api/v1/mail_schedules_data/${userId}/`;
-  const addNewExternalReceiverUrl = `https://wyreng.xyz/api/v1/add_external_bill_reciever/${userId}/`;
-  const addavailableDevicesToBillReceiver = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
-  const deleteBillReceiverUrl = `https://wyreng.xyz/api/v1/delete_mail_reciever/${userId}/`;
-  const addAssignedDevice = `https://wyreng.xyz/api/v1/add_assigned_devices/${userId}/`;
-  const sendBillUrl = `https://wyreng.xyz/api/v1/send_report/${userId}/${dateRange}/`;
+  const getemailModalDataUrl = `https://backend.wyreng.com/api/v1/mail_schedules_data/${userId}/`;
+  const addNewExternalReceiverUrl = `https://backend.wyreng.com/api/v1/add_external_bill_reciever/${userId}/`;
+  const addavailableDevicesToBillReceiver = `https://backend.wyreng.com/api/v1/add_assigned_devices/${userId}/`;
+  const deleteBillReceiverUrl = `https://backend.wyreng.com/api/v1/delete_mail_reciever/${userId}/`;
+  const addAssignedDevice = `https://backend.wyreng.com/api/v1/add_assigned_devices/${userId}/`;
+  const sendBillUrl = `https://backend.wyreng.com/api/v1/send_report/${userId}/${dateRange}/`;
   const convertExternalReceiver = (arr, key, value) => {
     let result = arr.reduce((r, item) => {
       r[item[key]] = item[value].map(({ id }) => id);

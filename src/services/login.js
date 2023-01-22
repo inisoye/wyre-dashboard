@@ -1,8 +1,8 @@
 import axios from 'axios';
-const baseUrl = 'https://wyreng.xyz/api/v1/auth/';
+const baseUrl = 'https://backend.wyreng.com/api/v1/auth/';
 // let baseUrl = `http://localhost:8000/api/v1/auth/`;
 
-const baseUrl2 = 'https://wyreng.xyz/token/';
+const baseUrl2 = 'https://backend.wyreng.com/token/';
 
 const login = async (credentials) => {
   const response = await axios.post(baseUrl, credentials);

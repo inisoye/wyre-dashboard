@@ -14,7 +14,9 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
   const sideBarData = useSelector((state) => state.sideBar.sideBarData);
 
   useEffect(() => {
-    fetchSideBarData();
+    if (!sideBarData || !sideBarData.name) {
+      fetchSideBarData();
+    }
   }, [])
 
   const { isSidebarOpen, currentUrl } = useContext(
@@ -50,12 +52,12 @@ function Sidebar({ fetchSideBar: fetchSideBarData }) {
             }
           /> */}
           <LatestLogo fill="white"
-            // className={
-            //   // isReportPageOpen
-            //   //   ? 'header-logo__image'
-            //   //   : 
-            //   'header-logo__image header- h-white-fill-medium-up'
-            // }
+          // className={
+          //   // isReportPageOpen
+          //   //   ? 'header-logo__image'
+          //   //   : 
+          //   'header-logo__image header- h-white-fill-medium-up'
+          // }
           />
           {/* <img src={avatar} alt='' /> */}
         </Link>
