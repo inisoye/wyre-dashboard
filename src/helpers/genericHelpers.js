@@ -294,7 +294,7 @@ const getNestedMinDemandObjectKVA = (allDeviceData, nestedObject, powerFactorDat
   ).map((eachItem) => {
     const powerFactor = powerFactorData&& powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
     return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf ? (eachItem[nestedObject].min_demand.value / powerFactor.data.data.avg_pf)
-      : (eachItem[nestedObject].min_demand.value / 0.8);
+      : (eachItem[nestedObject].min_demand.value / 0.78);
   }
   );
 
@@ -336,7 +336,7 @@ const getNestedMaxDemandObjectKva = (allDeviceData, nestedObject, powerFactorDat
     (eachItem) => {
       const powerFactor =  powerFactorData&& powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
       return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf ? (eachItem[nestedObject].max_demand.value / powerFactor.data.data.avg_pf)
-        : (eachItem[nestedObject].max_demand.value / 0.8);
+        : (eachItem[nestedObject].max_demand.value / 0.78);
       // return eachItem[nestedObject].max_demand.value;
     }
   );

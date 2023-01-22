@@ -152,7 +152,6 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
     baseline,
   } = Object.values(reportBaselinePageData)[0] ? Object.values(reportBaselinePageData)[0] : {};
 
-  console.log('this is the way forward and here we goooo ===========>>>>>>>>>reportBaselinePageData>', baseline)
   let powerDemand = []
   power_demand && Object.entries(power_demand).map(([key, value]) => {
     powerDemand.push({ key, ...value })
@@ -278,7 +277,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
             </div>
           </div>
         }
-        <div className="report-full-width-rows">
+        {/* <div className="report-full-width-rows">
           <div className="report-row-1__content">
             {daily_consumption && (
               <div className="report-chart-container">
@@ -290,7 +289,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="report-full-width-rows-fit-content">
           <div className="report-row-1__content">
             {energy_consumption && (
@@ -304,7 +303,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
             )}
           </div>
         </div>
-        <div className="report-full-width-with-no-height-rows">
+        {/* <div className="report-full-width-with-no-height-rows">
           <div className="report-row-1__content">
             {(
               <div className="report-demand-container">
@@ -321,7 +320,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="report-full-width-with-no-height-rows">
           <div className="report-row-1__content">
             {(

@@ -30,7 +30,7 @@ function PrintButtons() {
 
   const PdfDownloadLink = async () => {
     openNotification()
-    const staticUrl = `https://wyreng.xyz/api/v1/report_download/${userId}/${dateRange}/`;
+    const staticUrl = `https://backend.wyreng.com/api/v1/report_download/${userId}/${dateRange}/`;
     let selectedDevicesIds = [];
 
     for (const prop in checkedDevices) {

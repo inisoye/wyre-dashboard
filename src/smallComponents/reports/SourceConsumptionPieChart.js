@@ -10,11 +10,14 @@ const SourceConsumptionPieChart = ({ data }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
   const labels = [];
   const values = [];
+
   data.map((eachData) => {
-      labels.push(eachData.name);
-      values.push(eachData.energy);
+    labels.push(eachData.name);
+    values.push(eachData.energy);
   });
 
+  const total = values.reduce((accumulator, currentValue) =>
+    parseFloat(accumulator) + parseFloat(currentValue));
   const plottedData = {
     labels,
     datasets: [
@@ -41,12 +44,25 @@ const SourceConsumptionPieChart = ({ data }) => {
     },
     legend: {
       display: true,
+      // labels: {
+      //   boxWidth: 10,
+      //   fontSize: isMediumScreen ? 6 : 10,
+      //   fontColor: 'black',
+      //   padding: 10,
+      // },
       labels: {
         boxWidth: 10,
         fontSize: isMediumScreen ? 6 : 10,
         fontColor: 'black',
         padding: 10,
-      },
+        generateLabels: (chart) => {
+          const datasets = chart.data.datasets;
+          return datasets[0].data.map((data, i) => ({
+            text: `${chart.data.labels[i]} (${data ? (((data / total) * 100)).toFixed(3) : ''})%`,
+            fillStyle: datasets[0].backgroundColor[i],
+          }))
+        }
+      }
     },
     maintainAspectRatio: false,
     plugins: {

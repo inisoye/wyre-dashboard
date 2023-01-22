@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://wyreng.xyz/api/v1/alerts_data';
+const baseUrl = 'https://backend.wyreng.com/api/v1/alerts_data';
 
 const getAll = async (userId, token) => {
   let requestUrl = `${baseUrl}/${userId}/`

@@ -3,6 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
 const EnergyConsumptionMultipleChart = ({ energyData = [], uiSettings }) => {
+
   const { isMediumScreen } = useContext(CompleteDataContext);
   const [forcastedData, setForcastedData] = useState(false);
   const [usedData, setUsedData] = useState(false);
