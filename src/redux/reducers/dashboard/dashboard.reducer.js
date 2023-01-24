@@ -4,6 +4,8 @@ import dashBoardType from './dashboard.types';
 const INITIAL_STATE = {
     fetchDashBoardLoading: false,
     dashBoardData: false,
+    fetchDemandLoading: false,
+    demandData: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -23,6 +25,16 @@ const reducer = (state = INITIAL_STATE, action) => {
            return {
               ...state, 
               dashBoardData: action.payload,
+           };
+           case dashBoardType.FETCH_DEMAND_SUCCESS:
+           return {
+              ...state, 
+              demandData: action.payload,
+           };
+           case dashBoardType.FETCH_DEMAND_LOADING:
+           return {
+              ...state, 
+              fetchDemandLoading: action.payload,
            };
 
          default: return state;

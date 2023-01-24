@@ -489,7 +489,7 @@ const defaultDate = (data)=>{
                     <p className="alerts-and-alarms-question">
                       <label htmlFor="set-baseline">
                         {' '}
-                        When set energy target is Reached
+                        When set energy target is reached
                       </label>{' '}
                       <input
                         className="alerts-and-alarms-input"
@@ -745,7 +745,7 @@ const defaultDate = (data)=>{
                 </div>
               </li> */}
 
-              {generator_data.length > 0 && 
+              {/* {generator_data.length > 0 && 
                  <li className="alerts-and-alarms-list-item">
                  <div className="alerts-and-alarms-question-container">
                    {' '}
@@ -810,7 +810,7 @@ const defaultDate = (data)=>{
                    </ol>
                  </div>
                </li>
-              }
+              } */}
              
             </ol>
           
