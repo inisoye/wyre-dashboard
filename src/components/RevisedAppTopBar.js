@@ -57,7 +57,7 @@ function RevisedAppTopBar() {
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
-  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker') || currentUrl.includes('dashboard');;
+  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker') || currentUrl.includes('dashboard') ;
 
   const isTopBarUserBranchesRightDisplayed =
     currentUrl.includes('branches') && !currentUrl.includes('user-form');
