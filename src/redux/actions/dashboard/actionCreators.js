@@ -12,4 +12,14 @@ export const fetchDashBoardLoading = (payload = true) => ({
     type: dashBoardType.FETCH_DASHBOARD_SUCCESS,
     payload,
   });
+
+export const fetchDemandLoading = (payload = true) => ({
+    type: dashBoardType.FETCH_DEMAND_LOADING,
+    payload,
+  });
+  
+  export const fetchDemandSuccess = payload => ({
+    type: dashBoardType.FETCH_DEMAND_SUCCESS,
+    payload,
+  });
   

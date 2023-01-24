@@ -60,8 +60,14 @@ export const FuelConsumption = [
     width: '20%',
   },
   {
-    title: 'Diesel Consumed',
+    title: 'Energy Consumed',
     dataIndex: 'energy',
+    width: '15%',
+    render: (energy) => energy.toFixed(2)
+  },
+  {
+    title: 'Hours used',
+    dataIndex: 'hours',
     width: '15%',
     render: (energy) => energy.toFixed(2)
   },
@@ -93,11 +99,11 @@ export const GeneratorEfficiency = [
 export const PowerDemandColumns = [
   {
     title: 'Source',
-    dataIndex: 'key',
+    dataIndex: 'device_name',
   },
   {
-    title: 'kVA',
-    dataIndex: 'kva',
+    title: 'Average(kVA)',
+    dataIndex: 'avg',
   },
   {
     title: 'kW',
