@@ -20,7 +20,7 @@ export const fetchPowerFactor = (allDeviceIds, requestData) => async (dispatch) 
     dispatch(fetchPowerFactorSuccess(allPowerFactor));
     return { fulfilled: true, allPowerFactor }
   } catch (error) {
-    console.log('this is thei should not get heree',error);
+    console.log(error);
     dispatch(fetchPowerFactorLoading(false));
   }
 };

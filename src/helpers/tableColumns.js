@@ -96,7 +96,7 @@ export const GeneratorEfficiency = [
     dataIndex: 'recommendation',
   }
 ];
-export const PowerDemandColumns = [
+export const PowerDemandColumns = (powerFactor) => [
   {
     title: 'Source',
     dataIndex: 'device_name',
@@ -106,8 +106,12 @@ export const PowerDemandColumns = [
     dataIndex: 'avg',
   },
   {
-    title: 'kW',
-    dataIndex: 'kw',
+    title: 'Average(kW)',
+    dataIndex: 'avg',
+    render: (avg) => {
+
+      return avg? (avg * powerFactor).toFixed(2): 0;
+    }
 
   }
 ];

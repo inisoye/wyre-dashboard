@@ -39,7 +39,6 @@ export const fetchDashBoardData = (userDateRange) => async (dispatch) => {
   }
 };
 export const fetchPAPR = (userDateRange) => async (dispatch) => {
-  console.log('this is the data to uise', userDateRange[0])
   dispatch(fetchDemandLoading());
 
   const loggedUserJSON = localStorage.getItem('loggedWyreUser');
@@ -61,7 +60,6 @@ export const fetchPAPR = (userDateRange) => async (dispatch) => {
       },
     },
     );
-    console.log('this is the response data', response.data);
     dispatch(fetchDemandSuccess(response.data.data));
     dispatch(fetchDemandLoading(false))
   } catch (error) {
