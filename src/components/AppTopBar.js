@@ -50,7 +50,6 @@ function TopBar() {
 
   const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker') || currentUrl.includes('dashboard');
 
-  console.log('===============>>>>>>>>>>>>', isTopBarCostTrackerRightDisplayed)
 
   const isTopBarUserBranchesRightDisplayed =
     currentUrl.includes('branches') && !currentUrl.includes('user-form');

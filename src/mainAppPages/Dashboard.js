@@ -119,7 +119,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
           powerFactorData: powerFactor.allPowerFactor
         });
 
-        console.log('this here should have the power factor data', branchAndDevice);
         const renderedData = getRenderedData(Object.values(branchAndDevice), true);
         setRefinedDashboardData(renderedData);
         setAllDeviceInfo(allDeviceData);

@@ -36,7 +36,6 @@ function SidebarDevice({
     setIsScoreCard(isScoreCardPage);
   })
   
-  console.log('this is the way fooisdjodkjok ==============>>>>>', window.location.pathname);
 
   const {
     // renderedDataObjects,

@@ -23,6 +23,7 @@ import {
   FuelConsumption, GeneratorEfficiency,
   LoadImbalanceColumns, PowerDemandColumns, TimeOfUseColumns
 } from '../helpers/tableColumns';
+
 import Loader from '../components/Loader';
 import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
 import { connect, useSelector } from 'react-redux';
@@ -57,6 +58,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
     uiSettings
   } = useContext(CompleteDataContext);
 
+  const PowerDemandColumnsList = PowerDemandColumns(dashboard?.demandData['p.f'])
   const generatePdf = () => {
     console.log("Generating PDFs");
 
@@ -368,7 +370,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
                     Power Demand
                   </h2>
                   <GenericReportTable data={dashboard?.demandData.devices_demands}
-                    columnData={PowerDemandColumns} />
+                    columnData={PowerDemandColumnsList} />
                 </div>
               </div>
             )}
