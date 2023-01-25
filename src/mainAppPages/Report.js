@@ -23,10 +23,12 @@ import {
   FuelConsumption, GeneratorEfficiency,
   LoadImbalanceColumns, PowerDemandColumns, TimeOfUseColumns
 } from '../helpers/tableColumns';
+
 import Loader from '../components/Loader';
 import LoadImbalanceReportTable from '../components/tables/reportTables/LoadImbalanceReportTable';
 import { connect, useSelector } from 'react-redux';
 import { fetchReportData, fetchBaseLineData } from '../redux/actions/report/report.action';
+import { fetchPAPR } from "../redux/actions/dashboard/dashboard.action";
 import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsumptionMultipleChart';
 import { loadReportPage } from '../redux/actions/setting/actionCreators';
 import { isEmpty } from '../helpers/authHelper';
@@ -44,7 +46,7 @@ const breadCrumbRoutes = [
 ];
 
 
-function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchReportBaseline }) {
+function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchReportBaseline, fetchPAPR: fetchPAPRData, dashboard }) {
   const [reportPageData, setReportPageData] = useState({});
   const [reportBaselinePageData, setReportBaselinePageData] = useState({});
   const [timeOfUseData, setTimeOfUseData] = useState(false);
@@ -56,6 +58,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
     uiSettings
   } = useContext(CompleteDataContext);
 
+  const PowerDemandColumnsList = PowerDemandColumns(dashboard?.demandData['p.f'])
   const generatePdf = () => {
     console.log("Generating PDFs");
 
@@ -108,15 +111,24 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
 
       let search = window.location.search;
       let params = new URLSearchParams(search);
-      let reportDate = params.get('reportDate') || '';
-      const defaultDataValue = reportDate ? moment(reportDate).format('DD-MM-YYYY') : report.selectedDate;
+      let reportDate = params.get('reportDate') || null;
+      const defaultDataValue = reportDate ? moment(reportDate).format('DD-MM-YYYY') : moment(report.selectedDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
+
       fetchReport(defaultDataValue, report.selectedDateType);
       fetchReportBaseline(report.selectedDate, report.selectedDateType);
+      const startDate = moment(defaultDataValue, 'DD-MM-YYYY').startOf('month');
+
+      const endDate = moment(defaultDataValue, 'DD-MM-YYYY').endOf('month');
+      fetchPAPRData([startDate, endDate]);
     }
 
     if (!isEmpty(report.reportData) > 0 && pageLoaded) {
       fetchReport(report.selectedDate, report.selectedDateType);
       fetchReportBaseline(report.selectedDate, report.selectedDateType);
+
+      const startDate =  moment(report.selectedDate, 'DD-MM-YYYY').startOf('month');
+      const endDate = moment(report.selectedDate, 'DD-MM-YYYY').endOf('month');
+      fetchPAPRData([startDate, endDate]);
     }
     setPageLoaded(true);
   }, [report.selectedDateType, report.selectedDate]);
@@ -198,9 +210,11 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
                 footer="Total Energy Consumption accross sources"
                 icon={ElectricSpark} type='energyConsumptionScore' />
             }
-            {papr &&
-              <MiniDoubleCard paprRatio={calculateRatio(papr.metrics.peak_to_avg_power_ratio.avg, papr.metrics.peak_to_avg_power_ratio.peak)}
-                metrics={papr.metrics} type='paprScore'
+            {dashboard?.demandData &&
+              <MiniDoubleCard
+                paprRatio={dashboard?.demandData.papr}
+                // paprRatio={calculateRatio(papr.metrics.peak_to_avg_power_ratio.avg, papr.metrics.peak_to_avg_power_ratio.peak)}
+                metrics={dashboard?.demandData} type='paprScore'
                 header='PAPR' icon={Plug} />
             }
           </div>
@@ -338,7 +352,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
         </div>
         <div className="report-table-rows">
           <div className="report-row-1__content">
-            {(
+            {/* {(
               <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
                   <h2 className="report-pie-heading">
@@ -348,15 +362,15 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
                     columnData={TimeOfUseColumns} />
                 </div>
               </div>
-            )}
+            )} */}
             {(
               <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
                   <h2 className="report-pie-heading">
                     Power Demand
                   </h2>
-                  <GenericReportTable data={powerDemand}
-                    columnData={PowerDemandColumns} />
+                  <GenericReportTable data={dashboard?.demandData.devices_demands}
+                    columnData={PowerDemandColumnsList} />
                 </div>
               </div>
             )}
@@ -369,7 +383,11 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
 
 const mapDispatchToProps = {
   fetchReportData,
-  fetchBaseLineData
+  fetchBaseLineData,
+  fetchPAPR
 };
+const mapStateToProps = (state) => ({
+  dashboard: state.dashboard,
+});
 
-export default connect(null, mapDispatchToProps)(Report);
+export default connect(mapStateToProps, mapDispatchToProps)(Report);

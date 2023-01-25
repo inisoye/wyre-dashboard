@@ -69,7 +69,6 @@ export const addFuelConsumptionData = (parameters) => async (dispatch) => {
     return { fullfilled: true, message: response.data.detail }
   } catch (error) {
     dispatch(addFuelDataLoading(false));
-    console.log('this is the response data on errorerrorerror', error.response);
     return { fullfilled: false, message: error.response.detail }
   }
 };

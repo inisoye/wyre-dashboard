@@ -28,7 +28,7 @@ import {
   getNestedAvgDemandObjectKva
 } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
-import { fetchDashBoardData } from "../redux/actions/dashboard/dashboard.action";
+import { fetchDashBoardData, fetchPAPR } from "../redux/actions/dashboard/dashboard.action";
 import {
   getDashBoardRefinedData,
   getRefinedOrganizationDataWithChekBox,
@@ -66,6 +66,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
   sideBar: sideDetails,
   fetchPowerFactor:
   fetchAllPowerFactor,
+  fetchPAPR: fetchPAPRData,
+  dashboard
 }) {
   let {
     checkedItems, checkedBranches, checkedDevices, userDateRange, uiSettings } = useContext(
@@ -117,7 +119,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
           powerFactorData: powerFactor.allPowerFactor
         });
 
-        console.log('this here should have the power factor data', branchAndDevice);
         const renderedData = getRenderedData(Object.values(branchAndDevice), true);
         setRefinedDashboardData(renderedData);
         setAllDeviceInfo(allDeviceData);
@@ -139,12 +140,13 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
   useEffect(() => {
     if (!pageLoaded && isEmpty(dashBoardInfo.dashBoardData || {})) {
       dashBoardDataFetch(userDateRange);
+      fetchPAPRData(userDateRange)
       // fetch the power factors here
     }
 
     if (!isEmpty(dashBoardInfo.dashBoardData) > 0 && pageLoaded) {
       dashBoardDataFetch(userDateRange);
-
+      fetchPAPRData(userDateRange)
       // fetch the power factors here
     }
     setPageLoaded(true);
@@ -252,18 +254,18 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
               <div className="dashboard__demand-banner-- ">
                 <DashboardSmallBannerSection
                   name="Max. Demand"
-                  value={max_demand_with_power_factor && numberFormatter(max_demand_with_power_factor.value.toFixed(2))}
-                  unit={max_demand_with_power_factor && max_demand_with_power_factor.unit}
+                  value={dashboard?.demandData.max_demand}
+                  unit={dashboard?.demandData.unit}
                 />
                 <DashboardSmallBannerSection
                   name="Min. Demand"
-                  value={min_demand_with_power_factor && numberFormatter(min_demand_with_power_factor.value.toFixed(2))}
-                  unit={min_demand_with_power_factor && min_demand_with_power_factor.unit}
+                  value={dashboard?.demandData.min_demand}
+                  unit={dashboard?.demandData.unit}
                 />
                 <DashboardSmallBannerSection
                   name="Avg. Demand"
-                  value={avg_demand_with_power_factor && numberFormatter(avg_demand_with_power_factor.value.toFixed(2))}
-                  unit={avg_demand_with_power_factor && avg_demand_with_power_factor.unit}
+                  value={dashboard?.demandData.avg_demand}
+                  unit={dashboard?.demandData.unit}
                 />
               </div>
             </Spin>
@@ -405,10 +407,12 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
 const mapDispatchToProps = {
   fetchDashBoardData,
   fetchPowerFactor,
+  fetchPAPR
 };
 const mapStateToProps = (state) => ({
   sideBar: state.sideBar,
-  powerFactor: state.powerFactor
+  powerFactor: state.powerFactor,
+  dashboard: state.dashboard
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

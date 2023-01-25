@@ -2,8 +2,6 @@
 import * as XLSX from 'xlsx';
 
 export const exportToExcel = ({ header, data}) => {
-console.log('here is the data that is here is +==========>>>>>')
-
   
   //Had to create a new workbook and then add the header
   const wb = XLSX.utils.book_new();

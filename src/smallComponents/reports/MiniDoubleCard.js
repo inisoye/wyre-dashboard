@@ -8,7 +8,7 @@ const colorSelector = {
 
 const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
   const color = colorSelector[type];
-  const averagePowerValue = 0.8;
+  // const averagePowerValue = 0.8;
 
   return (
     // <div className="report-row-1-card report-card-2 report-card">
@@ -29,7 +29,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  ((metrics?.peak_to_avg_power_ratio.peak? metrics?.peak_to_avg_power_ratio.peak / averagePowerValue: 0).toFixed(1) + 'kVA')}
+                  ((metrics?.max_demand? metrics?.max_demand: 0).toFixed(1) + 'kVA')}
               </span>
             </p>
 
@@ -40,7 +40,7 @@ const MiniDoubleCard = ({ paprRatio, metrics, type, icon, header }) => {
               <span className="h-screen-reader-text"> value is </span>
               <span className="report-card-2-topright__value">
                 {
-                  (metrics?.peak_to_avg_power_ratio.avg? metrics?.peak_to_avg_power_ratio.avg / averagePowerValue: 0).toFixed(1) + 'kVA'}
+                  (metrics?.avg_demand? metrics?.avg_demand: 0).toFixed(1) + 'kVA'}
               </span>
             </p>
           </div>

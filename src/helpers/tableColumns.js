@@ -60,8 +60,14 @@ export const FuelConsumption = [
     width: '20%',
   },
   {
-    title: 'Diesel Consumed',
+    title: 'Energy Consumed',
     dataIndex: 'energy',
+    width: '15%',
+    render: (energy) => energy.toFixed(2)
+  },
+  {
+    title: 'Hours used',
+    dataIndex: 'hours',
     width: '15%',
     render: (energy) => energy.toFixed(2)
   },
@@ -90,18 +96,22 @@ export const GeneratorEfficiency = [
     dataIndex: 'recommendation',
   }
 ];
-export const PowerDemandColumns = [
+export const PowerDemandColumns = (powerFactor) => [
   {
     title: 'Source',
-    dataIndex: 'key',
+    dataIndex: 'device_name',
   },
   {
-    title: 'kVA',
-    dataIndex: 'kva',
+    title: 'Average(kVA)',
+    dataIndex: 'avg',
   },
   {
-    title: 'kW',
-    dataIndex: 'kw',
+    title: 'Average(kW)',
+    dataIndex: 'avg',
+    render: (avg) => {
+
+      return avg? (avg * powerFactor).toFixed(2): 0;
+    }
 
   }
 ];

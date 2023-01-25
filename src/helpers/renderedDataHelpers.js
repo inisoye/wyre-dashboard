@@ -64,7 +64,6 @@ const getRefinedEnergyData = (data, powerFactorData = null) => {
       ));
     });
 
-    console.log('this is the way to the application =================>>>>>>>>refinedEnergyDataArrayrefinedEnergyDataArrayrefinedEnergyDataArray', refinedEnergyDataArray)
   refinedEnergyData.min_demand =
     refinedEnergyDataArray && getMinDemandObject(refinedEnergyDataArray);
   refinedEnergyData.max_demand =

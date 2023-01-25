@@ -198,7 +198,7 @@ const getOrganizationEnergyData = (data, powerFactor = null) => {
 
 const getOrganizationBaselineEnergy = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
-  //console.log(allOrganizationDevices);
+
   const baselineEnergiesArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.baseline_energy
   );
