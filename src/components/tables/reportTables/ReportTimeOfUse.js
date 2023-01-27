@@ -30,9 +30,9 @@ const ReportTimeOfUse = ({ data, columnData }) => {
                             <Table.Summary.Cell>
                                 <Text>{parseFloat(totalHours).toFixed(2)}</Text>
                             </Table.Summary.Cell>
-                            <Table.Summary.Cell>
+                            {/* <Table.Summary.Cell>
                                 <Text>{parseFloat(totalBlackOut).toFixed(2)}</Text>
-                            </Table.Summary.Cell>
+                            </Table.Summary.Cell> */}
                         </Table.Summary.Row>
                     </>
                 );

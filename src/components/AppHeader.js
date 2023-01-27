@@ -235,13 +235,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                {userData.client_type !== 'RESELLER' && (
+                {/* {userData.client_type !== 'RESELLER' && (
                   <HeaderSublink
                     onClick={toggleNavAndDropdown}
                     url="/parameters/time-of-use"
                     linkText="Time of Use"
                   />
-                )}
+                )} */}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"

@@ -352,7 +352,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
         </div>
         <div className="report-table-rows">
           <div className="report-row-1__content">
-            {/* {(
+            {(
               <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
                   <h2 className="report-pie-heading">
@@ -362,7 +362,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
                     columnData={TimeOfUseColumns} />
                 </div>
               </div>
-            )} */}
+            )}
             {(
               <div className="report-table-bottom-container">
                 <div className="h-overflow-auto report-card-tabble__padding">
