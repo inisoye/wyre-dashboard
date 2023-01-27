@@ -26,15 +26,15 @@ function SidebarDevice({
   // deviceBillingTotalsData,
 }) {
   const [isChecked, setIsChecked] = useState(false);
-  const [isScoreCard, setIsScoreCard] = useState(false);
+  const [isDisplayNone, setIsDisplayNone] = useState(false);
   const dispatch = useDispatch();
 
   // check if page is not score card
 
   useEffect(() => {
-    const isScoreCardPage = window.location.pathname.includes('score-card');
-    setIsScoreCard(isScoreCardPage);
-  })
+    const hasNotDisplayUrl = window.location.pathname.includes('score-card') ||  window.location.pathname.includes('report');;
+    setIsDisplayNone(hasNotDisplayUrl);
+  }, [window.location.pathname])
   
 
   const {
@@ -309,7 +309,7 @@ function SidebarDevice({
           className="sidebar-device__checkbox sidebar-checkbox"
           name={checkBoxName}
           onChange={handleCheck}
-          disabled={isAnyBranchChecked || isScoreCard}
+          disabled={isAnyBranchChecked || isDisplayNone}
         >
           {originalDeviceName}
         </Checkbox>

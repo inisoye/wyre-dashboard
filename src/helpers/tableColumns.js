@@ -47,11 +47,11 @@ export const TimeOfUseColumns = [
     dataIndex: 'hour',
     width: '15%',
   },
-  {
-    title: 'Down Time',
-    dataIndex: 'blackOut',
-    width: '20%',
-  },
+  // {
+  //   title: 'Down Time',
+  //   dataIndex: 'blackOut',
+  //   width: '20%',
+  // },
 ];
 export const FuelConsumption = [
   {
@@ -109,10 +109,30 @@ export const PowerDemandColumns = (powerFactor) => [
     title: 'Average(kW)',
     dataIndex: 'avg',
     render: (avg) => {
-
       return avg? (avg * powerFactor).toFixed(2): 0;
     }
-
+  },
+  {
+    title: 'Maximum(kVA)',
+    dataIndex: 'max',
+  },
+  {
+    title: 'Maximum(kW)',
+    dataIndex: 'max',
+    render: (max) => {
+      return max? (max * powerFactor).toFixed(2): 0;
+    }
+  },
+  {
+    title: 'Average(kVA)',
+    dataIndex: 'max',
+  },
+  {
+    title: 'Average(kW)',
+    dataIndex: 'max',
+    render: (max) => {
+      return max? (max * powerFactor).toFixed(2): 0;
+    }
   }
 ];
 export const CostImplicationColumn = [

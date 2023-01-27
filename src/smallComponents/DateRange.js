@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import CompleteDataContext from '../Context';
 
 // import { useLocation } from 'react-router-dom';
@@ -33,12 +34,16 @@ const DateRange = () => {
 
    const convertStartDate = (dateRangeStart) => {
      if (dateRangeStart && dateRangeStart.length > 0 ){
-      return dayjs(dateRangeStart[0].split('-').reverse()).format('MMMM-YYYY');      
+      const dateString = moment(dateRangeStart, 'DD-MM-YYYY HH:mm').format('YYYY-MM');
+      // return dayjs(dateRangeStart.split('-').reverse()).format('MMMM-YYYY');
+      return dayjs(dateString).format('MMMM-YYYY');      
      }
    }
    const convertEndDate = (dateRangeEnd) => {
+    
     if (dateRangeEnd && dateRangeEnd.length > 0 ){
-      return dayjs(dateRangeEnd[0].split('-').reverse()).format('MMMM-YYYY');
+      const dateString = moment(dateRangeEnd, 'DD-MM-YYYY HH:mm').format('YYYY-MM');
+      return dayjs(dateString).format('MMMM-YYYY');
     }
    
    }
@@ -65,7 +70,7 @@ const DateRange = () => {
           <div style={rangeStyles}>
             <span>(</span>
             <span>{              
-              convertStartDate(selectedDateRange[0])            
+              convertStartDate(selectedDateRange[0])           
             }</span>
             <span style={{ marginLeft: '10px', marginRight: '10px' }}> — </span>
             <span>{
