@@ -10,6 +10,7 @@ import {
   getMinDemandObjectKVA,
   getMaxDemandObjectKVA,
   getAvgDemandObjectKVA,
+  combineArrayData,
 } from './genericHelpers';
 
 
@@ -193,14 +194,17 @@ const getSelectionChangeOverLags = (data) => {
 
 // Operating Time
 const getSelectionOperatingTime = (data) => {
-  const selectionOperatingTimeDates = data.map(
-    (eachSelection) => eachSelection.operating_time.chart.dates
-  )[0];
+  const selectionOperatingTimeDates = data.filter(
+    (eachSelection) => eachSelection.is_generator
+  ).map((eachData) => eachData.operating_time.chart.dates);
 
-  const allSelectionsOperatingTimeValues = data.map(
-    (eachSelection) => eachSelection.operating_time.chart.values
-  );
-  const selectionOperatingTimeValues = sumArrayOfArrays(
+  const allSelectionOperatingTimeDates = combineArrayData(selectionOperatingTimeDates)
+
+  const allSelectionsOperatingTimeValues = data.filter(
+    (eachSelection) => eachSelection.is_generator
+  ).map((eachData) => eachData.operating_time.chart.values);
+
+  const selectionOperatingTimeValues = combineArrayData(
     allSelectionsOperatingTimeValues
   );
 
@@ -231,7 +235,7 @@ const getSelectionOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: selectionOperatingTimeDates,
+      dates: allSelectionOperatingTimeDates,
       values: selectionOperatingTimeValues,
     },
     estimated_time_wasted: {

@@ -32,7 +32,7 @@ function SidebarDevice({
   // check if page is not score card
 
   useEffect(() => {
-    const hasNotDisplayUrl = window.location.pathname.includes('score-card') ||  window.location.pathname.includes('report');;
+    const hasNotDisplayUrl =  window.location.pathname.includes('report');;
     setIsDisplayNone(hasNotDisplayUrl);
   }, [window.location.pathname])
   
