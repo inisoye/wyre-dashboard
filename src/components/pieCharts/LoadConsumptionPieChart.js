@@ -4,7 +4,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import ChartDataLabels from 'chartjs-plugin-piechart-outlabels';
 import CompleteDataContext from '../../Context';
 import { CHART_BACKGROUD_COLOR, CHART_BORDER_COLOR } from '../../helpers/constants';
-import { sumArrayOfArrays, sumOfArrayElements } from '../../helpers/genericHelpers';
+import { sumOfArrayElements } from '../../helpers/genericHelpers';
 
 const LoadConsumptionPieChart = ({ loadCunsumptionData }) => {
   const { isMediumScreen } = useContext(CompleteDataContext);
