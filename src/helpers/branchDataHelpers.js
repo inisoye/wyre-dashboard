@@ -5,6 +5,7 @@ import {
   getNestedMaxDemandObject,
   getNestedAvgDemandObject,
   sumArrayOfArrays,
+  combineArrayData,
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
@@ -200,15 +201,23 @@ const getBranchChangeOverLags = (data) => {
 
 // Operating Time
 const getBranchOperatingTime = (data) => {
-  const branchOperatingTimeDates = data.devices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.dates
-  )[0];
 
-  const allDevicesOperatingTimeValues = data.devices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.values
-  );
-  const branchOperatingTimeValues = sumArrayOfArrays(
+  const branchOperatingTimeDates = data.devices.filter(
+    (eachDevice) => eachDevice.score_card.is_generator
+  ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.dates);
+
+  console.log('this is theskjk branchOperatingTimeDates ========== >>>>>>', branchOperatingTimeDates)
+  const allDevicesOperatingTimeValues = data.devices.filter(
+    (eachDevice) => eachDevice.score_card.is_generator
+  ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.values);
+
+  console.log('this is allDevicesOperatingTimeValues allDevicesOperatingTimeValues ========== >>>>>>', allDevicesOperatingTimeValues)
+
+  const branchOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
+  );
+  const sumBranchOperatingTimeDates = combineArrayData(
+    branchOperatingTimeDates
   );
 
   const branchEstimatedTimeWasted = sumOperatingTimeValues(
@@ -226,7 +235,7 @@ const getBranchOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: branchOperatingTimeDates,
+      dates: sumBranchOperatingTimeDates,
       values: branchOperatingTimeValues,
     },
     estimated_time_wasted: {

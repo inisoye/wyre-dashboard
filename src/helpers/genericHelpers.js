@@ -68,13 +68,28 @@ const daysInMonth = () => {
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
-const sumArrayOfArrays = (arrayOfArrays) =>
-  arrayOfArrays.reduce((acc, curr) => {
+const sumArrayOfArrays = (arrayOfArrays) =>{
+  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  return arrayOfArrays && arrayOfArrays?.reduce((acc, curr) => {
     curr.forEach((innerArrayItem, index) => {
       acc[index] = (acc[index] || 0) + innerArrayItem;
     });
     return acc;
   }, []);
+}
+/*
+ * Sum up values a the same index in each array found in a wrapper array
+ * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
+ */
+const combineArrayData = (arrayOfArrays) =>{
+  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  let newArrayData = [];
+  arrayOfArrays && arrayOfArrays?.forEach((newArray) => {
+    newArrayData = newArrayData.concat(newArray);
+  });
+  return newArrayData;
+}
+
 
 const calculateRatio = (avg, peak) => {
   let peak_ratio = Number(avg) / Number(peak)
@@ -543,14 +558,16 @@ const joinChangeOverLagsValues = (parentArray, nestedValue) => {
 
 const sumOperatingTimeValues = (parentArray, nestedValueName) => {
   return parentArray
-    .map(
-      (eachDevice) =>
-        eachDevice.score_card.operating_time[nestedValueName] &&
-        eachDevice.score_card.operating_time[nestedValueName].value
-    )
+    .filter(
+      (eachDevice) => eachDevice.score_card.is_generator
+        
+    ).map((eachFilterDevice) => 
+    eachFilterDevice.score_card.operating_time[nestedValueName] &&
+    eachFilterDevice.score_card.operating_time[nestedValueName].value )
     .filter(Boolean)
     .reduce((acc, curr) => acc + curr, 0);
 };
+
 // round decimple to the legth specifile
 const roundToDecimalPLace = (number, length) => (!Number.isInteger(number)
   ? number.toFixed(length) : number);
@@ -871,6 +888,7 @@ export {
   toSnakeCase,
   checkIsGenStatus,
   sumArrayOfArrays,
+  combineArrayData,
   calculateRatio,
   calculatePercentage,
   calculatePercentageTwoDecimal,

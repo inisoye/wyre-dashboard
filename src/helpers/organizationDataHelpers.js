@@ -3,6 +3,7 @@ import { getDeviceData } from './deviceDataHelper';
 
 import {
   sumArrayOfArrays,
+  combineArrayData,
   getAllOrganizationDevices,
   getModifiedBranchLevelData,
   sumObjectValuesUp,
@@ -306,17 +307,23 @@ const getOrganizationChangeOverLags = (data) => {
 
 // Operating Time
 const getOrganizationOperatingTime = (data) => {
+
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
-  const organizationOperatingTimeDates = allOrganizationDevices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.dates
-  )[0];
+  const organizationOperatingTimeDates = allOrganizationDevices.filter(
+    (eachDevice) => eachDevice.score_card?.is_generator
+  ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.dates);
+  
+  const allDevicesOperatingTimeValues = allOrganizationDevices.filter(
+    (eachDevice) => eachDevice.score_card?.is_generator
+  ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.values );
 
-  const allDevicesOperatingTimeValues = allOrganizationDevices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.values
-  );
-  const organizationOperatingTimeValues = sumArrayOfArrays(
+  const organizationOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
+  );
+
+  const sumOrganizationOperatingTimeDates = combineArrayData(
+    organizationOperatingTimeDates
   );
 
   const organizationEstimatedTimeWasted = sumOperatingTimeValues(
@@ -334,7 +341,7 @@ const getOrganizationOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: organizationOperatingTimeDates,
+      dates: sumOrganizationOperatingTimeDates,
       values: organizationOperatingTimeValues,
     },
     estimated_time_wasted: {
