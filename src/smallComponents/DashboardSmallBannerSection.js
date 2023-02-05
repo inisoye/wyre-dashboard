@@ -8,7 +8,7 @@ function DashboardSmallBannerSection({ name, value, unit }) {
         {/* <span className='small-banner-section__subheading'>This Month</span> */}
       </h3> 
       <p className='small-banner-section__value'>
-        <span className='value'>{value}</span>
+        <span className='value'>{value ? Number(value).toFixed(2) : 0}</span>
         <span className='unit'>{unit}</span>
       </p>
     </div>
