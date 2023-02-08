@@ -20,7 +20,7 @@ function BreadCrumb({ routesArray }) {
       <ol className="breadcrumb">
         {breadCrumbItems}
         <ChevronRight className="breadcrumb-icon" />
-        <DateRange />
+        {!window.location.pathname.includes('report') ? <DateRange /> : ''}
       </ol>
     </>
   );

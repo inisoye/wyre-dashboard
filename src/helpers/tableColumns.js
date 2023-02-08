@@ -123,17 +123,17 @@ export const PowerDemandColumns = (powerFactor) => [
       return max? (max * powerFactor).toFixed(2): 0;
     }
   },
-  {
-    title: 'Average(kVA)',
-    dataIndex: 'max',
-  },
-  {
-    title: 'Average(kW)',
-    dataIndex: 'max',
-    render: (max) => {
-      return max? (max * powerFactor).toFixed(2): 0;
-    }
-  }
+  // {
+  //   title: 'Average(kVA)',
+  //   dataIndex: 'max',
+  // },
+  // {
+  //   title: 'Average(kW)',
+  //   dataIndex: 'max',
+  //   render: (max) => {
+  //     return max? (max * powerFactor).toFixed(2): 0;
+  //   }
+  // }
 ];
 export const CostImplicationColumn = [
   {
