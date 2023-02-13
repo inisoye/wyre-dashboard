@@ -188,6 +188,7 @@ function Report({ match, fetchReportData: fetchReport, fetchBaseLineData: fetchR
     <div >
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
+        {/* <div></div> */}
         <Button onClick={generatePdf}>Download Report</Button>
       </div>
       <div id='page'>
