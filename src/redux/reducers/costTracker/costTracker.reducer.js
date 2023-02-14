@@ -10,6 +10,27 @@ const INITIAL_STATE = {
 
   addFuelConsumptiondata: false,
   addFuelConsumptionDataLoadin: false,
+
+  editedFuelConsumptiondata: false,
+  editFuelConsumptionDataLoadin: false,
+
+  deletedFuelConsumptiondata: false,
+  deleteFuelConsumptionDataLoadin: false,
+
+  editedFuelPurchaseData: false,
+  editFuelPurchaseDataLoadin: false,
+  
+  deletedFuelPurchaseData: false,
+  deleteFuelPurchaseDataLoadin: false,
+  
+  editedPreUtilityPurchaseData: false,
+  editPreUtilityPurchaseDataLoadin: false,
+
+  deletedPreUtilityPurchaseData: false,
+  deletePreUtilityPurchaseDataLoadin: false,
+  
+  editedPostUtilityPurchaseData: false,
+  editPostUtilityPurchaseDataLoadin: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -17,19 +38,17 @@ const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
     case costTrackerType.FETCH_COSTTRACKER_LOADING:
-
       return {
-
         ...state,
         fetchCostTrackerLoading: action.payload,
 
       };
-
     case costTrackerType.FETCH_COSTTRACKER_SUCCESS:
       return {
         ...state,
         costTrackerData: action.payload,
       };
+
     case costTrackerType.FETCH_FUEL_CONSUMPTION_DATA_SUCCESS:
       return {
         ...state,
@@ -40,10 +59,88 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         fuelConsumptionDataLoading: action.payload,
       };
+
     case costTrackerType.ADD_FUEL_CONSUMPTION_DATA_LOADING:
       return {
         ...state,
         addFuelConsumptionLoadin: action.payload,
+      };
+
+    case costTrackerType.EDIT_FUEL_CONSUMPTION_DATA_LOADING:
+      return {
+        ...state,
+        editFuelConsumptionDataLoadin: action.payload,
+      };
+    case costTrackerType.EDIT_FUEL_CONSUMPTION_DATA_SUCCESS:
+      return {
+        ...state,
+        editedFuelConsumptiondata: action.payload,
+      };
+
+    case costTrackerType.DELETE_FUEL_CONSUMPTION_DATA_LOADING:
+      return {
+        ...state,
+        deleteFuelConsumptionDataLoadin: action.payload,
+      };
+    case costTrackerType.DELETE_FUEL_CONSUMPTION_DATA_SUCCESS:
+      return {
+        ...state,
+        deletedFuelConsumptiondata: action.payload,
+      };
+      
+    case costTrackerType.EDIT_FUEL_PURCHASE_DATA_LOADING:
+      return {
+        ...state,
+        editFuelPurchaseDataLoadin: action.payload,
+      };
+    case costTrackerType.EDIT_FUEL_PURCHASE_DATA_SUCCESS:
+      return {
+        ...state,
+        editedFuelPurchaseData: action.payload,
+      };
+
+    case costTrackerType.DELETE_FUEL_PURCHASE_DATA_LOADING:
+      return {
+        ...state,
+        deleteFuelPurchaseDataLoadin: action.payload,
+      };
+    case costTrackerType.DELETE_FUEL_PURCHASE_DATA_SUCCESS:
+      return {
+        ...state,
+        deletedFuelPurchaseData: action.payload,
+      };
+
+    case costTrackerType.EDIT_PRE_UTILITY_PURCHASE_DATA_LOADING:
+      return {
+        ...state,
+        editPreUtilityPurchaseDataLoadin: action.payload,
+      };
+    case costTrackerType.EDIT_PRE_UTILITY_PURCHASE_DATA_SUCCESS:
+      return {
+        ...state,
+        editedPreUtilityPurchaseData: action.payload,
+      };
+
+    case costTrackerType.DELETE_PRE_UTILITY_PURCHASE_DATA_LOADING:
+      return {
+        ...state,
+        deletePreUtilityPurchaseDataLoadin: action.payload,
+      };
+    case costTrackerType.DELETE_PRE_UTILITY_PURCHASE_DATA_SUCCESS:
+      return {
+        ...state,
+        deletedPreUtilityPurchaseData: action.payload,
+      };
+
+    case costTrackerType.EDIT_POST_UTILITY_PURCHASE_DATA_LOADING:
+      return {
+        ...state,
+        editPostUtilityPurchaseDataLoadin: action.payload,
+      };
+    case costTrackerType.EDIT_POST_UTILITY_PURCHASE_DATA_SUCCESS:
+      return {
+        ...state,
+        editedPostUtilityPurchaseData: action.payload,
       };
 
     default: return state;
