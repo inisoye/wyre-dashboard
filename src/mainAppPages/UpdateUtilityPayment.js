@@ -6,19 +6,10 @@ import CompleteDataContext from '../Context';
 import billingHttpServices from '../services/bills'
 import axios from 'axios'
 
-
-import BreadCrumb from '../components/BreadCrumb';
-import Loader from '../components/Loader';
 import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
 import EnvData from '../config/EnvData';
 
-
-const breadCrumbRoutes = [
-  { url: '/', name: 'Home', id: 1 },
-  { url: '/cost-tracker', name: 'Cost Tracker', id: 2 },
-  { url: '#', name: 'Add Bills', id: 3 },
-];
 
 const openNotificationWithIcon = (type, formName) => {
   notification[type]({
@@ -35,7 +26,7 @@ const NotAllowedNotification = () => {
   })
 }
 
-function UpdateUtilityPayment({ match }) {
+function UpdateUtilityPayment({ match, utilityPurchaseData }) {
   const [dieslePurchaseForm] = Form.useForm();
   const [prePaidForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
@@ -46,9 +37,11 @@ function UpdateUtilityPayment({ match }) {
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
 
-  const { setCurrentUrl, isAuthenticatedDataLoading, token, organization, userId } = useContext(
+  const { setCurrentUrl, token, organization, userId } = useContext(
     CompleteDataContext
   );
+
+  console.log("UTILITY PURCHASE DATA>>>>>>>>>", utilityPurchaseData);
 
 
   const data = {
@@ -263,17 +256,8 @@ function UpdateUtilityPayment({ match }) {
     }
   };
 
-  // run loader if data is loading
-  if (isAuthenticatedDataLoading) {
-    return <Loader />;
-  }
-
   return (
     <>
-      <div className="breadcrumb-and-print-buttons">
-        <BreadCrumb routesArray={breadCrumbRoutes} />
-      </div>
-
       <div className="cost-tracker-forms-content-wrapper">
 
           <h1 className="center-main-heading">Edit Payment Bills</h1>

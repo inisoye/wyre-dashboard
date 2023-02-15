@@ -7,21 +7,12 @@ import CompleteDataContext from '../Context';
 import billingHttpServices from '../services/bills'
 import axios from 'axios'
 
-
-import BreadCrumb from '../components/BreadCrumb';
-import Loader from '../components/Loader';
 import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
 import EnvData from '../config/EnvData';
 import { updateFuelPurchaseData } from '../redux/actions/constTracker/costTracker.action';
 import { connect } from 'react-redux';
 
-
-const breadCrumbRoutes = [
-  { url: '/', name: 'Home', id: 1 },
-  { url: '/cost-tracker', name: 'Cost Tracker', id: 2 },
-  { url: '#', name: 'Add Bills', id: 3 },
-];
 
 const openNotificationWithIcon = (type, formName) => {
   notification[type]({
@@ -285,17 +276,8 @@ function UpdateDieselPurchase({ match, dieselPurchaseData }) {
     }
   };
 
-  // run loader if data is loading
-  if (isAuthenticatedDataLoading) {
-    return <Loader />;
-  }
-
   return (
     <>
-      <div className="breadcrumb-and-print-buttons">
-        <BreadCrumb routesArray={breadCrumbRoutes} />
-      </div>
-
       <div className="cost-tracker-forms-content-wrapper">
 
           <h1 className="center-main-heading">Update Diesel Bills</h1>
