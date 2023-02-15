@@ -73,6 +73,7 @@
     ]
   },
   "devDependencies": {
+    "@iconify/react": "^4.1.0",
     "json-server": "^0.16.3",
     "redux-devtools": "^3.7.0"
   }

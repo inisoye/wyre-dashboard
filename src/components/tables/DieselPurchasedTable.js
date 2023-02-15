@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import CompleteDataContext from '../../Context';
 
-import { Table, Typography } from 'antd';
+import { Button, Table, Typography, Popconfirm, Dropdown } from 'antd';
+import { InfoCircleOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
+import { Icon } from '@iconify/react';
 import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
 const { Text } = Typography;
-const DieselPurchasedTable = ({ data, isLoading }) => {
+const DieselPurchasedTable = ({ data, isLoading, setEditDieselPurchaseModal, setDieselPurchaseData }) => {
   const {
     isMediumScreen
   } = useContext(CompleteDataContext);
+  const [dataSources, setDataSources] = useState({})
 
   const getTariff = data?.map(element => {
     let amount = (element.price_per_litre * element.quantity) || 0;
@@ -16,8 +19,77 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
       amount: amount,
     }
     return newData
-  });
+  });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
+  const handleDelete = (key) => {
+    const newData = dataSources.filter((item) => item.key !== key);
+    setDataSources(newData);
+  };
+
+  const itemData = (record) => {
+    return [
+      {
+        key: '1',
+        label: (
+          <>
+            <EditOutlined />
+            <a target="_blank" onClick={(e) => {
+              e.preventDefault();
+              setEditDieselPurchaseModal(true);
+              setDieselPurchaseData(record)
+            }} rel="noopener noreferrer">
+              Edit Diesel Entry
+            </a>
+          </>
+
+        ),
+      },
+      {
+        key: '2',
+        label: (<> {
+          <>
+            <Icon icon="ant-design:delete-outlined" />
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+              <a>Delete Diesel Entry</a>
+            </Popconfirm>
+          </>
+        }
+        </>
+
+        ),
+      }
+    ];
+  }
+
+  const optionsColumn = () => ({
+    key: 'options',
+    title: 'Options',
+    width: '10%',
+    dataIndex: 'options',
+    render: (_, record) => {
+      const items = itemData(record);
+      return (
+        <Dropdown
+          trigger={['click']}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          // placement="topLeft"
+          menu={{
+            items
+          }}
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More
+            {' '}
+            <DownOutlined />
+          </a>
+          {/* <Button>topRight</Button> */}
+        </Dropdown>
+      )
+
+    }
+
+
+  });
 
   const columns = [
     {
@@ -50,7 +122,9 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
       render: (value) => {
         return value? value.toFixed(2) : 0;
       }
-    }
+    },
+    // editFunctionButtn()
+    optionsColumn()
   ];
 
   let quantitySum = 0;
