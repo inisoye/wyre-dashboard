@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import moment from 'moment';
-import { Modal, Table, Typography } from 'antd';
+import { Modal, Table, Typography, Button, Dropdown, Popconfirm } from 'antd';
+import { InfoCircleOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
+import { Icon } from '@iconify/react';
+import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
 const { Text } = Typography;
 
 
@@ -14,6 +17,9 @@ const DieselOverviewCostTrackerTable = (
   const [modalOpener, setModalOpener] = useState(false);
   const [modalData, setModalData] = useState(false);
   const [fuelDataLoading, setFuelDataLoading] = useState(false);
+  const [editDieselEntryModal, setEditDieselEntryModal] = useState(false)
+  const [dieselEntryData, setDieselEntryData] = useState({})
+  const [dataSources, setDataSources] = useState({})
 
   const fetchFuelData = async (date) => {
     setModalData(false)
@@ -28,7 +34,12 @@ const DieselOverviewCostTrackerTable = (
     setFuelDataLoading(true);
     const fuelData = await fetchFuelConsumptionInfo(queryString);
     if (fuelData && fuelData.fullfilled) {
-      setModalData(fuelData.data);
+      console.log("fuel-data", fuelData.data);
+      const newDattta = fuelData.data.map((elementData) =>{
+        return {...elementData.data, id: elementData.id}
+      })
+      console.log('This is NewData', newDattta);
+      setModalData(newDattta);
     }
     setFuelDataLoading(false);
   }
@@ -92,7 +103,96 @@ const DieselOverviewCostTrackerTable = (
     },
   ];
 
+  const editFunctionButtn = () => ({
+    key: 'Action',
+    title: 'Action',
+    width: '25%',
+    dataIndex: 'action',
+    render: (_, record) => {
+      return (
+        <Button 
+          onClick={() => {
+            setEditDieselEntryModal(true)
+            setDieselEntryData(record)
+            console.log('This is the EDIT-DIESEL-ENTRY DATA', record)
+          }}
+        >
+          Edit
+        </Button>
+      )
 
+    },
+  });
+
+  const handleDelete = (key) => {
+    const newData = dataSources.filter((item) => item.key !== key);
+    setDataSources(newData);
+  };
+
+  const itemData = (record) => {
+    return [
+      {
+        key: '1',
+        label: (
+          <>
+            <EditOutlined />
+            <a target="_blank" onClick={(e) => {
+              e.preventDefault();
+              setEditDieselEntryModal(true);
+              setDieselEntryData(record)
+            }} rel="noopener noreferrer">
+              Edit Diesel Entry
+            </a>
+          </>
+
+        ),
+      },
+      {
+        key: '2',
+        label: (<> {
+          <>
+            <Icon icon="ant-design:delete-outlined" />
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+              <a>Delete Diesel Entry</a>
+            </Popconfirm>
+          </>
+        }
+        </>
+
+        ),
+      }
+    ];
+  }
+
+  const optionsColumn = () => ({
+    key: 'options',
+    title: 'Options',
+    width: '10%',
+    dataIndex: 'options',
+    render: (_, record) => {
+      const items = itemData(record);
+      return (
+        <Dropdown
+          trigger={['click']}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          // placement="topLeft"
+          menu={{
+            items
+          }}
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More
+            {' '}
+            <DownOutlined />
+          </a>
+          {/* <Button>topRight</Button> */}
+        </Dropdown>
+      )
+
+    }
+
+
+  });
 
   const fuelconsumptionColum = [
     {
@@ -127,6 +227,7 @@ const DieselOverviewCostTrackerTable = (
       dataIndex: 'energy_per_litre',
       width: '15%',
     },
+    optionsColumn()
   ];
 
 
@@ -203,6 +304,19 @@ const DieselOverviewCostTrackerTable = (
           );
         }}
         footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`} />
+        <Modal
+          open={editDieselEntryModal}
+          onOk={() => setEditDieselEntryModal(false)}
+          onCancel={() => setEditDieselEntryModal(false)}
+          setDieselEntryData={setDieselEntryData}
+          width={1000} 
+          footer={null}
+        >
+          <UpdateDieselEntry 
+            dieselEntryData={dieselEntryData}
+            setModal={setEditDieselEntryModal}
+          />
+        </Modal>
       <Modal
         visible={modalOpener}
         onCancel={() => setModalOpener(false)}
