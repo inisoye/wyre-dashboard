@@ -29,7 +29,7 @@ const NotAllowedNotification = () => {
   })
 }
 
-function UpdateDieselPurchase({ match, dieselPurchaseData }) {
+function UpdateDieselPurchase({ match, dieselPurchaseData, updateFuelPurchaseData: editDieselPayment }) {
   const [dieslePurchaseForm] = Form.useForm();
   const [prePaidForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
@@ -39,7 +39,6 @@ function UpdateDieselPurchase({ match, dieselPurchaseData }) {
   const [prePaidLoading, setPrePaidLoading] = React.useState(false);
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
-  console.log('DIESEL-DATA>>>>>>>>>>>>>', dieselPurchaseData);
 
   const { setCurrentUrl, isAuthenticatedDataLoading, token, organization, userId } = useContext(
     CompleteDataContext
@@ -129,37 +128,18 @@ function UpdateDieselPurchase({ match, dieselPurchaseData }) {
     postPaidForm.setFieldsValue({ tariff: newTariff })
   }
 
-  const onPurchaseTrackerSubmit = async ({
-    quantity,
-    pricePerLitre,
-    date,
-    fuelType,
-  }) => {
-
-    const DieselCostData = {
+  const onPurchaseTrackerSubmit = async ({quantity, price_per_litre, date, fuelType}) => {
+    const id = dieselPurchaseData.id
+    const parameters = {
       branch: defaultBranch,
+      id,
       quantity,
-      price_per_litre: pricePerLitre,
-      date: date.format('YYYY-MM-DD')
+      price_per_litre,
+      date: date.format('YYYY-MM-DD'),
+      fuelType
     }
-    console.log('Checking The SUBMIT', DieselCostData);
-    // setPurchaseLoading(true);
 
-    // billingHttpServices
-    //   .addCostForDiesel(DieselCostData, token, userId, fuelType)
-    //   .then(() => {
-    //     openNotificationWithIcon('success', 'fuel purchase tracker');
-    //     dieslePurchaseForm.resetFields();
-    //     setPurchaseLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //     setPurchaseLoading(false);
-    //     message('An error occured, Please try again!!')
-    //   })
-
-    const request = await updateFuelPurchaseData(DieselCostData, token, userId, fuelType);
-
+    const request = await editDieselPayment(userId, parameters);
       if (request.fullfilled) {
         openNotificationWithIcon('success', 'fuel purchase tracker');
         return dieslePurchaseForm.resetFields();

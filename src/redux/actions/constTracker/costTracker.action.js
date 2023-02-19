@@ -102,12 +102,11 @@ export const deleteFuelConsumptionData = (id, parameters) => async (dispatch) =>
   }
 };
 
-export const updateFuelPurchaseData = (id, parameters) => async (dispatch) => {
+export const updateFuelPurchaseData = (userId, parameters) => async (dispatch) => {
   dispatch(editFuelPUrchaseDataLoading());
-  // const requestUrl = `update/${id}`;
-  const requestUrl = `cost_tracker/33/add_cost/post-paid/`;
+  const requestUrl = `cost_tracker/${userId}/add_cost/diesel/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.put(requestUrl, parameters);
     dispatch(editFuelPUrchaseDataSuccess(response.data.data));
     dispatch(editFuelPUrchaseDataLoading(false))
     return { fullfilled: true, message: response.data.detail }
@@ -117,11 +116,11 @@ export const updateFuelPurchaseData = (id, parameters) => async (dispatch) => {
   }
 };
 
-export const deleteFuelPurchaseData = (id, parameters) => async (dispatch) => {
+export const deleteFuelPurchaseData = (userId, parameters) => async (dispatch) => {
   dispatch(deleteFuelPUrchaseDataLoading());
-  const requestUrl = `update/${id}`;
+  const requestUrl = `cost_tracker/${userId}/add_cost/diesel/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.delete(requestUrl, parameters);
     dispatch(deleteFuelPUrchaseDataSuccess(response.data.data));
     dispatch(deleteFuelPUrchaseDataLoading(false))
     return { fullfilled: true, message: response.data.detail }
@@ -131,11 +130,11 @@ export const deleteFuelPurchaseData = (id, parameters) => async (dispatch) => {
   }
 };
 
-export const updatePrepaidUtilityPaymentData = (id, parameters) => async (dispatch) => {
+export const updatePrepaidUtilityPaymentData = (userId, parameters) => async (dispatch) => {
   dispatch(editPreUtilityPurchaseDataLoading());
-  const requestUrl = `update/${id}`;
+  const requestUrl = `cost_tracker/${userId}/add_cost/pre-paid/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.put(requestUrl, parameters);
     dispatch(editPreUtilityPurchaseDataSuccess(response.data.data));
     dispatch(editPreUtilityPurchaseDataLoading(false))
     return { fullfilled: true, message: response.data.detail }
@@ -145,11 +144,11 @@ export const updatePrepaidUtilityPaymentData = (id, parameters) => async (dispat
   }
 };
 
-export const deletePrepaidUtilityPaymentData = (id, parameters) => async (dispatch) => {
+export const deletePrepaidUtilityPaymentData = (userId, parameters) => async (dispatch) => {
   dispatch(deletePreUtilityPurchaseDataLoading());
-  const requestUrl = `update/${id}`;
+  const requestUrl = `cost_tracker/${userId}/add_cost/pre-paid/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.delete(requestUrl, parameters);
     dispatch(deletePreUtilityPurchaseDataSuccess(response.data.data));
     dispatch(deletePreUtilityPurchaseDataLoading(false))
     return { fullfilled: true, message: response.data.detail }
@@ -159,11 +158,11 @@ export const deletePrepaidUtilityPaymentData = (id, parameters) => async (dispat
   }
 };
 
-export const updatePostpaidUtilityPaymentData = (id, parameters) => async (dispatch) => {
+export const updatePostpaidUtilityPaymentData = (userId, parameters) => async (dispatch) => {
   dispatch(editPostUtilityPurchaseDataLoading());
-  const requestUrl = `update/${id}`;
+  const requestUrl = `cost_tracker/${userId}/add_cost/post-paid/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.put(requestUrl, parameters);
     dispatch(editPostUtilityPurchaseDataSuccess(response.data.data));
     dispatch(editPostUtilityPurchaseDataLoading(false))
     return { fullfilled: true, message: response.data.detail }

@@ -50,11 +50,11 @@ export const deleteFuelDataSuccess = payload => ({
 });
 
 export const editFuelPUrchaseDataLoading = (payload = true) => ({
-  type: costTrackerType.EDIT_FUEL_PURCHASE_LOADING,
+  type: costTrackerType.EDIT_FUEL_PURCHASE_DATA_LOADING,
   payload,
 });
 export const editFuelPUrchaseDataSuccess = payload => ({
-  type: costTrackerType.EDIT_FUEL_PURCHASE_SUCCESS,
+  type: costTrackerType.EDIT_FUEL_PURCHASE_DATA_SUCCESS,
   payload,
 });
 
