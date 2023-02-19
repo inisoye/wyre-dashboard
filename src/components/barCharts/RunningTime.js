@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
+import { convertDecimalTimeToNormal, getLastArrayItems } from '../../helpers/genericHelpers';
 
 const RunningTime = ({ runningTimeData, dataMessage }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
@@ -21,7 +21,7 @@ const RunningTime = ({ runningTimeData, dataMessage }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']]) ;
         },
       },
       footerFontStyle: 'normal',

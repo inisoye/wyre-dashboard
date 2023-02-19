@@ -1,4 +1,5 @@
 import React from 'react';
+import { convertDecimalTimeToNormal } from '../helpers/genericHelpers';
 import { numberFormatter } from '../helpers/numberFormatter';
 import DeviceTypeIconSelector from './DeviceTypeIconSelector';
 
@@ -22,7 +23,7 @@ function DashBoardAmountUsed(
                 </div>
                 <div className="total-right-energy-price total-energy-price__common">
                     <p className="total-energy-price__kwh__text">{numberFormatter(totalKWH) || 0}kWh</p>
-                    <p className="total-energy-price__heading__text__hrs" >{timeInUse || 0}hrs</p>
+                    <p className="total-energy-price__heading__text__hrs" >{convertDecimalTimeToNormal(timeInUse)  || 0}</p>
                 </div>
             </div>
             <div className="total-energy-price__footer total-energy-price__common">

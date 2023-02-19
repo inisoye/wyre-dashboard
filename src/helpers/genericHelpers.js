@@ -68,7 +68,7 @@ const daysInMonth = () => {
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
-const sumArrayOfArrays = (arrayOfArrays) =>{
+const sumArrayOfArrays = (arrayOfArrays) => {
   // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
   return arrayOfArrays && arrayOfArrays?.reduce((acc, curr) => {
     curr.forEach((innerArrayItem, index) => {
@@ -81,7 +81,7 @@ const sumArrayOfArrays = (arrayOfArrays) =>{
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
-const combineArrayData = (arrayOfArrays) =>{
+const combineArrayData = (arrayOfArrays) => {
   // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
   let newArrayData = [];
   arrayOfArrays && arrayOfArrays?.forEach((newArray) => {
@@ -120,7 +120,7 @@ const getGeneratorSizeMessage = (percent) => {
   const ratio = (percent / 100);
   let message;
   let color;
-  if(ratio === 1){
+  if (ratio === 1) {
     message = 'Not In Use';
     color = '#fa0303';
   }
@@ -307,7 +307,7 @@ const getNestedMinDemandObjectKVA = (allDeviceData, nestedObject, powerFactorDat
   const valuesArray = Object.values(allDeviceData).filter(
     (eachItem) => eachItem[nestedObject].min_demand.value > 0
   ).map((eachItem) => {
-    const powerFactor = powerFactorData&& powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+    const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
     return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf ? (eachItem[nestedObject].min_demand.value / powerFactor.data.data.avg_pf)
       : (eachItem[nestedObject].min_demand.value / 0.78);
   }
@@ -349,7 +349,7 @@ const getNestedMaxDemandObject = (array, nestedObject) => {
 const getNestedMaxDemandObjectKva = (allDeviceData, nestedObject, powerFactorData) => {
   const valuesArray = Object.values(allDeviceData).map(
     (eachItem) => {
-      const powerFactor =  powerFactorData&& powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+      const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
       return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf ? (eachItem[nestedObject].max_demand.value / powerFactor.data.data.avg_pf)
         : (eachItem[nestedObject].max_demand.value / 0.78);
       // return eachItem[nestedObject].max_demand.value;
@@ -395,7 +395,7 @@ const getNestedAvgDemandObject = (array, nestedObject) => {
 const getNestedAvgDemandObjectKva = (allDeviceData, nestedObject, powerFactorData) => {
   const valuesArray = Object.values(allDeviceData).map(
     (eachItem) => {
-      const powerFactor =  powerFactorData&& powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
+      const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === eachItem.device_id);
       return powerFactor && powerFactor.data && powerFactor.data.data.avg_pf ? (eachItem[nestedObject].avg_demand.value / powerFactor.data.data.avg_pf)
         : (eachItem[nestedObject].avg_demand.value / 0.8);
 
@@ -560,10 +560,10 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
   return parentArray
     .filter(
       (eachDevice) => eachDevice.score_card.is_generator
-        
-    ).map((eachFilterDevice) => 
-    eachFilterDevice.score_card.operating_time[nestedValueName] &&
-    eachFilterDevice.score_card.operating_time[nestedValueName].value )
+
+    ).map((eachFilterDevice) =>
+      eachFilterDevice.score_card.operating_time[nestedValueName] &&
+      eachFilterDevice.score_card.operating_time[nestedValueName].value)
     .filter(Boolean)
     .reduce((acc, curr) => acc + curr, 0);
 };
@@ -877,6 +877,12 @@ const sortByDateTime = (data) => {
     return new Date(`${b.date} ${b.time}`) - new Date(`${a.date} ${a.time}`);
   });
 }
+// data to combine multiple dates data of the same month
+const convertDecimalTimeToNormal = (decimalTimeString) => {
+  const n = new Date(0,0);
+  n.setSeconds(+decimalTimeString * 60 * 60);
+  return (n.toTimeString().slice(0, 8));
+}
 
 
 export {
@@ -944,5 +950,6 @@ export {
   sortByDateTime,
   getNestedMinDemandObjectKVA,
   getNestedMaxDemandObjectKva,
-  getNestedAvgDemandObjectKva
+  getNestedAvgDemandObjectKva,
+  convertDecimalTimeToNormal
 };

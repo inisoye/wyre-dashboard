@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CHART_BACKGROUD_COLOR } from '../../helpers/constants';
+import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 
 
 
@@ -36,7 +37,7 @@ function LoadOverviewDataTable({ device, index }) {
           </p>
           <hr />
           <p>
-            Running Time: {device.usage_hour || 0}Hrs
+            Running Time: {convertDecimalTimeToNormal(device.usage_hour) || 0}
           </p>
         </div>
       </article>
