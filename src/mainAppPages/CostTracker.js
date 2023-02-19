@@ -15,9 +15,12 @@ import EnergyConsumptionMultipleChart from '../components/barCharts/EnergyConsum
 import Loader from '../components/Loader';
 
 // Tooltips
-import { Tooltip } from 'antd';
+import { Modal, Tooltip } from 'antd';
 import InformationIcon from '../icons/InformationIcon';
 import { COST_TRACKER_TOOLTIP_MESSAGES } from '../components/toolTips/Cost_Tracker_Tooltip_Messages';
+import AddBills from './AddBills';
+import UpdateDieselPurchase from './UpdateDieselPurchase';
+import UpdateUtilityPayment from './UpdateUtilityPayment';
 
 
 const breadCrumbRoutes = [
@@ -30,9 +33,12 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
   const [overviewData, setOverviewData] = useState([]);
   const [branchInfo, setBranchInfo] = useState(false);
   const [baseLineData, setBaseLineData] = useState(false);
+  const [editDieselPurchaseModal, setEditDieselPurchaseModal] = useState(false)
+  const [dieselPurchaseData, setDieselPurchaseData] = useState({})
+  const [utilityPurchaseData, setUtilityPurchaseData] = useState({})
+  const [editUtilityPurchaseModal, setEditUtilityPurchaseModal] = useState(false)
   const costTracker = useSelector((state) => state.costTracker);
   const sideBar = useSelector((state) => state.sideBar);
-
 
   const subHeaderStyle = {
     marginLeft: '20px',
@@ -137,7 +143,25 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           Diesel Purchased for {e[0]}
         </h3>
 
-        <DieselPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].diesel} />
+        <DieselPurchasedTable 
+          isLoading={costTracker.fetchCostTrackerLoading} 
+          data={e[1].diesel} 
+          userId={userData.user_id}
+          setEditDieselPurchaseModal={setEditDieselPurchaseModal}
+          setDieselPurchaseData={setDieselPurchaseData}
+        />
+        <Modal
+          open={editDieselPurchaseModal}
+          onOk={() => setEditDieselPurchaseModal(false)}
+          onCancel={() => setEditDieselPurchaseModal(false)}
+          width={1000} 
+          footer={null}
+        >
+          <UpdateDieselPurchase
+            setModal={setEditDieselPurchaseModal} 
+            dieselPurchaseData={dieselPurchaseData}
+          />
+        </Modal>
       </article>
     ))
   )
@@ -160,7 +184,26 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           Utility Payments for {e[0]}
         </h3>
 
-        <UtilityPurchasedTable isLoading={costTracker.fetchCostTrackerLoading} data={e[1].utility} />
+        <UtilityPurchasedTable 
+          isLoading={costTracker.fetchCostTrackerLoading} 
+          data={e[1].utility} 
+          userId={userData.user_id}
+          setEditUtilityPurchaseModal={setEditUtilityPurchaseModal}
+          setUtilityPurchaseData={setUtilityPurchaseData}
+        />
+
+       <Modal
+          open={editUtilityPurchaseModal}
+          onOk={() => setEditUtilityPurchaseModal(false)}
+          onCancel={() => setEditUtilityPurchaseModal(false)}
+          width={1000} 
+          footer={null}
+        >
+          <UpdateUtilityPayment 
+            utilityPurchaseData={utilityPurchaseData}
+            setModal={setEditUtilityPurchaseModal}
+          />
+        </Modal>
       </article>
     ))
   )

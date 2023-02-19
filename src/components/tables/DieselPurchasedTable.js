@@ -1,13 +1,26 @@
 import React, { useContext } from 'react'
 import CompleteDataContext from '../../Context';
 
-import { Table, Typography } from 'antd';
+import { connect } from 'react-redux';
+import { deleteFuelPurchaseData } from '../../redux/actions/constTracker/costTracker.action';
+
+import { notification, Table, Typography, Popconfirm, Dropdown } from 'antd';
+import { EditOutlined, DownOutlined } from '@ant-design/icons';
+import { Icon } from '@iconify/react';
 import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
+
+
+const openNotificationWithIcon = (type, formName) => {
+  notification[type]({
+    message: 'Bill Deleted',
+    description: `The ${formName} has been successfully deleted`,
+  });
+};
+
 const { Text } = Typography;
-const DieselPurchasedTable = ({ data, isLoading }) => {
-  const {
-    isMediumScreen
-  } = useContext(CompleteDataContext);
+
+const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseModal, setDieselPurchaseData, deleteFuelPurchaseData:deleteDieselPayment }) => {
+  const {isMediumScreen} = useContext(CompleteDataContext);
 
   const getTariff = data?.map(element => {
     let amount = (element.price_per_litre * element.quantity) || 0;
@@ -16,8 +29,80 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
       amount: amount,
     }
     return newData
-  });
+  });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+  
+  const handleDelete = async (id) => {
+    const parameter = {
+      id
+    }
+    const request = await deleteDieselPayment(userId, parameter)
+    if (request.fullfilled) {
+      openNotificationWithIcon('success', 'fuel purchase tracker');
+    }
+  };
 
+  const itemData = (record) => {
+    return [
+      {
+        key: '1',
+        label: (
+          <>
+            <EditOutlined />
+            <a target="_blank" onClick={(e) => {
+              e.preventDefault();
+              setEditDieselPurchaseModal(true);
+              setDieselPurchaseData(record)
+            }} rel="noopener noreferrer">
+              Edit Diesel Entry
+            </a>
+          </>
+
+        ),
+      },
+      {
+        key: '2',
+        label: (<> {
+          <>
+            <Icon icon="ant-design:delete-outlined" />
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+              <a>Delete Diesel Entry</a>
+            </Popconfirm>
+          </>
+        }
+        </>
+
+        ),
+      }
+    ];
+  }
+
+  const optionsColumn = () => ({
+    key: 'options',
+    title: 'Options',
+    width: '10%',
+    dataIndex: 'options',
+    render: (_, record) => {
+      const items = itemData(record);
+      return (
+        <Dropdown
+          trigger={['click']}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          menu={{
+            items
+          }}
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More
+            {' '}
+            <DownOutlined />
+          </a>
+        </Dropdown>
+      )
+
+    }
+
+
+  });
 
   const columns = [
     {
@@ -50,7 +135,8 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
       render: (value) => {
         return value? value.toFixed(2) : 0;
       }
-    }
+    },
+    optionsColumn()
   ];
 
   let quantitySum = 0;
@@ -101,4 +187,8 @@ const DieselPurchasedTable = ({ data, isLoading }) => {
   )
 }
 
-export default DieselPurchasedTable
+const mapDispatchToProps = {
+  deleteFuelPurchaseData
+}
+
+export default connect(null, mapDispatchToProps)(DieselPurchasedTable)
