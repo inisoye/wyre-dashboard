@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment';
 import { Modal, Table, Typography } from 'antd';
+import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 const { Text } = Typography;
 
 
@@ -111,6 +112,7 @@ const DieselOverviewCostTrackerTable = (
       title: 'Hours',
       dataIndex: 'hours_of_use',
       width: '15%',
+      render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
     },
     {
       title: 'Energy(kWh)',
