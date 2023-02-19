@@ -2,6 +2,9 @@ import React, { useEffect, useContext } from 'react';
 import { notification, Form, Spin, message } from 'antd';
 
 import CompleteDataContext from '../Context';
+import moment from 'moment'
+
+import { connect, Connect } from 'react-redux';
 
 import billingHttpServices from '../services/bills'
 import axios from 'axios'
@@ -9,6 +12,7 @@ import axios from 'axios'
 import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
 import EnvData from '../config/EnvData';
+import { updatePostpaidUtilityPaymentData, updatePrepaidUtilityPaymentData } from '../redux/actions/constTracker/costTracker.action';
 
 
 const openNotificationWithIcon = (type, formName) => {
@@ -26,7 +30,7 @@ const NotAllowedNotification = () => {
   })
 }
 
-function UpdateUtilityPayment({ match, utilityPurchaseData }) {
+function UpdateUtilityPayment({ match, utilityPurchaseData, updatePrepaidUtilityPaymentData:updatePrepaidPayment, updatePostpaidUtilityPaymentData:updatePostpaidPayment }) {
   const [dieslePurchaseForm] = Form.useForm();
   const [prePaidForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
@@ -40,9 +44,6 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
   const { setCurrentUrl, token, organization, userId } = useContext(
     CompleteDataContext
   );
-
-  console.log("UTILITY PURCHASE DATA>>>>>>>>>", utilityPurchaseData);
-
 
   const data = {
     quantity: {
@@ -101,6 +102,25 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
     }
   }, [match, userId]);
 
+  useEffect(() => {
+    prePaidForm.setFieldsValue({
+      amount: utilityPurchaseData.amount,
+      date: moment(utilityPurchaseData.date),
+      tariff: utilityPurchaseData.tariff,
+      value: utilityPurchaseData.value
+    })
+  }, [])
+
+  useEffect(() => {
+    postPaidForm.setFieldsValue({
+      amount: utilityPurchaseData.amount,
+      date: moment(utilityPurchaseData.date),
+      end_date: moment(utilityPurchaseData.date),
+      tariff: utilityPurchaseData.tariff,
+      value: utilityPurchaseData.value
+    })
+  }, [])
+
 
   let defaultBranch;
   if (organization.branches) {
@@ -120,104 +140,61 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
     postPaidForm.setFieldsValue({ tariff: newTariff })
   }
 
-  const onPurchaseTrackerSubmit = ({
-    quantity,
-    pricePerLitre,
-    date,
-    fuelType,
-  }) => {
 
-    const DieselCostData = {
-      branch: defaultBranch,
-      quantity,
-      price_per_litre: pricePerLitre,
-      date: date.format('YYYY-MM-DD')
-    }
-    setPurchaseLoading(true);
+  // const onUsedTrackerSubmit = ({ date, balance, flowMeterUpload }) => {
+  //   if (defaultBranch != null) {
+  //     setEOMFlowReadingLoading(true);
+  //     let formData = new FormData()
+  //     formData.append('branch', defaultBranch)
+  //     formData.append('quantity', balance)
+  //     formData.append('date', date.format('YYYY-MM-DD'))
+  //     formData.append('image', flowMeterUpload[0])
 
-    billingHttpServices
-      .addCostForDiesel(DieselCostData, token, userId, fuelType)
-      .then(() => {
-        openNotificationWithIcon('success', 'fuel purchase tracker');
-        dieslePurchaseForm.resetFields();
-        setPurchaseLoading(false);
-      })
-      .catch((err) => {
-        console.log(err)
-        setPurchaseLoading(false);
-        message('An error occured, Please try again!!')
-      })
-  };
+  //     axios.post(`${EnvData.REACT_APP_API_URL}add_month_end_cost/${userId}/`, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `bearer ${token}`,
+  //       }
+  //     }).then(res => {
+  //       setEOMFlowReadingLoading(false);
+  //       openNotificationWithIcon('success', 'Form submitted successfully');
+  //       EOMBalanceForm.resetFields()
+  //     }).catch(e => {
+  //       setEOMFlowReadingLoading(false);
+  //       openNotificationWithIcon('error', 'An error occured,Please try again!!!')
+  //       EOMBalanceForm.resetFields()
+  //     })
+  //   }
+  //   else {
+  //     NotAllowedNotification();
+  //   }
+  // }
 
-  const onUsedTrackerSubmit = ({ date, balance, flowMeterUpload }) => {
+  const onUtilityPaymentTrackerPreSubmit = async ({amount, date, tariff, value}) => {
+    const id = utilityPurchaseData.id
     if (defaultBranch != null) {
-      setEOMFlowReadingLoading(true);
-      let formData = new FormData()
-      formData.append('branch', defaultBranch)
-      formData.append('quantity', balance)
-      formData.append('date', date.format('YYYY-MM-DD'))
-      formData.append('image', flowMeterUpload[0])
-
-      axios.post(`${EnvData.REACT_APP_API_URL}add_month_end_cost/${userId}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `bearer ${token}`,
-        }
-      }).then(res => {
-        setEOMFlowReadingLoading(false);
-        openNotificationWithIcon('success', 'Form submitted successfully');
-        EOMBalanceForm.resetFields()
-      }).catch(e => {
-        setEOMFlowReadingLoading(false);
-        openNotificationWithIcon('error', 'An error occured,Please try again!!!')
-        EOMBalanceForm.resetFields()
-      })
-    }
-    else {
-      NotAllowedNotification();
-    }
-  }
-
-  const onUtilityPaymentTrackerPreSubmit = ({
-    amount,
-    date,
-    tariff,
-    value,
-  }) => {
-    if (defaultBranch != null) {
-      setPrePaidLoading(true);
-      const prePaidData = {
+      const parameterPrepaid = {
         branch: defaultBranch,
+        id,
         value,
         amount,
         tariff,
         date: date.format('YYYY-MM-DD')
       }
-      billingHttpServices
-        .addCostPrePaid(prePaidData, token, userId)
-        .then(() => {
-          setPrePaidLoading(false);
-          prePaidForm.resetFields()
+      const request = await updatePrepaidPayment(userId, parameterPrepaid)
+        if(request.fullfilled) { 
           openNotificationWithIcon('success', 'pre-paid utility payment tracker');
-        })
-        .catch(err => {
-          setPrePaidLoading(false);
-          console.log(err.response)
-          alert(err.response, 'Please try again!!!')
-        })
+          return prePaidForm.resetFields()
+        }
+          openNotificationWithIcon('failed', 'something went wrong')
+          return prePaidForm.resetFields()
     }
     else {
       NotAllowedNotification();
     }
   };
 
-  const onUtilityPaymentTrackerPostSubmit = ({
-    amount,
-    date,
-    tariff,
-    value,
-  }) => {
-
+  const onUtilityPaymentTrackerPostSubmit = async ({amount, date, tariff, value}) => {
     const convertDate = (dateObjects) => {
       let formatObject = dateObjects.map((eachDateObject) => {
         return eachDateObject.format('YYYY-MM-DD')
@@ -226,11 +203,11 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
     }
 
     let FormattedDate = convertDate(date);
-
+    const id = utilityPurchaseData.id
     if (defaultBranch != null) {
-      setPostPaidLoading(true);
-      const postPaidData = {
+      const parameterPostpaid = {
         branch: defaultBranch,
+        id,
         value,
         amount,
         tariff,
@@ -238,18 +215,13 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
         end_date: FormattedDate[1]
       }
 
-      billingHttpServices
-        .addCostPostPaid(postPaidData, token, userId)
-        .then(() => {
-          setPostPaidLoading(false);
-          // reset the form fields
-          postPaidForm.resetFields();
-          openNotificationWithIcon('success', 'post-paid utility payment tracker');
-        })
-        .catch(error => {
-          setPostPaidLoading(false);
-          openNotificationWithIcon('error', 'An error occured,Please try again!!!')
-        })
+      const request = await updatePostpaidPayment(userId, parameterPostpaid)
+      if (request.fullfilled) {
+        openNotificationWithIcon('success', 'post-paid utility payment tracker');
+        return postPaidForm.resetFields();
+      }       
+        openNotificationWithIcon('error', 'An error occured,Please try again!!!')
+        return postPaidForm.resetFields();
     }
     else {
       NotAllowedNotification();
@@ -388,7 +360,7 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
               form={EOMBalanceForm}
               name="diesel-purchase"
               className="cost-tracker-form"
-              onFinish={onUsedTrackerSubmit}
+              // onFinish={onUsedTrackerSubmit}
             >
               <div className="cost-tracker-form-inputs-wrapper">
 
@@ -441,4 +413,9 @@ function UpdateUtilityPayment({ match, utilityPurchaseData }) {
   );
 }
 
-export default UpdateUtilityPayment;
+const mapDispatchToProps = {
+  updatePrepaidUtilityPaymentData,
+  updatePostpaidUtilityPaymentData
+}
+
+export default connect(null, mapDispatchToProps)(UpdateUtilityPayment);

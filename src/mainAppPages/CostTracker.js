@@ -146,6 +146,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         <DieselPurchasedTable 
           isLoading={costTracker.fetchCostTrackerLoading} 
           data={e[1].diesel} 
+          userId={userData.user_id}
           setEditDieselPurchaseModal={setEditDieselPurchaseModal}
           setDieselPurchaseData={setDieselPurchaseData}
         />
@@ -186,6 +187,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         <UtilityPurchasedTable 
           isLoading={costTracker.fetchCostTrackerLoading} 
           data={e[1].utility} 
+          userId={userData.user_id}
           setEditUtilityPurchaseModal={setEditUtilityPurchaseModal}
           setUtilityPurchaseData={setUtilityPurchaseData}
         />

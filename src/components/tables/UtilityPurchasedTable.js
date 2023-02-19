@@ -1,22 +1,38 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import CompleteDataContext from '../../Context';
-import { Table, Typography, Button, Dropdown, Popconfirm } from 'antd';
-import { InfoCircleOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
+import { Table, notification, Typography, Dropdown, Popconfirm } from 'antd';
+import { EditOutlined, DownOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
 import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
+
+import { deletePrepaidUtilityPaymentData } from '../../redux/actions/constTracker/costTracker.action';
+import { connect } from 'react-redux';
+
+
+const openNotificationWithIcon = (type, formName) => {
+  notification[type]({
+    message: 'Bill Deleted',
+    description: `The ${formName} has been successfully deleted`,
+  });
+};
+
 const { Text } = Typography;
 
-const UtilityPurchasedTable = ({ data, setEditUtilityPurchaseModal, setUtilityPurchaseData }) => {
-  const [dataSources, setDataSources] = useState({})
+const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setUtilityPurchaseData, deletePrepaidUtilityPaymentData:deletePrepaidPayment }) => {
   const {
     isMediumScreen
   } = useContext(CompleteDataContext);
 
   const sortedData = sortArrayOfObjectByDate(data);
 
-  const handleDelete = (key) => {
-    const newData = dataSources.filter((item) => item.key !== key);
-    setDataSources(newData);
+  const handleDelete = async (id) => {
+    const parameter = {
+      id
+    }
+    const request = await deletePrepaidPayment(userId, parameter)
+    if (request.fullfilled) {
+      openNotificationWithIcon('success', 'Utility purchase tracker');
+    }
   };
 
   const itemData = (record) => {
@@ -42,7 +58,7 @@ const UtilityPurchasedTable = ({ data, setEditUtilityPurchaseModal, setUtilityPu
         label: (<> {
             <>
             <Icon icon="ant-design:delete-outlined" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
               <a>Delete Utility Entry</a>
             </Popconfirm>
             </>
@@ -128,7 +144,6 @@ const UtilityPurchasedTable = ({ data, setEditUtilityPurchaseModal, setUtilityPu
         return value? value.toFixed(2) : 0;
       }
     },
-    // editFunctionButtn()
     optionsColumn()
   ];
 
@@ -184,4 +199,8 @@ const UtilityPurchasedTable = ({ data, setEditUtilityPurchaseModal, setUtilityPu
   )
 }
 
-export default UtilityPurchasedTable
+const mapDispatchToProps = {
+  deletePrepaidUtilityPaymentData,
+}
+
+export default connect(null, mapDispatchToProps)(UtilityPurchasedTable)
