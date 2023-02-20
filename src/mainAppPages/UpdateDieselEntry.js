@@ -22,7 +22,7 @@ const NotAllowedNotification = () => {
   })
 }
 
-function UpdateDieselEntry({ match, dieselEntryData, updateFuelConsumptionData: editFuelConsumption }) {
+function UpdateDieselEntry({ match, dieselEntryData, updateFuelConsumptionData:editFuelConsumption }) {
   const [EOMBalanceForm] = Form.useForm();
 
   const { setCurrentUrl, organization, userId } = useContext(
