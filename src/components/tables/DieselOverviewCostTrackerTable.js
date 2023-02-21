@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import moment from 'moment';
-import { Modal, Table, Typography, Button, Dropdown, Popconfirm } from 'antd';
+import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space } from 'antd';
 import { InfoCircleOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
@@ -149,7 +149,8 @@ const DieselOverviewCostTrackerTable = (
     render: (_, record) => {
       const items = itemData(record);
       return (
-        <Dropdown
+        <React.Fragment>
+          <Dropdown
           trigger={['click']}
           getPopupContainer={(trigger) => trigger.parentElement}
           // placement="topLeft"
@@ -158,12 +159,15 @@ const DieselOverviewCostTrackerTable = (
           }}
         >
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <Space>
             More
             {' '}
             <DownOutlined />
+            </Space>
           </a>
           {/* <Button>topRight</Button> */}
         </Dropdown>
+        </React.Fragment>
       )
 
     }
