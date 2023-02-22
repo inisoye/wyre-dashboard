@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import moment from 'moment';
+
+import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space } from 'antd';
-import { InfoCircleOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
+import {  EditOutlined, DownOutlined } from '@ant-design/icons';
+
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
 const { Text } = Typography;
@@ -192,6 +195,7 @@ const DieselOverviewCostTrackerTable = (
       title: 'Hours',
       dataIndex: 'hours_of_use',
       width: '15%',
+      render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
     },
     {
       title: 'Energy(kWh)',

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {
+  convertDecimalTimeToNormal,
   modifyStatisTicDate,
   modifyStatisTicDateWithTime
 } from "./genericHelpers";
@@ -46,6 +47,7 @@ export const TimeOfUseColumns = [
     title: 'Hours of Use',
     dataIndex: 'hour',
     width: '15%',
+    render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
   },
   // {
   //   title: 'Down Time',
@@ -69,7 +71,7 @@ export const FuelConsumption = [
     title: 'Hours used',
     dataIndex: 'hours',
     width: '15%',
-    render: (energy) => energy.toFixed(2)
+    render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
   },
   {
     title: 'Cost(₦)',

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import CompleteDataContext from '../../Context';
+import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 
 const DashboardDoughnutChart = ({ data, uiSettings }) => {
   const { isMediumScreen, useMediaQuery } = useContext(CompleteDataContext);
@@ -104,7 +105,7 @@ const DashboardDoughnutChart = ({ data, uiSettings }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']]);
         },
       },
     },
