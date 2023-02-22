@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import moment from 'moment';
 
 import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
-import { Modal, Table, Typography, Button, Dropdown, Popconfirm } from 'antd';
+import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space } from 'antd';
 import {  EditOutlined, DownOutlined } from '@ant-design/icons';
+
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
 const { Text } = Typography;
@@ -36,11 +37,9 @@ const DieselOverviewCostTrackerTable = (
     setFuelDataLoading(true);
     const fuelData = await fetchFuelConsumptionInfo(queryString);
     if (fuelData && fuelData.fullfilled) {
-      console.log("fuel-data", fuelData.data);
       const newDattta = fuelData.data.map((elementData) =>{
         return {...elementData.data, id: elementData.id}
       })
-      console.log('This is NewData', newDattta);
       setModalData(newDattta);
     }
     setFuelDataLoading(false);
@@ -105,27 +104,6 @@ const DieselOverviewCostTrackerTable = (
     },
   ];
 
-  const editFunctionButtn = () => ({
-    key: 'Action',
-    title: 'Action',
-    width: '25%',
-    dataIndex: 'action',
-    render: (_, record) => {
-      return (
-        <Button 
-          onClick={() => {
-            setEditDieselEntryModal(true)
-            setDieselEntryData(record)
-            console.log('This is the EDIT-DIESEL-ENTRY DATA', record)
-          }}
-        >
-          Edit
-        </Button>
-      )
-
-    },
-  });
-
   const handleDelete = (key) => {
     const newData = dataSources.filter((item) => item.key !== key);
     setDataSources(newData);
@@ -174,7 +152,8 @@ const DieselOverviewCostTrackerTable = (
     render: (_, record) => {
       const items = itemData(record);
       return (
-        <Dropdown
+        <React.Fragment>
+          <Dropdown
           trigger={['click']}
           getPopupContainer={(trigger) => trigger.parentElement}
           // placement="topLeft"
@@ -183,12 +162,15 @@ const DieselOverviewCostTrackerTable = (
           }}
         >
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <Space>
             More
             {' '}
             <DownOutlined />
+            </Space>
           </a>
           {/* <Button>topRight</Button> */}
         </Dropdown>
+        </React.Fragment>
       )
 
     }
@@ -235,7 +217,7 @@ const DieselOverviewCostTrackerTable = (
 
 
   function onChange(pagination, filters, sorter, extra) {
-    console.log('params', pagination, filters, sorter, extra);
+    // console.log('params', pagination, filters, sorter, extra);
   }
 
   let inputtedUsageSum = 0;
