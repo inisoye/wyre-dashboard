@@ -143,9 +143,10 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           Diesel Purchased for {e[0]}
         </h3>
 
-        <DieselPurchasedTable 
-          isLoading={costTracker.fetchCostTrackerLoading} 
-          data={e[1].diesel} 
+        <DieselPurchasedTable
+          key={index}
+          isLoading={costTracker.fetchCostTrackerLoading}
+          data={e[1].diesel}
           userId={userData.user_id}
           setEditDieselPurchaseModal={setEditDieselPurchaseModal}
           setDieselPurchaseData={setDieselPurchaseData}
@@ -154,11 +155,11 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           open={editDieselPurchaseModal}
           onOk={() => setEditDieselPurchaseModal(false)}
           onCancel={() => setEditDieselPurchaseModal(false)}
-          width={1000} 
+          width={1000}
           footer={null}
         >
           <UpdateDieselPurchase
-            setModal={setEditDieselPurchaseModal} 
+            setModal={setEditDieselPurchaseModal}
             dieselPurchaseData={dieselPurchaseData}
           />
         </Modal>
@@ -184,22 +185,23 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           Utility Payments for {e[0]}
         </h3>
 
-        <UtilityPurchasedTable 
-          isLoading={costTracker.fetchCostTrackerLoading} 
-          data={e[1].utility} 
+        <UtilityPurchasedTable
+          key={index}
+          isLoading={costTracker.fetchCostTrackerLoading}
+          data={e[1].utility}
           userId={userData.user_id}
           setEditUtilityPurchaseModal={setEditUtilityPurchaseModal}
           setUtilityPurchaseData={setUtilityPurchaseData}
         />
 
-       <Modal
+        <Modal
           open={editUtilityPurchaseModal}
           onOk={() => setEditUtilityPurchaseModal(false)}
           onCancel={() => setEditUtilityPurchaseModal(false)}
-          width={1000} 
+          width={1000}
           footer={null}
         >
-          <UpdateUtilityPayment 
+          <UpdateUtilityPayment
             utilityPurchaseData={utilityPurchaseData}
             setModal={setEditUtilityPurchaseModal}
           />
@@ -269,8 +271,8 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
       </div>
       <section className="cost-tracker-chart-container">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
-        {DieselOverViewCharts}
-        {UtilityOverViewCharts}
+        {/* {DieselOverViewCharts} */}
+        {/* {UtilityOverViewCharts} */}
       </section>
 
       <section className='cost-tracker-section'>
