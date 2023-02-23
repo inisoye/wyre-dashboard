@@ -71,10 +71,8 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
   }
 
   const optionsColumn = () => ({
-    key: 'options',
     title: 'Options',
     width: '10%',
-    dataIndex: 'options',
     render: (_, record) => {
       const items = itemData(record);
       return (

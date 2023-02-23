@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space } from 'antd';
-import {  EditOutlined, DownOutlined } from '@ant-design/icons';
+import { EditOutlined, DownOutlined } from '@ant-design/icons';
 
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
@@ -16,7 +16,7 @@ const DieselOverviewCostTrackerTable = (
     fetchFuelConsumptionInfo }
 ) => {
 
-  
+
   const [modalOpener, setModalOpener] = useState(false);
   const [modalData, setModalData] = useState(false);
   const [fuelDataLoading, setFuelDataLoading] = useState(false);
@@ -37,8 +37,8 @@ const DieselOverviewCostTrackerTable = (
     setFuelDataLoading(true);
     const fuelData = await fetchFuelConsumptionInfo(queryString);
     if (fuelData && fuelData.fullfilled) {
-      const newDattta = fuelData.data.map((elementData) =>{
-        return {...elementData.data, id: elementData.id}
+      const newDattta = fuelData.data.map((elementData) => {
+        return { ...elementData.data, id: elementData.id }
       })
       setModalData(newDattta);
     }
@@ -154,22 +154,22 @@ const DieselOverviewCostTrackerTable = (
       return (
         <React.Fragment>
           <Dropdown
-          trigger={['click']}
-          getPopupContainer={(trigger) => trigger.parentElement}
-          // placement="topLeft"
-          menu={{
-            items
-          }}
-        >
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            <Space>
-            More
-            {' '}
-            <DownOutlined />
-            </Space>
-          </a>
-          {/* <Button>topRight</Button> */}
-        </Dropdown>
+            trigger={['click']}
+            getPopupContainer={(trigger) => trigger.parentElement}
+            // placement="topLeft"
+            menu={{
+              items
+            }}
+          >
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              <Space>
+              More
+              {' '}
+              <DownOutlined />
+              </Space>
+            </a>
+            {/* <Button>topRight</Button> */}
+          </Dropdown>
         </React.Fragment>
       )
 
@@ -289,19 +289,19 @@ const DieselOverviewCostTrackerTable = (
           );
         }}
         footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`} />
-        <Modal
-          open={editDieselEntryModal}
-          onOk={() => setEditDieselEntryModal(false)}
-          onCancel={() => setEditDieselEntryModal(false)}
-          setDieselEntryData={setDieselEntryData}
-          width={1000} 
-          footer={null}
-        >
-          <UpdateDieselEntry 
-            dieselEntryData={dieselEntryData}
-            setModal={setEditDieselEntryModal}
-          />
-        </Modal>
+      <Modal
+        open={editDieselEntryModal}
+        onOk={() => setEditDieselEntryModal(false)}
+        onCancel={() => setEditDieselEntryModal(false)}
+        setDieselEntryData={setDieselEntryData}
+        width={1000}
+        footer={null}
+      >
+        <UpdateDieselEntry
+          dieselEntryData={dieselEntryData}
+          setModal={setEditDieselEntryModal}
+        />
+      </Modal>
       <Modal
         visible={modalOpener}
         onCancel={() => setModalOpener(false)}

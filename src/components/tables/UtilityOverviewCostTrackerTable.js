@@ -22,37 +22,30 @@ const UtilityOverviewCostTrackerTable = ({ dataSource, isLoading }) => {
     {
       title: 'Purchased Energy (kWh)',
       dataIndex: 'purchased_kwh',
-      key: 'purchased_kwh',
     },
     {
       title: 'Consumed Energy (kWh)',
       dataIndex: 'energy_consumed_kwh',
-      key: "energy_consumed_kwh",
     },
     {
       title: 'Purchased Energy(₦)',
       dataIndex: 'purchased_naira',
-      key: 'purchased_naira',
     },
     {
       title: 'Consumed Energy(₦)',
       dataIndex: 'energy_consumed_naira',
-      key: 'energy_consumed_naira',
     },
     {
       title: 'Difference(kWh)',
       dataIndex: 'difference_kwh',
-      key: 'usage_didifference_kwhfference',
     },
     {
       title: 'Difference (₦)',
       dataIndex: 'difference_naira',
-      key: 'difference_naira',
     },
     {
       title: 'Percentage Difference(%)',
       dataIndex: 'percentage',
-      key: 'percentage',
     },
   ];
 
