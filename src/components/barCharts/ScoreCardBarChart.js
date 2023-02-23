@@ -3,7 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import { Tooltip } from 'antd';
 import CompleteDataContext from '../../Context';
 
-import { getLastArrayItems } from '../../helpers/genericHelpers';
+import { convertDecimalTimeToNormal, getLastArrayItems } from '../../helpers/genericHelpers';
 import { numberFormatter } from '../../helpers/numberFormatter';
 import InformationIcon from '../../icons/InformationIcon';
 
@@ -103,8 +103,10 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
 
   const chartValues = chart.values;
 
+  // const timeWasted =
+  //   estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
   const timeWasted =
-    estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
+    estimated_time_wasted.value.toFixed(2);
 
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
@@ -149,7 +151,7 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
             <strong>{`₦ ${numberFormatter(estimated_cost.value)}`}</strong>
           </p>
           <p>
-            Total Time: <strong>{timeWasted}</strong>
+            Total Time: <strong>{convertDecimalTimeToNormal(timeWasted)}</strong>
           </p>
         </div>
       </div>
