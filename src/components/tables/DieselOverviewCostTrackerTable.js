@@ -151,7 +151,6 @@ const DieselOverviewCostTrackerTable = (
     dataIndex: 'options',
     render: (_, record) => {
       const items = itemData(record);
-      console.log('this is the items here ooooo ===========>>>', items)
       return (
         <React.Fragment>
           <Dropdown
@@ -162,13 +161,13 @@ const DieselOverviewCostTrackerTable = (
               items
             }}
           >
-            {/* <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}> */}
-              {/* <Space> */}
-              {/* More
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              <Space>
+              More
               {' '}
-              <DownOutlined /> */}
-              {/* </Space> */}
-            {/* </a> */}
+              <DownOutlined />
+              </Space>
+            </a>
             {/* <Button>topRight</Button> */}
           </Dropdown>
         </React.Fragment>

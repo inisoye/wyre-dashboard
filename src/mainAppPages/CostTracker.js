@@ -271,8 +271,8 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
       </div>
       <section className="cost-tracker-chart-container">
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
-        {/* {DieselOverViewCharts} */}
-        {/* {UtilityOverViewCharts} */}
+        {DieselOverViewCharts}
+        {UtilityOverViewCharts}
       </section>
 
       <section className='cost-tracker-section'>
