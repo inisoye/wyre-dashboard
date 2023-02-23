@@ -77,10 +77,8 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
   }
 
   const optionsColumn = () => ({
-    key: 'options',
     title: 'Options',
     width: '10%',
-    dataIndex: 'options',
     render: (_, record) => {
       const items = itemData(record);
       return (
@@ -89,6 +87,9 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
           getPopupContainer={(trigger) => trigger.parentElement}
           menu={{
             items
+          }}
+          overlay={{
+            
           }}
         >
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
