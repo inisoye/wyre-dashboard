@@ -878,10 +878,23 @@ const sortByDateTime = (data) => {
   });
 }
 // data to combine multiple dates data of the same month
-const convertDecimalTimeToNormal = (decimalTimeString) => {
-  const n = new Date(0,0);
-  n.setSeconds(+decimalTimeString * 60 * 60);
-  return (n.toTimeString().slice(0, 8));
+const convertDecimalTimeToNormal = (d) => {
+  // const n = new Date(0,0);
+  // n.setSeconds(+decimalTimeString * 60 * 60);
+  // return (n.toTimeString().slice(0, 8));
+  // const hours = Math.floor(decimalTimeString / 60);  
+  // const minutes = decimalTimeString % 60;
+  // return `${hours}:${minutes}`; 
+    var h = Math.floor(d);
+
+    var m = (d - h) * 60;
+    // var m = Math.floor(d % 3600 / 60);
+    // var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "hour";
+    var mDisplay = m > 0 ? m.toFixed(0) + (m == 1 ? " min, " : " mins, ") : "min";
+    // var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay;
 }
 
 
