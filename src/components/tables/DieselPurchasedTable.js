@@ -46,8 +46,8 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
       {
         key: '1',
         label: (
-          <>
-            <EditOutlined />
+          // <>
+          //   <EditOutlined />
             <a target="_blank" onClick={(e) => {
               e.preventDefault();
               setEditDieselPurchaseModal(true);
@@ -55,24 +55,24 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
             }} rel="noopener noreferrer">
               Edit Diesel Entry
             </a>
-          </>
+          // </>
 
         ),
       },
-      {
-        key: '2',
-        label: (<> {
-          <>
-            <Icon icon="ant-design:delete-outlined" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-              <a>Delete Diesel Entry</a>
-            </Popconfirm>
-          </>
-        }
-        </>
+      // {
+      //   key: '2',
+      //   label: (<> {
+      //     <>
+      //       <Icon icon="ant-design:delete-outlined" />
+      //       <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+      //         <a>Delete Diesel Entry</a>
+      //       </Popconfirm>
+      //     </>
+      //   }
+      //   </>
 
-        ),
-      }
+      //   ),
+      // }
     ];
   }
 
