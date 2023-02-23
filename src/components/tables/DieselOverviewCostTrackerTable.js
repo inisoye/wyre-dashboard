@@ -162,11 +162,11 @@ const DieselOverviewCostTrackerTable = (
           }}
         >
           <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            <Space>
+            {/* <Space> */}
             More
             {' '}
             <DownOutlined />
-            </Space>
+            {/* </Space> */}
           </a>
           {/* <Button>topRight</Button> */}
         </Dropdown>
