@@ -59,20 +59,20 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
 
         ),
       },
-      // {
-      //   key: '2',
-      //   label: (<> {
-      //     <>
-      //       <Icon icon="ant-design:delete-outlined" />
-      //       <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-      //         <a>Delete Diesel Entry</a>
-      //       </Popconfirm>
-      //     </>
-      //   }
-      //   </>
+      {
+        key: '2',
+        label: (<> {
+          <>
+            <Icon icon="ant-design:delete-outlined" />
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+              <a>Delete Diesel Entry</a>
+            </Popconfirm>
+          </>
+        }
+        </>
 
-      //   ),
-      // }
+        ),
+      }
     ];
   }
 
