@@ -198,12 +198,16 @@ overlay={(
         <InfoCircleOutlined />
         {' '}
         {/* <a style={aElemStyle}>Update</a> */}
-        <a>Update</a>
+        <a target="_blank" onClick={(e) => {
+              e.preventDefault();
+              setEditDieselPurchaseModal(true);
+              setDieselPurchaseData(record)
+            }} rel="noopener noreferrer">Update</a>
       </Space>
     </Menu.Item>
     <Menu.Item
       onClick={() => {
-        // items
+        
       }}
       type="link"
     >
