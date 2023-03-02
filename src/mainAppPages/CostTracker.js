@@ -152,7 +152,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
           setDieselPurchaseData={setDieselPurchaseData}
         />
         <Modal
-          open={editDieselPurchaseModal}
+          visible={editDieselPurchaseModal}
           onOk={() => setEditDieselPurchaseModal(false)}
           onCancel={() => setEditDieselPurchaseModal(false)}
           width={1000}
@@ -195,7 +195,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         />
 
         <Modal
-          open={editUtilityPurchaseModal}
+          visible={editUtilityPurchaseModal}
           onOk={() => setEditUtilityPurchaseModal(false)}
           onCancel={() => setEditUtilityPurchaseModal(false)}
           width={1000}

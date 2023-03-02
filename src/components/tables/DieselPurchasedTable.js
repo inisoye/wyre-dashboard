@@ -184,49 +184,45 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
       const items = itemData(record);
       return (
         <Dropdown
-trigger={['click']}
-getPopupContainer={(trigger) => trigger.parentElement}
-placement="topLeft"
-overlay={(
-  <Menu>
-    <Menu.Item
-      onClick={() => {
-        // items()
-      }}
-    >
-      <Space size={4}>
-        <InfoCircleOutlined />
-        {' '}
-        {/* <a style={aElemStyle}>Update</a> */}
-        <a target="_blank" onClick={(e) => {
-              e.preventDefault();
-              setEditDieselPurchaseModal(true);
-              setDieselPurchaseData(record)
-            }} rel="noopener noreferrer">Update</a>
-      </Space>
-    </Menu.Item>
-    <Menu.Item
-      onClick={() => {
-        
-      }}
-      type="link"
-    >
-      <Space size={4}>
-        <EditOutlined />
-        {' '}
-        <a>Disable</a>
-      </Space>
-    </Menu.Item>
-  </Menu>
-)}
->
-<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-  More
-  {' '}
-  <DownOutlined />
-</a>
-</Dropdown>
-      )
+          trigger={["click"]}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          placement="topLeft"
+          overlay={
+            <Menu>
+              <Menu.Item onClick={() => {}}>
+                <Space size={4}>
+                  <InfoCircleOutlined />{" "}
+                  {/* <a style={aElemStyle}>Update</a> */}
+                  <a
+                    target="_blank"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setEditDieselPurchaseModal(true);
+                      setDieselPurchaseData(record);
+                    }}
+                    rel="noopener noreferrer"
+                  >
+                    Update
+                  </a>
+                </Space>
+              </Menu.Item>
+              <Menu.Item onClick={() => {}} type="link">
+                <Space size={4}>
+                  <EditOutlined />
+                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+                    <a>Delete Diesel Entry</a>
+                  </Popconfirm>
+                  {/* <a>Disable</a> */}
+                </Space>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More <DownOutlined />
+          </a>
+        </Dropdown>
+      );
 
     }
 
