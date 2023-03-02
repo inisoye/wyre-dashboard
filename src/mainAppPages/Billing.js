@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 
 import CompleteDataContext from '../Context';
 
@@ -10,7 +10,8 @@ import Loader from '../components/Loader';
 import PrintButtons from '../smallComponents/PrintButtons';
 import ThinArrowRight from '../icons/ThinArrowRight';
 
-import { formatParametersDatetimes } from '../helpers/genericHelpers';
+import { allDeviceGenerators, formatParametersDatetimes } from '../helpers/genericHelpers';
+import { getBillingRefinedOrganizationData } from '../helpers/organizationDataHelpers';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -22,7 +23,10 @@ function Billing({ match }) {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
+    checkedItems
   } = useContext(CompleteDataContext);
+
+  const [refindedBilling, setRefinedBilling] = useState({});
 
   useEffect(() => {
     if (match && match.url) {
@@ -37,6 +41,46 @@ function Billing({ match }) {
     devices_previous_billing_total,
     devices_present_billing_total,
   } = refinedRenderedData;
+
+
+    // Feed authenticated data into application
+    useEffect(() => {
+      // Ensure organization object is not empty
+      if (
+        Object.keys(organization).length > 0 &&
+        organization.constructor === Object
+      ) {
+        // make a copy of the data
+        const copyOrganisation = JSON.parse(JSON.stringify(organization));
+        // If nothing is checked, render organization's data
+        // Otherwise, render data from checked items
+        if (
+          Object.keys(checkedItems).length === 0 &&
+          checkedItems.constructor === Object
+        ) {
+  
+          const refindedData = getBillingRefinedOrganizationData(copyOrganisation)
+          // set all the device into the needed data(bucket)
+          // setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
+          setRefinedBilling(refindedData);
+          // setDeviceData(getOrganizationDeviceType(copyOrganisation));
+  
+        } 
+        // else {
+        //   const holdAllDevices = allDeviceGenerators(checkedItems, organization);
+        //   setAllCheckedOrSelectedDevice(holdAllDevices);
+        //   // const renderedDataArray = Object.values(renderedDataObjects);
+  
+        //   const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
+        //     checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
+        //   });
+        //   const renderedDataArray = Object.values(dataWithCheckBoxes?.branchAndDevice);
+        //   const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
+        //   setRefinedRenderedData(getRenderedData(renderedDataArray));
+        //   setSelectedDevices(getDeviceType);
+        // }
+      }
+    }, [checkedItems]);
 
   const { metrics, present_total, previous_total, usage } =
     overall_billing_totals || {};

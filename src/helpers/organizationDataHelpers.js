@@ -902,9 +902,34 @@ const getInitialAllDeviceRefinedOrganizationData = ({
 }
 
 
+
+const getBillingRefinedOrganizationData = (data) => {
+  getOrganizationDeviceType(data);
+  return {
+  
+    // Billing Stuff
+    all_device_data: { ...getAllOrganizationDevices(data) },
+    billing_consumption_kwh: getOrganizationBillingConsumptionKwhValues(data),
+    billing_consumption_naira: getOrganizationBillingConsumptionNairaValues(
+      data
+    ),
+    overall_billing_totals: getOrganizationBillingTotals(data),
+    devices_previous_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'previous_total'
+    ),
+    devices_present_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'present_total'
+    ),
+  };
+};
+
+
 export {
   getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
   getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox,
-  getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData
+  getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData,
+  getBillingRefinedOrganizationData
 };
 
