@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import moment from 'moment';
 
 import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
-import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space } from 'antd';
+import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space, Menu } from 'antd';
 import { EditOutlined, DownOutlined } from '@ant-design/icons';
 
 import { Icon } from '@iconify/react';
@@ -132,7 +132,7 @@ const DieselOverviewCostTrackerTable = (
         label: (<> {
           <>
             <Icon icon="ant-design:delete-outlined" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
               <a>Delete Diesel Entry</a>
             </Popconfirm>
           </>
@@ -145,33 +145,47 @@ const DieselOverviewCostTrackerTable = (
   }
 
   const optionsColumn = () => ({
-    key: 'options',
     title: 'Options',
     width: '10%',
-    dataIndex: 'options',
     render: (_, record) => {
       const items = itemData(record);
       return (
-        <React.Fragment>
-          <Dropdown
-            trigger={['click']}
-            getPopupContainer={(trigger) => trigger.parentElement}
-            // placement="topLeft"
-            menu={{
-              items
-            }}
-          >
-            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-              <Space>
-              More
-              {' '}
-              <DownOutlined />
-              </Space>
-            </a>
-            {/* <Button>topRight</Button> */}
-          </Dropdown>
-        </React.Fragment>
-      )
+        <Dropdown
+          trigger={["click"]}
+          getPopupContainer={(trigger) => trigger.parentElement}
+          placement="topLeft"
+          overlay={
+            <Menu>
+              <Menu.Item onClick={() => {}}>
+                <Space size={4}>
+                  <EditOutlined />{" "}
+                  <a
+                    target="_blank"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setEditDieselEntryModal(true);
+                      setDieselEntryData(record);
+                    }}
+                    rel="noopener noreferrer"
+                  >Edit Diesel Entry</a>
+                </Space>
+              </Menu.Item>
+              <Menu.Item onClick={() => {}} type="link">
+                <Space size={4}>
+                  <Icon icon="ant-design:delete-outlined" />
+                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+                    <a>Delete Diesel Entry</a>
+                  </Popconfirm>
+                </Space>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            More <DownOutlined />
+          </a>
+        </Dropdown>
+      );
 
     }
 

@@ -41,107 +41,6 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
     }
   };
 
-  // const itemData = (record) => {
-  //   return [
-  //     {
-  //       key: '1',
-  //       label: (
-  //         <>
-  //           <EditOutlined />
-  //           <a target="_blank" onClick={(e) => {
-  //             e.preventDefault();
-  //             setEditDieselPurchaseModal(true);
-  //             setDieselPurchaseData(record)
-  //           }} rel="noopener noreferrer">
-  //             Edit Diesel Entry
-  //           </a>
-  //         </>
-
-  //       ),
-  //     },
-  //     {
-  //       key: '2',
-  //       label: (<> {
-  //         <>
-  //           <Icon icon="ant-design:delete-outlined" />
-  //           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-  //             <a>Delete Diesel Entry</a>
-  //           </Popconfirm>
-  //         </>
-  //       }
-  //       </>
-
-  //       ),
-  //     }
-  //   ];
-  // }
-
-  // const optionsColumn = () => ({
-  //   key: 'options',
-  //   title: 'Options',
-  //   width: '10%',
-  //   dataIndex: 'options',
-  //   render: (_, record) => {
-  //     const items = itemData(record);
-  //     return (
-  //       <Dropdown
-  //         trigger={['click']}
-  //         getPopupContainer={(trigger) => trigger.parentElement}
-  //         menu={{
-  //           items
-  //         }}
-  //       >
-  //         <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-  //           More
-  //           {' '}
-  //           <DownOutlined />
-  //         </a>
-  //       </Dropdown>
-  //     )
-
-  //   }
-
-
-  // });
-
-
-  // const handleMenuClick = (e) => {
-  //   if (e.key === '2') {
-  //     setEditDieselPurchaseModal(false);
-  //   }
-  // };
-  // const handleOpenChange = (flag) => {
-  //   setEditDieselPurchaseModal(flag);
-  // };
-  // const items = [
-  //   {
-  //     label: 'Edit ',
-  //     key: '1',
-  //   },
-  //   {
-  //     label: 'Delete',
-  //     key: '2',
-  //   },
-  // ];
-  // return (
-  //   <Dropdown
-  //     menu={{
-  //       items,
-  //       onClick: handleMenuClick,
-  //     }}
-  //     onOpenChange={handleOpenChange}
-  //     // open={open}
-  //   >
-  //     <a onClick={(e) => e.preventDefault()}>
-  //       <Space>
-  //         More
-  //         <DownOutlined />
-  //       </Space>
-  //     </a>
-  //   </Dropdown>
-  // );
-
-
   const itemData = (record) => {
     return [
       {
@@ -191,8 +90,7 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
             <Menu>
               <Menu.Item onClick={() => {}}>
                 <Space size={4}>
-                  <InfoCircleOutlined />{" "}
-                  {/* <a style={aElemStyle}>Update</a> */}
+                  <EditOutlined />{" "}
                   <a
                     target="_blank"
                     onClick={(e) => {
@@ -201,18 +99,15 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
                       setDieselPurchaseData(record);
                     }}
                     rel="noopener noreferrer"
-                  >
-                    Update
-                  </a>
+                  >Edit Diesel Purchase</a>
                 </Space>
               </Menu.Item>
               <Menu.Item onClick={() => {}} type="link">
                 <Space size={4}>
-                  <EditOutlined />
+                  <Icon icon="ant-design:delete-outlined" />
                   <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-                    <a>Delete Diesel Entry</a>
+                    <a>Delete Diesel Purchase</a>
                   </Popconfirm>
-                  {/* <a>Disable</a> */}
                 </Space>
               </Menu.Item>
             </Menu>
@@ -228,11 +123,7 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
 
 
   });
-
   
-
-
-
   const columns = [
     {
       title: 'Date',
