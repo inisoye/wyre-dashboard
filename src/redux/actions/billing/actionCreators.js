@@ -1,15 +1,14 @@
 
-// const dashBoardType 
+import billingType from "../../reducers/billing/billing.types";
 
-import dashBoardType from "../../reducers/dashboard/dashboard.types";
-
-export const fetchDashBoardLoading = (payload = true) => ({
-    type: dashBoardType.FETCH_DASHBOARD_LOADING,
+  
+export const fetchBillingLoading = (payload = true) => ({
+    type: billingType.FETCH_BILLING_LOADING,
     payload,
   });
   
-  export const fetchDashBoardSuccess = payload => ({
-    type: dashBoardType.FETCH_DASHBOARD_SUCCESS,
+  export const fetchBillingSuccess = payload => ({
+    type: billingType.FETCH_BILLING_SUCCESS,
     payload,
   });
   

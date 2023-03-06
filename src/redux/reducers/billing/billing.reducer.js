@@ -3,7 +3,7 @@ import billingType from './billing.types';
 
 const INITIAL_STATE = {
     fetchBillingLoading: false,
-    billingData: {},
+    billingData: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -22,7 +22,7 @@ const reducer = (state = INITIAL_STATE, action) => {
            case billingType.FETCH_BILLING_SUCCESS:
            return {
               ...state, 
-            //   billingData: getBillingRefinedData(action.payload),
+              billingData: action.payload,
            };
 
          default: return state;

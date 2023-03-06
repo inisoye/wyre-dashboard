@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import dashboard from './dashboard/dashboard.reducer';
-import billingReducers from './billing/billing.reducer';
+import billing from './billing/billing.reducer';
 import costTracker from './costTracker/costTracker.reducer';
 import sideBar from './sidebar/sidebar.reducer'
 import report from './report/report.reducer';
@@ -9,7 +9,7 @@ import powerFactor from './powerFactor/powerFactor.reducer';
 
 const appReducer = combineReducers({
     dashboard,
-    billingReducers,
+    billing,
     sideBar,
     costTracker,
     report,

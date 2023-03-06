@@ -1,5 +1,5 @@
-import { getRefinedBranchData } from './branchDataHelpers';
-import { getDeviceData } from './deviceDataHelper';
+import { getRefinedBranchData, getBillingRefinedBranchData } from './branchDataHelpers';
+import { getDeviceData, getDeviceDataBilling } from './deviceDataHelper';
 
 import {
   sumArrayOfArrays,
@@ -598,7 +598,8 @@ const getOrganizationBillingTotals = (data) => {
   const extractSingleBranchValueType = (
     combinedBranchValues,
     extractedValueName
-  ) => combinedBranchValues.map((eachBranch) => eachBranch[extractedValueName]);
+  ) => combinedBranchValues?.map((eachBranch) => eachBranch[extractedValueName] || 0);
+
 
   // Present Values
   const allBranchesPresentTotalValues = extractSingleBranchValueType(
@@ -606,15 +607,17 @@ const getOrganizationBillingTotals = (data) => {
     'present_total'
   );
 
+  console.log('this is the allBranchesBillingTotalsallBranchesBillingTotals =============>>>>>>>', allBranchesBillingTotals);
+  console.log('this is the opereragh =============>>>>>>>', allBranchesPresentTotalValues);
   const organizationPresentTotalKwh = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'usage_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationPresentTotalNairaValue = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'value_naira'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   // Previous Values
   const allBranchesPreviousTotalValues = extractSingleBranchValueType(
@@ -625,7 +628,7 @@ const getOrganizationBillingTotals = (data) => {
   const organizationPreviousTotalKwh = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
     'usage_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationPreviousTotalNairaValue = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
@@ -641,12 +644,12 @@ const getOrganizationBillingTotals = (data) => {
   const organizationUsagePresentKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'present_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationUsagePreviousKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'previous_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationUsageTotalKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
@@ -663,25 +666,25 @@ const getOrganizationBillingTotals = (data) => {
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'diesel_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   const organizationMetricsIppPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'ipp_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   const organizationMetricsUtilityPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'utility_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   const organizationMetricsBlendedCostPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'blended_cost_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   return {
     present_total: {
@@ -887,6 +890,72 @@ const getRefinedOrganizationDataWithChekBox = ({
 
   return { branchAndDevice, allDeviceData };
 }
+const getBillingRefinedOrganizationDataWithChekBox = ({
+  checkedBranches,
+  checkedDevices,
+  organization,
+  setRenderedDataObjects,
+  isDashBoard = false,
+  powerFactorData = null,
+}) => {
+
+  let branchAndDevice = {};
+  let allDeviceData = {};
+  // convert branches to array using the object keys
+  const branches = Object.keys(checkedBranches);
+  // convert device to array using the object keys
+  const devices = Object.keys(checkedDevices);
+
+  // convert branches or device are present then
+  if (branches.length !== 0 || devices.length > 0) {
+
+    organization.branches.forEach((branch) => {
+      if (branches.length > 0) {
+        // check whether the branch name is part of the branches array
+        if (branches.includes(branch.name)) {
+          branchAndDevice = { ...branchAndDevice, ...getBillingRefinedBranchData(branch, isDashBoard, powerFactorData) }
+          branch.devices.forEach((device) => {
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+          })
+        }
+      }
+      if (devices.length > 0) {
+        branch.devices.forEach((device) => {
+          const combinedNames = `${branch.name} ${device.name}`;
+          // check whether the device name is part of the devices array
+          if (devices.includes(combinedNames)) {
+
+            // find the power factor here
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0.78
+              })
+            }
+            branchAndDevice = {
+              ...branchAndDevice, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0.78
+              })
+            }
+          }
+        })
+      }
+    })
+  }
+  if (setRenderedDataObjects) {
+    setRenderedDataObjects(branchAndDevice);
+  }
+
+  return { branchAndDevice, allDeviceData };
+}
 const getInitialAllDeviceRefinedOrganizationData = ({
   organization,
 }) => {
@@ -930,6 +999,6 @@ export {
   getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
   getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox,
   getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData,
-  getBillingRefinedOrganizationData
+  getBillingRefinedOrganizationData, getBillingRefinedOrganizationDataWithChekBox
 };
 

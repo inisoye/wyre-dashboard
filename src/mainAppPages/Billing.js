@@ -1,5 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 
+import { connect } from 'react-redux';
+
 import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
@@ -11,77 +13,95 @@ import PrintButtons from '../smallComponents/PrintButtons';
 import ThinArrowRight from '../icons/ThinArrowRight';
 
 import { allDeviceGenerators, formatParametersDatetimes } from '../helpers/genericHelpers';
-import { getBillingRefinedOrganizationData } from '../helpers/organizationDataHelpers';
+import { getBillingRefinedOrganizationData, getBillingRefinedOrganizationDataWithChekBox } from '../helpers/organizationDataHelpers';
+
+import { fetchBillingData } from '../redux/actions/billing/billing.action';
+import { getBillingRenderedData } from '../helpers/renderedDataHelpers';
+import { isEmpty } from "../helpers/authHelper";
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Billing', id: 2 },
 ];
 
-function Billing({ match }) {
+function Billing({ match, fetchBillingData: fetchBillingDataFunc, billing }) {
   const {
-    refinedRenderedData,
     setCurrentUrl,
-    isAuthenticatedDataLoading,
-    checkedItems
+    checkedItems,
+    checkedDevices,
+    checkedBranches,
+    userDateRange
   } = useContext(CompleteDataContext);
 
   const [refindedBilling, setRefinedBilling] = useState({});
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
   }, [match, setCurrentUrl]);
+  
+  // useEffect(() => {
+  //   fetchBillingDataFunc(userDateRange);
+  // }, []);
 
-  const {
-    billing_consumption_kwh,
-    billing_consumption_naira,
-    overall_billing_totals,
-    devices_previous_billing_total,
-    devices_present_billing_total,
-  } = refinedRenderedData;
+  useEffect(() => {
+    if (!pageLoaded && isEmpty(billing.billingData || {})) {
+      fetchBillingDataFunc(userDateRange);
+      // fetch the power factors here
+    }
+
+    if (!isEmpty(billing.billingData) > 0 && pageLoaded) {
+      fetchBillingDataFunc(userDateRange);
+      // fetch the power factors here
+    }
+    setPageLoaded(true);
+  }, [userDateRange]);
+
+
 
 
     // Feed authenticated data into application
     useEffect(() => {
       // Ensure organization object is not empty
       if (
-        Object.keys(organization).length > 0 &&
-        organization.constructor === Object
+        Object.keys(billing.billingData).length > 0 &&
+        billing.constructor === Object
       ) {
         // make a copy of the data
-        const copyOrganisation = JSON.parse(JSON.stringify(organization));
+        const copyOrganisation = JSON.parse(JSON.stringify(billing.billingData));
         // If nothing is checked, render organization's data
         // Otherwise, render data from checked items
         if (
           Object.keys(checkedItems).length === 0 &&
           checkedItems.constructor === Object
         ) {
-  
-          const refindedData = getBillingRefinedOrganizationData(copyOrganisation)
-          // set all the device into the needed data(bucket)
-          // setAllCheckedOrSelectedDevice(Object.values(refindedData.all_device_data));
+
+          const refindedData = getBillingRefinedOrganizationData(copyOrganisation);
           setRefinedBilling(refindedData);
-          // setDeviceData(getOrganizationDeviceType(copyOrganisation));
   
         } 
-        // else {
-        //   const holdAllDevices = allDeviceGenerators(checkedItems, organization);
-        //   setAllCheckedOrSelectedDevice(holdAllDevices);
-        //   // const renderedDataArray = Object.values(renderedDataObjects);
+        else {
   
-        //   const dataWithCheckBoxes = getRefinedOrganizationDataWithChekBox({
-        //     checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects
-        //   });
-        //   const renderedDataArray = Object.values(dataWithCheckBoxes?.branchAndDevice);
-        //   const getDeviceType = renderedDataArray.map(eachDevice => eachDevice.is_generator)
-        //   setRefinedRenderedData(getRenderedData(renderedDataArray));
-        //   setSelectedDevices(getDeviceType);
-        // }
+          const dataWithCheckBoxes = getBillingRefinedOrganizationDataWithChekBox({
+            checkedBranches, checkedDevices, organization: copyOrganisation, setRenderedDataObjects: setRefinedBilling
+          });
+          const renderedDataArray = Object.values(dataWithCheckBoxes?.branchAndDevice);
+          setRefinedBilling(getBillingRenderedData(renderedDataArray));
+        }
       }
-    }, [checkedItems]);
+    }, [checkedItems, billing.billingData]);
 
+    const {
+      billing_consumption_kwh,
+      billing_consumption_naira,
+      overall_billing_totals,
+      devices_previous_billing_total,
+      devices_present_billing_total,
+    } = refindedBilling;
+  
+  
   const { metrics, present_total, previous_total, usage } =
     overall_billing_totals || {};
 
@@ -140,7 +160,7 @@ function Billing({ match }) {
   const chartConsumptionNairaValues =
     billing_consumption_naira && billing_consumption_naira.values;
 
-  if (isAuthenticatedDataLoading) {
+  if (billing.fetchBillingLoading) {
     return <Loader />;
   }
 
@@ -305,4 +325,12 @@ function Billing({ match }) {
   );
 }
 
-export default Billing;
+const mapDispatchToProps= {
+  fetchBillingData
+}
+
+const mapStateToProps =(state) => ({
+ billing: state.billing
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Billing);
