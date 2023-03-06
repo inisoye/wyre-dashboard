@@ -607,8 +607,6 @@ const getOrganizationBillingTotals = (data) => {
     'present_total'
   );
 
-  console.log('this is the allBranchesBillingTotalsallBranchesBillingTotals =============>>>>>>>', allBranchesBillingTotals);
-  console.log('this is the opereragh =============>>>>>>>', allBranchesPresentTotalValues);
   const organizationPresentTotalKwh = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'usage_kwh'
