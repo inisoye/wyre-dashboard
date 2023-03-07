@@ -571,5 +571,30 @@ const getRenderedData = (data, isDatshboard=false) => {
     }),
   };
 };
+const getBillingRenderedData = (data, isDatshboard=false) => {
 
-export { getRenderedData };
+  return {
+    // Dashboard Stuff
+
+    ...(!isDatshboard && {
+
+    // Billing Stuff
+    billing_consumption_kwh: getSelectionParameterPropertyArray(
+      data,
+      'billing_consumption_kwh'
+    ),
+    billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
+    // overall_billing_totals: getSelectionBillingTotals(data),
+    devices_previous_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_previous_billing_total'
+    ),
+    devices_present_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_present_billing_total'
+    ),
+    }),
+  };
+};
+
+export { getRenderedData, getBillingRenderedData };

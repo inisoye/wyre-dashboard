@@ -206,12 +206,10 @@ const getBranchOperatingTime = (data) => {
     (eachDevice) => eachDevice.score_card.is_generator
   ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.dates);
 
-  console.log('this is theskjk branchOperatingTimeDates ========== >>>>>>', branchOperatingTimeDates)
+
   const allDevicesOperatingTimeValues = data.devices.filter(
     (eachDevice) => eachDevice.score_card.is_generator
   ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.values);
-
-  console.log('this is allDevicesOperatingTimeValues allDevicesOperatingTimeValues ========== >>>>>>', allDevicesOperatingTimeValues)
 
   const branchOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
@@ -552,5 +550,30 @@ const getRefinedBranchData = (data, isDatshboard=false, powerFactorData = null) 
     },
   };
 };
+const getBillingRefinedBranchData = (data, isDatshboard=false, powerFactorData = null) => {
+  return {
+    [data.name]: {
+      isBranch: true,
+      name: data.name,
+      // Billing Stuff
+      billing_consumption_kwh: getBranchBillingConsumptionKwhValues(data),
+      billing_consumption_naira: getBranchBillingConsumptionNairaValues(data),
+      overall_billing_totals: getModifiedBranchLevelData(
+        data,
+        'billing_totals',
+        data.name
+      ),
 
-export { getRefinedBranchData };
+      devices_previous_billing_total: getBranchDevicesBillingTotal(
+        data,
+        'previous_total'
+      ),
+      devices_present_billing_total: getBranchDevicesBillingTotal(
+        data,
+        'present_total'
+      ),
+      }
+  };
+};
+
+export { getRefinedBranchData, getBillingRefinedBranchData };

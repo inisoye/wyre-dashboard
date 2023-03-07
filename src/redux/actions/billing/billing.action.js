@@ -1,13 +1,15 @@
 
 import axios from "axios";
 import EnvData from "../../../config/EnvData";
-import { fetchDashBoardLoading, fetchDashBoardSuccess } from "./actionCreators";
+import { fetchBillingLoading, fetchBillingSuccess } from "./actionCreators";
 import dataHttpServices from '../../../services/devices';
 import jwtDecode from "jwt-decode";
+import moment from "moment";
 
 
-export const fetchDashBoardData = () => async (dispatch) => {
-  dispatch(fetchDashBoardLoading());
+
+export const fetchBillingData = (userDateRange) => async (dispatch) => {
+  dispatch(fetchBillingLoading());
 
   const loggedUserJSON = localStorage.getItem('loggedWyreUser');
   let userId;
@@ -19,17 +21,21 @@ export const fetchDashBoardData = () => async (dispatch) => {
     token = userToken.access;
   }
   try {
+
+    const dateToUse = userDateRange && userDateRange.length > 0 ? `${moment(userDateRange[0]).format('DD-MM-YYYY HH:mm') + '/' + moment(userDateRange[1]).format('DD-MM-YYYY HH:mm')}` : dataHttpServices.endpointDateRange
     const response = await axios.get(
-      `${EnvData.REACT_APP_API_URL}dashboard_data/${userId}/${dataHttpServices.endpointDateRange}/${dataHttpServices.endpointDataTimeInterval}`, {
+      // /api/v1/billing_data/id/start_date/end_date
+      // `${EnvData.REACT_APP_API_URL}billing_data/${userId}/${dataHttpServices.endpointDateRange}`, {
+      `${EnvData.REACT_APP_API_URL}billing_data/${userId}/${dateToUse}`, {
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     },
     );
-    dispatch(fetchDashBoardSuccess(response.data.authenticatedData));
-    dispatch(fetchDashBoardLoading(false))
+    dispatch(fetchBillingSuccess(response.data.authenticatedData));
+    dispatch(fetchBillingLoading(false))
   } catch (error) {
-    dispatch(fetchDashBoardLoading(error));
+    dispatch(fetchBillingLoading(error));
   }
 };

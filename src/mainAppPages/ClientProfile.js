@@ -174,7 +174,6 @@ function ClientProfile({ match }) {
     contactPerson,
     siteOperatingHours,
   }) => {
-    console.log(siteName, siteAddress, contactPerson, siteOperatingHours);
 
     openNotificationWithIcon('success', 'Site');
 
