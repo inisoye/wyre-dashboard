@@ -209,7 +209,7 @@ const DieselOverviewCostTrackerTable = (
       title: 'Hours',
       dataIndex: 'hours_of_use',
       width: '15%',
-      render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
+      render: (hours) => convertDecimalTimeToNormal(hours?.toFixed(2))
     },
     {
       title: 'Energy(kWh)',
