@@ -304,7 +304,7 @@ const DieselOverviewCostTrackerTable = (
         }}
         footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`} />
       <Modal
-        open={editDieselEntryModal}
+        visible={editDieselEntryModal}
         onOk={() => setEditDieselEntryModal(false)}
         onCancel={() => setEditDieselEntryModal(false)}
         setDieselEntryData={setDieselEntryData}
