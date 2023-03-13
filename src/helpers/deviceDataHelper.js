@@ -310,4 +310,176 @@ const getDeviceData = ({
     };
 }
 
-export { getDeviceData };
+const getDeviceDataBilling = ({
+    branchData,
+    deviceData,
+}) => {
+
+    const modifiedDeviceName = !deviceData.name.includes(branchData.name)
+        ? branchData.name + ' ' + deviceData.name
+        : deviceData.name;
+
+
+    const modifiedBranchBillingTotalsData = getModifiedBranchLevelData(
+        branchData,
+        'billing_totals',
+        branchData.name
+    );
+
+    const deviceBillingTotalsData = {
+        ...modifiedBranchBillingTotalsData,
+        present_total: { usage_kwh: 0, value_naira: 0 },
+        previous_total: { usage_kwh: 0, value_naira: 0 },
+        usage: {
+            previous_kwh: 0,
+            present_kwh: 0,
+            total_usage_kwh: 0,
+        },
+        metrics: {
+            diesel_per_kwh: 0,
+            utility_per_kwh: 0,
+            blended_cost_per_kwh: 0,
+            unit: '₦',
+        },
+    }
+
+
+
+
+    /* -------------------------------------------------------------------
+    /* Score Card Begins -------------------------------------------------
+    --------------------------------------------------------------------*/
+    // Destructure score card data for device
+    const {
+        generator_size_efficiency,
+        fuel_consumption,
+    } = deviceData.score_card || {};
+
+    // Add name to generator size efficiency & fuel consumption data
+    if (generator_size_efficiency)
+        generator_size_efficiency.name = modifiedDeviceName;
+    if (fuel_consumption) fuel_consumption.name = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Score Card Ends ---------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Power Quality Begins ----------------------------------------------
+    --------------------------------------------------------------------*/
+    const powerQualityData = convertParameterDateStringsToObjects(
+        deviceData,
+        'power_quality'
+    );
+    // Add device name to data
+    powerQualityData.deviceName = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Power Quality Ends ------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Last Reading Begins -----------------------------------------------
+    --------------------------------------------------------------------*/
+    const lastReadingData = Object.assign({}, deviceData.last_reading);
+    lastReadingData.date = convertDateStringToObject(lastReadingData.date);
+    lastReadingData.deviceName = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Last Reading Ends -------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Power Demand Begins -----------------------------------------------
+    --------------------------------------------------------------------*/
+    const powerDemandData = convertParameterDateStringsToObjects(
+        deviceData,
+        'power_demand'
+    );
+    const { dates: power_demand_values } = powerDemandData;
+    if (power_demand_values) power_demand_values.source = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Power Demand Ends -------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Time of Use Begins ------------------------------------------------
+    --------------------------------------------------------------------*/
+    const timeOfUseChartData = convertParameterDateStringsToObjects(
+        deviceData,
+        'time_of_use'
+    );
+    if (timeOfUseChartData) timeOfUseChartData.deviceName = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Time of Use Ends --------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Energy Consumption Begins -------------------------------------------
+    --------------------------------------------------------------------*/
+    const energyConsumptionData = convertParameterDateStringsToObjects(
+        deviceData,
+        'energy_consumption'
+    );
+
+    const {
+        energy_consumption_values,
+    } = energyConsumptionData;
+
+    if (energy_consumption_values)
+        energy_consumption_values.deviceName = modifiedDeviceName;
+    /* -------------------------------------------------------------------
+    /* Energy Consumption Ends -------------------------------------------
+    --------------------------------------------------------------------*/
+
+    /* -------------------------------------------------------------------
+    /* Billing Begins ----------------------------------------------------
+    --------------------------------------------------------------------*/
+    const { billing, device_type } = deviceData;
+
+    const consumptionKwhWithoutName = convertParameterDateStringsToObjects(
+        billing,
+        'consumption_kwh'
+    );
+    const consumptionNairaWithoutName = convertParameterDateStringsToObjects(
+        billing,
+        'consumption_naira'
+    );
+
+    const { previous_total, present_total } = billing?.totals || {}
+
+    const devicePreviousTotal = {
+        ...previous_total,
+        deviceName: modifiedDeviceName,
+    };
+    const devicePresentTotal = {
+        ...present_total,
+        deviceName: modifiedDeviceName,
+    };
+    /* -------------------------------------------------------------------
+    /* Billing Ends ------------------------------------------------------
+    --------------------------------------------------------------------*/
+
+    // Place all data for device in new object
+    return {
+        [modifiedDeviceName]: {
+            name: modifiedDeviceName,
+            // Dashboard data
+            device_type,
+            // total_kwh_is_source,
+            is_load: deviceData?.is_load,
+            is_source: deviceData?.is_source,
+
+            // Billing Data
+            billing_consumption_kwh: [
+                {
+                    ...consumptionKwhWithoutName,
+                    deviceName: modifiedDeviceName,
+                },
+            ],
+            billing_consumption_naira: consumptionNairaWithoutName,
+            overall_billing_totals: deviceBillingTotalsData,
+            devices_previous_billing_total: [devicePreviousTotal],
+            devices_present_billing_total: [devicePresentTotal],
+        },
+    };
+}
+
+export { getDeviceData, getDeviceDataBilling };
