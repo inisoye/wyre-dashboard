@@ -209,7 +209,7 @@ const DieselOverviewCostTrackerTable = (
       title: 'Hours',
       dataIndex: 'hours_of_use',
       width: '15%',
-      render: (hours) => convertDecimalTimeToNormal(hours.toFixed(2))
+      render: (hours) => convertDecimalTimeToNormal(hours?.toFixed(2))
     },
     {
       title: 'Energy(kWh)',
@@ -304,7 +304,7 @@ const DieselOverviewCostTrackerTable = (
         }}
         footer={() => `${dieselOverviewData && dieselOverviewData.length} entries in total`} />
       <Modal
-        open={editDieselEntryModal}
+        visible={editDieselEntryModal}
         onOk={() => setEditDieselEntryModal(false)}
         onCancel={() => setEditDieselEntryModal(false)}
         setDieselEntryData={setDieselEntryData}
