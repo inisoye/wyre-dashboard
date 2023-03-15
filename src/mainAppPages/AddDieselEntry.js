@@ -75,13 +75,15 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
   const onUsedTrackerSubmit = async ({ date, quantity, fuelType }) => {
     if (defaultBranch != null) {
 
+      const branchId = organization.branches[0].branch_id
       const parameters = {
+        branchId,
         end_date: date.format('YYYY-MM-DD'),
         start_date: date.format('YYYY-MM-DD'),
         fuel_type: fuelType,
         quantity: quantity
       };
-      const request = await addFuelConsumption(parameters);
+      const request = await addFuelConsumption(branchId, parameters);
 
       if (request.fullfilled) {
         openNotificationWithIcon('success', 'diesel entry');

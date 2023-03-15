@@ -70,6 +70,8 @@ function UpdateDieselEntry({ match, dieselEntryData, updateFuelConsumptionData:e
   let defaultBranch;
   if (organization.branches) {
     defaultBranch = organization.branches[0].branch_id
+    // console.log('BRANCH DATA...>>>>>>>', defaultBranch)
+    // console.log('All-BRANCH DATA...>>>>>>>', organization.branches)
   }
 
 

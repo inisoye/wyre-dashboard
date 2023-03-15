@@ -60,9 +60,9 @@ export const fetchFuelConsumptionData = (queryString) => async (dispatch) => {
   }
 };
 
-export const addFuelConsumptionData = (parameters) => async (dispatch) => {
+export const addFuelConsumptionData = (branchId, parameters) => async (dispatch) => {
   dispatch(addFuelDataLoading());
-  const requestUrl = `fuel_entry`;
+  const requestUrl = `fuel-entry/${branchId}/`;
   try {
     const response = await APIService.post(requestUrl, parameters);
     dispatch(addFuelDataSuccess(response.data.data));
@@ -76,7 +76,8 @@ export const addFuelConsumptionData = (parameters) => async (dispatch) => {
 
 export const updateFuelConsumptionData = (id, parameters) => async (dispatch) => {
   dispatch(editFuelDataLoading());
-  const requestUrl = `update/${id}`;
+  // {{Baseurl}}/api/v1/update-fuel-entry/21/
+  const requestUrl = `update-fuel-entry/${id}`;
   try {
     const response = await APIService.post(requestUrl, parameters);
     dispatch(editFuelDataSuccess(response.data.data));
