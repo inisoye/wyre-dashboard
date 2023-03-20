@@ -8,6 +8,7 @@ import { notification, Table, Typography, Popconfirm, Dropdown, Space, Menu } fr
 import { EditOutlined, DownOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Icon } from '@iconify/react';
 import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
+import { numberFormatter } from '../../helpers/numberFormatter';
 
 
 const openNotificationWithIcon = (type, formName) => {
@@ -137,7 +138,7 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
       key: 'quantity',
       width: '25%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     {
@@ -145,7 +146,7 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
       dataIndex: 'price_per_litre',
       width: '25%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     {
@@ -153,7 +154,7 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
       dataIndex: 'amount',
       width: '25%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     optionsColumn()
@@ -189,13 +190,13 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
               <Table.Summary.Row>
                 <Table.Summary.Cell>Total</Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(quantitySum).toFixed(2) || 0}</Text>
+                  <Text>{numberFormatter(parseFloat(quantitySum).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat((tariffSum/getTariff?.length) || 0).toFixed(2) || 0}</Text>
+                  <Text>{numberFormatter(parseFloat((tariffSum/getTariff?.length) || 0).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat((amountSum) || 0).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat((amountSum) || 0).toFixed(2))}</Text>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </>

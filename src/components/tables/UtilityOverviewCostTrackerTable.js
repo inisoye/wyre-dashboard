@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, Typography } from 'antd';
+import { numberFormatter } from '../../helpers/numberFormatter';
 
 const UtilityOverviewCostTrackerTable = ({ dataSource, isLoading }) => {
   const { Text } = Typography;
@@ -22,26 +23,33 @@ const UtilityOverviewCostTrackerTable = ({ dataSource, isLoading }) => {
     {
       title: 'Purchased Energy (kWh)',
       dataIndex: 'purchased_kwh',
+      render: (purchased_kwh) => numberFormatter(purchased_kwh)
+      
     },
     {
       title: 'Consumed Energy (kWh)',
       dataIndex: 'energy_consumed_kwh',
+      render: (energy_consumed_kwh) => numberFormatter(energy_consumed_kwh)
     },
     {
       title: 'Purchased Energy(₦)',
       dataIndex: 'purchased_naira',
+      render: (purchased_naira) => numberFormatter(purchased_naira)
     },
     {
       title: 'Consumed Energy(₦)',
       dataIndex: 'energy_consumed_naira',
+      render: (energy_consumed_naira) => numberFormatter(energy_consumed_naira)
     },
     {
       title: 'Difference(kWh)',
       dataIndex: 'difference_kwh',
+      render: (difference_kwh) => numberFormatter(difference_kwh)
     },
     {
       title: 'Difference (₦)',
       dataIndex: 'difference_naira',
+      render: (difference_naira) => numberFormatter(difference_naira)
     },
     {
       title: 'Percentage Difference(%)',
@@ -92,22 +100,22 @@ const UtilityOverviewCostTrackerTable = ({ dataSource, isLoading }) => {
               <Table.Summary.Row>
                 <Table.Summary.Cell>Total</Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(Purchased_total).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(Purchased_total).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(Consumed_total).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(Consumed_total).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(purchasedNaira).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(purchasedNaira).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(energyConsumedNairaSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(energyConsumedNairaSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(differenceKwhSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(differenceKwhSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(differenceNairaSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(differenceNairaSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Text>{percentageSum && parseFloat(percentageSum / dataSource.length).toFixed(2)}</Text>

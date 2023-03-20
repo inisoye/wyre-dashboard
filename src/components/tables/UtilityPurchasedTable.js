@@ -7,6 +7,7 @@ import { sortArrayOfObjectByDate } from '../../helpers/genericHelpers';
 
 import { deletePrepaidUtilityPaymentData } from '../../redux/actions/constTracker/costTracker.action';
 import { connect } from 'react-redux';
+import { numberFormatter } from '../../helpers/numberFormatter';
 
 
 const openNotificationWithIcon = (type, formName) => {
@@ -131,7 +132,7 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
       key: 'value',
       width: '20%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     {
@@ -140,7 +141,7 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
       key: "tarrif",
       width: '20%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     {
@@ -149,7 +150,7 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
       key: "amount",
       width: '20%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
 
@@ -159,7 +160,7 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
       key: "vat_inclusive_amount",
       width: '20%',
       render: (value) => {
-        return value? value.toFixed(2) : 0;
+        return value? numberFormatter(value.toFixed(2)) : 0;
       }
     },
     optionsColumn()

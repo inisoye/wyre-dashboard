@@ -4,6 +4,7 @@ import {
   modifyStatisTicDate,
   modifyStatisTicDateWithTime
 } from "./genericHelpers";
+import { numberFormatter } from './numberFormatter';
 
 export const LoadImbalanceColumns = [
   {
@@ -149,10 +150,16 @@ export const CostImplicationColumn = [
   {
     title: '(kWh)',
     dataIndex: 'demand',
+    render: (value) => {
+      return numberFormatter(value);
+    }
   },
   {
     title: 'Cost(₦)',
     dataIndex: 'cost',
+    render: (value) => {
+      return numberFormatter(value);
+    }
   }
 ];
 export const DemandAndStatisticsColumn = [

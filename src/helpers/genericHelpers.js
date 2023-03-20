@@ -891,8 +891,8 @@ const convertDecimalTimeToNormal = (d) => {
     // var m = Math.floor(d % 3600 / 60);
     // var s = Math.floor(d % 3600 % 60);
 
-    var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "hour";
-    var mDisplay = m > 0 ? m.toFixed(0) + (m == 1 ? " min, " : " mins, ") : "min";
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
+    var mDisplay = m > 0 ? m.toFixed(0) + (m == 1 ? " min" : " mins") : "";
     // var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
     return hDisplay + mDisplay;
 }
