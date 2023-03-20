@@ -1,4 +1,5 @@
 import { Table, Typography } from 'antd';
+import { numberFormatter } from '../../../helpers/numberFormatter';
 
 const { Text } = Typography
 
@@ -20,10 +21,10 @@ export const ConstImplicationSummary = pageData => {
                     <Text></Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                    <Text>{parseFloat(totalDemand).toFixed(2)}</Text>
+                    <Text>{numberFormatter(parseFloat(totalDemand).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                    <Text>{parseFloat(totalCost).toFixed(2)}</Text>
+                    <Text>{numberFormatter(parseFloat(totalCost).toFixed(2))}</Text>
                 </Table.Summary.Cell>
             </Table.Summary.Row>
         </>

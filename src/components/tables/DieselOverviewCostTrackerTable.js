@@ -7,6 +7,7 @@ import { EditOutlined, DownOutlined } from '@ant-design/icons';
 
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
+import { numberFormatter } from '../../helpers/numberFormatter';
 const { Text } = Typography;
 
 
@@ -71,36 +72,43 @@ const DieselOverviewCostTrackerTable = (
       title: 'Inputted Usage(Ltr)',
       dataIndex: 'inputted_usage',
       key: 'inputted_usage',
+      render: (inputted_usage) => numberFormatter(inputted_usage)
     },
     {
       title: 'Forecasted Usage (Ltr)',
       dataIndex: 'forecasted_usage',
       key: "forecasted_usage",
+      render: (forecasted_usage) => numberFormatter(forecasted_usage)
     },
     {
       title: 'Inputted Cost (₦)',
       dataIndex: 'inputted_cost',
       key: 'inputted_cost',
+      render: (inputted_cost) => numberFormatter(inputted_cost)
     },
     {
       title: 'Forecasted Cost (₦)',
       dataIndex: 'forecasted_cost',
       key: 'forecasted_cost',
+      render: (forecasted_cost) => numberFormatter(forecasted_cost)
     },
     {
       title: 'Diesel Difference (Ltr)',
       dataIndex: 'diesel_difference',
       key: 'diesel_difference',
+      render: (diesel_difference) => numberFormatter(diesel_difference)
     },
     {
       title: 'Price Difference (₦)',
       dataIndex: 'cost_difference',
       key: 'cost_difference',
+      render: (cost_difference) => numberFormatter(cost_difference)
     },
     {
       title: 'Percentage Difference (%)',
       dataIndex: 'percentage_usage',
       key: 'percentage_usage',
+      render: (percentage_usage) => numberFormatter(percentage_usage)
     },
   ];
 
@@ -278,22 +286,22 @@ const DieselOverviewCostTrackerTable = (
               <Table.Summary.Row>
                 <Table.Summary.Cell>Total</Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(inputtedUsageSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(inputtedUsageSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(forecastedUsageSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(forecastedUsageSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(inputtedCostSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(inputtedCostSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(forecastedCostSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(forecastedCostSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(dieselDifferenceSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(dieselDifferenceSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(costDifferenceSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(costDifferenceSum).toFixed(2))}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Text>{percentageUsageSum && parseFloat(percentageUsageSum / dieselOverviewData.length).toFixed(2)}</Text>
