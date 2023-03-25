@@ -68,7 +68,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
 
     const getBranchData = Object.entries(overviewData)?.filter(data => {
       return data[0] !== 'diesel_overview' && data[0] !== "utility_overview"
-        && data[0] !== "has_generator"
+        && data[0] !== "has_generator" && data[0] !== "ipp_overview"
     })
     if (getBranchData && getBranchData[0]) {
       setBranchInfo(getBranchData);
@@ -123,6 +123,31 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         dataSource={overviewData.utility_overview} />
     </article>
   );
+
+  // const IppOverViewCharts = overviewData && (
+  //   <article
+  //   >
+  //     <h3 className='cost-tracker-branch-name'>
+  //       Cost Overview
+  //     </h3>
+  //     <div className='doughnut-card-heading'>
+  //       <p style={subHeaderStyle}>Diesel Overview</p>
+  //       <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+  //         <Tooltip placement='top' style={{ textAlign: 'right' }}
+  //           overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.IPP_OVERVIEW}>
+  //           <p>
+  //             <InformationIcon className="info-icon" />
+  //           </p>
+  //         </Tooltip>
+  //       </div>
+  //     </div>
+  //     <DieselOverviewCostTrackerTable
+  //       isLoading={costTracker.fetchCostTrackerLoading}
+  //       ippOverviewData={overviewData.diesel_overview}
+  //       userId={userData.user_id}
+  //       fetchFuelConsumptionInfo={fetchFuelConsumptionInfo} />
+  //   </article>
+  // );
 
 
   const DieselPurchasedCharts = (
