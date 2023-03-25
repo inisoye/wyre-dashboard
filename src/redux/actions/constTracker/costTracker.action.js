@@ -76,8 +76,7 @@ export const addFuelConsumptionData = (branchId, parameters) => async (dispatch)
 
 export const updateFuelConsumptionData = (id, parameters) => async (dispatch) => {
   dispatch(editFuelDataLoading());
-  // {{Baseurl}}/api/v1/update-fuel-entry/21/
-  const requestUrl = `update-fuel-entry/${id}`;
+  const requestUrl = `update-fuel-entry/${id}/`;
   try {
     const response = await APIService.post(requestUrl, parameters);
     dispatch(editFuelDataSuccess(response.data.data));

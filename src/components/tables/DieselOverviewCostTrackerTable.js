@@ -39,7 +39,7 @@ const DieselOverviewCostTrackerTable = (
     const fuelData = await fetchFuelConsumptionInfo(queryString);
     if (fuelData && fuelData.fullfilled) {
       const newDattta = fuelData.data.map((elementData) => {
-        return { ...elementData.data, id: elementData.id }
+        return { ...elementData.data }
       })
       setModalData(newDattta);
     }
