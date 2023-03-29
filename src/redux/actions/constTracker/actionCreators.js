@@ -85,6 +85,24 @@ export const deletePreUtilityPurchaseDataSuccess = payload => ({
   payload,
 });
 
+export const editIppPurchaseDataLoading = (payload = true) => ({
+  type: costTrackerType.EDIT_IPP_PURCHASE_DATA_LOADING,
+  payload,
+});
+export const editIppPurchaseDataSuccess = payload => ({
+  type: costTrackerType.EDIT_IPP_PURCHASE_DATA_SUCCESS,
+  payload,
+});
+
+export const deleteIppPurchaseDataLoading = (payload = true) => ({
+  type: costTrackerType.DELETE_IPP_PURCHASE_DATA_LOADING,
+  payload,
+});
+export const deleteIppPurchaseDataSuccess = payload => ({
+  type: costTrackerType.DELETE_IPP_PURCHASE_DATA_SUCCESS,
+  payload,
+});
+
 export const editPostUtilityPurchaseDataLoading = (payload = true) => ({
   type: costTrackerType.EDIT_POST_UTILITY_PURCHASE_DATA_LOADING,
   payload,

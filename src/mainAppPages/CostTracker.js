@@ -2,11 +2,11 @@ import React, { useEffect, useContext, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 
 import CompleteDataContext from '../Context';
-
 import BreadCrumb from '../components/BreadCrumb';
 import CostTrackerMonthlyCostBarChart from '../components/barCharts/CostTrackerMonthlyCostBarChart';
 import DieselOverviewCostTrackerTable from '../components/tables/DieselOverviewCostTrackerTable'
 import UtilityOverviewCostTrackerTable from '../components/tables/UtilityOverviewCostTrackerTable'
+import IppOverviewCostTrackerTable from '../components/tables/IppOverviewCostTrackerTable';
 import DieselPurchasedTable from '../components/tables/DieselPurchasedTable';
 import UtilityPurchasedTable from '../components/tables/UtilityPurchasedTable'
 import { fetchCostTrackerData, fetchFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
@@ -21,6 +21,8 @@ import { COST_TRACKER_TOOLTIP_MESSAGES } from '../components/toolTips/Cost_Track
 import AddBills from './AddBills';
 import UpdateDieselPurchase from './UpdateDieselPurchase';
 import UpdateUtilityPayment from './UpdateUtilityPayment';
+import IppPurchasedTable from '../components/tables/IppPurchasedTable';
+import UpdateIppPayment from './UpdateIppPayment';
 
 
 const breadCrumbRoutes = [
@@ -33,10 +35,12 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
   const [overviewData, setOverviewData] = useState([]);
   const [branchInfo, setBranchInfo] = useState(false);
   const [baseLineData, setBaseLineData] = useState(false);
-  const [editDieselPurchaseModal, setEditDieselPurchaseModal] = useState(false)
   const [dieselPurchaseData, setDieselPurchaseData] = useState({})
   const [utilityPurchaseData, setUtilityPurchaseData] = useState({})
+  const [ippPurchaseData, setIppPurchaseData] = useState({})
+  const [editDieselPurchaseModal, setEditDieselPurchaseModal] = useState(false)
   const [editUtilityPurchaseModal, setEditUtilityPurchaseModal] = useState(false)
+  const [editIppPurchaseModal, setEditIppPurchaseModal] = useState(false)
   const costTracker = useSelector((state) => state.costTracker);
   const sideBar = useSelector((state) => state.sideBar);
 
@@ -124,30 +128,25 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
     </article>
   );
 
-  // const IppOverViewCharts = overviewData && (
-  //   <article
-  //   >
-  //     <h3 className='cost-tracker-branch-name'>
-  //       Cost Overview
-  //     </h3>
-  //     <div className='doughnut-card-heading'>
-  //       <p style={subHeaderStyle}>Diesel Overview</p>
-  //       <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
-  //         <Tooltip placement='top' style={{ textAlign: 'right' }}
-  //           overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.IPP_OVERVIEW}>
-  //           <p>
-  //             <InformationIcon className="info-icon" />
-  //           </p>
-  //         </Tooltip>
-  //       </div>
-  //     </div>
-  //     <DieselOverviewCostTrackerTable
-  //       isLoading={costTracker.fetchCostTrackerLoading}
-  //       ippOverviewData={overviewData.diesel_overview}
-  //       userId={userData.user_id}
-  //       fetchFuelConsumptionInfo={fetchFuelConsumptionInfo} />
-  //   </article>
-  // );
+  const IppOverViewCharts = overviewData && (
+    <article
+      className='cost-tracker-chart-container'
+    >
+      <div className='doughnut-card-heading'>
+        <p style={subHeaderStyle}>IPP Overview</p>
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.UTILITY_OVERVIEW}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
+      </div>
+      <IppOverviewCostTrackerTable isLoading={costTracker.fetchCostTrackerLoading}
+        dataSource={overviewData.ipp_overview} />
+    </article>
+  );
 
 
   const DieselPurchasedCharts = (
@@ -235,6 +234,49 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
     ))
   )
 
+  const IppPurchasedCharts = (
+    branchInfo && branchInfo.map((e, index) => (
+      <article
+        className='cost-tracker-chart-container'
+        key={index}
+      >
+        <div style={{ textAlign: 'right', paddingTop: 20, paddingRight: 20 }}>
+          <Tooltip placement='top' style={{ textAlign: 'right' }}
+            overlayStyle={{ whiteSpace: 'pre-line' }} title={COST_TRACKER_TOOLTIP_MESSAGES.IPP_PAYMENTS}>
+            <p>
+              <InformationIcon className="info-icon" />
+            </p>
+          </Tooltip>
+        </div>
+        <h3 className='cost-tracker-branch-name'>
+          IPP Payments for {e[0]}
+        </h3>
+
+        <IppPurchasedTable
+          key={index}
+          isLoading={costTracker.fetchCostTrackerLoading}
+          data={e[1].ipp}
+          userId={userData.user_id}
+          setEditIppPurchaseModal={setEditIppPurchaseModal}
+          setIppPurchaseData={setIppPurchaseData}
+        />
+
+        <Modal
+          visible={editIppPurchaseModal}
+          onOk={() => setEditIppPurchaseModal(false)}
+          onCancel={() => setEditIppPurchaseModal(false)}
+          width={1000}
+          footer={null}
+        >
+          <UpdateIppPayment
+            ippPurchaseData={ippPurchaseData}
+            setModal={setEditIppPurchaseModal}
+          />
+        </Modal>
+      </article>
+    ))
+  )
+
 
 
   const monthlyCostBarCharts =
@@ -298,6 +340,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
         {DieselOverViewCharts}
         {UtilityOverViewCharts}
+        {IppOverViewCharts}
       </section>
 
       <section className='cost-tracker-section'>
@@ -307,8 +350,13 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
 
 
       <section className='cost-tracker-section'>
-        <h2 className='h-screen-reader-text'>Quantity of utility Payments</h2>
+        <h2 className='h-screen-reader-text'>Quantity of Utility Payments</h2>
         {utilityPurchasedCharts}
+      </section>
+      
+      <section className='cost-tracker-section'>
+        <h2 className='h-screen-reader-text'>Quantity of IPP Payments</h2>
+        {IppPurchasedCharts}
       </section>
 
       <section className='cost-tracker-section'>
