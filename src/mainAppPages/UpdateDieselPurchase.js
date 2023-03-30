@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 const openNotificationWithIcon = (type, formName) => {
   notification[type]({
     message: 'Bill Updated',
-    description: `Your addition to the ${formName} has been successfully submitted`,
+    description: `Your update to the ${formName} has been successfully submitted`,
   });
 };
 

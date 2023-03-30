@@ -232,7 +232,7 @@ function AddBills({ match }) {
     }
   };
 
-  const onIppPaymentTrackerPreSubmit = ({
+  const onIppPaymentTrackerSubmit = ({
     amount,
     date,
     tariff,
@@ -248,7 +248,7 @@ function AddBills({ match }) {
         date: date.format('YYYY-MM-DD')
       }
       billingHttpServices
-        .addCostPrePaid(ippData, token, userId)
+        .addCostIpp(ippData, token, userId)
         .then(() => {
           setIppPurchaseLoading(false);
           ippPurchaseForm.resetFields()
@@ -424,7 +424,7 @@ function AddBills({ match }) {
           </section>
 
           <section className="cost-tracker-form-section">
-          <Spin spinning={prePaidLoading}>
+          <Spin spinning={ippPurchaseLoading}>
             <h2 className="form-section-heading">
               IPP Payment Tracker
             </h2>
@@ -433,7 +433,7 @@ function AddBills({ match }) {
               form={ippPurchaseForm}
               name="diesel-purchase"
               className="cost-tracker-form"
-              onFinish={onIppPaymentTrackerPreSubmit}
+              onFinish={onIppPaymentTrackerSubmit}
             >
               <div className="cost-tracker-form-inputs-wrapper">
                 <div className="cost-tracker-input-container">
