@@ -1,17 +1,14 @@
 import React, { useEffect, useContext } from 'react';
-import { notification, Form, Spin, message } from 'antd';
+import { notification, Form, Spin } from 'antd';
 
 import CompleteDataContext from '../Context';
 import moment from 'moment'
 
-import { connect, Connect } from 'react-redux';
+import { connect } from 'react-redux';
 
-import billingHttpServices from '../services/bills'
-import axios from 'axios'
 
-import { DateField, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
+import { DateField, DateRangeField, NumberField } from '../components/FormFields/GeneralFormFields';
 import { InputField, SubmitButton, FlowMeterUpload } from '../components/FormFields/CostTrackerFields';
-import EnvData from '../config/EnvData';
 import { updatePostpaidUtilityPaymentData, updatePrepaidUtilityPaymentData } from '../redux/actions/constTracker/costTracker.action';
 
 
@@ -31,7 +28,7 @@ const NotAllowedNotification = () => {
 }
 
 function UpdateUtilityPayment({ match, utilityPurchaseData, updatePrepaidUtilityPaymentData:updatePrepaidPayment, updatePostpaidUtilityPaymentData:updatePostpaidPayment }) {
-  const [dieslePurchaseForm] = Form.useForm();
+
   const [prePaidForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
   const [EOMBalanceForm] = Form.useForm();
@@ -40,7 +37,7 @@ function UpdateUtilityPayment({ match, utilityPurchaseData, updatePrepaidUtility
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
 
-  const { setCurrentUrl, token, organization, userId } = useContext(
+  const { setCurrentUrl, organization, userId } = useContext(
     CompleteDataContext
   );
 
