@@ -6,6 +6,8 @@ const INITIAL_STATE = {
    dashBoardData: false,
    fetchDemandLoading: false,
    demandData: false,
+   fetchBlendedCostEnergyLoading: false,
+   blendedCostEnergyData: false,
    billingDataLoading: false,
    billingData: false,
 };
@@ -40,7 +42,17 @@ const reducer = (state = INITIAL_STATE, action) => {
          return {
             ...state,
             billingDataLoading: action.payload,
+         };
 
+      case dashBoardType.FETCH_BLENDEDCOST_ENERGY_SUCCESS:
+         return {
+            ...state,
+            blendedCostEnergyData: action.payload,
+         };
+      case dashBoardType.FETCH_BLENDEDCOST_ENERGY_LOADING:
+         return {
+            ...state,
+            fetchBlendedCostEnergyLoading: action.payload,
          };
 
       case dashBoardType.FETCH_BILLING_SUCCESS:

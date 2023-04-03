@@ -28,6 +28,12 @@ const INITIAL_STATE = {
 
   deletedPreUtilityPurchaseData: false,
   deletePreUtilityPurchaseDataLoadin: false,
+
+  editedIppPurchaseData: false,
+  editIppPurchaseDataLoadin: false,
+
+  deletedIppPurchaseData: false,
+  deleteIppPurchaseDataLoadin: false,
   
   editedPostUtilityPurchaseData: false,
   editPostUtilityPurchaseDataLoadin: false,
@@ -131,7 +137,29 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         deletedPreUtilityPurchaseData: action.payload,
       };
-
+      
+    case costTrackerType.EDIT_IPP_PURCHASE_DATA_LOADING:
+        return {
+          ...state,
+          editIppPurchaseDataLoadin: action.payload,
+        };
+    case costTrackerType.EDIT_IPP_PURCHASE_DATA_SUCCESS:
+        return {
+          ...state,
+          editedIppPurchaseData: action.payload,
+        };
+    
+    case costTrackerType.DELETE_IPP_PURCHASE_DATA_LOADING:
+          return {
+            ...state,
+            deleteIppPurchaseDataLoadin: action.payload,
+          };
+    case costTrackerType.DELETE_IPP_PURCHASE_DATA_SUCCESS:
+          return {
+            ...state,
+            deletedIppPurchaseData: action.payload,
+          };
+    
     case costTrackerType.EDIT_POST_UTILITY_PURCHASE_DATA_LOADING:
       return {
         ...state,
