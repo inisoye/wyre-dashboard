@@ -83,9 +83,9 @@ function AddBills({ match }) {
       placeholder: 'Select Fuel Type'
     },
     amount: {
-      label: 'Amount',
+      label: 'Amount(₦)',
       name: 'amount',
-      placeholder: 'Enter Amount'
+      placeholder: 'Enter Amount(₦)'
     },
     value: {
       label: 'Value (kWh)',
