@@ -18,8 +18,18 @@ export const fetchDemandLoading = (payload = true) => ({
     payload,
   });
   
-  export const fetchDemandSuccess = payload => ({
+export const fetchDemandSuccess = payload => ({
     type: dashBoardType.FETCH_DEMAND_SUCCESS,
+    payload,
+  });
+
+export const fetchBlendedCostEnergyLoading = (payload = true) => ({
+    type: dashBoardType.FETCH_BLENDEDCOST_ENERGY_LOADING,
+    payload,
+  });
+  
+export const fetchBlendedCostEnergySuccess = payload => ({
+    type: dashBoardType.FETCH_BLENDEDCOST_ENERGY_SUCCESS,
     payload,
   });
   

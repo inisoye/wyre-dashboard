@@ -28,7 +28,7 @@ import {
   getNestedAvgDemandObjectKva
 } from "../helpers/genericHelpers";
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
-import { fetchDashBoardData, fetchPAPR } from "../redux/actions/dashboard/dashboard.action";
+import { fetchBlendedCostData, fetchDashBoardData, fetchPAPR } from "../redux/actions/dashboard/dashboard.action";
 import {
   getDashBoardRefinedData,
   getRefinedOrganizationDataWithChekBox,
@@ -62,7 +62,7 @@ const breadCrumbRoutes = [
 //   </Document>
 // );
 
-function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
+function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlendedCostData:fetchBlendedost,
   sideBar: sideDetails,
   fetchPowerFactor:
   fetchAllPowerFactor,
@@ -141,12 +141,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
     if (!pageLoaded && isEmpty(dashBoardInfo.dashBoardData || {})) {
       dashBoardDataFetch(userDateRange);
       fetchPAPRData(userDateRange)
+      fetchBlendedost(userDateRange)
       // fetch the power factors here
     }
 
     if (!isEmpty(dashBoardInfo.dashBoardData) > 0 && pageLoaded) {
       dashBoardDataFetch(userDateRange);
       fetchPAPRData(userDateRange)
+      fetchBlendedost(userDateRange)
       // fetch the power factors here
     }
     setPageLoaded(true);
@@ -165,10 +167,9 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
       const end_date = moment().startOf('month').format('YYYY-MM-DD');
       fetchAllPowerFactor(allDevices, { start_date, end_date })
       // fetch the power factors here
+      // fetch the lended cost here
     }
   }, [sideDetails.sideBarData, userDateRange]);
-
-
 
   const pageRef = useRef();
 
@@ -285,8 +286,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
             <DashboardSmallBannerSection
               name="Blended Cost of Energy"
               value={
-                cost_of_energy &&
-                numberFormatter(cost_of_energy.value.toFixed(2))
+                dashboard.blendedCostEnergyData &&
+                numberFormatter(Number(dashboard.blendedCostEnergyData.toFixed(2)))
               }
               unit={cost_of_energy && cost_of_energy.unit}
             />
@@ -406,6 +407,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch,
 
 const mapDispatchToProps = {
   fetchDashBoardData,
+  fetchBlendedCostData,
   fetchPowerFactor,
   fetchPAPR
 };

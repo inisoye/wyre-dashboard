@@ -45,7 +45,7 @@ const toSnakeCase = (str) =>
 const cloneObject = (object) => Object.assign({}, object);
 
 const getLastArrayItems = (array, numberOfItems) => {
-  return array.slice(Math.max(array.length - numberOfItems, 0));
+  return array && array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
 //checkIsGenStatus
