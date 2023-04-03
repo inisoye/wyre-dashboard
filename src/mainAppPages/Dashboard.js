@@ -1,11 +1,7 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
 import moment from 'moment';
-// import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { jsPDF } from "jspdf";
 import { connect, useSelector } from 'react-redux';
-import * as html2canvas from "html2canvas";
 import CompleteDataContext from "../Context";
-// import 
 
 import BreadCrumb from "../components/BreadCrumb";
 import DashboardStackedBarChart from "../components/barCharts/DashboardStackedBarChart";
@@ -13,7 +9,6 @@ import DashboardDoughnutChart from "../components/pieCharts/DashboardDoughnutCha
 import Loader from "../components/Loader";
 
 import DashboardSmallBannerSection from "../smallComponents/DashboardSmallBannerSection";
-// import PrintButtons from "../smallComponents/PrintButtons";
 
 import DashboardUpArrow from "../icons/DashboardUpArrow";
 import DashboardDownArrow from "../icons/DashboardDownArrow";
@@ -22,11 +17,10 @@ import { numberFormatter } from "../helpers/numberFormatter";
 // import styles from "../pdfStyles/styles";
 import DashBoardAmountUsed from "../smallComponents/DashBoardAmountUsed";
 import {
-  generateLoadOverviewChartData, refineLoadOverviewData,
-  generateMultipleBranchLoadOverviewChartData, allCheckedDeviceGenerators, getNestedMinDemandObjectKVA,
-  getNestedMaxDemandObjectKva,
-  getNestedAvgDemandObjectKva
+  generateLoadOverviewChartData,
+  generateMultipleBranchLoadOverviewChartData
 } from "../helpers/genericHelpers";
+
 import LoadOverviewPercentBarChart from "../components/barCharts/LoadOverviewPercentBarChart";
 import { fetchBlendedCostData, fetchDashBoardData, fetchPAPR } from "../redux/actions/dashboard/dashboard.action";
 import {
@@ -47,20 +41,6 @@ const breadCrumbRoutes = [
   { url: "/", name: "Home", id: 1 },
   { url: "/", name: "Dashboard", id: 2 },
 ];
-
-// const PDFDocument = () => (
-//   <Document>
-//     <Page size="A4" styles={styles.page}>
-//       <View>
-//         <Text>Section #1</Text>
-//       </View>
-
-//       <View>
-//         <Text>Section #2</Text>
-//       </View>
-//     </Page>
-//   </Document>
-// );
 
 function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlendedCostData:fetchBlendedost,
   sideBar: sideDetails,
@@ -86,20 +66,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
   const {
     name,
     total_kwh,
-    min_demand,
-    max_demand,
     usage_hours,
-    avg_demand,
     dashboard_carbon_emissions,
     cost_of_energy,
     today,
     yesterday,
     daily_kwh,
     solar_hours,
-    all_device_data,
-    min_demand_with_power_factor,
     max_demand_with_power_factor, 
-    avg_demand_with_power_factor
   } = refinedDashboardData;
 
 
@@ -166,42 +140,16 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
       const start_date = moment().startOf('month').format('YYYY-MM-DD');
       const end_date = moment().startOf('month').format('YYYY-MM-DD');
       fetchAllPowerFactor(allDevices, { start_date, end_date })
-      // fetch the power factors here
-      // fetch the lended cost here
+
     }
   }, [sideDetails.sideBarData, userDateRange]);
+
 
   const pageRef = useRef();
 
   const todaysValue = today && today.value;
   const yesterdaysValue = yesterday && yesterday.value;
   const isTodaysValueLessThanYesterdays = todaysValue < yesterdaysValue;
-
-  const generatePdf = () => {
-    console.log("Generating PDFs");
-
-    const input = document.getElementById("page");
-    const page = document.querySelector(".page-content")
-
-    // window
-    // .open("", "PRINT", "height=650,width=900,top=100,left=100")
-    // .document.write("Testing PDfs")
-    // .document.close()
-    // .focus()
-    // .print()
-    // .close();
-
-    // html2canvas(input)
-    //   .then((canvas) => {
-    //     const imgData = canvas.toDataURL('image/png');
-    //     const pdf = new jsPDF('p', 'px', 'a4');
-    //     var width = pdf.internal.pageSize.getWidth();
-    //     var height = pdf.internal.pageSize.getHeight();
-
-    //     pdf.addImage(imgData, 'JPEG', 0, 0, width, height);
-    //     pdf.save("test.pdf");
-    //   });
-  };
 
   if (dashBoardInfo.fetchDashBoardLoading || !pageLoaded) {
     return <Loader />;
@@ -211,11 +159,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        {/* <PrintButtons
-          onClick={generatePdf}
-          document={<PDFDocument />}
-          fileName={"dashboard.pdf"}
-        /> */}
       </div>
 
       <section id="page" ref={pageRef}>
@@ -277,7 +220,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
               name="Carbon Emissions"
               value={
                 dashboard_carbon_emissions &&
-                numberFormatter(dashboard_carbon_emissions.value.toFixed(2))
+                dashboard_carbon_emissions.value.toFixed(2)
               }
               unit={
                 dashboard_carbon_emissions && dashboard_carbon_emissions.unit
@@ -286,8 +229,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
             <DashboardSmallBannerSection
               name="Blended Cost of Energy"
               value={
-                dashboard.blendedCostEnergyData &&
-                numberFormatter(Number(dashboard.blendedCostEnergyData.toFixed(2)))
+                dashboard.blendedCostEnergyData && 
+                dashboard.blendedCostEnergyData
               }
               unit={cost_of_energy && cost_of_energy.unit}
             />

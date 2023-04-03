@@ -28,10 +28,8 @@ function UpdateDieselEntry({ match, dieselEntryData, updateFuelConsumptionData:e
   const { setCurrentUrl, organization, userId } = useContext(
     CompleteDataContext
     );
-  console.log('USER-ID here>>>>>>>', userId)
+
   const entryId = dieselEntryData.id
-  console.log('ENTRies-ID here>>>>>>>', entryId)
-  console.log('DIESL-ENTRTY DATA here>>>>>>>', dieselEntryData)
 
 
   const data = {

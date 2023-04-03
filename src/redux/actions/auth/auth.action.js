@@ -18,7 +18,6 @@ export const getNewRefreshToken = async () => {
       localStorage.setItem('loggedWyreUser',JSON.stringify(newUser));
     }
   } catch (error) {
-    console.log('expired');
     localStorage.clear();
     window.href = '/'
   }
