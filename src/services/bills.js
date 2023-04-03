@@ -37,6 +37,17 @@ const addCostPrePaid = async (data, token, userId) =>{
     return response.data
 }
 
+const addCostIpp = async (data, token, userId) =>{
+    const postRequest = axios.post(`${costTrackerUrl}/${userId}/add_cost/ipp/`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+          }
+    })
+    const response = await postRequest
+    return response.data
+}
+
 
 const addCostPostPaid  = async (data, token, userId) =>{
     const postRequest = axios.post(`${costTrackerUrl}/${userId}/add_cost/post-paid/`, data, {
@@ -52,5 +63,6 @@ const addCostPostPaid  = async (data, token, userId) =>{
 export default{
     addCostForDiesel,
     addCostPostPaid,
-    addCostPrePaid
+    addCostPrePaid,
+    addCostIpp
 };

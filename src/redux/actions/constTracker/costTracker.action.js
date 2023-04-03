@@ -1,7 +1,7 @@
 
 import {
   fetchCostTrackerLoading, fetchCostTrackerSuccess, addFuelDataSuccess,
-  fetchFuelDataLoading, fetchFuelDataSuccess, addFuelDataLoading, editFuelDataLoading, editFuelDataSuccess, deleteFuelDataLoading, deleteFuelDataSuccess, editFuelPUrchaseDataLoading, editFuelPUrchaseDataSuccess, editPreUtilityPurchaseDataLoading, editPreUtilityPurchaseDataSuccess, editPostUtilityPurchaseDataLoading, editPostUtilityPurchaseDataSuccess, deleteFuelPUrchaseDataLoading, deleteFuelPUrchaseDataSuccess, deletePreUtilityPurchaseDataLoading, deletePreUtilityPurchaseDataSuccess
+  fetchFuelDataLoading, fetchFuelDataSuccess, addFuelDataLoading, editFuelDataLoading, editFuelDataSuccess, deleteFuelDataLoading, deleteFuelDataSuccess, editFuelPUrchaseDataLoading, editFuelPUrchaseDataSuccess, editPreUtilityPurchaseDataLoading, editPreUtilityPurchaseDataSuccess, editPostUtilityPurchaseDataLoading, editPostUtilityPurchaseDataSuccess, deleteFuelPUrchaseDataLoading, deleteFuelPUrchaseDataSuccess, deletePreUtilityPurchaseDataLoading, deletePreUtilityPurchaseDataSuccess, editIppPurchaseDataLoading, editIppPurchaseDataSuccess, deleteIppPurchaseDataLoading, deleteIppPurchaseDataSuccess
 } from "./actionCreators";
 import { APIService } from "../../../config/api/apiConfig";
 import jwtDecode from "jwt-decode";
@@ -154,6 +154,34 @@ export const deletePrepaidUtilityPaymentData = (userId, parameters) => async (di
     return { fullfilled: true, message: response.data.detail }
   } catch (error) {
     dispatch(deletePreUtilityPurchaseDataLoading(false));
+    return { fullfilled: false, message: error.response.detail }
+  }
+};
+
+export const updateIppPaymentData = (userId, parameters) => async (dispatch) => {
+  dispatch(editIppPurchaseDataLoading());
+  const requestUrl = `cost_tracker/${userId}/add_cost/ipp/`;
+  try {
+    const response = await APIService.put(requestUrl, parameters);
+    dispatch(editIppPurchaseDataSuccess(response.data.data));
+    dispatch(editIppPurchaseDataLoading(false))
+    return { fullfilled: true, message: response.data.detail }
+  } catch (error) {
+    dispatch(editIppPurchaseDataLoading(false));
+    return { fullfilled: false, message: error.response.detail }
+  }
+};
+
+export const deleteIppPaymentData = (userId, parameters) => async (dispatch) => {
+  dispatch(deleteIppPurchaseDataLoading());
+  const requestUrl = `cost_tracker/${userId}/add_cost/pre-paid/`;
+  try {
+    const response = await APIService.delete(requestUrl, parameters);
+    dispatch(deleteIppPurchaseDataSuccess(response.data.data));
+    dispatch(deleteIppPurchaseDataLoading(false))
+    return { fullfilled: true, message: response.data.detail }
+  } catch (error) {
+    dispatch(deleteIppPurchaseDataLoading(false));
     return { fullfilled: false, message: error.response.detail }
   }
 };

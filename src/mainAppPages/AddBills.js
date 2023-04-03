@@ -38,11 +38,13 @@ const NotAllowedNotification = () => {
 function AddBills({ match }) {
   const [dieslePurchaseForm] = Form.useForm();
   const [prePaidForm] = Form.useForm();
+  const [ippPurchaseForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
   const [EOMBalanceForm] = Form.useForm();
   const [badFileHeader, setBadFileHeader] = React.useState(false);
   const [purchaseLoading, setPurchaseLoading] = React.useState(false);
   const [prePaidLoading, setPrePaidLoading] = React.useState(false);
+  const [ippPurchaseLoading, setIppPurchaseLoading] = React.useState(false);
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
 
@@ -67,6 +69,10 @@ function AddBills({ match }) {
       name: 'date'
     },
     utitliyPurchaseDate: {
+      label: 'Date of Purchase',
+      name: 'date'
+    },
+    ippPurchaseDate: {
       label: 'Date of Purchase',
       name: 'date'
     },
@@ -120,6 +126,14 @@ function AddBills({ match }) {
     newTariff = isFinite(newTariff) ? newTariff : 0;
     prePaidForm.setFieldsValue({ tariff: newTariff })
   }
+
+  const onIppAmountOrValueChange = (event) => {
+    const { amount, value } = ippPurchaseForm.getFieldsValue(true);
+    let newTariff = Number(amount / value || 0)?.toFixed(2) || 0;
+    newTariff = isFinite(newTariff) ? newTariff : 0;
+    ippPurchaseForm.setFieldsValue({ tariff: newTariff })
+  }
+
   const onPostpaidAmountOrValueChange = (event) => {
     const { amount, value } = postPaidForm.getFieldsValue(true);
     let newTariff = Number(amount / value || 0)?.toFixed(2) || 0;
@@ -209,6 +223,39 @@ function AddBills({ match }) {
         })
         .catch(err => {
           setPrePaidLoading(false);
+          console.log(err.response)
+          alert(err.response, 'Please try again!!!')
+        })
+    }
+    else {
+      NotAllowedNotification();
+    }
+  };
+
+  const onIppPaymentTrackerSubmit = ({
+    amount,
+    date,
+    tariff,
+    value,
+  }) => {
+    if (defaultBranch != null) {
+      setIppPurchaseLoading(true);
+      const ippData = {
+        branch: defaultBranch,
+        value,
+        amount,
+        tariff,
+        date: date.format('YYYY-MM-DD')
+      }
+      billingHttpServices
+        .addCostIpp(ippData, token, userId)
+        .then(() => {
+          setIppPurchaseLoading(false);
+          ippPurchaseForm.resetFields()
+          openNotificationWithIcon('success', 'IPP payment tracker');
+        })
+        .catch(err => {
+          setIppPurchaseLoading(false);
           console.log(err.response)
           alert(err.response, 'Please try again!!!')
         })
@@ -365,6 +412,61 @@ function AddBills({ match }) {
                       {
                         ...data.value,
                         onDataChange: onAmountOrValueChange
+                      }
+                    }
+                  />
+                </div>
+              </div>
+
+              <SubmitButton />
+            </Form>
+            </Spin>
+          </section>
+
+          <section className="cost-tracker-form-section">
+          <Spin spinning={ippPurchaseLoading}>
+            <h2 className="form-section-heading">
+              IPP Payment Tracker
+            </h2>
+
+            <Form
+              form={ippPurchaseForm}
+              name="diesel-purchase"
+              className="cost-tracker-form"
+              onFinish={onIppPaymentTrackerSubmit}
+            >
+              <div className="cost-tracker-form-inputs-wrapper">
+                <div className="cost-tracker-input-container">
+                  <NumberField
+                    data={
+                      {
+                        ...data.amount,
+                        onDataChange: onIppAmountOrValueChange
+                      }
+                    }
+                  />
+                </div>
+
+                <div className="cost-tracker-input-container">
+                  <DateField data={data.ippPurchaseDate} />
+                </div>
+
+                <div className="cost-tracker-input-container">
+                  <NumberField
+                    data={
+                      data.tariff
+                    }
+                    disabled={true}
+                    required={false}
+                  />
+                </div>
+
+                <div className="cost-tracker-input-container">
+                  <NumberField
+                    data={
+                      {
+                        ...data.value,
+                        onDataChange: onIppAmountOrValueChange
                       }
                     }
                   />
