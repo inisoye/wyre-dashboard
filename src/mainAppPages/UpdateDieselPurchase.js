@@ -34,13 +34,12 @@ function UpdateDieselPurchase({ match, dieselPurchaseData, updateFuelPurchaseDat
   const [prePaidForm] = Form.useForm();
   const [postPaidForm] = Form.useForm();
   const [EOMBalanceForm] = Form.useForm();
-  const [badFileHeader, setBadFileHeader] = React.useState(false);
-  const [purchaseLoading, setPurchaseLoading] = React.useState(false);
+  const [purchaseLoading] = React.useState(false);
   const [prePaidLoading, setPrePaidLoading] = React.useState(false);
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
 
-  const { setCurrentUrl, isAuthenticatedDataLoading, token, organization, userId } = useContext(
+  const { setCurrentUrl, token, organization, userId } = useContext(
     CompleteDataContext
   );
 
@@ -51,9 +50,9 @@ function UpdateDieselPurchase({ match, dieselPurchaseData, updateFuelPurchaseDat
       placeholder: 'Enter Quantity'
     },
     pricePerLitter: {
-      label: 'Price/Litre',
+      label: 'Price(₦)/Litre',
       name: 'price_per_litre',
-      placeholder: 'Enter Price/Litre'
+      placeholder: 'Enter Price(₦)/Litre'
     },
     purchaseDate: {
       label: 'Date',

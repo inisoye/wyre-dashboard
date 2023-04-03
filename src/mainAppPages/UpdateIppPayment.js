@@ -46,9 +46,9 @@ function UpdateIppPayment({ match, ippPurchaseData, updateIppPaymentData:editIpp
       placeholder: 'Enter Quantity'
     },
     pricePerLitter: {
-      label: 'Price/Litre',
+      label: 'Price(₦)/Litre',
       name: 'pricePerLitre',
-      placeholder: 'Enter Price/Litre'
+      placeholder: 'Enter Price(₦)/Litre'
     },
     purchaseDate: {
       label: 'Date',

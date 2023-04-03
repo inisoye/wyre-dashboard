@@ -36,7 +36,6 @@ function UpdateUtilityPayment({ match, utilityPurchaseData, updatePrepaidUtility
   const [postPaidForm] = Form.useForm();
   const [EOMBalanceForm] = Form.useForm();
   const [badFileHeader, setBadFileHeader] = React.useState(false);
-  const [purchaseLoading, setPurchaseLoading] = React.useState(false);
   const [prePaidLoading, setPrePaidLoading] = React.useState(false);
   const [postPaidLoading, setPostPaidLoading] = React.useState(false);
   const [EOMFlowReadingLoading, setEOMFlowReadingLoading] = React.useState(false);
@@ -52,9 +51,9 @@ function UpdateUtilityPayment({ match, utilityPurchaseData, updatePrepaidUtility
       placeholder: 'Enter Quantity'
     },
     pricePerLitter: {
-      label: 'Price/Litre',
+      label: 'Price(₦)/Litre',
       name: 'pricePerLitre',
-      placeholder: 'Enter Price/Litre'
+      placeholder: 'Enter Price(₦)/Litre'
     },
     purchaseDate: {
       label: 'Date',
