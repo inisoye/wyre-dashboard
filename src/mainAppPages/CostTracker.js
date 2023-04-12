@@ -340,7 +340,8 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         <h2 className='h-screen-reader-text'>Cost Overview</h2>
         {DieselOverViewCharts}
         {UtilityOverViewCharts}
-        {IppOverViewCharts}
+        {/* {IppOverViewCharts} */}
+        {userData && userData.client_type == 'RESELLER' ? IppOverViewCharts : ''}
       </section>
 
       <section className='cost-tracker-section'>
@@ -354,10 +355,14 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
         {utilityPurchasedCharts}
       </section>
       
-      <section className='cost-tracker-section'>
+      {
+        userData && userData.client_type == "RESELLER" ? (
+          <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Quantity of IPP Payments</h2>
         {IppPurchasedCharts}
       </section>
+        ) : ''
+      }
 
       <section className='cost-tracker-section'>
         <h2 className='h-screen-reader-text'>Monthly Cost</h2>
