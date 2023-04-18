@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import React, { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin, notification } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
 import jwt from 'jwt-decode';
 
@@ -49,6 +49,9 @@ function Login() {
     } catch (exception) {
       setIsAuthenticating(false)
       setErrorMessage(exception.response.data.error);
+      notification.error({
+        message: "Invalid Username or Password"
+      })
     }
   };
 
