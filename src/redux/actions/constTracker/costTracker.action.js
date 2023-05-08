@@ -90,9 +90,9 @@ export const updateFuelConsumptionData = (id, parameters) => async (dispatch) =>
 
 export const deleteFuelConsumptionData = (id, parameters) => async (dispatch) => {
   dispatch(deleteFuelDataLoading());
-  const requestUrl = `update/${id}`;
+  const requestUrl = `delete-fuel-entry/${id}/`;
   try {
-    const response = await APIService.post(requestUrl, parameters);
+    const response = await APIService.delete(requestUrl, parameters);
     dispatch(deleteFuelDataSuccess(response.data.data));
     dispatch(deleteFuelDataLoading(false))
     return { fullfilled: true, message: response.data.detail }

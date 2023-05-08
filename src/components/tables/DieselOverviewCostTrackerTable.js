@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import moment from 'moment';
-
 import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
-import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space, Menu } from 'antd';
+import { Modal, Table, Typography, Button, Dropdown, Popconfirm, Space, Menu, notification } from 'antd';
 import { EditOutlined, DownOutlined } from '@ant-design/icons';
 
 import { Icon } from '@iconify/react';
 import UpdateDieselEntry from '../../mainAppPages/UpdateDieselEntry';
 import { numberFormatter } from '../../helpers/numberFormatter';
+import { deleteFuelConsumptionData } from '../../redux/actions/constTracker/costTracker.action';
+import { connect } from 'react-redux';
 const { Text } = Typography;
 
 
 const DieselOverviewCostTrackerTable = (
   { dieselOverviewData, isLoading,
     userId,
-    fetchFuelConsumptionInfo }
+    fetchFuelConsumptionInfo, deleteFuelConsumptionData:deleteDieselEntry }
 ) => {
-
 
   const [modalOpener, setModalOpener] = useState(false);
   const [modalData, setModalData] = useState(false);
@@ -24,6 +24,13 @@ const DieselOverviewCostTrackerTable = (
   const [editDieselEntryModal, setEditDieselEntryModal] = useState(false)
   const [dieselEntryData, setDieselEntryData] = useState({})
   const [dataSources, setDataSources] = useState({})
+
+  const openNotificationWithIcon = (type, formName) => {
+    notification[type]({
+      message: 'Bill Deleted',
+      description: `The ${formName} has been successfully deleted`,
+    });
+  };
 
   const fetchFuelData = async (date) => {
     setModalData(false)
@@ -112,9 +119,16 @@ const DieselOverviewCostTrackerTable = (
     },
   ];
 
-  const handleDelete = (key) => {
-    const newData = dataSources.filter((item) => item.key !== key);
-    setDataSources(newData);
+  const entryId = dieselEntryData.id
+
+  const handleDelete = async () => {
+    const parameter = {
+      id: entryId
+    }
+    const request = await deleteDieselEntry(entryId, parameter);
+    if (request.fullfilled) {
+      openNotificationWithIcon('success', 'diesel entry')
+    }
   };
 
   const itemData = (record) => {
@@ -181,8 +195,13 @@ const DieselOverviewCostTrackerTable = (
               <Menu.Item onClick={() => {}} type="link">
                 <Space size={4}>
                   <Icon icon="ant-design:delete-outlined" />
-                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-                    <a>Delete Diesel Entry</a>
+                  <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record)}>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setDieselEntryData(record)
+                    }}
+                  >Delete Diesel Entry</a>
                   </Popconfirm>
                 </Space>
               </Menu.Item>
@@ -199,7 +218,6 @@ const DieselOverviewCostTrackerTable = (
 
 
   });
-
   const fuelconsumptionColum = [
     {
       title: 'Date',
@@ -345,4 +363,8 @@ const DieselOverviewCostTrackerTable = (
   )
 }
 
-export default DieselOverviewCostTrackerTable
+const mapDispatchToProps = {
+  deleteFuelConsumptionData
+}
+
+export default connect(null, mapDispatchToProps)(DieselOverviewCostTrackerTable)
