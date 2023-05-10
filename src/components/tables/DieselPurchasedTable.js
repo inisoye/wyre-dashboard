@@ -42,46 +42,10 @@ const DieselPurchasedTable = ({ data, userId, isLoading, setEditDieselPurchaseMo
     }
   };
 
-  const itemData = (record) => {
-    return [
-      {
-        key: '1',
-        label: (
-          <>
-            <EditOutlined />
-            <a target="_blank" onClick={(e) => {
-              e.preventDefault();
-              setEditDieselPurchaseModal(true);
-              setDieselPurchaseData(record)
-            }} rel="noopener noreferrer">
-              Edit Diesel Entry
-            </a>
-          </>
-
-        ),
-      },
-      {
-        key: '2',
-        label: (<> {
-          <>
-            <Icon icon="ant-design:delete-outlined" />
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-              <a>Delete Diesel Entry</a>
-            </Popconfirm>
-          </>
-        }
-        </>
-
-        ),
-      }
-    ];
-  }
-
   const optionsColumn = () => ({
     title: 'Options',
     width: '10%',
     render: (_, record) => {
-      const items = itemData(record);
       return (
         <Dropdown
           trigger={["click"]}
