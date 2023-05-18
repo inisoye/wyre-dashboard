@@ -59,11 +59,13 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
+    
     fetchCostTracker();
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
   }, []);
+
 
   useEffect(() => {
     setOverviewData(costTracker.costTrackerData)
