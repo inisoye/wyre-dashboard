@@ -28,6 +28,7 @@ function RevisedAppTopBar() {
     'parameters',
     'cost-tracker',
     'billing',
+    'load-overview',
   ];
 
   const pagesWithTimeIntervalSelector = [

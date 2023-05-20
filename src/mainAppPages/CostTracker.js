@@ -35,6 +35,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
   const [overviewData, setOverviewData] = useState([]);
   const [branchInfo, setBranchInfo] = useState(false);
   const [baseLineData, setBaseLineData] = useState(false);
+  const [dieselEntryData, setDieselEntryData] = useState({})
   const [dieselPurchaseData, setDieselPurchaseData] = useState({})
   const [utilityPurchaseData, setUtilityPurchaseData] = useState({})
   const [ippPurchaseData, setIppPurchaseData] = useState({})
@@ -50,7 +51,7 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
     fontWeight: '500',
     marginTop: '20px',
   }
-
+  
   const {
     setCurrentUrl,
     uiSettings,
@@ -58,11 +59,13 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
   } = useContext(CompleteDataContext);
 
   useEffect(() => {
+    
     fetchCostTracker();
     if (match && match.url) {
       setCurrentUrl(match.url);
     }
   }, []);
+
 
   useEffect(() => {
     setOverviewData(costTracker.costTrackerData)
@@ -102,11 +105,12 @@ function CostTracker({ match, fetchCostTrackerData: fetchCostTracker, fetchFuelC
       <DieselOverviewCostTrackerTable
         isLoading={costTracker.fetchCostTrackerLoading}
         dieselOverviewData={overviewData.diesel_overview}
+        setDieselEntryData={setDieselEntryData}
+        dieselEntryData={dieselEntryData}
         userId={userData.user_id}
         fetchFuelConsumptionInfo={fetchFuelConsumptionInfo} />
     </article>
   );
-
 
   const UtilityOverViewCharts = overviewData && (
     <article
