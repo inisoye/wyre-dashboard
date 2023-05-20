@@ -381,8 +381,9 @@ const getOrganizationFuelConsumptionArray = (data) => {
 --------------------------------------------------------------------*/
 const getOrganizationPowerQualityData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-  return allOrganizationDevices.map((eachDevice) => {
+  return allIsSourceData.map((eachDevice) => {
     const devicePowerQualityData = convertParameterDateStringsToObjects(
       eachDevice,
       'power_quality'
@@ -422,8 +423,9 @@ const getOrganizationLastReadingData = (data) => {
 --------------------------------------------------------------------*/
 const getOrganizationPowerDemandData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-  return allOrganizationDevices.map((eachDevice) => {
+  return allIsSourceData.map((eachDevice) => {
     const devicePowerDemandData = convertParameterDateStringsToObjects(
       eachDevice,
       'power_demand'
@@ -473,17 +475,20 @@ const getOrganizationTimeOfUseTableData = (data) =>
 const getOrganizationEnergyConsumptionValues = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
-  return allOrganizationDevices.map((eachDevice) => {
-    const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
-      eachDevice,
-      'energy_consumption'
-    );
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-    const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
-    if (energy_consumption_values)
-      energy_consumption_values.deviceName = eachDevice.name;
+  return allIsSourceData.map((eachDevice) => {
+      const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
+        eachDevice,
+        'energy_consumption'
+      );
+  
+      const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
+      if (energy_consumption_values)
+        energy_consumption_values.deviceName = eachDevice.name;
+  
+      return { dates, ...energy_consumption_values };
 
-    return { dates, ...energy_consumption_values };
   });
 };
 
