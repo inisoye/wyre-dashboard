@@ -5,13 +5,15 @@ $white: #ffffff;
 $black: #000000;
 $dark: #000000;
 
-$purple: #6c00fa;
+$old-purple: #6c00fa;
+$purple: #5c3592;
 $light-purple: scale-color($purple, $lightness: 90%);
 $light-purple-2: scale-color($purple, $lightness: 80%);
 $red: #fa0303;
 $green: #1b934e;
 $bluegrey: #e0e8f3;
 $purplegrey: #f2f2f8;
+$light-bluegrey: #eef1f5;
 
 $grey1: #848484;
 $grey2: #646464;
@@ -60,3 +62,7 @@ $roboto: 'Roboto', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial
 $small-gutter: 16px;
 $medium-gutter: 24px;
 $large-gutter: 40px;
+
+$small-border: 5px;
+$medium-border: 10px;
+$large-border: 16px;

@@ -1,5 +1,9 @@
+import { getRefinedBranchData, getBillingRefinedBranchData } from './branchDataHelpers';
+import { getDeviceData, getDeviceDataBilling } from './deviceDataHelper';
+
 import {
   sumArrayOfArrays,
+  combineArrayData,
   getAllOrganizationDevices,
   getModifiedBranchLevelData,
   sumObjectValuesUp,
@@ -16,7 +20,14 @@ import {
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
+  getMinDemandObjectKVA,
+  getMaxDemandObjectKVA,
+  getAvgDemandObjectKVA,
+  getNestedAvgDemandObjectKva,
+  getNestedMaxDemandObjectKva,
+  getNestedMinDemandObjectKVA,
 } from './genericHelpers';
+
 
 /* -------------------------------------------------------------------
 /* Org Dashboard Calculations Begin ----------------------------------
@@ -42,8 +53,7 @@ const getOrganizationDailyKwh = (data) => {
   const { dates, ...rest } = organizationDailyKwh;
   const allBranchesDailyKwh = Object.values(rest);
   const totalOrganizationDailyKwh = sumArrayOfArrays(allBranchesDailyKwh);
-  organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
-
+  // organizationDailyKwh[data.name] = totalOrganizationDailyKwh;
   return organizationDailyKwh;
 };
 
@@ -53,6 +63,7 @@ const getOrganizationDailyKwh = (data) => {
 
 const getOrganizationMonthlyUsage = (data) => {
   let organizationMonthlyUsage = { devices: [], hours: [] };
+
 
   // Add data for each branch
   data.branches &&
@@ -71,7 +82,7 @@ const getOrganizationMonthlyUsage = (data) => {
 /*----------------
    Collate dashboard energy data for each branch
   ----------------*/
-const getBranchEnergyDataArray = (data) => {
+const getBranchEnergyDataArray = (data, powerFactor = null) => {
   return (
     data.branches &&
     data.branches.map((eachBranch) => {
@@ -97,6 +108,7 @@ const getBranchEnergyDataArray = (data) => {
         eachBranch.devices,
         'dashboard'
       );
+
       branchEnergyData.max_demand = getNestedMaxDemandObject(
         eachBranch.devices,
         'dashboard'
@@ -104,6 +116,22 @@ const getBranchEnergyDataArray = (data) => {
       branchEnergyData.avg_demand = getNestedAvgDemandObject(
         eachBranch.devices,
         'dashboard'
+      );
+      branchEnergyData.min_demand_with_power_factor = getNestedMinDemandObjectKVA(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
+      );
+
+      branchEnergyData.max_demand_with_power_factor = getNestedMaxDemandObjectKva(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
+      );
+      branchEnergyData.avg_demand_with_power_factor = getNestedAvgDemandObjectKva(
+        eachBranch.devices,
+        'dashboard',
+        powerFactor
       );
 
       return branchEnergyData;
@@ -114,8 +142,8 @@ const getBranchEnergyDataArray = (data) => {
 /*----------------
    Obtain dashboard energy data for organization
   ----------------*/
-const getOrganizationEnergyData = (data) => {
-  const eachBranchEnergyDataArray = getBranchEnergyDataArray(data);
+const getOrganizationEnergyData = (data, powerFactor = null) => {
+  const eachBranchEnergyDataArray = getBranchEnergyDataArray(data, powerFactor);
 
   const energyValueNames =
     eachBranchEnergyDataArray && Object.keys(eachBranchEnergyDataArray[0]);
@@ -130,6 +158,9 @@ const getOrganizationEnergyData = (data) => {
       ));
     });
 
+
+
+
   organizationEnergyData.min_demand = getMinDemandObject(
     eachBranchEnergyDataArray
   );
@@ -140,6 +171,18 @@ const getOrganizationEnergyData = (data) => {
     eachBranchEnergyDataArray
   );
 
+
+
+
+  organizationEnergyData.min_demand_with_power_factor = getMinDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
+  organizationEnergyData.max_demand_with_power_factor = getMaxDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
+  organizationEnergyData.avg_demand_with_power_factor = getAvgDemandObjectKVA(
+    eachBranchEnergyDataArray
+  );
   return organizationEnergyData;
 };
 /*----------------
@@ -153,15 +196,31 @@ const getOrganizationEnergyData = (data) => {
 /* Org Score Card Calculations Begin ---------------------------------
 --------------------------------------------------------------------*/
 // Baseline Energies
+
 const getOrganizationBaselineEnergy = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
   const baselineEnergiesArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.baseline_energy
   );
-
   return sumBaselineEnergies(baselineEnergiesArray);
 };
+
+//check if device is a generator or not
+const getOrganizationDeviceType = (data) => {
+  const allOrganizationDevices = getAllOrganizationDevices(data);
+
+  const deviceTypeArray = allOrganizationDevices.map(
+    (eachDevice) =>
+      eachDevice.score_card ?
+        {
+          device_name: eachDevice.name,
+          is_gen: eachDevice.score_card.is_generator,
+
+        } : false
+  );
+  return deviceTypeArray;
+}
 
 // Peak to Average Power Ratios
 const getOrganizationPeakToAveragePowerRatio = (data) => {
@@ -170,7 +229,6 @@ const getOrganizationPeakToAveragePowerRatio = (data) => {
   const peakToAveragePowerRatioArray = allOrganizationDevices.map(
     (eachDevice) => eachDevice.score_card.peak_to_avg_power_ratio
   );
-
   return sumPeakToAveragePowerRatios(peakToAveragePowerRatioArray);
 };
 
@@ -192,9 +250,9 @@ const getOrgGeneratorSizeEfficiencyArray = (data) => {
   return allOrganizationDevices.map((eachDevice) =>
     eachDevice.score_card.generator_size_efficiency
       ? {
-          name: eachDevice.name,
-          ...eachDevice.score_card.generator_size_efficiency,
-        }
+        name: eachDevice.name,
+        ...eachDevice.score_card.generator_size_efficiency,
+      }
       : false
   );
 };
@@ -249,17 +307,23 @@ const getOrganizationChangeOverLags = (data) => {
 
 // Operating Time
 const getOrganizationOperatingTime = (data) => {
+
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
-  const organizationOperatingTimeDates = allOrganizationDevices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.dates
-  )[0];
+  const organizationOperatingTimeDates = allOrganizationDevices.filter(
+    (eachDevice) => eachDevice.score_card?.is_generator
+  ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.dates);
+  
+  const allDevicesOperatingTimeValues = allOrganizationDevices.filter(
+    (eachDevice) => eachDevice.score_card?.is_generator
+  ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.values );
 
-  const allDevicesOperatingTimeValues = allOrganizationDevices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.values
-  );
-  const organizationOperatingTimeValues = sumArrayOfArrays(
+  const organizationOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
+  );
+
+  const sumOrganizationOperatingTimeDates = combineArrayData(
+    organizationOperatingTimeDates
   );
 
   const organizationEstimatedTimeWasted = sumOperatingTimeValues(
@@ -277,7 +341,7 @@ const getOrganizationOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: organizationOperatingTimeDates,
+      dates: sumOrganizationOperatingTimeDates,
       values: organizationOperatingTimeValues,
     },
     estimated_time_wasted: {
@@ -317,8 +381,9 @@ const getOrganizationFuelConsumptionArray = (data) => {
 --------------------------------------------------------------------*/
 const getOrganizationPowerQualityData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-  return allOrganizationDevices.map((eachDevice) => {
+  return allIsSourceData.map((eachDevice) => {
     const devicePowerQualityData = convertParameterDateStringsToObjects(
       eachDevice,
       'power_quality'
@@ -358,8 +423,9 @@ const getOrganizationLastReadingData = (data) => {
 --------------------------------------------------------------------*/
 const getOrganizationPowerDemandData = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-  return allOrganizationDevices.map((eachDevice) => {
+  return allIsSourceData.map((eachDevice) => {
     const devicePowerDemandData = convertParameterDateStringsToObjects(
       eachDevice,
       'power_demand'
@@ -409,17 +475,20 @@ const getOrganizationTimeOfUseTableData = (data) =>
 const getOrganizationEnergyConsumptionValues = (data) => {
   const allOrganizationDevices = getAllOrganizationDevices(data);
 
-  return allOrganizationDevices.map((eachDevice) => {
-    const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
-      eachDevice,
-      'energy_consumption'
-    );
+  const allIsSourceData =  allOrganizationDevices && allOrganizationDevices.filter(eachDevice => eachDevice.is_source)
 
-    const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
-    if (energy_consumption_values)
-      energy_consumption_values.deviceName = eachDevice.name;
+  return allIsSourceData.map((eachDevice) => {
+      const deviceEnergyConsumptionData = convertParameterDateStringsToObjects(
+        eachDevice,
+        'energy_consumption'
+      );
+  
+      const { dates, energy_consumption_values } = deviceEnergyConsumptionData;
+      if (energy_consumption_values)
+        energy_consumption_values.deviceName = eachDevice.name;
+  
+      return { dates, ...energy_consumption_values };
 
-    return { dates, ...energy_consumption_values };
   });
 };
 
@@ -534,7 +603,8 @@ const getOrganizationBillingTotals = (data) => {
   const extractSingleBranchValueType = (
     combinedBranchValues,
     extractedValueName
-  ) => combinedBranchValues.map((eachBranch) => eachBranch[extractedValueName]);
+  ) => combinedBranchValues?.map((eachBranch) => eachBranch[extractedValueName] || 0);
+
 
   // Present Values
   const allBranchesPresentTotalValues = extractSingleBranchValueType(
@@ -545,12 +615,12 @@ const getOrganizationBillingTotals = (data) => {
   const organizationPresentTotalKwh = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'usage_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationPresentTotalNairaValue = extractSingleBranchValueType(
     allBranchesPresentTotalValues,
     'value_naira'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   // Previous Values
   const allBranchesPreviousTotalValues = extractSingleBranchValueType(
@@ -561,7 +631,7 @@ const getOrganizationBillingTotals = (data) => {
   const organizationPreviousTotalKwh = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
     'usage_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationPreviousTotalNairaValue = extractSingleBranchValueType(
     allBranchesPreviousTotalValues,
@@ -577,12 +647,12 @@ const getOrganizationBillingTotals = (data) => {
   const organizationUsagePresentKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'present_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationUsagePreviousKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
     'previous_kwh'
-  ).reduce((acc, curr) => acc + curr, 0);
+  )?.reduce((acc, curr) => acc + curr, 0);
 
   const organizationUsageTotalKwhValue = extractSingleBranchValueType(
     allBranchesUsageValues,
@@ -599,19 +669,25 @@ const getOrganizationBillingTotals = (data) => {
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'diesel_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+
+  const organizationMetricsIppPerKwh =
+    extractSingleBranchValueType(
+      allBranchesMetricsValues,
+      'ipp_per_kwh'
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   const organizationMetricsUtilityPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'utility_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   const organizationMetricsBlendedCostPerKwh =
     extractSingleBranchValueType(
       allBranchesMetricsValues,
       'blended_cost_per_kwh'
-    ).reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
+    )?.reduce((acc, curr) => acc + curr, 0) / allBranchesMetricsValues.length;
 
   return {
     present_total: {
@@ -623,6 +699,7 @@ const getOrganizationBillingTotals = (data) => {
       value_naira: organizationPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: organizationMetricsIppPerKwh,
       diesel_per_kwh: organizationMetricsDieselPerKwh,
       utility_per_kwh: organizationMetricsUtilityPerKwh,
       blended_cost_per_kwh: organizationMetricsBlendedCostPerKwh,
@@ -655,13 +732,16 @@ const getOrganizationDevicesBillingTotal = (data, totalType) => {
 --------------------------------------------------------------------*/
 
 const getRefinedOrganizationData = (data) => {
+  getOrganizationDeviceType(data);
   return {
+    all_device_data: { ...getAllOrganizationDevices(data) },
     name: data.name,
     // Dashboard Stuff
     ...getOrganizationEnergyData(data),
     daily_kwh: getOrganizationDailyKwh(data),
     usage_hours: getOrganizationMonthlyUsage(data),
     // Score Card Stuff
+    organization_device_type: getOrganizationDeviceType(data),
     baseline_energy: getOrganizationBaselineEnergy(data),
     peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
     score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
@@ -713,4 +793,215 @@ const getRefinedOrganizationData = (data) => {
   };
 };
 
-export { getRefinedOrganizationData, getOrganizationFuelConsumptionArray };
+
+const getDashBoardRefinedData = (data, powerFactor) => {
+  return {
+    all_device_data: { ...getAllOrganizationDevices(data) },
+    name: data.name,
+    // Dashboard Stuff
+    ...getOrganizationEnergyData(data, powerFactor),
+    daily_kwh: getOrganizationDailyKwh(data),
+    usage_hours: getOrganizationMonthlyUsage(data),
+    // Score Card Stuff
+    // organization_device_type : getOrganizationDeviceType(data),
+    // baseline_energy: getOrganizationBaselineEnergy(data),
+    // peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
+    // score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
+    // generator_size_efficiency: getOrgGeneratorSizeEfficiencyArray(data),
+    // change_over_lags: getOrganizationChangeOverLags(data),
+    // operating_time: getOrganizationOperatingTime(data),
+    // fuel_consumption: getOrganizationFuelConsumptionArray(data),
+    // // Power Quality Stuff
+    // power_quality: getOrganizationPowerQualityData(data),
+    // // Time of Use Stuff
+    // last_reading: getOrganizationLastReadingData(data),
+    // // Power Demand Stuff
+    // power_demand: getOrganizationPowerDemandData(data),
+    // // Time of Use Stuff
+    // time_of_use_chart: getOrganizationTimeOfUseChartData(data),
+    // time_of_use_table: getOrganizationTimeOfUseTableData(data),
+  };
+};
+
+
+/* -------------------------------------------------------------------
+/* Handles when a date search is made wit while some checkbox are ticked
+--------------------------------------------------------------------*/
+const getRefinedOrganizationDataWithChekBox = ({
+  checkedBranches,
+  checkedDevices,
+  organization,
+  setRenderedDataObjects,
+  isDashBoard = false,
+  powerFactorData = null,
+}) => {
+
+  let branchAndDevice = {};
+  let allDeviceData = {};
+  // convert branches to array using the object keys
+  const branches = Object.keys(checkedBranches);
+  // convert device to array using the object keys
+  const devices = Object.keys(checkedDevices);
+
+  // convert branches or device are present then
+  if (branches.length !== 0 || devices.length > 0) {
+
+    organization.branches.forEach((branch) => {
+      if (branches.length > 0) {
+        // check whether the branch name is part of the branches array
+        if (branches.includes(branch.name)) {
+          branchAndDevice = { ...branchAndDevice, ...getRefinedBranchData(branch, isDashBoard, powerFactorData) }
+          branch.devices.forEach((device) => {
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+          })
+        }
+      }
+      if (devices.length > 0) {
+        branch.devices.forEach((device) => {
+          const combinedNames = `${branch.name} ${device.name}`;
+          // check whether the device name is part of the devices array
+          if (devices.includes(combinedNames)) {
+
+            // find the power factor here
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+            branchAndDevice = {
+              ...branchAndDevice, ...getDeviceData({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+          }
+        })
+      }
+    })
+  }
+  if (setRenderedDataObjects) {
+    setRenderedDataObjects(branchAndDevice);
+  }
+
+  return { branchAndDevice, allDeviceData };
+}
+const getBillingRefinedOrganizationDataWithChekBox = ({
+  checkedBranches,
+  checkedDevices,
+  organization,
+  setRenderedDataObjects,
+  isDashBoard = false,
+  powerFactorData = null,
+}) => {
+
+  let branchAndDevice = {};
+  let allDeviceData = {};
+  // convert branches to array using the object keys
+  const branches = Object.keys(checkedBranches);
+  // convert device to array using the object keys
+  const devices = Object.keys(checkedDevices);
+
+  // convert branches or device are present then
+  if (branches.length !== 0 || devices.length > 0) {
+
+    organization.branches.forEach((branch) => {
+      if (branches.length > 0) {
+        // check whether the branch name is part of the branches array
+        if (branches.includes(branch.name)) {
+          branchAndDevice = { ...branchAndDevice, ...getBillingRefinedBranchData(branch, isDashBoard, powerFactorData) }
+          branch.devices.forEach((device) => {
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0
+              })
+            }
+          })
+        }
+      }
+      if (devices.length > 0) {
+        branch.devices.forEach((device) => {
+          const combinedNames = `${branch.name} ${device.name}`;
+          // check whether the device name is part of the devices array
+          if (devices.includes(combinedNames)) {
+
+            // find the power factor here
+            const powerFactor = powerFactorData && powerFactorData.find((factor) => factor.data.device_id === device.device_id);
+            allDeviceData = {
+              ...allDeviceData, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0.78
+              })
+            }
+            branchAndDevice = {
+              ...branchAndDevice, ...getDeviceDataBilling({
+                branchData: branch, deviceData: device,
+                powerFactor: powerFactor ? powerFactor.data.data.avg_pf : 0.78
+              })
+            }
+          }
+        })
+      }
+    })
+  }
+  if (setRenderedDataObjects) {
+    setRenderedDataObjects(branchAndDevice);
+  }
+
+  return { branchAndDevice, allDeviceData };
+}
+const getInitialAllDeviceRefinedOrganizationData = ({
+  organization,
+}) => {
+  let allDeviceData = {};
+
+  organization.branches.forEach((branch) => {
+    branch.devices.forEach((device) => {
+      allDeviceData = { ...allDeviceData, ...getDeviceData({ branchData: branch, deviceData: device }) }
+    });
+  })
+
+  return allDeviceData;
+}
+
+
+
+const getBillingRefinedOrganizationData = (data) => {
+  getOrganizationDeviceType(data);
+  return {
+  
+    // Billing Stuff
+    all_device_data: { ...getAllOrganizationDevices(data) },
+    billing_consumption_kwh: getOrganizationBillingConsumptionKwhValues(data),
+    billing_consumption_naira: getOrganizationBillingConsumptionNairaValues(
+      data
+    ),
+    overall_billing_totals: getOrganizationBillingTotals(data),
+    devices_previous_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'previous_total'
+    ),
+    devices_present_billing_total: getOrganizationDevicesBillingTotal(
+      data,
+      'present_total'
+    ),
+  };
+};
+
+
+export {
+  getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
+  getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox,
+  getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData,
+  getBillingRefinedOrganizationData, getBillingRefinedOrganizationDataWithChekBox
+};
+

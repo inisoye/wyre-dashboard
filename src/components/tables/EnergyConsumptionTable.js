@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import { sortByDateTime } from '../../helpers/genericHelpers';
 
 class EnergyConsumptionTable extends React.Component {
   state = {
@@ -93,8 +94,10 @@ class EnergyConsumptionTable extends React.Component {
   };
 
   render() {
-    const data = this.props.energyConsumptionData;
+    const data = sortByDateTime(this.props.energyConsumptionData);
     const unit = this.props.energyConsumptionUnit;
+    console.log('here is the data dddd ', data);
+
 
     const dataForEnergyConsumptionColumns =
       data &&
@@ -104,7 +107,7 @@ class EnergyConsumptionTable extends React.Component {
       });
 
     const deviceNames =
-      dataForEnergyConsumptionColumns.length &&
+      dataForEnergyConsumptionColumns && dataForEnergyConsumptionColumns.length &&
       Object.keys(dataForEnergyConsumptionColumns[0]);
 
     const energyConsumptionColumns =
@@ -144,6 +147,7 @@ class EnergyConsumptionTable extends React.Component {
       },
       ...(energyConsumptionColumns || []),
     ];
+
 
     return (
       <>

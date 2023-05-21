@@ -1,8 +1,10 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import jwtDecode from 'jwt-decode';
+// import dashBoardMock from '../mock/dashboard';
 
 // Base URL prefix
-let baseUrlPrefix = `https://wyreng.xyz/api/v1/dashboard`;
+let baseUrlPrefix = `https://backend.wyreng.com/api/v1/dashboard`;
 
 // Handle determination of token
 let token = undefined;
@@ -24,7 +26,7 @@ const convertDateRangeToEndpointFormat = (dateObjects) =>
     .map((eachDateObject) => eachDateObject.format('DD-MM-YYYY HH:mm'))
     .join('/');
 
-// Handle determination of date range for url
+    // Handle determination of date range for url
 let endpointDateRange = convertDateRangeToEndpointFormat([
   dayjs().startOf('month'),
   dayjs(),
@@ -40,6 +42,7 @@ const setEndpointDateRange = (newEndpointDateRange) => {
       ]));
 };
 
+
 // Handle Manipulation of time interval for url
 let endpointDataTimeInterval = 'hourly';
 
@@ -48,15 +51,30 @@ const setEndpointDataTimeInterval = (newEndpointDataTimeInterval) => {
 };
 
 const getAllData = async () => {
-  // Add interval to url
-  const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
 
-  const config = {
-    headers: { Authorization: token },
-  };
+  const loggedUserJSON = localStorage.getItem('loggedWyreUser');
+  let userId;
+  let token;
+
+  if (loggedUserJSON) {
+    const userToken = JSON.parse(loggedUserJSON);
+    const user = jwtDecode(userToken.access)
+    userId = user.id;
+    token = userToken.access;
+  }
+  const baseUrl = `${baseUrlPrefix}/${userId}/${endpointDateRange}/${endpointDataTimeInterval}`;
+  //const test =axios.get('https://backend.wyreng.com/api/v1/dashboard/6/01-12-2021%2000:00/01-04-2021%2000:00/hourly');
+  //console.log(test)
+  // const config = {
+  //   headers: { Authorization:`Bearer ${token}`  },
+  // };
+  const config = null;
+
+  //const resp = await axios.get(test, config);
+  //console.log(resp.data.authenticatedData);
 
   const response = await axios.get(baseUrl, config);
-  return response.data.authenticatedData;
+  return response.data.authenticatedData;  
 };
 
 // eslint-disable-next-line
@@ -66,4 +84,9 @@ export default {
   setUserId,
   setEndpointDateRange,
   setEndpointDataTimeInterval,
+  convertDateRangeToEndpointFormat,
+  endpointDateRange,
+  userId,
+  token,
+  endpointDataTimeInterval
 };

@@ -15,10 +15,12 @@ import PowerDemandStackedBarChart from '../components/barCharts/PowerDemandStack
 import PowerDemandTable from '../components/tables/PowerDemandTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
+import { exportToExcel } from '../helpers/exportToFile';
+import jsPDF from "jspdf";
+
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -41,84 +43,99 @@ function PowerDemand({ match }) {
 
   const { power_demand } = refinedRenderedData;
 
-  const chartDemandValues =
-    power_demand && power_demand.map((eachDevice) => eachDevice.demand);
 
-  const chartDeviceNames =
-    power_demand && power_demand.map((eachDevice) => eachDevice.source);
 
-  const chartTooltipValues =
-    power_demand &&
-    power_demand.map((eachDevice) => {
-      return {
-        source: eachDevice.source,
-        avg: eachDevice.avg,
-        min: eachDevice.min,
-        max: eachDevice.max,
-      };
-    });
+  let chartDemandValues, chartDates, chartDeviceNames, chartTooltipValues;
+  let powerDemandUnit, powerDemandTableDataClone, arrayOfTableValues, formattedTableDataWithIndex;
+  let tableHeadings, csvHeaders, XLSXHeaders, PDFHeaders, arrayOfFormattedTableData, formattedTableData;
+  if (power_demand) {
 
-  const chartDates =
-    power_demand && formatParametersDatetimes(power_demand[0].dates);
+    chartDemandValues =
+      power_demand && power_demand.map((eachDevice) => eachDevice.demand);
 
-  const powerDemandUnit = power_demand && power_demand[0].units;
+    chartDeviceNames =
+      power_demand && power_demand.map((eachDevice) => eachDevice.source);
 
-  const powerDemandTableDataClone =
-    power_demand &&
-    power_demand.map((eachDevice) => {
-      // Make the device name available at every data point
-      const arrayOfDeviceName =
-        typeof eachDevice.source === 'string' &&
-        Array(eachDevice.avg.length).fill(eachDevice.source);
-
-      // Remove units and data from table data
-      const { units, demand, ...dataWithoutUnitsAndDemand } = eachDevice;
-
-      return { ...dataWithoutUnitsAndDemand, source: arrayOfDeviceName };
-    });
-
-  const tableHeadings = Object.keys({
-    date: '',
-    time: '',
-    ...(powerDemandTableDataClone ? powerDemandTableDataClone[0] : []),
-  });
-
-  const arrayOfTableValues =
-    powerDemandTableDataClone &&
-    powerDemandTableDataClone.map((eachDevice) => {
-      return Object.values({
-        date: formatParametersDates(eachDevice.dates),
-        time: formatParametersTimes(eachDevice.dates),
-        ...eachDevice,
+    chartTooltipValues =
+      power_demand &&
+      power_demand.map((eachDevice) => {
+        return {
+          source: eachDevice.source,
+          avg: eachDevice.avg,
+          min: eachDevice.min,
+          max: eachDevice.max,
+        };
       });
+
+
+    chartDates =
+      power_demand && formatParametersDatetimes(power_demand[0].dates);
+
+    powerDemandUnit = power_demand && power_demand[0].units;
+
+    powerDemandTableDataClone =
+      power_demand &&
+      power_demand.map((eachDevice) => {
+        // Make the device name available at every data point
+        const arrayOfDeviceName =
+          typeof eachDevice.source === 'string' &&
+          Array(eachDevice.avg.length).fill(eachDevice.source);
+
+        // Remove units and data from table data
+        const { units, demand, ...dataWithoutUnitsAndDemand } = eachDevice;
+
+        return { ...dataWithoutUnitsAndDemand, source: arrayOfDeviceName };
+      });
+
+    tableHeadings = Object.keys({
+      date: '',
+      time: '',
+      ...(powerDemandTableDataClone ? powerDemandTableDataClone[0] : []),
     });
 
-  const arrayOfFormattedTableData =
-    arrayOfTableValues &&
-    arrayOfTableValues.map((eachDeviceTableValues) =>
-      formatParameterTableData(tableHeadings, eachDeviceTableValues)
-    );
+    arrayOfTableValues =
+      powerDemandTableDataClone &&
+      powerDemandTableDataClone.map((eachDevice) => {
+        return Object.values({
+          date: formatParametersDates(eachDevice.dates),
+          time: formatParametersTimes(eachDevice.dates),
+          ...eachDevice,
+        });
+      });
 
-  const formattedTableData =
-    arrayOfFormattedTableData && arrayOfFormattedTableData.flat(1);
+    arrayOfFormattedTableData =
+      arrayOfTableValues &&
+      arrayOfTableValues.map((eachDeviceTableValues) =>
+        formatParameterTableData(tableHeadings, eachDeviceTableValues)
+      );
 
-  // Re-add indices
-  const formattedTableDataWithIndex =
-    formattedTableData &&
-    formattedTableData.map(function (currentValue, index) {
-      currentValue.index = index + 1;
-      return currentValue;
-    });
+    formattedTableData =
+      arrayOfFormattedTableData && arrayOfFormattedTableData.flat(1);
 
-  const csvHeaders = [
-    { label: "Index", key: "index" },
-    { label: "Date", key: "date" },
-    { label: "Time", key: "time" },
-    { label: "Source", key: "source" },
-    { label: `Minimum ${powerDemandUnit}`, key: "min" },
-    { label: `Maximum ${powerDemandUnit}`, key: "max" },
-    { label: `Average ${powerDemandUnit}`, key: "avg" },
-  ]
+    // Re-add indices
+    formattedTableDataWithIndex =
+      formattedTableData &&
+      formattedTableData.map(function (currentValue, index) {
+        const { date, time, source, ...others } = currentValue;
+        return { index: (index + 1), date, time, source, ...others };
+      });
+
+    csvHeaders = [
+      { label: "Index", key: "index" },
+      { label: "Date", key: "date" },
+      { label: "Time", key: "time" },
+      { label: "Source", key: "source" },
+      { label: `Minimum ${powerDemandUnit}`, key: "min" },
+      { label: `Maximum ${powerDemandUnit}`, key: "max" },
+      { label: `Average ${powerDemandUnit}`, key: "avg" },
+    ]
+    XLSXHeaders = [["Index", "Date", "Time", "Source", `Minimum ${powerDemandUnit}`,
+      `Maximum ${powerDemandUnit}`, `Average ${powerDemandUnit}`]
+    ]
+    PDFHeaders = [["Index", "Date", "Time", "Source", `Minimum ${powerDemandUnit}`,
+      `Maximum ${powerDemandUnit}`, `Average ${powerDemandUnit}`]
+    ]
+  }
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
@@ -128,50 +145,52 @@ function PowerDemand({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
+      {power_demand && <>
+        <article className='parameters-stacked-bar-container'>
+          <PowerDemandStackedBarChart
+            chartDemandValues={chartDemandValues}
+            chartDeviceNames={chartDeviceNames}
+            chartTooltipValues={chartTooltipValues}
+            chartDates={chartDates}
+            powerDemandUnit={powerDemandUnit}
+          />
+        </article>
 
-      <article className='parameters-stacked-bar-container'>
-        <PowerDemandStackedBarChart
-          chartDemandValues={chartDemandValues}
-          chartDeviceNames={chartDeviceNames}
-          chartTooltipValues={chartTooltipValues}
-          chartDates={chartDates}
-          powerDemandUnit={powerDemandUnit}
-        />
-      </article>
+        <article className='table-with-header-container'>
+          <div className='table-header'>
+            <div className='h-hidden-medium-down'>
+              {/* <button type='button' className='table-header__left-button'>
+                PDF
+              </button> */}
+              <ExportToCsv filename={"power-demand.csv"} csvHeaders={csvHeaders} csvData={formattedTableDataWithIndex}>
+                <button type='button' className='table-header__left-button'>
+                  CSV
+                </button>
+              </ExportToCsv>
+            </div>
 
-      <article className='table-with-header-container'>
-        <div className='table-header'>
-          <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
-              PDF
+            <h3 className='table-header__heading'>Raw Logs</h3>
+
+            <button
+              type='button'
+              onClick={() => exportToExcel({ data: formattedTableDataWithIndex, header: XLSXHeaders })}
+              className='table-header__right-button h-hidden-medium-down'
+            >
+              <ExcelIcon />
+              <span>Download in Excel</span>
             </button>
-            <ExportToCsv filename={"power-demand.csv"} csvHeaders={csvHeaders} csvData={formattedTableDataWithIndex}>
-              <button type='button' className='table-header__left-button'>
-                CSV
-              </button>
-            </ExportToCsv>
           </div>
 
-          <h3 className='table-header__heading'>Raw Logs</h3>
-
-          <button
-            type='button'
-            className='table-header__right-button h-hidden-medium-down'
-          >
-            <ExcelIcon />
-            <span>Download in Excel</span>
-          </button>
-        </div>
-
-        <div className='power-demand-table-wrapper'>
-          <PowerDemandTable
-            powerDemandUnit={powerDemandUnit}
-            powerDemandData={formattedTableDataWithIndex}
-          />
-        </div>
-      </article>
+          <div className='power-demand-table-wrapper'>
+            <PowerDemandTable
+              powerDemandUnit={powerDemandUnit}
+              powerDemandData={formattedTableDataWithIndex}
+            />
+          </div>
+        </article>
+      </>
+      }
     </>
   );
 }

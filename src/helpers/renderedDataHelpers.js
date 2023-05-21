@@ -7,7 +7,12 @@ import {
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
+  getMinDemandObjectKVA,
+  getMaxDemandObjectKVA,
+  getAvgDemandObjectKVA,
+  combineArrayData,
 } from './genericHelpers';
+
 
 /* -------------------------------------------------------------------
 /* Dashboard Calculations Begin --------------------------------------
@@ -31,7 +36,7 @@ const getSelectionMonthlyUsage = (data) => {
   let SelectionMonthlyUsage = { devices: [], hours: [] };
 
   // Add data for each branch
-  data.forEach((eachSelection) => {
+   data.forEach((eachSelection) => {
     const branchMonthlyUsage = eachSelection.usage_hours.hours.reduce(
       (acc, curr) => acc + curr,
       0
@@ -43,7 +48,7 @@ const getSelectionMonthlyUsage = (data) => {
   return SelectionMonthlyUsage;
 };
 
-const getRefinedEnergyData = (data) => {
+const getRefinedEnergyData = (data, powerFactorData = null) => {
   // Ensure data isn't falsy
   const refinedEnergyDataArray = data[0] && data;
 
@@ -66,6 +71,13 @@ const getRefinedEnergyData = (data) => {
     refinedEnergyDataArray && getMaxDemandObject(refinedEnergyDataArray);
   refinedEnergyData.avg_demand =
     refinedEnergyDataArray && getAvgDemandObject(refinedEnergyDataArray);
+
+  refinedEnergyData.min_demand_with_power_factor =
+    refinedEnergyDataArray && getMinDemandObjectKVA(refinedEnergyDataArray);
+  refinedEnergyData.max_demand_with_power_factor =
+    refinedEnergyDataArray && getMaxDemandObjectKVA(refinedEnergyDataArray);
+  refinedEnergyData.avg_demand_with_power_factor =
+    refinedEnergyDataArray && getAvgDemandObjectKVA(refinedEnergyDataArray);
 
   return refinedEnergyData;
 };
@@ -182,14 +194,17 @@ const getSelectionChangeOverLags = (data) => {
 
 // Operating Time
 const getSelectionOperatingTime = (data) => {
-  const selectionOperatingTimeDates = data.map(
-    (eachSelection) => eachSelection.operating_time.chart.dates
-  )[0];
+  const selectionOperatingTimeDates = data.filter(
+    (eachSelection) => eachSelection.is_generator
+  ).map((eachData) => eachData.operating_time.chart.dates);
 
-  const allSelectionsOperatingTimeValues = data.map(
-    (eachSelection) => eachSelection.operating_time.chart.values
-  );
-  const selectionOperatingTimeValues = sumArrayOfArrays(
+  const allSelectionOperatingTimeDates = combineArrayData(selectionOperatingTimeDates)
+
+  const allSelectionsOperatingTimeValues = data.filter(
+    (eachSelection) => eachSelection.is_generator
+  ).map((eachData) => eachData.operating_time.chart.values);
+
+  const selectionOperatingTimeValues = combineArrayData(
     allSelectionsOperatingTimeValues
   );
 
@@ -220,7 +235,7 @@ const getSelectionOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: selectionOperatingTimeDates,
+      dates: allSelectionOperatingTimeDates,
       values: selectionOperatingTimeValues,
     },
     estimated_time_wasted: {
@@ -241,8 +256,8 @@ const getSelectionOperatingTime = (data) => {
 // Fuel Consumption
 const getSelectionFuelConsumptionArray = (data) => {
   const nestedFuelConsumptions = data.map((eachSelection) => {
-    return eachSelection.fuel_consumption
-      ? eachSelection.fuel_consumption
+    return eachSelection?.fuel_consumption
+      ? eachSelection?.fuel_consumption
       : false;
   });
 
@@ -319,11 +334,18 @@ const sumSelectionEnergyConsumptionValues = (data, valueName) => {
 /* Billing Calculations Begin ----------------------------------------
 --------------------------------------------------------------------*/
 const getSelectionBillingConsumptionNairaValues = (data) => {
-  const selectionConsumptionNairaDates =
-    data[0].billing_consumption_naira.dates;
 
+  const selectionConsumptionNairaDates =
+    data[0]?.billing_consumption_naira?.dates;
+
+    if(!selectionConsumptionNairaDates){
+      return {
+        date: null,
+        values: null
+      }
+    }
   const allSelectionsConsumptionNairaValues = data.map(
-    (eachSelection) => eachSelection.billing_consumption_naira.values
+    (eachSelection) => eachSelection?.billing_consumption_naira?.values
   );
 
   const selectionConsumptionNairaValues = sumArrayOfArrays(
@@ -338,7 +360,7 @@ const getSelectionBillingConsumptionNairaValues = (data) => {
 
 const getSelectionBillingTotals = (data) => {
   const allSelectionsBillingTotals = data.map(
-    (eachSelection) => eachSelection.overall_billing_totals
+    (eachSelection) => eachSelection?.overall_billing_totals
   );
 
   const extractSingleSelectionValueType = (
@@ -416,6 +438,14 @@ const getSelectionBillingTotals = (data) => {
     allSelectionsMetricsDieselPerKwh.reduce((acc, curr) => acc + curr, 0) /
     allSelectionsMetricsDieselPerKwh.length;
 
+  const allSelectionsMetricsIppPerKwh = extractSingleSelectionValueType(
+    allSelectionsMetricsValues,
+    'ipp_per_kwh'
+  ).filter((val) => val !== 0);
+  const avgSelectionMetricsIppPerKwh =
+    allSelectionsMetricsIppPerKwh.reduce((acc, curr) => acc + curr, 0) /
+    allSelectionsMetricsIppPerKwh.length;
+
   const allSelectionsMetricsUtilityPerKwh = extractSingleSelectionValueType(
     allSelectionsMetricsValues,
     'utility_per_kwh'
@@ -442,6 +472,7 @@ const getSelectionBillingTotals = (data) => {
       value_naira: selectionPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: avgSelectionMetricsIppPerKwh,
       diesel_per_kwh: avgSelectionMetricsDieselPerKwh,
       utility_per_kwh: avgSelectionMetricsUtilityPerKwh,
       blended_cost_per_kwh: avgSelectionMetricsBlendedCostPerKwh,
@@ -458,17 +489,22 @@ const getSelectionBillingTotals = (data) => {
 /* Billing Calculations End ------------------------------------------
 --------------------------------------------------------------------*/
 
-const getRenderedData = (data) => {
+const getRenderedData = (data, isDatshboard=false) => {
+
   return {
     // Dashboard Stuff
     ...getRefinedEnergyData(data),
     daily_kwh: getSelectionDailyKwh(data),
     usage_hours: getSelectionMonthlyUsage(data),
-    // Score Card Stuff
+
+    ...(!isDatshboard && {
+          // Score Card Stuff
     baseline_energy: getSelectionBaselineEnergy(data),
     peak_to_avg_power_ratio: getSelectionPeakToAveragePowerRatio(data),
     score_card_carbon_emissions: getSelectionScoreCardCarbonEmissions(data),
     generator_size_efficiency: getSelectionGeneratorSizeEfficiencyArray(data),
+
+
     change_over_lags: getSelectionChangeOverLags(data),
     operating_time: getSelectionOperatingTime(data),
     fuel_consumption: getSelectionFuelConsumptionArray(data),
@@ -532,7 +568,33 @@ const getRenderedData = (data) => {
       data,
       'devices_present_billing_total'
     ),
+    }),
+  };
+};
+const getBillingRenderedData = (data, isDatshboard=false) => {
+
+  return {
+    // Dashboard Stuff
+
+    ...(!isDatshboard && {
+
+    // Billing Stuff
+    billing_consumption_kwh: getSelectionParameterPropertyArray(
+      data,
+      'billing_consumption_kwh'
+    ),
+    billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
+    // overall_billing_totals: getSelectionBillingTotals(data),
+    devices_previous_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_previous_billing_total'
+    ),
+    devices_present_billing_total: getSelectionParameterPropertyArray(
+      data,
+      'devices_present_billing_total'
+    ),
+    }),
   };
 };
 
-export { getRenderedData };
+export { getRenderedData, getBillingRenderedData };

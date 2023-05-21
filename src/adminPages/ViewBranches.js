@@ -7,7 +7,6 @@ import adminHttpServices from '../services/admin';
 import BreadCrumb from '../components/BreadCrumb';
 import AdminBranchesTable from '../components/tables/adminTables/AdminBranchesTable';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -37,15 +36,14 @@ function ViewBranches({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <button type='button' className='table-header__left-button'>
               CSV
             </button>
@@ -60,6 +58,24 @@ function ViewBranches({ match }) {
             <ExcelIcon />
             <span>Download in Excel</span>
           </button>
+        </div>
+        <div className='branches-total_costs'>
+          <div className='branches-total_costs-card'>
+            <p className='branches-total_costs-title'>Total KWh</p>
+            <p className='branches-total_costs-text'>122,000</p>
+          </div>
+          <div className='branches-total_costs-card'>
+            <p className='branches-total_costs-title'>Total Cost</p>
+            <p className='branches-total_costs-text'>122,000</p>
+          </div>
+          <div className='branches-total_costs-card'>
+            <p className='branches-total_costs-title'>Baseline Average</p>
+            <p className='branches-total_costs-text'>22,000KwH</p>
+          </div>
+          <div className='branches-total_costs-card'>
+            <p className='branches-total_costs-title'>CO2</p>
+            <p className='branches-total_costs-text'>22,000KwH</p>
+          </div>
         </div>
 
         <div className='h-overflow-auto'>

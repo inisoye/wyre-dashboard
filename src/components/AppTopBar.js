@@ -18,6 +18,7 @@ function TopBar() {
     currentUrl,
     setPowerQualityUnit,
     setParametersDataTimeInterval,
+    organization
   } = useContext(CompleteDataContext);
 
   const pagesWithDateTimePickers = [
@@ -47,7 +48,8 @@ function TopBar() {
 
   const isPlottedUnitSelectorDisplayed = currentUrl.includes('power-quality');
 
-  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker');
+  const isTopBarCostTrackerRightDisplayed = currentUrl.includes('cost-tracker') || currentUrl.includes('dashboard');
+
 
   const isTopBarUserBranchesRightDisplayed =
     currentUrl.includes('branches') && !currentUrl.includes('user-form');
@@ -137,24 +139,26 @@ function TopBar() {
         </div>
       </div>
 
-      <div
-        className={
-          isTopBarCostTrackerRightDisplayed
-            ? 'top-bar__right'
-            : 'top-bar__right h-hide'
-        }
-      >
-        <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
-          Add Bills
-        </Link>
-        <Link
-          className='top-bar-right__button'
-          to='/cost-tracker/add-equipment'
+      { organization.branches && organization.branches.length === 1 ?
+        <div
+          className={
+            isTopBarCostTrackerRightDisplayed
+              ? 'top-bar__right'
+              : 'top-bar__right h-hide'
+          }
         >
-          Add Equipment
-        </Link>
-      </div>
-
+          <Link className='top-bar-right__button' to='/cost-tracker/add-bills'>
+            Add Bills
+          </Link>
+          <Link
+            className='top-bar-right__button'
+            to='/cost-tracker/add-equipment'
+          >
+            Add Equipment
+          </Link>
+        </div>
+         : null
+        }
       <div
         className={
           isTopBarUserBranchesRightDisplayed

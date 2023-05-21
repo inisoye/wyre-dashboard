@@ -1,6 +1,9 @@
+/* eslint-disable no-restricted-globals */
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Link, useLocation } from 'react-router-dom';
+import { Spin, notification } from 'antd';
+import { useForm, Controller } from 'react-hook-form';
+import jwt from 'jwt-decode';
 
 import CompleteDataContext from '../Context';
 import loginHttpServices from '../services/login';
@@ -10,35 +13,55 @@ import HiddenInputLabel from '../smallComponents/HiddenInputLabel';
 import OutlinedInput from '../smallComponents/OutlinedInput';
 import SocialCluster from '../smallComponents/SocialCluster';
 
+// import usePasswordToggle from '../smallComponents/usePasswordToggle'
+import { Input } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
+
+
 function Login() {
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const { setUserData } = useContext(CompleteDataContext);
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
 
-  const { register, handleSubmit } = useForm();
+  const from = query.get('from') || 'dashboard';
 
-  const onSubmit = async ({ username, password }) => {
+  const { register, handleSubmit, control } = useForm();
+
+  const onSubmit = async ({ username, password }, values) => {
     try {
-      const user = await loginHttpServices.login({
+      setIsAuthenticating(true);
+      localStorage.clear();
+
+      const user = await loginHttpServices.login2({
         username: username,
         password: password,
       });
 
       window.localStorage.setItem('loggedWyreUser', JSON.stringify(user));
-
-      dataHttpServices.setUserId(user.data.id);
-      dataHttpServices.setToken(user.data.token);
-      setUserData(user);
+      window.location.href = from;
+      // dataHttpServices.setUserId(user.data.id);
+      // dataHttpServices.setToken(user.data.token);
+      // setUserData({ user, decodedUser: jwt(user.data.token)});
+      setIsAuthenticating(false)
     } catch (exception) {
+      setIsAuthenticating(false)
       setErrorMessage(exception.response.data.error);
+      notification.error({
+        message: "Invalid Username or Password"
+      })
     }
   };
 
-  const removeErrorMessage = () => {
+  const removeErrorMessage = (e) => {
     setErrorMessage(undefined);
   };
 
   return (
     <div className='auth-page-container'>
+      <Spin spinning={isAuthenticating} >
       <form
         className='signup-login-contact-form'
         action='#'
@@ -51,7 +74,7 @@ function Login() {
         <p className='outlined-input-container'>
           <HiddenInputLabel htmlFor='username' labelText='Username' />
           <OutlinedInput
-            className='signup-login-contact-input'
+            className='signup-login-contact-input '
             type='text'
             name='username'
             id='username'
@@ -66,18 +89,19 @@ function Login() {
 
         <p className='outlined-input-container'>
           <HiddenInputLabel htmlFor='password' labelText='Password' />
-          <OutlinedInput
-            className='signup-login-contact-input'
-            type='password'
-            name='password'
-            id='password'
-            placeholder='Password'
-            autoComplete='new-password'
-            required={true}
-            autoFocus={false}
-            register={register}
-            onChange={removeErrorMessage}
-          />
+          <Controller as={<Input.Password/>} control={control} defaultValue=''
+                className='signup-login-contact-input outlined-input'
+                type='password'
+                name='password'
+                id='password'
+                placeholder='Password'
+                autoComplete='new-password'
+                rules={{
+                  required : true
+                }}
+                autoFocus={false}
+                onChange={removeErrorMessage}
+                iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}/>
         </p>
 
         <p className='signup-login-contact-error-message'>{errorMessage}</p>
@@ -90,10 +114,18 @@ function Login() {
 
         <button className='signup-login-contact-button'>Log in</button>
       </form>
-
+        
       <SocialCluster />
+      </Spin>
     </div>
   );
 }
 
 export default Login;
+
+
+
+
+
+
+// end of script

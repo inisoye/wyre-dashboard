@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import CompleteDataContext from '../../Context';
+import { convertDecimalTimeToNormal } from '../../helpers/genericHelpers';
 
-const DashboardDoughnutChart = ({ data }) => {
+const DashboardDoughnutChart = ({ data, uiSettings }) => {
   const { isMediumScreen, useMediaQuery } = useContext(CompleteDataContext);
 
   const isLessThan481 = useMediaQuery({ query: '(max-width: 481px)' });
@@ -19,7 +20,7 @@ const DashboardDoughnutChart = ({ data }) => {
         label: 'Power Usage (Hours/Month)',
         data: hours,
         backgroundColor: [
-          '#6C00FA',
+          uiSettings.appPrimaryColor,
           '#00C7E6',
           '#FF3DA1',
           '#82ca9d',
@@ -53,7 +54,7 @@ const DashboardDoughnutChart = ({ data }) => {
         left: 20,
         right: 20,
         top: 10,
-        bottom: 40,
+        bottom: 80,
       },
     },
     legend: {
@@ -68,6 +69,9 @@ const DashboardDoughnutChart = ({ data }) => {
     },
     maintainAspectRatio: false,
     plugins: {
+      outlabels: {
+        display: false,
+      },
       datalabels: {
         formatter: (value, context) => {
           let sum = 0;
@@ -78,10 +82,10 @@ const DashboardDoughnutChart = ({ data }) => {
           let percentage = ((value * 100) / sum).toFixed() + '%';
           return percentage;
         },
-        color: 'black',
+        color: 'white',
         font: {
           size: isMediumScreen ? 14 : 16,
-          weight: '500',
+          weight: '700',
         },
       },
     },
@@ -91,7 +95,7 @@ const DashboardDoughnutChart = ({ data }) => {
       fontSize: 18,
       fontStyle: 'normal',
       fontColor: 'black',
-      padding: 20,
+      padding: 10,
     },
     tooltips: {
       enabled: true,
@@ -101,7 +105,7 @@ const DashboardDoughnutChart = ({ data }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] + 'hrs';
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']]);
         },
       },
     },

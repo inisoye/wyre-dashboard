@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Error() {
+
+  const location = useLocation();
+  const locationToGoTo = location.pathname.split('/')[1]
+
   return (
     <div className="error-page">
       <div className="error-card">
@@ -27,7 +31,7 @@ function Error() {
           </li>
         </ul>
 
-        <Link className="error-cta" to="/log-in">
+        <Link className="error-cta" to={`log-in?from=${locationToGoTo}`}>
           Login
         </Link>
       </div>
