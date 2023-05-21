@@ -104,7 +104,7 @@ class EnergyConsumptionTable extends React.Component {
       });
 
     const deviceNames =
-      dataForEnergyConsumptionColumns.length &&
+      dataForEnergyConsumptionColumns && dataForEnergyConsumptionColumns.length &&
       Object.keys(dataForEnergyConsumptionColumns[0]);
 
     const energyConsumptionColumns =
@@ -144,6 +144,7 @@ class EnergyConsumptionTable extends React.Component {
       },
       ...(energyConsumptionColumns || []),
     ];
+
 
     return (
       <>
