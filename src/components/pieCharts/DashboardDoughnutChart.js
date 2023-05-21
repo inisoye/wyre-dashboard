@@ -78,10 +78,10 @@ const DashboardDoughnutChart = ({ data }) => {
           let percentage = ((value * 100) / sum).toFixed() + '%';
           return percentage;
         },
-        color: 'black',
+        color: 'white',
         font: {
           size: isMediumScreen ? 14 : 16,
-          weight: '500',
+          weight: '700',
         },
       },
     },

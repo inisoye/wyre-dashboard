@@ -22,6 +22,7 @@ import OverviewIcon from '../icons/OverviewIcon';
 import PadlockIcon from '../icons/PadlockIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import LogoutIcon from '../icons/LogoutIcon';
+import { SCORE_CARD_EXCLUDE_CLIENTS } from '../helpers/constants';
 
 function Header() {
   const {
@@ -32,6 +33,7 @@ function Header() {
     setUserData,
     organization,
     currentUrl,
+    setEmailModalData,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -73,10 +75,26 @@ function Header() {
   const logOut = () => {
     window.localStorage.removeItem('loggedWyreUser');
     setUserData(undefined);
+    setEmailModalData(undefined)
   };
 
-  const isOrganisationSapio =
-    organisationName && organisationName.includes('Sapio');
+  // const isOrganisationSapio =
+  //   organisationName && organisationName.includes('Sapio');
+  
+  var restricted_devices = ["Sapio", "Durosinmi", "Alpha"];
+
+  const checkOrganizationHasAccess = ((organization)=>{
+
+      // run the tests against every element in the array
+      if (organization){
+        return restricted_devices.some(el => organization.includes(el));
+      }
+      
+  });
+  
+
+  const doesUserHaveAccess =
+    organisationName && checkOrganizationHasAccess(organisationName);
 
   return (
     <header
@@ -119,13 +137,16 @@ function Header() {
           <ul className="header-nav-list">
             <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
 
-            {!isOrganisationSapio && (
+            {/* {!doesUserHaveAccess && ( */}
+              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+              &&
               <HeaderLink
                 onClick={toggleNav}
                 url="/score-card"
                 linkText="Score Card"
               />
-            )}
+            }
+            {/* )} */}
 
             <HeaderLinkWithDropdown
               className="header-nav-list__item header-link-with-dropdown"
@@ -162,11 +183,13 @@ function Header() {
                   url="/parameters/power-demand"
                   linkText="Power Demand"
                 />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/time-of-use"
-                  linkText="Time of Use"
-                />
+                {!doesUserHaveAccess && (
+                  <HeaderSublink
+                    onClick={toggleNavAndDropdown}
+                    url="/parameters/time-of-use"
+                    linkText="Time of Use"
+                    />
+                  )}
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
                   url="/parameters/last-reading"
@@ -175,28 +198,36 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/dashboard"
-              // url="/report"
-              linkText="Report"
-            />
+            {!doesUserHaveAccess && (
+              <HeaderLink
+                onClick={toggleNav}
+                url="/dashboard"
+                // url="/report"
+                linkText="Report"
+              />
+            )}
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/cost-tracker"
-              linkText="Cost Tracker"
-            />
+            {/* {!doesUserHaveAccess && ( */}
+              {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+              &&
+              <HeaderLink
+                onClick={toggleNav}
+                url="/cost-tracker"
+                linkText="Cost Tracker"
+              />
+            }
+            {/* )} */}
+
 
             <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
-
+            {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
               // url='/messages'
               linkText="Messages"
             />
-
+            )}
             <li className="header-nav-list__item h-hidden-1296-up">
               <HeaderIcon
                 onClick={toggleNav}

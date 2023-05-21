@@ -7,7 +7,8 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     size,
     diesel_usage,
     time_used,
-    // hours_to_maintenance
+    fuel_efficiency,
+    hours_to_maintenance
   } = data
     ? data
     : {
@@ -15,11 +16,12 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         size: '',
         diesel_usage: '',
         time_used: '',
+        fuel_efficiency: '',
         hours_to_maintenance: {},
       };
 
-  const chartLabels = ['Used Diesel', 'Unused Diesel'];
-  const chartData = [diesel_usage, 100 - diesel_usage];
+  const chartLabels = ['Current Efficiency', 'Bench Mark'];
+  const chartData = [fuel_efficiency.current_score, fuel_efficiency.baseline - fuel_efficiency.current_score];
 
   const plottedData = {
     labels: chartLabels,
@@ -32,6 +34,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
     ],
   };
 
+
   const options = {
     cutoutPercentage: 60,
     legend: {
@@ -42,16 +45,21 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
       display: false,
     },
     tooltips: {
-      enabled: true,
+      enabled: false,
       mode: 'index',
       callbacks: {
         title: function (tooltipItem, data) {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] + '%';
+          return data['datasets'][0]['data'][tooltipItem['index']] + 'kWh/L';
         },
+
       },
+      xPadding: 10,
+      yPadding: 10,
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
     },
   };
 
@@ -61,7 +69,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data }) => {
         <Doughnut data={plottedData} options={options} />
 
         <p className='fuel-consumption-doughnut-centre-text'>
-          <span>{diesel_usage}%</span> Used
+          <span>{fuel_efficiency.current_score}kWh/L</span>
         </p>
       </div>
 

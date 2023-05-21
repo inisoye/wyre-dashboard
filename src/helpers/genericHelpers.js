@@ -3,6 +3,24 @@ import dayjs from 'dayjs';
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
 --------------------------------------------------------------------*/
+
+function removeDuplicateDatas(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+
+const mergeTheData = (arr) => {
+      return [...new Set([].concat(...arr))];
+}
+
+const truncateEmail = (str, num)=>{
+  if(str.length <= num)
+  {
+    return str
+  }
+  return str.slice(0,num) + '...'
+}
+
 const toCamelCase = (str) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -30,6 +48,22 @@ const getLastArrayItems = (array, numberOfItems) => {
   return array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
+//checkIsGenStatus
+const checkIsGenStatus = (data) => {
+  const checkStatus = data.filter(Boolean);
+  return checkStatus.length
+}
+
+
+const daysInMonth = () => {
+  const date = new Date();
+  const currentDate = date.getDate();
+  const currentMonth = date.getMonth();
+  const currentYear = date.getFullYear();
+  //const numberOfDaysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  return new Date(currentYear, currentMonth+1, 0).getDate();
+}
+
 /*
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
@@ -42,18 +76,49 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
-const calculateRatio = (num_1, num_2) => {
-  for (let num = num_2; num > 1; num--) {
-    if (num_1 % num === 0 && num_2 % num === 0) {
-      num_1 = num_1 / num;
-      num_2 = num_2 / num;
-    }
+const calculateRatio = (avg, peak) => {
+  let peak_ratio =  Number(avg)/Number(peak)
+
+  if(peak_ratio && isFinite(peak_ratio)){
+    return peak_ratio.toFixed(2)
   }
-  const ratio = num_1 + ':' + num_2;
-  return ratio;
+  return 0;
+}
+
+const getPeakToAverageMessage = (peakRatio) => {
+  let peakMessage;
+  let peakMessageColor;
+  if (peakRatio > 0.7){
+    peakMessage = 'Efficient';
+    peakMessageColor = '#008000';
+  }else if (peakRatio >= 0.5){
+    peakMessage = 'Fairly efficient';
+    peakMessageColor = '#FFBF00';
+  }else{
+    peakMessage = 'Inefficient - Higher is better';
+    peakMessageColor = '#fa0303';
+  }
+  return {message: peakMessage, color: peakMessageColor}
+}
+
+const getBaselineEnergyColor = (inbound) => {
+  let peakMessageColor;
+  if (Number(inbound) > 0){
+    peakMessageColor = '#008000';
+  }else{
+    peakMessageColor = '#fa0303';
+  }
+  return {color: peakMessageColor}
+}
+
+const calculatePercentage = (num_1, num_2) => { 
+  const percentage = ((num_1 / num_2) * 100).toFixed() || 0;
+
+  if (isNaN(percentage)) {
+    return 0;
+  }
+  return percentage 
 };
-
-const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -61,6 +126,18 @@ const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
+
+// 
+/**
+ * @description nadd the usage hour to the device
+ * @param {*} branch the branch
+ * @param {*} deviceName the name of the device
+ * @returns the usage hours of the int
+ */
+const addUsageHoursToDevice = (branch, deviceName) => {
+  const index = branch.usage_hours.devices.findIndex((item) => deviceName === item);
+  return branch.usage_hours.hours[index]
+}
 
 const getAllOrganizationDevices = (data) => {
   return (
@@ -70,15 +147,19 @@ const getAllOrganizationDevices = (data) => {
         // Add branch name to each device name
         eachBranch.devices.forEach((device) => {
           // Prevent process from repeating several times
-          if (!device.name.includes(eachBranch.name))
+          if (!device.name.includes(eachBranch.name)){
+            device.usage_hour = addUsageHoursToDevice(eachBranch, device.name, eachBranch.name)
             device.name = eachBranch.name + ' ' + device.name;
+          }
         });
-
+              
         return eachBranch.devices;
       })
       .flat()
   );
 };
+
+
 
 const getModifiedBranchLevelData = (branchData, propertyName, branchName) => {
   const branchLevelDataOfProperty = branchData && branchData[propertyName];
@@ -207,6 +288,30 @@ const getNestedAvgDemandObject = (array, nestedObject) => {
 
   return { unit: 'kw', value: valuesArrayAvg };
 };
+
+const allDeviceGenerators = (checkedItems, organization) => {
+
+  let holdAllDevices = [];
+  const checkedItemsArray = Object.keys(checkedItems);
+
+  checkedItemsArray.map((name) => {
+    organization.branches.forEach((eachBranch) => {
+      if (eachBranch.name === name) {
+        holdAllDevices = [...holdAllDevices, ...eachBranch.devices];
+      }
+      else if (name.startsWith(eachBranch.name) && (name.length > eachBranch.name.length)
+      ) {
+        eachBranch.devices.some((device) => {
+          if (device.name === name) {
+            holdAllDevices.push(device);
+            return false;
+          }
+        })
+      }
+    })
+  })
+  return holdAllDevices;
+}
 /* --------------------------------------------------------------------
 /* Dashboard Helpers End --------------------------------------------
 --------------------------------------------------------------------*/
@@ -276,6 +381,12 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
     .filter(Boolean)
     .reduce((acc, curr) => acc + curr, 0);
 };
+// round decimple to the legth specifile
+const roundToDecimalPLace = (number, length) => (!Number.isInteger(number) 
+  ? number.toFixed(length) : number);
+
+const sumOfArrayElements = (array) => array.reduce((acc, curr) => acc + Number(curr), 0)
+
 /* --------------------------------------------------------------------
 /* Score Card Helpers End -------------------------------------------
 --------------------------------------------------------------------*/
@@ -362,9 +473,13 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 --------------------------------------------------------------------*/
 
 export {
+  daysInMonth,
+  getPeakToAverageMessage,
+  getBaselineEnergyColor,
   toCamelCase,
   toKebabCase,
   toSnakeCase,
+  checkIsGenStatus,
   sumArrayOfArrays,
   calculateRatio,
   calculatePercentage,
@@ -392,4 +507,10 @@ export {
   formatParametersTimes,
   formatParameterTableData,
   convertParameterDateStringsToObjects,
+  removeDuplicateDatas,
+  truncateEmail,
+  mergeTheData,
+  allDeviceGenerators,
+  roundToDecimalPLace,
+  sumOfArrayElements
 };

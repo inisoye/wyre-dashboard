@@ -20,6 +20,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
     ],
   };
 
+
   const options = {
     cutoutPercentage: 60,
     legend: {
@@ -39,7 +40,23 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
         label: function (tooltipItem, data) {
           return data['datasets'][0]['data'][tooltipItem['index']] + unit;
         },
+
+        // footer: function () {
+        //   const dataTitleAndSubtitleArray = [
+        //     dataTitle + ': ',
+        //     ...dataSubtitleArray,
+        //   ];
+        //   return dataTitleAndSubtitleArray;
+        // },
       },
+      //bodyAlign: "left",
+      bodyAlign: 'left',
+      footerAlign: 'left',
+      titleAlign: 'left',
+      xPadding: 10,
+      yPadding: 10,
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
     },
   };
 
