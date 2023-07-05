@@ -199,6 +199,7 @@ const getAllOrganizationDevices = (data) => {
             device.deviceName = device.name;
             device.name = eachBranch.name + ' ' + device.name;
             device.branchName = eachBranch.name;
+            console.log('this is the device,,,, the device here ', device);
           }
         });
 
@@ -257,14 +258,22 @@ const sumObjectValuesUp = (array, valueName) => {
 
 // Same as a above but for an even deeper nested object within an array.
 const sumNestedObjectValuesUp = (array, nestedObject, valueName) => {
+
+  // get is source
+  const only_isSource = array.filter(
+    (eachItem) => 
+      eachItem.is_source
+  );
+
+
   // Pick out values and place them in array(s)
-  const valuesArray = array.map(
+  const valuesArray = only_isSource.map(
     (eachItem) =>
       eachItem[nestedObject][valueName] &&
       eachItem[nestedObject][valueName].value
   );
 
-  const unitsArray = array.map(
+  const unitsArray = only_isSource?.map(
     (eachItem) =>
       eachItem[nestedObject][valueName] &&
       eachItem[nestedObject][valueName].unit

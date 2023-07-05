@@ -86,6 +86,7 @@ const getBranchEnergyDataArray = (data, powerFactor = null) => {
   return (
     data.branches &&
     data.branches.map((eachBranch) => {
+      
       const energySumValueNames = Object.keys(
         eachBranch.devices[0].dashboard
       ).filter(
@@ -96,7 +97,7 @@ const getBranchEnergyDataArray = (data, powerFactor = null) => {
       );
 
       let branchEnergyData = {};
-
+      console.log('this is teach branch ', energySumValueNames);
       energySumValueNames.forEach((eachName) => {
         return (branchEnergyData[eachName] = sumNestedObjectValuesUp(
           eachBranch.devices,
