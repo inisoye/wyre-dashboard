@@ -69,7 +69,7 @@ const daysInMonth = () => {
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
 const sumArrayOfArrays = (arrayOfArrays) => {
-  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  
   return arrayOfArrays && arrayOfArrays?.reduce((acc, curr) => {
     curr.forEach((innerArrayItem, index) => {
       acc[index] = (acc[index] || 0) + innerArrayItem;
@@ -82,7 +82,7 @@ const sumArrayOfArrays = (arrayOfArrays) => {
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
 const combineArrayData = (arrayOfArrays) => {
-  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  
   let newArrayData = [];
   arrayOfArrays && arrayOfArrays?.forEach((newArray) => {
     newArrayData = newArrayData.concat(newArray);
@@ -257,14 +257,22 @@ const sumObjectValuesUp = (array, valueName) => {
 
 // Same as a above but for an even deeper nested object within an array.
 const sumNestedObjectValuesUp = (array, nestedObject, valueName) => {
+
+  // get is source
+  const only_isSource = array.filter(
+    (eachItem) => 
+      eachItem.is_source
+  );
+
+
   // Pick out values and place them in array(s)
-  const valuesArray = array.map(
+  const valuesArray = only_isSource.map(
     (eachItem) =>
       eachItem[nestedObject][valueName] &&
       eachItem[nestedObject][valueName].value
   );
 
-  const unitsArray = array.map(
+  const unitsArray = only_isSource?.map(
     (eachItem) =>
       eachItem[nestedObject][valueName] &&
       eachItem[nestedObject][valueName].unit
