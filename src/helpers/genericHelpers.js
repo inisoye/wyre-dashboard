@@ -69,7 +69,7 @@ const daysInMonth = () => {
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
 const sumArrayOfArrays = (arrayOfArrays) => {
-  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  
   return arrayOfArrays && arrayOfArrays?.reduce((acc, curr) => {
     curr.forEach((innerArrayItem, index) => {
       acc[index] = (acc[index] || 0) + innerArrayItem;
@@ -82,7 +82,7 @@ const sumArrayOfArrays = (arrayOfArrays) => {
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
  */
 const combineArrayData = (arrayOfArrays) => {
-  // console.log('this is the arrayd oijosdkjdo array arrayOfArrays', arrayOfArrays)
+  
   let newArrayData = [];
   arrayOfArrays && arrayOfArrays?.forEach((newArray) => {
     newArrayData = newArrayData.concat(newArray);
@@ -199,7 +199,6 @@ const getAllOrganizationDevices = (data) => {
             device.deviceName = device.name;
             device.name = eachBranch.name + ' ' + device.name;
             device.branchName = eachBranch.name;
-            console.log('this is the device,,,, the device here ', device);
           }
         });
 
