@@ -8,7 +8,7 @@ import moment from 'moment';
 import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
 import { addFuelConsumptionData, addMonthlyFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
-import { DateField, DateFieldSecond, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
+import { DateField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 
 
 const { RangePicker } = DatePicker
@@ -103,14 +103,11 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption, add
   const onMonthDiesEntrySubmit = async ({ date, quantity, fuelType }) => {
     if (defaultBranch != null) {
       const branch = organization.branches[0].branch_id
-      console.log("checking date>>>>>>>>>",date);
       const parameters = {
         branch,
         start_date: moment(date[0]).format("YYYY-MM-DD"),
         quantity: quantity,
         end_date: moment(date[1]).format("YYYY-MM-DD"),
-        // date: moment(date[0]).format("YYYY-MM-DD"),
-        // end_date: moment(date[1]).format("YYYY-MM-DD"),
         fuel_type: fuelType,
         consumption_type: "Monthly"
       };
