@@ -1,16 +1,17 @@
 import React, { useEffect, useContext } from 'react';
-import { notification, Form, Spin } from 'antd';
+import { notification, Form, Spin, DatePicker } from 'antd';
 import { connect } from 'react-redux';
 import CompleteDataContext from '../Context';
 
-
+import moment from 'moment';
 
 import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
-import { addFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
-import { DateField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
+import { addFuelConsumptionData, addMonthlyFuelConsumptionData } from '../redux/actions/constTracker/costTracker.action';
+import { DateField, DateFieldSecond, DateRangeField, NumberField, SelectField } from '../components/FormFields/GeneralFormFields';
 
 
+const { RangePicker } = DatePicker
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -33,8 +34,9 @@ const NotAllowedNotification = () => {
   })
 }
 
-function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
-  const [EOMBalanceForm] = Form.useForm();
+function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption, addMonthlyFuelConsumptionData: addMonthlyConsumption }) {
+  const [dailyForm] = Form.useForm();
+  const [monthlyForm] = Form.useForm();
 
   const { setCurrentUrl, isAuthenticatedDataLoading, organization, userId } = useContext(
     CompleteDataContext
@@ -72,7 +74,7 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
   }
 
 
-  const onUsedTrackerSubmit = async ({ date, quantity, fuelType }) => {
+  const onDailyDieselEntrySubmit = async ({ date, quantity, fuelType }) => {
     if (defaultBranch != null) {
 
       const branch = organization.branches[0].branch_id
@@ -87,11 +89,40 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
 
       if (request.fullfilled) {
         openNotificationWithIcon('success', 'diesel entry');
-        return EOMBalanceForm.resetFields();
+        return dailyForm.resetFields();
       }
 
       openNotificationWithIcon('error', request.message|| 'An error occured,Please try again!!!')
-      return EOMBalanceForm.resetFields();
+      return dailyForm.resetFields();
+    }
+    else {
+      NotAllowedNotification();
+    }
+  }
+
+  const onMonthDiesEntrySubmit = async ({ date, quantity, fuelType }) => {
+    if (defaultBranch != null) {
+      const branch = organization.branches[0].branch_id
+      console.log("checking date>>>>>>>>>",date);
+      const parameters = {
+        branch,
+        start_date: moment(date[0]).format("YYYY-MM-DD"),
+        quantity: quantity,
+        end_date: moment(date[1]).format("YYYY-MM-DD"),
+        // date: moment(date[0]).format("YYYY-MM-DD"),
+        // end_date: moment(date[1]).format("YYYY-MM-DD"),
+        fuel_type: fuelType,
+        consumption_type: "Monthly"
+      };
+      const request = await addMonthlyConsumption(branch, parameters);
+
+      if (request.fullfilled) {
+        openNotificationWithIcon('success', 'monthly diesel entry');
+        return monthlyForm.resetFields();
+      }
+
+      openNotificationWithIcon('error', request.message|| 'An error occured,Please try again!!!')
+      return monthlyForm.resetFields();
     }
     else {
       NotAllowedNotification();
@@ -117,17 +148,17 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
         <section className="cost-tracker-form-section add-bills-section">
           <Spin spinning={false}>
             <h2 className="form-section-heading add-bills-section__heading">
-              Diesel Entry
+              Daily Diesel Entry
             </h2>
 
             <Form
-              form={EOMBalanceForm}
+              form={dailyForm}
               name="diesel-purchase"
               initialValues={{
                 fuelType: 'diesel',
               }}
               className="cost-tracker-form"
-              onFinish={onUsedTrackerSubmit}
+              onFinish={onDailyDieselEntrySubmit}
             >
               <div className="cost-tracker-form-inputs-wrapper">
 
@@ -160,7 +191,77 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
             </Form>
           </Spin>
         </section>
+      </div>
 
+      <div className="cost-tracker-forms-content-wrapper">
+
+        <h1 className="center-main-heading">Add Monthly Diesel Entry</h1>
+
+        <section className="cost-tracker-form-section add-bills-section">
+          <Spin spinning={false}>
+            <h2 className="form-section-heading add-bills-section__heading">
+              Monthly Diesel Entry
+            </h2>
+
+            <Form
+              form={monthlyForm}
+              name="diesel-purchase"
+              initialValues={{
+                fuelType: 'diesel',
+              }}
+              className="cost-tracker-form"
+              onFinish={onMonthDiesEntrySubmit}
+            >
+              <div className="cost-tracker-form-inputs-wrapper">
+
+                <div className="cost-tracker-input-container">
+                  {/* <Form.Item>
+                    <DateFieldSecond data={data.purchaseDate} />
+                  </Form.Item> */}
+                  <Form.Item
+                    label={'Date'}
+                    name={'date'}
+                    labelCol={{ span: 24 }}
+                    hasFeedback
+                    validateTrigger={['onChange', 'onBlur']}
+                    rules={[
+                      { required: true, message: 'Please select date' } 
+                    ]}
+                  >
+                    <RangePicker
+                      placeholder={data.placeholder}
+                      size= 'large'
+                      style={{
+                          height: "auto",
+                          width: "100%",
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div className="cost-tracker-input-container">
+                  <Form.Item>
+                    <NumberField
+                      data={
+                        data.quantity
+                      }
+                    />
+                  </Form.Item>
+                </div>
+                <div className="cost-tracker-input-container">
+                  <Form.Item>
+                    <SelectField
+                      data={data.fuelType}
+                    />
+                  </Form.Item>
+                </div>
+
+              </div>
+              <button className="generic-submit-button cost-tracker-form-submit-button">
+                Submit
+              </button>
+            </Form>
+          </Spin>
+        </section>
       </div>
     </>
   );
@@ -171,6 +272,7 @@ function AddDieselEntry({ match, addFuelConsumptionData: addFuelConsumption }) {
 
 const mapDispatchToProps = {
   addFuelConsumptionData,
+  addMonthlyFuelConsumptionData
 };
 
 

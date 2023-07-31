@@ -11,6 +11,9 @@ const INITIAL_STATE = {
   addFuelConsumptiondata: false,
   addFuelConsumptionDataLoadin: false,
 
+  addMonthlyFuelConsumptiondata: false,
+  addMonthlyFuelConsumptionDataLoadin: false,
+
   editedFuelConsumptiondata: false,
   editFuelConsumptionDataLoadin: false,
 
@@ -70,6 +73,17 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         addFuelConsumptionLoadin: action.payload,
+      };
+
+    case costTrackerType.ADD_MONTHLY_FUEL_CONSUMPTION_DATA_LOADING:
+      return {
+        ...state,
+        addMonthlyFuelConsumptionDataLoadin: action.payload,
+      };
+    case costTrackerType.ADD_MONTHLY_FUEL_CONSUMPTION_DATA_SUCCESS:
+      return {
+        ...state,
+        addMonthlyFuelConsumptiondata: action.payload,
       };
 
     case costTrackerType.EDIT_FUEL_CONSUMPTION_DATA_LOADING:

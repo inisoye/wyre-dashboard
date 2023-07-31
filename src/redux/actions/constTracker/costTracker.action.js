@@ -1,7 +1,7 @@
 
 import {
   fetchCostTrackerLoading, fetchCostTrackerSuccess, addFuelDataSuccess,
-  fetchFuelDataLoading, fetchFuelDataSuccess, addFuelDataLoading, editFuelDataLoading, editFuelDataSuccess, deleteFuelDataLoading, deleteFuelDataSuccess, editFuelPUrchaseDataLoading, editFuelPUrchaseDataSuccess, editPreUtilityPurchaseDataLoading, editPreUtilityPurchaseDataSuccess, editPostUtilityPurchaseDataLoading, editPostUtilityPurchaseDataSuccess, deleteFuelPUrchaseDataLoading, deleteFuelPUrchaseDataSuccess, deletePreUtilityPurchaseDataLoading, deletePreUtilityPurchaseDataSuccess, editIppPurchaseDataLoading, editIppPurchaseDataSuccess, deleteIppPurchaseDataLoading, deleteIppPurchaseDataSuccess
+  fetchFuelDataLoading, fetchFuelDataSuccess, addFuelDataLoading, editFuelDataLoading, editFuelDataSuccess, deleteFuelDataLoading, deleteFuelDataSuccess, editFuelPUrchaseDataLoading, editFuelPUrchaseDataSuccess, editPreUtilityPurchaseDataLoading, editPreUtilityPurchaseDataSuccess, editPostUtilityPurchaseDataLoading, editPostUtilityPurchaseDataSuccess, deleteFuelPUrchaseDataLoading, deleteFuelPUrchaseDataSuccess, deletePreUtilityPurchaseDataLoading, deletePreUtilityPurchaseDataSuccess, editIppPurchaseDataLoading, editIppPurchaseDataSuccess, deleteIppPurchaseDataLoading, deleteIppPurchaseDataSuccess, addMonthlyFuelDataLoading, addMonthlyFuelDataSuccess
 } from "./actionCreators";
 import { APIService } from "../../../config/api/apiConfig";
 import jwtDecode from "jwt-decode";
@@ -70,6 +70,20 @@ export const addFuelConsumptionData = (branchId, parameters) => async (dispatch)
     return { fullfilled: true, message: response.data.detail }
   } catch (error) {
     dispatch(addFuelDataLoading(false));
+    return { fullfilled: false, message: error.response.detail }
+  }
+};
+
+export const addMonthlyFuelConsumptionData = (branchId, parameters) => async (dispatch) => {
+  dispatch(addMonthlyFuelDataLoading());
+  const requestUrl = `monthly-fuel-entry/${branchId}/`;
+  try {
+    const response = await APIService.post(requestUrl, parameters);
+    dispatch(addMonthlyFuelDataSuccess(response.data.data));
+    dispatch(addMonthlyFuelDataLoading(false))
+    return { fullfilled: true, message: response.data.detail }
+  } catch (error) {
+    dispatch(addMonthlyFuelDataLoading(false));
     return { fullfilled: false, message: error.response.detail }
   }
 };
