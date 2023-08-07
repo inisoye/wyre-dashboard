@@ -117,14 +117,14 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
     if (!pageLoaded && isEmpty(dashBoardInfo.dashBoardData || {})) {
       dashBoardDataFetch(userDateRange);
       fetchPAPRData(userDateRange)
-      fetchBlendedost(userDateRange)
+      // fetchBlendedost(userDateRange)
       // fetch the power factors here
     }
 
     if (!isEmpty(dashBoardInfo.dashBoardData) > 0 && pageLoaded) {
       dashBoardDataFetch(userDateRange);
       fetchPAPRData(userDateRange)
-      fetchBlendedost(userDateRange)
+      // fetchBlendedost(userDateRange)
       // fetch the power factors here
     }
     setPageLoaded(true);
@@ -144,6 +144,13 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
       fetchAllPowerFactor(allDevices, { start_date, end_date })
 
     }
+
+    const branchId = sideDetails?.sideBarData?.branches && sideDetails?.sideBarData?.branches[0]?.branch_id
+
+    if (sideDetails.sideBarData) {
+      fetchBlendedost(branchId, userDateRange)
+    }
+    
   }, [sideDetails.sideBarData, userDateRange]);
 
 
