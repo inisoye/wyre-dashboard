@@ -39,7 +39,7 @@ export const fetchDashBoardData = (userDateRange) => async (dispatch) => {
   }
 };
 
-export const fetchBlendedCostData = (userDateRange) => async (dispatch) => {
+export const fetchBlendedCostData = (branch_id, userDateRange) => async (dispatch) => {
   dispatch(fetchBlendedCostEnergyLoading());
 
   const loggedUserJSON = localStorage.getItem('loggedWyreUser');
@@ -54,7 +54,7 @@ export const fetchBlendedCostData = (userDateRange) => async (dispatch) => {
   }
   try {
     const response = await axios.get(
-      `${EnvData.REACT_APP_API_URL}blended_cost/${userId}/${dateToUse}/`, {
+      `${EnvData.REACT_APP_API_URL}blended_cost/${branch_id}/${dateToUse}/`, {
     }, {
       headers: {
         Authorization: `Bearer ${token}`,

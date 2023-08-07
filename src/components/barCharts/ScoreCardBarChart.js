@@ -7,9 +7,8 @@ import { convertDecimalTimeToNormal, getLastArrayItems } from '../../helpers/gen
 import { numberFormatter } from '../../helpers/numberFormatter';
 import InformationIcon from '../../icons/InformationIcon';
 
-const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) => {
+const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
-
 
   const options = {
     legend: {
@@ -23,8 +22,8 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
         title: function (tooltipItem, data) {
           return data['labels'][tooltipItem[0]['index']];
         },
-        label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']];
+        label: function (tooltipItem, data) {          
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']]);
         },
 
         // footer: function () {
@@ -57,7 +56,7 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
           scaleLabel: {
             display: true,
             padding: 10,
-            labelString: 'Wastage',
+            labelString: 'Wastage(hrs)',
             fontColor: 'black',
             fontSize: isMediumScreen ? 14 : 18,
           },
@@ -163,4 +162,4 @@ const VerticalBar = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) 
   );
 };
 
-export default VerticalBar;
+export default ScoreCardBarChart;

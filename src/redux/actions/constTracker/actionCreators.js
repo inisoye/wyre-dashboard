@@ -31,6 +31,15 @@ export const addFuelDataSuccess = payload => ({
   payload,
 });
 
+export const addMonthlyFuelDataLoading = (payload = true) => ({
+  type: costTrackerType.ADD_MONTHLY_FUEL_CONSUMPTION_DATA_LOADING,
+  payload,
+});
+export const addMonthlyFuelDataSuccess = payload => ({
+  type: costTrackerType.ADD_MONTHLY_FUEL_CONSUMPTION_DATA_SUCCESS,
+  payload,
+});
+
 export const editFuelDataLoading = (payload = true) => ({
   type: costTrackerType.EDIT_FUEL_CONSUMPTION_DATA_LOADING,
   payload,
