@@ -97,7 +97,7 @@ const getBranchEnergyDataArray = (data, powerFactor = null) => {
       );
 
       let branchEnergyData = {};
-      console.log('this is teach branch ', energySumValueNames);
+      // console.log('this is teach branch ', energySumValueNames);
       energySumValueNames.forEach((eachName) => {
         return (branchEnergyData[eachName] = sumNestedObjectValuesUp(
           eachBranch.devices,
@@ -319,12 +319,20 @@ const getOrganizationOperatingTime = (data) => {
     (eachDevice) => eachDevice.score_card?.is_generator
   ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.values );
 
+  const allDevicesOperatingTimeWastedEnergy = allOrganizationDevices.filter(
+    (eachDevice) => eachDevice.score_card?.is_generator
+  ).map((eachFilteredDevice) => eachFilteredDevice.score_card.operating_time.chart.energy_wasted );
+
   const organizationOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
   );
 
   const sumOrganizationOperatingTimeDates = combineArrayData(
     organizationOperatingTimeDates
+  );
+  
+  const organizationOperatingTimeWastedEnergy = combineArrayData(
+    allDevicesOperatingTimeWastedEnergy
   );
 
   const organizationEstimatedTimeWasted = sumOperatingTimeValues(
@@ -344,6 +352,7 @@ const getOrganizationOperatingTime = (data) => {
     chart: {
       dates: sumOrganizationOperatingTimeDates,
       values: organizationOperatingTimeValues,
+      energy_wasted: organizationOperatingTimeWastedEnergy
     },
     estimated_time_wasted: {
       unit: 'hours',
