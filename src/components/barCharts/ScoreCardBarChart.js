@@ -22,8 +22,8 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
         title: function (tooltipItem, data) {
           return data['labels'][tooltipItem[0]['index']];
         },
-        label: function (tooltipItem, data) {          
-          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']]);
+        label: function (tooltipItem, data) {       
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']])+"(" + chartWastedEnergy[tooltipItem['index']] + " kWh" +" wasted energy" + ")"
         },
 
         // footer: function () {
@@ -101,6 +101,7 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
       };
 
   const chartValues = chart.values;
+  const chartWastedEnergy = chart.energy_wasted;
 
   // const timeWasted =
   //   estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
