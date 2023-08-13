@@ -26,6 +26,7 @@ import {
   getNestedAvgDemandObjectKva,
   getNestedMaxDemandObjectKva,
   getNestedMinDemandObjectKVA,
+  sumOperatingTimeEnergyTotal,
 } from './genericHelpers';
 
 
@@ -339,6 +340,10 @@ const getOrganizationOperatingTime = (data) => {
     allOrganizationDevices,
     'estimated_time_wasted'
   );
+  const organizationEstimatedEnergyWasted = sumOperatingTimeEnergyTotal(
+    allOrganizationDevices,
+    'estimated_energy_wasted'
+  );
   const organizationEstimatedDieselWasted = sumOperatingTimeValues(
     allOrganizationDevices,
     'estimated_diesel_wasted'
@@ -357,6 +362,10 @@ const getOrganizationOperatingTime = (data) => {
     estimated_time_wasted: {
       unit: 'hours',
       value: organizationEstimatedTimeWasted,
+    },
+    estimated_energy_wasted: {
+      unit: 'kWh',
+      total: organizationEstimatedEnergyWasted,
     },
     estimated_diesel_wasted: {
       unit: 'litres',

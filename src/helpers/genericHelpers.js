@@ -576,6 +576,18 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
     .reduce((acc, curr) => acc + curr, 0);
 };
 
+const sumOperatingTimeEnergyTotal = (parentArray, nestedValueName) => {
+  return parentArray
+    .filter(
+      (eachDevice) => eachDevice.score_card.is_generator
+
+    ).map((eachFilterDevice) =>
+      eachFilterDevice.score_card.operating_time[nestedValueName] &&
+      eachFilterDevice.score_card.operating_time[nestedValueName].total)
+    .filter(Boolean)
+    .reduce((acc, curr) => acc + curr, 0);
+};
+
 // round decimple to the legth specifile
 const roundToDecimalPLace = (number, length) => (!Number.isInteger(number)
   ? number.toFixed(length) : number);
@@ -939,6 +951,7 @@ export {
   sumScoreCardCarbonEmissions,
   joinChangeOverLagsValues,
   sumOperatingTimeValues,
+  sumOperatingTimeEnergyTotal,
   convertDateStringToObject,
   convertDateStringsToObjects,
   formatParametersDatetimes,
