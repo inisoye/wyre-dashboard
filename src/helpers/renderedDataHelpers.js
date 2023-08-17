@@ -11,6 +11,7 @@ import {
   getMaxDemandObjectKVA,
   getAvgDemandObjectKVA,
   combineArrayData,
+  sumOperatingTimeEnergyTotal,
 } from './genericHelpers';
 
 
@@ -224,6 +225,10 @@ const getSelectionOperatingTime = (data) => {
     data,
     'estimated_time_wasted'
   );
+  const selectionEstimatedEnergyWasted = sumOperatingTimeValues(
+    data,
+    'estimated_energy_wasted'
+  );
   const selectionEstimatedDieselWasted = sumOperatingTimeValues(
     data,
     'estimated_diesel_wasted'
@@ -241,6 +246,10 @@ const getSelectionOperatingTime = (data) => {
     estimated_time_wasted: {
       unit: 'hours',
       value: selectionEstimatedTimeWasted,
+    },
+    estimated_energy_wasted: {
+      unit: 'kWh',
+      total: selectionEstimatedEnergyWasted,
     },
     estimated_diesel_wasted: {
       unit: 'litres',

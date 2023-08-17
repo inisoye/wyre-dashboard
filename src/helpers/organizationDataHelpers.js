@@ -340,7 +340,7 @@ const getOrganizationOperatingTime = (data) => {
     allOrganizationDevices,
     'estimated_time_wasted'
   );
-  const organizationEstimatedEnergyWasted = sumOperatingTimeEnergyTotal(
+  const organizationEstimatedEnergyWasted = sumOperatingTimeValues(
     allOrganizationDevices,
     'estimated_energy_wasted'
   );

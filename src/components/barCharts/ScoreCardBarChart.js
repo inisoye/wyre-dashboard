@@ -9,7 +9,7 @@ import InformationIcon from '../../icons/InformationIcon';
 
 const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
-
+console.log("operating-time -data", operatingTimeData);
   const options = {
     legend: {
       display: false,
@@ -112,7 +112,7 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
     
   const estimatedEnergyWasted =
     // estimated_energy_wasted?.total?.toFixed(2) + ' ' + estimated_energy_wasted?.unit;
-    estimated_energy_wasted?.total?.toFixed(2)
+    estimated_energy_wasted.total.toFixed(2)
 
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
