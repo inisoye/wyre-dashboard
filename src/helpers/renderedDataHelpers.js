@@ -214,8 +214,8 @@ const getSelectionOperatingTime = (data) => {
     return parentArray
       .map(
         (eachSelection) =>
-          eachSelection.operating_time[nestedValueName] &&
-          eachSelection.operating_time[nestedValueName].value
+          eachSelection.operating_time[nestedValueName] &&(
+          eachSelection.operating_time[nestedValueName].value || eachSelection.operating_time[nestedValueName].total)
       )
       .filter(Boolean)
       .reduce((acc, curr) => acc + curr, 0);

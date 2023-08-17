@@ -9,7 +9,7 @@ import InformationIcon from '../../icons/InformationIcon';
 
 const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettings }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
-console.log("operating-time -data", operatingTimeData);
+
   const options = {
     legend: {
       display: false,
