@@ -11,6 +11,7 @@ import {
   getMaxDemandObjectKVA,
   getAvgDemandObjectKVA,
   combineArrayData,
+  sumOperatingTimeEnergyTotal,
 } from './genericHelpers';
 
 
@@ -213,8 +214,8 @@ const getSelectionOperatingTime = (data) => {
     return parentArray
       .map(
         (eachSelection) =>
-          eachSelection.operating_time[nestedValueName] &&
-          eachSelection.operating_time[nestedValueName].value
+          eachSelection.operating_time[nestedValueName] &&(
+          eachSelection.operating_time[nestedValueName].value || eachSelection.operating_time[nestedValueName].total)
       )
       .filter(Boolean)
       .reduce((acc, curr) => acc + curr, 0);
@@ -223,6 +224,10 @@ const getSelectionOperatingTime = (data) => {
   const selectionEstimatedTimeWasted = sumOperatingTimeValues(
     data,
     'estimated_time_wasted'
+  );
+  const selectionEstimatedEnergyWasted = sumOperatingTimeValues(
+    data,
+    'estimated_energy_wasted'
   );
   const selectionEstimatedDieselWasted = sumOperatingTimeValues(
     data,
@@ -241,6 +246,10 @@ const getSelectionOperatingTime = (data) => {
     estimated_time_wasted: {
       unit: 'hours',
       value: selectionEstimatedTimeWasted,
+    },
+    estimated_energy_wasted: {
+      unit: 'kWh',
+      total: selectionEstimatedEnergyWasted,
     },
     estimated_diesel_wasted: {
       unit: 'litres',

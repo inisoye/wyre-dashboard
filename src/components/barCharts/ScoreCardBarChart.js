@@ -23,7 +23,7 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {       
-          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']])+"(" + chartWastedEnergy[tooltipItem['index']] + " kWh" +" wasted energy" + ")"
+          return convertDecimalTimeToNormal(data['datasets'][0]['data'][tooltipItem['index']])+"(" + chartWastedEnergy[tooltipItem['index']] + " kWh" + ")"
         },
 
         // footer: function () {
@@ -89,6 +89,7 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
   const {
     chart,
     estimated_time_wasted,
+    estimated_energy_wasted,
     estimated_diesel_wasted,
     estimated_cost,
   } = operatingTimeData
@@ -96,6 +97,7 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
       : {
         chart: {},
         estimated_time_wasted: {},
+        estimated_energy_wasted: {},
         estimated_diesel_wasted: {},
         estimated_cost: {},
       };
@@ -107,6 +109,10 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
   //   estimated_time_wasted.value.toFixed(2) + ' ' + estimated_time_wasted.unit;
   const timeWasted =
     estimated_time_wasted.value.toFixed(2);
+    
+  const estimatedEnergyWasted =
+    // estimated_energy_wasted?.total?.toFixed(2) + ' ' + estimated_energy_wasted?.unit;
+    estimated_energy_wasted.total.toFixed(2)
 
   const dieselWasted =
     estimated_diesel_wasted.value + ' ' + estimated_diesel_wasted.unit;
@@ -152,6 +158,9 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
           </p>
           <p>
             Total Time: <strong>{convertDecimalTimeToNormal(timeWasted)}</strong>
+          </p>
+          <p>
+            Total Energy Wasted: <strong>{numberFormatter(estimatedEnergyWasted)} kWh</strong>
           </p>
         </div>
       </div>

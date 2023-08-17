@@ -570,8 +570,8 @@ const sumOperatingTimeValues = (parentArray, nestedValueName) => {
       (eachDevice) => eachDevice.score_card.is_generator
 
     ).map((eachFilterDevice) =>
-      eachFilterDevice.score_card.operating_time[nestedValueName] &&
-      eachFilterDevice.score_card.operating_time[nestedValueName].value)
+      eachFilterDevice.score_card.operating_time[nestedValueName] && (
+      eachFilterDevice.score_card.operating_time[nestedValueName].value || eachFilterDevice.score_card.operating_time[nestedValueName].total) )
     .filter(Boolean)
     .reduce((acc, curr) => acc + curr, 0);
 };
