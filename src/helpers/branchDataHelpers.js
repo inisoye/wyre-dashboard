@@ -222,6 +222,10 @@ const getBranchOperatingTime = (data) => {
     data.devices,
     'estimated_time_wasted'
   );
+  const branchEstimatedEnergyWasted = sumOperatingTimeValues(
+    data.devices,
+    'estimated_energy_wasted'
+  );
   const branchEstimatedDieselWasted = sumOperatingTimeValues(
     data.devices,
     'estimated_diesel_wasted'
@@ -239,6 +243,10 @@ const getBranchOperatingTime = (data) => {
     estimated_time_wasted: {
       unit: 'hours',
       value: branchEstimatedTimeWasted,
+    },
+    estimated_energy_wasted: {
+      unit: 'kWh',
+      total: branchEstimatedEnergyWasted,
     },
     estimated_diesel_wasted: {
       unit: 'litres',
