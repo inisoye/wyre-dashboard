@@ -12,7 +12,7 @@ import ExportToCsv from '../ExportToCsv';
 
 function LastReadingPageSections({ lrData }) {
   const formattedDate =
-    lrData && lrData.date.format('dddd, MMMM D, YYYY hh:mm:ss');
+    lrData && lrData.date.format('dddd, MMMM D, YYYY, hh:mm:a');
 
   const phaseMeasuresData = lrData && lrData.data.phase_measures;
   const totalData = lrData && lrData.data.totals;
