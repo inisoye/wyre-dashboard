@@ -33,7 +33,7 @@ export const LoadImbalanceColumns = [
     dataIndex: 'time',
     key: 'datetime',
     render: (date) => {
-      return moment(date).format('DD-MM-YYYY HH:MM:a');
+      return moment(date).format('DD-MM-YYYY hh:mm:a');
     }
   },
 ];
