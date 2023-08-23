@@ -45,9 +45,11 @@ const getOrganizationDailyKwh = (data) => {
     data.branches.forEach((eachBranch) => {
       const { dates, ...rest } = eachBranch.daily_kwh;
       const allDevicesDailyKwh = Object.values(rest);
+      const eachDeviceDailyKwh = eachBranch.daily_kwh
+      organizationDailyKwh = eachDeviceDailyKwh
       const branchDailyKwh = sumArrayOfArrays(allDevicesDailyKwh);
-      organizationDailyKwh.dates = dates;
-      organizationDailyKwh[eachBranch.name] = branchDailyKwh;
+      // organizationDailyKwh.dates = dates;
+      // organizationDailyKwh[eachBranch.name] = branchDailyKwh;
     });
 
   // Add total
