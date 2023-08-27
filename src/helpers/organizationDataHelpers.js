@@ -71,12 +71,16 @@ const getOrganizationMonthlyUsage = (data) => {
   // Add data for each branch
   data.branches &&
     data.branches.forEach((eachBranch) => {
-      const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
-        (acc, curr) => acc + curr,
-        0
-      );
-      organizationMonthlyUsage.devices.push(eachBranch.name);
-      organizationMonthlyUsage.hours.push(branchMonthlyUsage);
+      eachBranch.usage_hours.devices.map((device, index) => {
+        organizationMonthlyUsage.devices.push(device);
+        organizationMonthlyUsage.hours.push(eachBranch.usage_hours.hours[index]);
+      })
+      // const branchMonthlyUsage = eachBranch.usage_hours.hours.reduce(
+      //   (acc, curr) => acc + curr,
+      //   0
+      // );
+      // organizationMonthlyUsage.devices.push(eachBranch.name);
+      // organizationMonthlyUsage.hours.push(branchMonthlyUsage);
     });
 
   return organizationMonthlyUsage;
