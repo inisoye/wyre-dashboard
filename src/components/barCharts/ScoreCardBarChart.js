@@ -149,13 +149,13 @@ const ScoreCardBarChart = ({ operatingTimeData, dataTitle, dataMessage, uiSettin
         </Tooltip>
         </div>
         <div className="score-card-bar-chart__text-wrapper">
-          <p>
+          {/* <p>
             Total Waste: <strong>{dieselWasted}</strong>
           </p>
           <p>
             Total Cost:{' '}
             <strong>{`₦ ${numberFormatter(estimated_cost.value)}`}</strong>
-          </p>
+          </p> */}
           <p>
             Total Time: <strong>{convertDecimalTimeToNormal(timeWasted)}</strong>
           </p>
