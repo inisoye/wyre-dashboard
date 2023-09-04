@@ -124,12 +124,15 @@ const getGeneratorSizeMessage = (percent) => {
     message = 'Not In Use';
     color = '#fa0303';
   }
-  else if (ratio > 0.79) {
+  else if (ratio > 0.7) {
     message = 'Overloaded';
     color = '#fa0303';
 
-  } else if (ratio >= 0.6) {
+  } else if (ratio >= 0.51) {
     message = 'Efficient Loading';
+    color = '#008000';
+  } else if (ratio >= 36) {
+    message = 'Fairly Efficient Loading';
     color = '#008000';
   } else {
     message = 'Under Utilized';
