@@ -135,7 +135,7 @@ const getGeneratorSizeMessage = (percent) => {
     message = 'Fairly Efficient Loading';
     color = '#008000';
   } else {
-    message = 'Under Utilized';
+    message = 'Inefficient';
     color = '#FFBF00';
 
   }
