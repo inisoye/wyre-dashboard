@@ -33,6 +33,7 @@ import TopBar from '../components/AppTopBar';
 import LoadOverview from '../mainAppPages/LoadOverview';
 import RevisedAppTopBar from '../components/RevisedAppTopBar';
 import AddDieselEntry from '../mainAppPages/AddDieselEntry';
+// import Breakers from '../mainAppPages/Breakers';
 
 function MainAppPages() {
   const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
@@ -98,6 +99,7 @@ function MainAppPages() {
                   component={EnergyConsumption}
                 />
                 <Route path="/report" component={Report} />
+                {/* <Route path="/breakers" component={Breakers} /> */}
                 <Route path="/score-card" component={ScoreCard} />
                 <Route path="/client-profile" component={ClientProfile} />
                 <Route path="/password" component={Password} />
