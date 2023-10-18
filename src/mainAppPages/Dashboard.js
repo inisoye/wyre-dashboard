@@ -186,8 +186,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
             </p>
             {userData.client_type !== 'RESELLER' &&
               <p className="total-energy_value solar-energy_value">
-                <span>{'('}Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
-                <span>{solar_hours && solar_hours.unit}{')'}</span>
+                <span>Solar Hours: {solar_hours && numberFormatter(solar_hours.value)} </span>
+                <span>{solar_hours && solar_hours.unit}{'('}{((solar_hours.value/total_kwh.value) * 100).toFixed(2)}{'%)'}</span>
               </p>
             }
           </article>
