@@ -113,7 +113,6 @@ function NewAppTopBar() {
   const onApplyClick = () => {
     dataHttpServices.setEndpointDateRange(selectedDate);
     setUserDateRange(selectedDate);
-    console.log('thidjksdkjnskjn is an error f ======================', moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'))
     setSelectedDateRange([moment(selectedDate[0]).format('DD-MM-YYYY HH:mm'),
     moment(selectedDate[1]).format('DD-MM-YYYY HH:mm')]);
     setOpenModal(false);
@@ -212,12 +211,14 @@ function NewAppTopBar() {
 
   // handle when user select a calendar 
   const onFirstCalendarClick = (date) => {
+
     setComponentText(false);
     if (moment(date).isBefore(moment())) {
-      return setSelectedDate(setDateValueOnSelect(moment(date).endOf('day'), selectedDate[1]));
+      return setSelectedDate(setDateValueOnSelect(moment(date).startOf('day'), selectedDate[1]));
     }
 
-    const currentTime = moment();
+    const currentTime = moment().startOf('day');
+    
     setSelectedDate(setDateValueOnSelect(moment(date).set({
       hour: currentTime.get('hour'),
       minute: currentTime.get('minute'),
