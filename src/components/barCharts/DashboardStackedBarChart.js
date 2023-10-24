@@ -21,7 +21,7 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
           return data['labels'][tooltipItem[0]['index']];
         },
         label: function (tooltipItem, data) {
-          return data['datasets'][0]['data'][tooltipItem['index']] && Number(tooltipItem.value).toFixed(2);
+          return Number(tooltipItem.value).toFixed(2) || 0;
         },
       },
       footerFontStyle: 'normal',
