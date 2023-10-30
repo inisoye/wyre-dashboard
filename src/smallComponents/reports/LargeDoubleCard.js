@@ -12,7 +12,8 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
   const Component = icon;
   const date = new Date();
 
-  const ratio = baseLine.forecast & baseLine.consumption ? (Number((baseLine.consumption/ baseLine.forecast ))) : 0;
+  // const ratio = baseLine.forecast & baseLine.consumption ? (Number((baseLine.consumption/ baseLine.forecast ))) : 0;
+  const ratio = baseLine.forecast & baseLine.consumption ? (baseLine.forecast_to_consumption_percentage) : 0;
 
   const savings = baseLine.forecast - ((baseLine.consumption / date.getDate()) * daysInMonth());
 
@@ -28,7 +29,8 @@ const LargeDoubleCard = ({ baseLine, type, icon, header }) => {
                 <Component style={{ stroke: color, fill: color.color }} className='report-card-icon' />
               </div>
               <p className="report-card-large-percentage" >
-                { (baseLine.forecast & baseLine.consumption ? (ratio * 100).toFixed(2) : 0) + '%'}
+                {/* { (baseLine.forecast & baseLine.consumption ? (ratio * 100).toFixed(2) : 0) + '%'} */}
+                { (baseLine.forecast & baseLine.consumption ? (ratio).toFixed(2) : 0) + '%'}
               </p>
             </div>
 

@@ -187,7 +187,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
             {userData.client_type !== 'RESELLER' &&
               <p className="total-energy_value solar-energy_value">
                 <span>Solar Hours: {solar_hours && numberFormatter(solar_hours?.value)} </span>
-                <span>{solar_hours && solar_hours.unit}{'('}{((solar_hours?.value/total_kwh?.value) * 100)?.toFixed(2)}{'%)'}</span>
+                <span>{solar_hours && 'kWh'}{'('}{((solar_hours?.value/total_kwh?.value) * 100)?.toFixed(2)}{'%)'}</span>
               </p>
             }
           </article>
@@ -206,17 +206,20 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
                 <DashboardSmallBannerSection
                   name="Max. Demand"
                   value={dashboard?.demandData.max_demand}
-                  unit={dashboard?.demandData.unit}
+                  // unit={dashboard?.demandData.unit}
+                  unit="kVA"
                 />
                 <DashboardSmallBannerSection
                   name="Min. Demand"
                   value={dashboard?.demandData.min_demand}
-                  unit={dashboard?.demandData.unit}
+                  // unit={dashboard?.demandData.unit}
+                  unit="kVA"
                 />
                 <DashboardSmallBannerSection
                   name="Avg. Demand"
                   value={dashboard?.demandData.avg_demand}
-                  unit={dashboard?.demandData.unit}
+                  // unit={dashboard?.demandData.unit}
+                  unit="kVA"
                 />
               </div>
             </Spin>
@@ -239,7 +242,8 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
                 dashboard.blendedCostEnergyData && 
                 dashboard.blendedCostEnergyData
               }
-              unit={cost_of_energy && cost_of_energy.unit}
+              // unit={cost_of_energy && cost_of_energy.unit}
+              unit="Naira/kWh"
             />
           </article>
         </div>
