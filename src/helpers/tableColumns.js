@@ -166,10 +166,6 @@ export const CostImplicationColumn = [
 
 export const BreakersColumns = (onSwitchChange) => [
   {
-    title: 'Branch',
-    dataIndex: 'branch',
-  },
-  {
     title: 'Device',
     dataIndex: 'device_id',
   },
