@@ -5,6 +5,7 @@ import {
   modifyStatisTicDateWithTime
 } from "./genericHelpers";
 import { numberFormatter } from './numberFormatter';
+import { Switch } from 'antd';
 
 export const LoadImbalanceColumns = [
   {
@@ -112,7 +113,7 @@ export const PowerDemandColumns = (powerFactor) => [
     title: 'Average(kW)',
     dataIndex: 'avg',
     render: (avg) => {
-      return avg? (avg * powerFactor).toFixed(2): 0;
+      return avg ? (avg * powerFactor).toFixed(2) : 0;
     }
   },
   {
@@ -123,7 +124,7 @@ export const PowerDemandColumns = (powerFactor) => [
     title: 'Maximum(kW)',
     dataIndex: 'max',
     render: (max) => {
-      return max? (max * powerFactor).toFixed(2): 0;
+      return max ? (max * powerFactor).toFixed(2) : 0;
     }
   },
   // {
@@ -161,6 +162,49 @@ export const CostImplicationColumn = [
       return numberFormatter(value);
     }
   }
+];
+
+export const BreakersColumns = (onSwitchChange) => [
+  {
+    title: 'Branch',
+    dataIndex: 'branch',
+  },
+  {
+    title: 'Device',
+    dataIndex: 'device_id',
+  },
+  {
+    title: 'Active',
+    dataIndex: 'is_active',
+    render: (is_active) => {
+      return is_active.toString()
+    }
+  },
+  {
+    title: 'Load',
+    dataIndex: 'is_load',
+    render: (is_load) => {
+      return is_load.toString()
+    }
+  },
+  {
+    title: 'Name',
+    dataIndex: 'name',
+  },
+  {
+    title: 'Provider',
+    dataIndex: 'provider',
+  },
+  {
+    title: 'State',
+    dataIndex: 'switch_state',
+    render: (switch_state, record) => {
+      return <Switch onChange={(event) => {
+        onSwitchChange(event, record);
+      }}
+        size="small" defaultChecked={switch_state === 'ON'} />
+    }
+  },
 ];
 export const DemandAndStatisticsColumn = [
   {

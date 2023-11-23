@@ -6,6 +6,7 @@ import sideBar from './sidebar/sidebar.reducer'
 import report from './report/report.reducer';
 import setting from './setting/setting.reducer';
 import powerFactor from './powerFactor/powerFactor.reducer';
+import breakers from './breakers/breakers.reducer';
 
 const appReducer = combineReducers({
     dashboard,
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
     report,
     setting,
     powerFactor,
+    breakers,
 });
 
 const rootReducer = (state, action) => {

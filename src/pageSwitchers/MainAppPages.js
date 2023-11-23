@@ -33,6 +33,7 @@ import TopBar from '../components/AppTopBar';
 import LoadOverview from '../mainAppPages/LoadOverview';
 import RevisedAppTopBar from '../components/RevisedAppTopBar';
 import AddDieselEntry from '../mainAppPages/AddDieselEntry';
+import Breakers from '../mainAppPages/Breakers';
 // import Breakers from '../mainAppPages/Breakers';
 
 function MainAppPages() {
@@ -69,6 +70,7 @@ function MainAppPages() {
                   <Redirect to="/dashboard" />
                 </Route>
                 <Route path="/dashboard" component={Dashboard} />
+                <Route path="/breakers" component={Breakers} />
                 <Route exact path="/log-in">
                   <Redirect to="/" />
                 </Route>
