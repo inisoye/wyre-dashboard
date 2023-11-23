@@ -75,7 +75,7 @@ function Beakers({ match, sideBar: sideDetails, fetchBranhBreakers: fetchBreaker
                   <h2 className="report-pie-heading">
                     Breakers
                   </h2>
-                  <GenericReportTable data={breakers.breakersData}
+                  <GenericReportTable rowKey='branch' data={breakers.breakersData}
                     columnData={BreakersColumns(onSwitchChange)} />
                 </div>
               </div>
