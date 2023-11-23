@@ -79,7 +79,7 @@ const ScoreCardFuelConsumptionDoughnut = ({ data, uiSettings }) => {
       </div>
 
       <div className='fuel-consumption-text-container'>
-        <p className='fuel-consumption-device-name'>{`${name.toUpperCase()} (${size.toUpperCase()})`}</p>
+        <p className='fuel-consumption-device-name'>{`${name} (${size})`}</p>
         <p className='fuel-consumption-middle-text'>{diesel_usage} Litres</p>
         <p>{time_used} hours</p>
       </div>
