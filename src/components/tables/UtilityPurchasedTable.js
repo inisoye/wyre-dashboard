@@ -198,16 +198,16 @@ const UtilityPurchasedTable = ({ data, userId, setEditUtilityPurchaseModal, setU
               <Table.Summary.Row>
                 <Table.Summary.Cell>Total</Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(valueSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(valueSum).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(tarrifSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(tarrifSum).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(amountSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(amountSum).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Text>{parseFloat(vatInclusiveAmountSum).toFixed(2)}</Text>
+                  <Text>{numberFormatter(parseFloat(vatInclusiveAmountSum).toFixed(2)) || 0}</Text>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </>
