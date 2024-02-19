@@ -120,7 +120,7 @@ function Header() {
           }
           {
             // BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.client) &&
-            <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
+            // <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
           }
           {
             BESPOKE_ADD_LIST.REPORT.includes(userData.client) &&
