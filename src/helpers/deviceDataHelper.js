@@ -28,21 +28,21 @@ const getDeviceData = ({
         .trim(): deviceData.name;
 
     const deviceDailyKwh = {
-        dates: branchData.daily_kwh.dates,
-        [modifiedDeviceName]: branchData.daily_kwh[originalDeviceName],
+        dates: branchData.daily_kwh?.dates || [],
+        [modifiedDeviceName]: branchData?.daily_kwh? branchData?.daily_kwh[originalDeviceName] : null,
     };
  
     const branchMonthlyUsage = branchData.usage_hours;
-    const deviceIndex = branchMonthlyUsage.devices.indexOf(
+    const deviceIndex = branchMonthlyUsage?.devices.indexOf(
         originalDeviceName
     );
 
     const deviceMonthlyUsage = {
         // Use modified device name
         devices: [
-            branchData.name + ' ' + branchMonthlyUsage.devices[deviceIndex],
+            branchData.name + ' ' + branchMonthlyUsage?.devices[deviceIndex],
         ],
-        hours: [branchMonthlyUsage.hours[deviceIndex]],
+        hours: [branchMonthlyUsage?.hours[deviceIndex]],
     };
 
     const deviceTimeOfUseTableData = getModifiedBranchLevelData(
@@ -107,15 +107,15 @@ const getDeviceData = ({
         cost_of_energy,
         today,
         yesterday,
-    } = deviceData.dashboard;
+    } = deviceData.dashboard || {};
 
 
-    let avg_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (avg_demand.value / powerFactor) || 0 }
-        : { unit: 'kVA', value: (avg_demand.value / 0.) || 0 };
-    let max_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (max_demand.value / powerFactor) || 0 }
-        : { unit: 'kVA', value: (max_demand.value / 0.) || 0 };
-    let min_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (min_demand.value / powerFactor) || 0 }
-        : { unit: 'kVA', value: (min_demand.value / 0.) || 0 };
+    let avg_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (avg_demand?.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (avg_demand?.value / 0.) || 0 };
+    let max_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (max_demand?.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (max_demand?.value / 0.) || 0 };
+    let min_demand_with_power_factor = powerFactor ? { unit: 'kVA', value: (min_demand?.value / powerFactor) || 0 }
+        : { unit: 'kVA', value: (min_demand?.value / 0.) || 0 };
 
 
     /* -------------------------------------------------------------------

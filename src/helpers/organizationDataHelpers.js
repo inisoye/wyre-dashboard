@@ -95,7 +95,7 @@ const getBranchEnergyDataArray = (data, powerFactor = null) => {
     data.branches.map((eachBranch) => {
       
       const energySumValueNames = Object.keys(
-        eachBranch.devices[0].dashboard
+        eachBranch.devices[0].dashboard || {}
       ).filter(
         (eachName) =>
           !['name', 'id', 'avg_demand', 'min_demand', 'max_demand'].includes(
@@ -847,6 +847,30 @@ const getDashBoardRefinedData = (data, powerFactor) => {
     // time_of_use_table: getOrganizationTimeOfUseTableData(data),
   };
 };
+const getScoreCardRefinedData = (data, powerFactor) => {
+  return {
+    all_device_data: { ...getAllOrganizationDevices(data) },
+    name: data.name,
+    // Score Card Stuff
+    organization_device_type : getOrganizationDeviceType(data),
+    baseline_energy: getOrganizationBaselineEnergy(data),
+    peak_to_avg_power_ratio: getOrganizationPeakToAveragePowerRatio(data),
+    score_card_carbon_emissions: getOrganizationScoreCardCarbonEmissions(data),
+    generator_size_efficiency: getOrgGeneratorSizeEfficiencyArray(data),
+    // change_over_lags: getOrganizationChangeOverLags(data),
+    operating_time: getOrganizationOperatingTime(data),
+    fuel_consumption: getOrganizationFuelConsumptionArray(data),
+    // // Power Quality Stuff
+    // power_quality: getOrganizationPowerQualityData(data),
+    // // Time of Use Stuff
+    // last_reading: getOrganizationLastReadingData(data),
+    // // Power Demand Stuff
+    // power_demand: getOrganizationPowerDemandData(data),
+    // // Time of Use Stuff
+    // time_of_use_chart: getOrganizationTimeOfUseChartData(data),
+    // time_of_use_table: getOrganizationTimeOfUseTableData(data),
+  };
+};
 
 
 /* -------------------------------------------------------------------
@@ -1027,6 +1051,7 @@ export {
   getRefinedOrganizationData, getOrganizationFuelConsumptionArray,
   getOrganizationDeviceType, getRefinedOrganizationDataWithChekBox,
   getDashBoardRefinedData, getInitialAllDeviceRefinedOrganizationData,
-  getBillingRefinedOrganizationData, getBillingRefinedOrganizationDataWithChekBox
+  getBillingRefinedOrganizationData, getBillingRefinedOrganizationDataWithChekBox,
+  getScoreCardRefinedData
 };
 

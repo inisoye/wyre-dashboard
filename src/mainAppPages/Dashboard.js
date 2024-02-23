@@ -76,7 +76,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
     max_demand_with_power_factor, 
   } = refinedDashboardData;
 
-
+  console.log('this si refinedDashboardDatarefinedDashboardDatarefinedDashboardData===================>>>>>>',refinedDashboardData )
   useEffect(() => {
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
