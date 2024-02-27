@@ -76,7 +76,6 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
     max_demand_with_power_factor, 
   } = refinedDashboardData;
 
-
   useEffect(() => {
 
     const copyDashBoardData = JSON.parse(JSON.stringify(dashBoardInfo.dashBoardData));
@@ -280,6 +279,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
             className=""
             data={daily_kwh}
             organization={name}
+            sideBarData={sideDetails.sideBarData}
           />
         </article>
 
@@ -293,7 +293,7 @@ function Dashboard({ match, fetchDashBoardData: dashBoardDataFetch, fetchBlended
                 </p>
               </Tooltip>
             </div>
-            <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} />
+            <DashboardDoughnutChart data={usage_hours} uiSettings={uiSettings} sideBarData={sideDetails.sideBarData} />
           </article>
 
           <article className="dashboard-today-and-yesterday">

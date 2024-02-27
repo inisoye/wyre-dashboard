@@ -9,8 +9,21 @@ import {
 } from '../../helpers/genericHelpers';
 
 
-const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
+const DashboardStackedBarChart = ({ data, organization, uiSettings, sideBarData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
+
+  const newData = {}
+
+  if (data && sideBarData) {
+    const { dates: dateStrings } = data ? data : { dates: [] };
+    newData.dates = dateStrings;
+    Object.entries(data).forEach(([key, value]) => {
+      const findName = sideBarData.branches[0].devices.find((side) => key === side.name && side.is_source);
+      if (findName) {
+        newData[key] = value;
+      }
+    })
+  }
 
   const options = {
     tooltips: {
@@ -102,7 +115,7 @@ const DashboardStackedBarChart = ({ data, organization, uiSettings }) => {
   // }
 
   // Destructure data conditionally
-  const { dates: dateStrings, ...values } = data ? data : { dates: [] };
+  const { dates: dateStrings, ...values } = newData ? newData : { dates: [] };
 
   const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
   const formattedDates = dateObjects && formatParametersDates(dateObjects);

@@ -24,7 +24,11 @@ import {
 import { numberFormatter } from "../helpers/numberFormatter";
 
 import { SCORE_CARD_TOOLTIP_MESSAGES } from '../components/toolTips/Score_Card_Tooltip_Messages';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import {  getInitialAllDeviceRefinedOrganizationData, getRefinedOrganizationDataWithChekBox, getScoreCardRefinedData } from '../helpers/organizationDataHelpers';
+import { getRenderedData } from '../helpers/renderedDataHelpers';
+import { fetchScoreCardData } from '../redux/actions/scorecard/scorecard.action';
+import { isEmpty } from '../helpers/authHelper';
 // import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 
 const breadCrumbRoutes = [
@@ -33,15 +37,89 @@ const breadCrumbRoutes = [
 ];
 
 
-function ScoreCard({ match }) {
+function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
 
   const [peakToAverageKVa, setPeakToAverageKVA] = useState(null);
+  const [refinedScoreCardData, setRefinedScorCardData] = useState({});
+  const [allDeviceInfo, setAllDeviceInfo] = useState(false);
+  const scoreCardInfo = useSelector((state) => state.scorecard);
+  const sideDetails = useSelector((state) => state.sideBar);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const {
     refinedRenderedData,
     setCurrentUrl,
     isAuthenticatedDataLoading,
-    uiSettings
+    uiSettings,
+    checkedBranches,
+    checkedDevices,
+    userDateRange,
   } = useContext(CompleteDataContext);
+
+
+  useEffect(() => {
+
+    if (scoreCardInfo.scoreCardData) {
+      const copyData = JSON.parse(JSON.stringify(scoreCardInfo.scoreCardData));
+
+      if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
+
+        const { branchAndDevice, allDeviceData } = getRefinedOrganizationDataWithChekBox({
+          checkedBranches,
+          checkedDevices,
+          organization: copyData,
+          setRenderedDataObjects: null,
+          isDashBoard: false,
+          powerFactorData: null
+        });
+
+        const renderedData = getRenderedData(Object.values(branchAndDevice), true);
+        setRefinedScorCardData(renderedData);
+        setAllDeviceInfo(allDeviceData);
+      } else {
+        setRefinedScorCardData(getScoreCardRefinedData(copyData, null));
+        setAllDeviceInfo(getInitialAllDeviceRefinedOrganizationData({ organization: copyData }));
+      }
+    }
+  }, [checkedBranches, checkedDevices, scoreCardInfo.scoreCardData]);
+
+  useEffect(() => {
+    if (match && match.url) {
+      setCurrentUrl(match.url);
+    }
+  }, [match, setCurrentUrl]);
+
+
+  useEffect(() => {
+    if (!pageLoaded && isEmpty(scoreCardInfo.scoreCardData || {})) {
+      fetchScoreCard(userDateRange);
+    }
+
+    if (!isEmpty(scoreCardInfo.scoreCardData) > 0 && pageLoaded) {
+      fetchScoreCard(userDateRange);
+    }
+    setPageLoaded(true);
+  }, [userDateRange]);
+
+  useEffect(() => {
+    if (Object.keys(sideDetails.sideBarData).length > 0) {
+
+      let allDevices = [];
+      sideDetails.sideBarData.branches.forEach((branch) => {
+        branch.devices.forEach((device) => {
+          allDevices.push(device.device_id)
+        })
+      })
+      // const start_date = moment().startOf('month').format('YYYY-MM-DD');
+      // const end_date = moment().startOf('month').format('YYYY-MM-DD');
+      // fetchAllPowerFactor(allDevices, { start_date, end_date })
+
+    }
+
+
+  }, [sideDetails.sideBarData, userDateRange]);
+
+
+
 
 
   useEffect(() => {
@@ -58,8 +136,7 @@ function ScoreCard({ match }) {
     change_over_lags,
     operating_time,
     fuel_consumption,
-  } = refinedRenderedData;
-
+  } = refinedScoreCardData;
 
   useEffect(() => {
     if (peak_to_avg_power_ratio) {
@@ -74,15 +151,15 @@ function ScoreCard({ match }) {
 
   let date, ratio, savingdInbound, savingdInboundCarbonEmmission, arrowColor, getPeakResult;
   let noOfTrees, message, generatorSizeEffficiencyData, generatorSizeEffficiencyDoughnuts, fuelConsumptionData;
-  
+
   let deviceLength, fuelConsumptionDoughnuts;
 
   const dataPresent = Object.keys(refinedRenderedData).length !== 0;
   if (Object.keys(refinedRenderedData).length !== 0) {
     date = new Date();
     ratio = peakToAverageKVa ? calculateRatio(peakToAverageKVa.avg, peakToAverageKVa.peak) : 0;
-    savingdInbound = baseline_energy.forecast - ((baseline_energy.used / date.getDate()) * daysInMonth());
-    savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions.estimated_value - ((score_card_carbon_emissions.actual_value / date.getDate()) * daysInMonth())));
+    savingdInbound = baseline_energy?.forecast - ((baseline_energy?.used / date?.getDate()) * daysInMonth());
+    savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions?.estimated_value - ((score_card_carbon_emissions?.actual_value / date?.getDate()) * daysInMonth())));
 
     getPeakResult = getPeakToAverageMessage(ratio);
     arrowColor = getPeakResult.color;
@@ -94,7 +171,7 @@ function ScoreCard({ match }) {
 
     generatorSizeEffficiencyData =
       generator_size_efficiency && generator_size_efficiency.filter(Boolean);
-    generatorSizeEffficiencyData = generatorSizeEffficiencyData.filter(
+    generatorSizeEffficiencyData = generatorSizeEffficiencyData?.filter(
       eachDevice => eachDevice.is_gen === true
     );
 
@@ -114,11 +191,11 @@ function ScoreCard({ match }) {
     fuelConsumptionData =
       fuel_consumption && fuel_consumption.filter(Boolean);
 
-    fuelConsumptionData = fuelConsumptionData.filter(
+    fuelConsumptionData = fuelConsumptionData?.filter(
       eachDevice => eachDevice.is_gen === true
     );
 
-    deviceLength = fuelConsumptionData.length;
+    deviceLength = fuelConsumptionData?.length;
 
     fuelConsumptionDoughnuts =
       fuelConsumptionData &&
@@ -132,7 +209,8 @@ function ScoreCard({ match }) {
 
   }
 
-  if (isAuthenticatedDataLoading) {
+
+  if (scoreCardInfo.fetchScoreCardLoading || !pageLoaded) {
     return <Loader />;
   }
 
@@ -377,7 +455,10 @@ function ScoreCard({ match }) {
 
 const mapDispatchToProps = {
   fetchPowerFactor,
+  fetchScoreCardData,
 };
+
+
 const mapStateToProps = (state) => ({
   powerFactor: state.powerFactor
 });
