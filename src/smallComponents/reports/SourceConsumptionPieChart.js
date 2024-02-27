@@ -11,6 +11,8 @@ const SourceConsumptionPieChart = ({ data }) => {
   const labels = [];
   const values = [];
 
+  console.log('this is the data=============kkkdkdk', data)
+
   data.map((eachData) => {
     labels.push(eachData.name);
     values.push(eachData.energy);

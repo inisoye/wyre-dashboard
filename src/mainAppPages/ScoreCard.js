@@ -57,7 +57,6 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
 
 
   useEffect(() => {
-    console.log('this is score', scoreCardInfo)
 
     if (scoreCardInfo.scoreCardData) {
       const copyData = JSON.parse(JSON.stringify(scoreCardInfo.scoreCardData));
@@ -138,9 +137,6 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
     operating_time,
     fuel_consumption,
   } = refinedScoreCardData;
-
-
-  console.log('this si sdhdiokjskjdnsjkndlksjndmlokmsdnlkdnlkdm===================>>>>>>',refinedScoreCardData )
 
   useEffect(() => {
     if (peak_to_avg_power_ratio) {
