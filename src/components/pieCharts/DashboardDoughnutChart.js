@@ -15,7 +15,7 @@ const DashboardDoughnutChart = ({ data, uiSettings, sideBarData }) => {
   const isLessThan481 = useMediaQuery({ query: '(max-width: 481px)' });
   if (data && sideBarData){
      data.devices.forEach((deviceName, index) => {
-      const findName = sideBarData.branches[0].devices.find((side) => deviceName === side.name && side.is_source);
+      const findName = sideBarData.branches[0].devices.find((side) => deviceName.endsWith(side.name) && side.is_source);
       if(findName){
         newData.devices.push(deviceName)
         newData.hours.push(data.hours[index])

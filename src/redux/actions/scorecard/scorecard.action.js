@@ -35,7 +35,7 @@ export const fetchScoreCardData = (userDateRange) => async (dispatch) => {
     dispatch(fetchScoreCardSuccess(response.data.authenticatedData));
     dispatch(fetchScoreCardLoading(false))
   } catch (error) {
-    dispatch(fetchScoreCardLoading(error));
+    dispatch(fetchScoreCardLoading(false));
   }
 };
 
