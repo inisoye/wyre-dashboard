@@ -12,13 +12,14 @@ import {
 const DashboardStackedBarChart = ({ data, organization, uiSettings, sideBarData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
+
   const newData = {}
 
   if (data && sideBarData) {
     const { dates: dateStrings } = data ? data : { dates: [] };
     newData.dates = dateStrings;
     Object.entries(data).forEach(([key, value]) => {
-      const findName = sideBarData.branches[0].devices.find((side) => key === side.name && side.is_source);
+      const findName = sideBarData.branches[0].devices.find((side) => key.endsWith(side.name) && side.is_source);
       if (findName) {
         newData[key] = value;
       }

@@ -37,8 +37,8 @@ const getSelectionMonthlyUsage = (data) => {
   let SelectionMonthlyUsage = { devices: [], hours: [] };
 
   // Add data for each branch
-   data.forEach((eachSelection) => {
-    const branchMonthlyUsage = eachSelection.usage_hours.hours.reduce(
+  data.forEach((eachSelection) => {
+    const branchMonthlyUsage = eachSelection.usage_hours?.hours?.reduce(
       (acc, curr) => acc + curr,
       0
     );
@@ -118,15 +118,16 @@ const getSelectionScoreCardCarbonEmissions = (data) => {
 
 // Generator Size Efficiency
 const getSelectionGeneratorSizeEfficiencyArray = (data) => {
+  console.log('getSelectionGeneratorSizeEfficiencyArray', data);
   const nestedSelectedEfficiencies = data.map((eachSelection) =>
     eachSelection.generator_size_efficiency
       ? {
-          name: eachSelection.name,
-          ...eachSelection.generator_size_efficiency,
-        }
+        name: eachSelection.name,
+        ...eachSelection.generator_size_efficiency,
+      }
       : false
   );
-
+  console.log('nestedSelectedEfficiencies', nestedSelectedEfficiencies);
   const flattenedSelectedEfficiencies = nestedSelectedEfficiencies
     .map((eachSelection) => {
       // Remove falsy values, selection names
@@ -137,8 +138,15 @@ const getSelectionGeneratorSizeEfficiencyArray = (data) => {
     // flatten
     .flat();
 
-  // Remove duplicates with ES6 Sets
   const selectedEfficienciesSet = new Set();
+  console.log('this is the wya forward', flattenedSelectedEfficiencies.filter((item) => {
+    const duplicate = selectedEfficienciesSet.has(item.name);
+    selectedEfficienciesSet.add(item.name);
+    return !duplicate;
+  }));
+
+  // Remove duplicates with ES6 Sets
+
 
   return flattenedSelectedEfficiencies.filter((item) => {
     const duplicate = selectedEfficienciesSet.has(item.name);
@@ -214,8 +222,8 @@ const getSelectionOperatingTime = (data) => {
     return parentArray
       .map(
         (eachSelection) =>
-          eachSelection.operating_time[nestedValueName] &&(
-          eachSelection.operating_time[nestedValueName].value || eachSelection.operating_time[nestedValueName].total)
+          eachSelection.operating_time[nestedValueName] && (
+            eachSelection.operating_time[nestedValueName].value || eachSelection.operating_time[nestedValueName].total)
       )
       .filter(Boolean)
       .reduce((acc, curr) => acc + curr, 0);
@@ -347,12 +355,12 @@ const getSelectionBillingConsumptionNairaValues = (data) => {
   const selectionConsumptionNairaDates =
     data[0]?.billing_consumption_naira?.dates;
 
-    if(!selectionConsumptionNairaDates){
-      return {
-        date: null,
-        values: null
-      }
+  if (!selectionConsumptionNairaDates) {
+    return {
+      date: null,
+      values: null
     }
+  }
   const allSelectionsConsumptionNairaValues = data.map(
     (eachSelection) => eachSelection?.billing_consumption_naira?.values
   );
@@ -498,7 +506,7 @@ const getSelectionBillingTotals = (data) => {
 /* Billing Calculations End ------------------------------------------
 --------------------------------------------------------------------*/
 
-const getRenderedData = (data, isDatshboard=false) => {
+const getRenderedData = (data, otherStuff = false, showScoreCard=false) => {
 
   return {
     // Dashboard Stuff
@@ -506,102 +514,107 @@ const getRenderedData = (data, isDatshboard=false) => {
     daily_kwh: getSelectionDailyKwh(data),
     usage_hours: getSelectionMonthlyUsage(data),
 
-    ...(!isDatshboard && {
-          // Score Card Stuff
-    baseline_energy: getSelectionBaselineEnergy(data),
-    peak_to_avg_power_ratio: getSelectionPeakToAveragePowerRatio(data),
-    score_card_carbon_emissions: getSelectionScoreCardCarbonEmissions(data),
-    generator_size_efficiency: getSelectionGeneratorSizeEfficiencyArray(data),
-
-
-    change_over_lags: getSelectionChangeOverLags(data),
-    operating_time: getSelectionOperatingTime(data),
-    fuel_consumption: getSelectionFuelConsumptionArray(data),
-    // Power Quality Stuff
-    power_quality: getSelectionParameterPropertyArray(data, 'power_quality'),
-    // Time of Use Stuff
-    last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
-    // Power Demand Stuff
-    power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
-    // Time of Use Stuff
-    time_of_use_chart: getSelectionParameterPropertyArray(
-      data,
-      'time_of_use_chart'
-    ),
-    time_of_use_table: getSelectionParameterPropertyArray(
-      data,
-      'time_of_use_table'
-    ),
-    // Energy Consumption Stuff
-    energy_consumption_values: getSelectionParameterPropertyArray(
-      data,
-      'energy_consumption_values'
-    ),
-    energy_consumption_previous: sumSelectionEnergyConsumptionValues(
-      data,
-      'energy_consumption_previous'
-    ),
-    energy_consumption_current: sumSelectionEnergyConsumptionValues(
-      data,
-      'energy_consumption_current'
-    ),
-    energy_consumption_usage: sumSelectionEnergyConsumptionValues(
-      data,
-      'energy_consumption_usage'
-    ),
-    // Cost Tracker Stuff
-    cost_tracker_diesel_qty: getSelectionParameterPropertyArray(
-      data,
-      'cost_tracker_diesel_qty'
-    ),
-    cost_tracker_monthly_cost: getSelectionParameterPropertyArray(
-      data,
-      'cost_tracker_monthly_cost'
-    ),
-    cost_tracker_consumption: getSelectionParameterPropertyArray(
-      data,
-      'cost_tracker_consumption'
-    ),
-    // Billing Stuff
-    billing_consumption_kwh: getSelectionParameterPropertyArray(
-      data,
-      'billing_consumption_kwh'
-    ),
-    billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
-    overall_billing_totals: getSelectionBillingTotals(data),
-    devices_previous_billing_total: getSelectionParameterPropertyArray(
-      data,
-      'devices_previous_billing_total'
-    ),
-    devices_present_billing_total: getSelectionParameterPropertyArray(
-      data,
-      'devices_present_billing_total'
-    ),
+    ...(!otherStuff && {
+      // Power Quality Stuff
+      power_quality: getSelectionParameterPropertyArray(data, 'power_quality'),
+      // Time of Use Stuff
+      last_reading: getSelectionParameterPropertyArray(data, 'last_reading'),
+      // Power Demand Stuff
+      power_demand: getSelectionParameterPropertyArray(data, 'power_demand'),
+      // Time of Use Stuff
+      time_of_use_chart: getSelectionParameterPropertyArray(
+        data,
+        'time_of_use_chart'
+      ),
+      time_of_use_table: getSelectionParameterPropertyArray(
+        data,
+        'time_of_use_table'
+      ),
+      // Energy Consumption Stuff
+      energy_consumption_values: getSelectionParameterPropertyArray(
+        data,
+        'energy_consumption_values'
+      ),
+      energy_consumption_previous: sumSelectionEnergyConsumptionValues(
+        data,
+        'energy_consumption_previous'
+      ),
+      energy_consumption_current: sumSelectionEnergyConsumptionValues(
+        data,
+        'energy_consumption_current'
+      ),
+      energy_consumption_usage: sumSelectionEnergyConsumptionValues(
+        data,
+        'energy_consumption_usage'
+      ),
+      // Cost Tracker Stuff
+      cost_tracker_diesel_qty: getSelectionParameterPropertyArray(
+        data,
+        'cost_tracker_diesel_qty'
+      ),
+      cost_tracker_monthly_cost: getSelectionParameterPropertyArray(
+        data,
+        'cost_tracker_monthly_cost'
+      ),
+      cost_tracker_consumption: getSelectionParameterPropertyArray(
+        data,
+        'cost_tracker_consumption'
+      ),
+      // Billing Stuff
+      billing_consumption_kwh: getSelectionParameterPropertyArray(
+        data,
+        'billing_consumption_kwh'
+      ),
+      billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
+      overall_billing_totals: getSelectionBillingTotals(data),
+      devices_previous_billing_total: getSelectionParameterPropertyArray(
+        data,
+        'devices_previous_billing_total'
+      ),
+      devices_present_billing_total: getSelectionParameterPropertyArray(
+        data,
+        'devices_present_billing_total'
+      ),
     }),
+
+    ...(showScoreCard && {
+      // Score Card Stuff
+
+      baseline_energy: getSelectionBaselineEnergy(data),
+      peak_to_avg_power_ratio: getSelectionPeakToAveragePowerRatio(data),
+      score_card_carbon_emissions: getSelectionScoreCardCarbonEmissions(data),
+      generator_size_efficiency: getSelectionGeneratorSizeEfficiencyArray(data),
+
+
+      // change_over_lags: getSelectionChangeOverLags(data),
+      operating_time: getSelectionOperatingTime(data),
+      fuel_consumption: getSelectionFuelConsumptionArray(data),
+    }),
+
   };
 };
-const getBillingRenderedData = (data, isDatshboard=false) => {
+const getBillingRenderedData = (data, isDatshboard = false) => {
 
   return {
     // Dashboard Stuff
 
     ...(!isDatshboard && {
 
-    // Billing Stuff
-    billing_consumption_kwh: getSelectionParameterPropertyArray(
-      data,
-      'billing_consumption_kwh'
-    ),
-    billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
-    // overall_billing_totals: getSelectionBillingTotals(data),
-    devices_previous_billing_total: getSelectionParameterPropertyArray(
-      data,
-      'devices_previous_billing_total'
-    ),
-    devices_present_billing_total: getSelectionParameterPropertyArray(
-      data,
-      'devices_present_billing_total'
-    ),
+      // Billing Stuff
+      billing_consumption_kwh: getSelectionParameterPropertyArray(
+        data,
+        'billing_consumption_kwh'
+      ),
+      billing_consumption_naira: getSelectionBillingConsumptionNairaValues(data),
+      // overall_billing_totals: getSelectionBillingTotals(data),
+      devices_previous_billing_total: getSelectionParameterPropertyArray(
+        data,
+        'devices_previous_billing_total'
+      ),
+      devices_present_billing_total: getSelectionParameterPropertyArray(
+        data,
+        'devices_present_billing_total'
+      ),
     }),
   };
 };

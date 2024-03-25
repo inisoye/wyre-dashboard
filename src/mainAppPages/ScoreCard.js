@@ -57,12 +57,13 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
 
 
   useEffect(() => {
-
+    console.log('1111111 ================111111111111 ', checkedDevices)
+    console.log('1111111 ================22222222 ', checkedBranches)
     if (scoreCardInfo.scoreCardData) {
       const copyData = JSON.parse(JSON.stringify(scoreCardInfo.scoreCardData));
 
       if (Object.keys(checkedBranches).length > 0 || Object.keys(checkedDevices).length > 0) {
-
+        console.log('1111111 ================33333333 ')
         const { branchAndDevice, allDeviceData } = getRefinedOrganizationDataWithChekBox({
           checkedBranches,
           checkedDevices,
@@ -72,7 +73,10 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
           powerFactorData: null
         });
 
-        const renderedData = getRenderedData(Object.values(branchAndDevice), true);
+        console.log('branch and devices =================>>>>>', branchAndDevice)
+        
+        const renderedData = getRenderedData(Object.values(branchAndDevice), true, true);
+        console.log('branch and devices ++++++_++++++_+ ', renderedData)
         setRefinedScorCardData(renderedData);
         setAllDeviceInfo(allDeviceData);
       } else {
@@ -133,7 +137,6 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
     peak_to_avg_power_ratio,
     score_card_carbon_emissions,
     generator_size_efficiency,
-    change_over_lags,
     operating_time,
     fuel_consumption,
   } = refinedScoreCardData;
@@ -169,6 +172,7 @@ function ScoreCard({ match, fetchScoreCardData: fetchScoreCard }) {
     message = "Equivalent to " + noOfTrees + " Acacia trees";
 
 
+    console.log('this is the gen size efficiency', generator_size_efficiency);
     generatorSizeEffficiencyData =
       generator_size_efficiency && generator_size_efficiency.filter(Boolean);
     generatorSizeEffficiencyData = generatorSizeEffficiencyData?.filter(
