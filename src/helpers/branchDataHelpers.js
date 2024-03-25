@@ -24,7 +24,7 @@ import {
 Obtain dashboard daily energy data for branch
 ----------------*/
 const getBranchDailyKwh = (data) => {
-  let branchDailyKwh = data.daily_kwh;
+  let branchDailyKwh = data.daily_kwh || {};
   // Add total
   const { dates, ...rest } = branchDailyKwh;
   const allDevicesDailyKwh = Object.values(rest);
@@ -53,7 +53,7 @@ Obtain dashboard energy data for branch
 const getBranchEnergyData = (data, powerFactorData = null) => {
   // Place energy value names of one device and place in array
   // Ensure 'name' and 'id' are excluded form values placed in the array
-  const energyValueNames = Object.keys(data.devices[0].dashboard).filter(
+  const energyValueNames = data.devices[0].dashboard && Object.keys(data.devices[0].dashboard).filter(
     (eachName) =>
       !['name', 'id', 'avg_demand', 'min_demand', 'max_demand'].includes(
         eachName
@@ -63,7 +63,7 @@ const getBranchEnergyData = (data, powerFactorData = null) => {
   //  Use the energy value names to create an object with the branch's energy data
   let branchEnergyData = {};
 
-  energyValueNames.forEach((eachName) => {
+  energyValueNames && energyValueNames.forEach((eachName) => {
     return (branchEnergyData[eachName] = sumNestedObjectValuesUp(
       data.devices,
       'dashboard',
@@ -139,6 +139,7 @@ const getBranchScoreCardCarbonEmissions = (data) => {
 
 // Generator Size Efficiency
 const getBranchGeneratorSizeEfficiencyArray = (data) => {
+  console.log('here you are with the console.log ahndsjkdokjd =========>>>>>>>', data);
   return data.devices.map((eachDevice) => {
     const modifiedDeviceName = !eachDevice.name.includes(data.name)
       ? data.name + ' ' + eachDevice.name
@@ -157,17 +158,17 @@ const getBranchGeneratorSizeEfficiencyArray = (data) => {
 const getBranchChangeOverLags = (data) => {
   // Get Units First
   const changeOverLagUnits = data.devices
-    .map((eachDevice) => eachDevice.score_card.change_over_lags.units)
+    .map((eachDevice) => eachDevice.score_card.change_over_lags?.units)
     .filter(Boolean)[0];
 
   // Get Data
   const allDevicesChangeOverLagData = data.devices
-    .map((eachDevice) => eachDevice.score_card.change_over_lags.data)
+    .map((eachDevice) => eachDevice.score_card.change_over_lags?.data)
     .filter(Boolean)
     .flat();
 
   // Group data by date
-  const groupedBranchChangeOverLags = allDevicesChangeOverLagData.reduce(
+  const groupedBranchChangeOverLags = allDevicesChangeOverLagData?.reduce(
     function (acc, curr) {
       acc[curr.date] = acc[curr.date] || [];
       acc[curr.date].push(curr);
@@ -394,10 +395,11 @@ const getBranchEnergyConsumptionValues = (data) =>
   });
 
 const sumBranchEnergyConsumptionValues = (data, valueName) => {
-  const allDevicesValues = data.devices.map(
-    (eachDevice) => eachDevice.energy_consumption[valueName]
+  console.log('this is the data ============>>>', data.devices, valueName)
+  const allDevicesValues =   data.devices?.map(
+    (eachDevice) => eachDevice?.energy_consumption && eachDevice?.energy_consumption[valueName]
   );
-
+  console.log('this is the data ============ allDevicesValues>>>', allDevicesValues)
   return allDevicesValues.reduce((a, b) => a + b, 0);
 };
 /* -------------------------------------------------------------------
@@ -463,7 +465,7 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
       : eachDevice.name;
 
     const { billing } = eachDevice;
-    const specifiedTotal = billing.totals[totalType];
+    const specifiedTotal = billing?.totals && billing?.totals[totalType];
 
     return {
       ...specifiedTotal,
@@ -506,14 +508,14 @@ const getRefinedBranchData = (data, isDatshboard = false, powerFactorData = null
         ],
         // Energy Consumption Stuff
         energy_consumption_values: getBranchEnergyConsumptionValues(data),
-        energy_consumption_previous: sumBranchEnergyConsumptionValues(
-          data,
-          'previous'
-        ),
-        energy_consumption_current: sumBranchEnergyConsumptionValues(
-          data,
-          'current'
-        ),
+        // energy_consumption_previous: sumBranchEnergyConsumptionValues(
+        //   data,
+        //   'previous'
+        // ),
+        // energy_consumption_current: sumBranchEnergyConsumptionValues(
+        //   data,
+        //   'current'
+        // ),
         energy_consumption_usage: sumBranchEnergyConsumptionValues(data, 'usage'),
         // Cost Tracker Stuff
         cost_tracker_diesel_qty: [
