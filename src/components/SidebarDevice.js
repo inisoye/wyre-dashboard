@@ -250,16 +250,16 @@ function SidebarDevice({
         ...renderedDataObjects,
         ...refinedDeviceData,
       });
-
+      
       setCheckedItems({
         ...checkedItems,
         [modifiedDeviceName]: true,
       });
-
       setCheckedDevices({
         ...checkedDevices,
         [modifiedDeviceName]: true,
       });
+      
     } else {
       const modifiedRenderedDataObjects = cloneObject(renderedDataObjects);
       delete modifiedRenderedDataObjects[modifiedDeviceName];
@@ -272,13 +272,15 @@ function SidebarDevice({
       setCheckedItems({
         ...modifiedCheckedItems,
       });
-
+      
       const modifiedCheckedDevices = cloneObject(checkedDevices);
       delete modifiedCheckedDevices[modifiedDeviceName];
       setCheckedDevices({
         ...modifiedCheckedDevices,
       });
     }
+    console.log(checkedDevices)
+    console.log(checkedItems)
   };
 
   return (
@@ -298,3 +300,8 @@ function SidebarDevice({
 }
 
 export default SidebarDevice;
+
+
+
+
+// end of script

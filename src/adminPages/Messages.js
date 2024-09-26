@@ -4,8 +4,6 @@ import CompleteDataContext from '../Context';
 
 import BreadCrumb from '../components/BreadCrumb';
 
-import PrintButtons from '../smallComponents/PrintButtons';
-
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
   { url: '#', name: 'Messages', id: 2 },
@@ -22,9 +20,8 @@ function Messages({ match }) {
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
+      <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <p>Messages</p>

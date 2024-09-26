@@ -9,6 +9,7 @@ import {
   sumScoreCardCarbonEmissions,
 } from './genericHelpers';
 
+
 /* -------------------------------------------------------------------
 /* Dashboard Calculations Begin --------------------------------------
 --------------------------------------------------------------------*/
@@ -31,7 +32,7 @@ const getSelectionMonthlyUsage = (data) => {
   let SelectionMonthlyUsage = { devices: [], hours: [] };
 
   // Add data for each branch
-  data.forEach((eachSelection) => {
+   data.forEach((eachSelection) => {
     const branchMonthlyUsage = eachSelection.usage_hours.hours.reduce(
       (acc, curr) => acc + curr,
       0
@@ -416,6 +417,14 @@ const getSelectionBillingTotals = (data) => {
     allSelectionsMetricsDieselPerKwh.reduce((acc, curr) => acc + curr, 0) /
     allSelectionsMetricsDieselPerKwh.length;
 
+  const allSelectionsMetricsIppPerKwh = extractSingleSelectionValueType(
+    allSelectionsMetricsValues,
+    'ipp_per_kwh'
+  ).filter((val) => val !== 0);
+  const avgSelectionMetricsIppPerKwh =
+    allSelectionsMetricsIppPerKwh.reduce((acc, curr) => acc + curr, 0) /
+    allSelectionsMetricsIppPerKwh.length;
+
   const allSelectionsMetricsUtilityPerKwh = extractSingleSelectionValueType(
     allSelectionsMetricsValues,
     'utility_per_kwh'
@@ -442,6 +451,7 @@ const getSelectionBillingTotals = (data) => {
       value_naira: selectionPreviousTotalNairaValue,
     },
     metrics: {
+      ipp_per_kwh: avgSelectionMetricsIppPerKwh,
       diesel_per_kwh: avgSelectionMetricsDieselPerKwh,
       utility_per_kwh: avgSelectionMetricsUtilityPerKwh,
       blended_cost_per_kwh: avgSelectionMetricsBlendedCostPerKwh,

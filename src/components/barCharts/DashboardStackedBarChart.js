@@ -6,6 +6,7 @@ import {
   getLastArrayItems,
   convertDateStringsToObjects,
   formatParametersDatetimes,
+  formatParametersDates,
 } from '../../helpers/genericHelpers';
 
 const DashboardStackedBarChart = ({ data, organization }) => {
@@ -90,7 +91,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
   const { dates: dateStrings, ...values } = data ? data : { dates: [] };
 
   const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
-  const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
+  const formattedDates = dateObjects && formatParametersDates(dateObjects);
 
   const dataNames = Object.keys(values);
   const dataValues = Object.values(values);

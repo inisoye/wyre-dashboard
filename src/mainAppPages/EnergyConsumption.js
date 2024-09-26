@@ -16,8 +16,6 @@ import EnergyConsumptionBarChart from '../components/barCharts/EnergyConsumption
 import EnergyConsumptionTable from '../components/tables/EnergyConsumptionTable';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
-
 import ExcelIcon from '../icons/ExcelIcon';
 import ExportToCsv from '../components/ExportToCsv';
 
@@ -94,21 +92,37 @@ function EnergyConsumption({ match }) {
     tableValues
   );
 
+  const dataForEnergyConsumptionColumns =
+      formattedTableData &&
+      formattedTableData.map((eachRow) => {
 
-  // const csvHeaders = formattedTableData && Object.keys(formattedTableData[0]).map(key => {
-  //   return {
-  //     label: key,
-  //     key: key
-  //   }
-  // })
+        return eachRow;
+      });
 
-  const csvHeaders = [
-    { label: "Index", key: "index" },
-    { label: "Date", key: "date" },
-    { label: "time", key: "time" },
-    { label: "Richmond Gate IPP", key: "Richmond Gate IPP" },
-    { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
-  ]
+    const deviceNames =
+      dataForEnergyConsumptionColumns.length &&
+      Object.keys(dataForEnergyConsumptionColumns[0]);
+
+    const energyConsumptionColumns =
+      deviceNames &&
+      deviceNames.map((eachName) => {
+        return {
+          label: `${eachName}`,
+          key: `${eachName}`,
+        };
+      });
+
+  // console.log(energyConsumptionColumns)
+
+  // const csvHeaders = [
+  //   { label: "Index", key: "index" },
+  //   { label: "Date", key: "date" },
+  //   { label: "time", key: "time" },
+  //   { label: "Richmond Gate IPP", key: "Richmond Gate IPP" },
+  //   { label: "Meadow hall Schools MEADOW HALL IPP", key: "Meadow hall Schools MEADOW HALL IPP" }
+  // ]
+
+  const csvHeaders = energyConsumptionColumns
 
   if (isAuthenticatedDataLoading) {
     return <Loader />;
@@ -118,7 +132,6 @@ function EnergyConsumption({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='parameters-stacked-bar-container'>

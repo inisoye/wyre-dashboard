@@ -4,12 +4,13 @@ import { DatePicker, Select, notification } from 'antd';
 import moment from 'moment';
 import CompleteDataContext from '../Context';
 
+import billingHttpServices from '../services/bills'
+
 import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../components/BreadCrumb';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -28,7 +29,7 @@ const openNotificationWithIcon = (type, formName) => {
 };
 
 function AddBills({ match }) {
-  const { setCurrentUrl, isAuthenticatedDataLoading } = useContext(
+  const { setCurrentUrl, isAuthenticatedDataLoading, token, userId, organization } = useContext(
     CompleteDataContext
   );
 
@@ -94,6 +95,32 @@ function AddBills({ match }) {
       </Option>
     </Select>
   );
+    
+  const branchSelectorStyle = {
+    width:'100%',
+    borderRadius: '4px',
+    display:'block',
+    color: '#595959',
+    fontSize: '1.4rem',
+    height: '40px',
+}
+
+
+  const branchSelector =(
+    <Select 
+      className="h-4-br" 
+      allowClear 
+      style={branchSelectorStyle}
+      onChange={(e)=>{
+        console.log(e)
+      }}
+      >
+      { organization.branches && organization.branches.map((eachBranch)=>{
+       return <Option value={eachBranch.id} key={eachBranch.id}>{eachBranch.name}</Option>
+      })
+      }
+    </Select>
+  )
 
   const utilityPaymentPreDatePicker = (
     <DatePicker
@@ -125,14 +152,29 @@ function AddBills({ match }) {
   );
 
   const onPurchaseTrackerSubmit = ({
+    branchForPurchaseTracker,
     fuelQuantity,
     fuelPricePerLitre,
     fuelPurchaseDate,
     fuelType,
   }) => {
-    console.log(fuelQuantity, fuelPricePerLitre, fuelPurchaseDate, fuelType);
+    const DieselCostData = {
+      branch : branchForPurchaseTracker,
+      quantity : fuelQuantity,
+      price_per_litre : fuelPricePerLitre,
+      date : fuelPurchaseDate.format('YYYY-MM-DD')
+    }
+    
+    billingHttpServices
+    .addCostForDiesel(DieselCostData, token, userId, fuelType)
+    .then(()=>{  
+      openNotificationWithIcon('success', 'fuel purchase tracker');
+    })
+    .catch((err)=>{
+      console.log(err)
+      alert('An error occured, Please try again!!')
+    })
 
-    openNotificationWithIcon('success', 'fuel purchase tracker');
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('fuelPurchaseDate', undefined);
@@ -141,19 +183,29 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPreSubmit = ({
+    branchForPrePaid,
     utilityPaymentPreAmount,
     utilityPaymentPreDate,
     utilityPaymentPreTariff,
     utilityPaymentPreValue,
   }) => {
-    console.log(
-      utilityPaymentPreAmount,
-      utilityPaymentPreDate,
-      utilityPaymentPreTariff,
-      utilityPaymentPreValue
-    );
+    const prePaidData = {
+      branch : branchForPrePaid,
+      value : utilityPaymentPreValue,
+      amount : utilityPaymentPreAmount,
+      tariff : utilityPaymentPreTariff,
+      date : utilityPaymentPreDate.format('YYYY-MM-DD')
+    }
 
-    openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+    billingHttpServices
+      .addCostPrePaid(prePaidData,token,userId)
+      .then(()=>{  
+        openNotificationWithIcon('success', 'pre-paid utility payment tracker');
+      })
+      .catch(err=>{
+        console.log(err.response)
+        alert(err.response, 'Please try again!!!')
+      })
 
     // Reset form fields. Controller value is set manually
     setValuePurchaseTracker('utilityPaymentPreDate', undefined);
@@ -161,23 +213,44 @@ function AddBills({ match }) {
   };
 
   const onUtilityPaymentTrackerPostSubmit = ({
+    branchForPostPaid,
     utilityPaymentPostAmount,
     utilityPaymentPostDate,
     utilityPaymentPostTariff,
     utilityPaymentPostValue,
   }) => {
-    console.log(
-      utilityPaymentPostAmount,
-      utilityPaymentPostDate,
-      utilityPaymentPostTariff,
-      utilityPaymentPostValue
-    );
 
-    openNotificationWithIcon('success', 'post-paid utility payment tracker');
+    const convertDate = (dateObjects)=>{
+      let formatObject = dateObjects.map((eachDateObject) => {
+        return eachDateObject.format('YYYY-MM-DD')
+      })
+      return formatObject
+   }
 
-    // Reset form fields. Controller value is set manually
-    setValuePurchaseTracker('utilityPaymentPostDate', undefined);
-    resetPaymentTrackerPost();
+   let FormattedDate = convertDate(utilityPaymentPostDate)
+
+    const postPaidData = {
+      branch : branchForPostPaid,
+      value : utilityPaymentPostValue,
+      amount : utilityPaymentPostAmount,
+      tariff : utilityPaymentPostTariff,
+      date :  FormattedDate[0],
+      end_date: FormattedDate[1]
+    }
+    
+    billingHttpServices
+    .addCostPostPaid(postPaidData,token, userId)
+    .then(()=>{
+      openNotificationWithIcon('success', 'post-paid utility payment tracker');
+    })
+    .catch(error=>{
+      alert('An error occured,Please try again!!!')
+      console.log(error.response)
+    })
+
+    // // Reset form fields. Controller value is set manually
+    // setValuePurchaseTracker('utilityPaymentPostDate', undefined);
+    // resetPaymentTrackerPost();
   };
 
   if (isAuthenticatedDataLoading) {
@@ -188,7 +261,6 @@ function AddBills({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="cost-tracker-forms-content-wrapper">
@@ -205,6 +277,31 @@ function AddBills({ match }) {
             onSubmit={handleSubmitPurchaseTracker(onPurchaseTrackerSubmit)}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+              <div className="cost-tracker-input-container">
+                  <label
+                    className="generic-input-label cost-tracker-input-label"
+                    htmlFor="fuel-branch"
+                  >
+                    Branch
+                  </label>
+                <Controller 
+                    as={branchSelector} 
+                    name="branchForPurchaseTracker" 
+                    control={controlPurchaseTracker} 
+                    defaultValue=''
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPurchaseTracker && 
+                      'Please select a branch'
+                    }
+                />        
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPurchaseTracker && 'Please enter a fuel type'}
+                </p>
+              </div>
+
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
@@ -332,6 +429,31 @@ function AddBills({ match }) {
             )}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+
+            <div className="cost-tracker-input-container">
+                  <label
+                    className="generic-input-label cost-tracker-input-label"
+                    htmlFor="PrePaid-branch"
+                  >
+                    Branch
+                  </label>
+                  <Controller
+                    as={branchSelector}
+                    name = 'branchForPrePaid'
+                    control = {controlPaymentTrackerPre}
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPrePaid && 
+                      'Please select a branch'
+                    }
+                  />    
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPrePaid && 'Please enter a fuel type'}
+                </p>
+              </div>
+
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"
@@ -457,6 +579,31 @@ function AddBills({ match }) {
             )}
           >
             <div className="cost-tracker-form-inputs-wrapper">
+
+            <div className="cost-tracker-input-container">
+                  <label
+                    className="generic-input-label cost-tracker-input-label"
+                    htmlFor="fuel-branch"
+                  >
+                    Branch
+                  </label>
+                  <Controller
+                    as={branchSelector}
+                    name = 'branchForPostPaid'
+                    control = {controlPaymentTrackerPost}
+                    rules = {{
+                      required : true
+                    }}
+                    help={
+                      errorsPurchaseTracker.branchForPostPaid && 
+                      'Please select a branch'
+                    }
+                  />    
+                <p className="input-error-message">
+                  {errorsPurchaseTracker.branchForPostPaid && 'Please enter a fuel type'}
+                </p>
+              </div>
+
               <div className="cost-tracker-input-container">
                 <label
                   className="generic-input-label cost-tracker-input-label"

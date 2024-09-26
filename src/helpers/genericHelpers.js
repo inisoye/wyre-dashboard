@@ -3,6 +3,24 @@ import dayjs from 'dayjs';
 /* --------------------------------------------------------------------
 /* Completely Generic Helpers ------------------------------------------
 --------------------------------------------------------------------*/
+
+function removeDuplicateDatas(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+
+const mergeTheData = (arr) => {
+      return [...new Set([].concat(...arr))];
+}
+
+const truncateEmail = (str, num)=>{
+  if(str.length <= num)
+  {
+    return str
+  }
+  return str.slice(0,num) + '...'
+}
+
 const toCamelCase = (str) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -30,6 +48,22 @@ const getLastArrayItems = (array, numberOfItems) => {
   return array.slice(Math.max(array.length - numberOfItems, 0));
 };
 
+//checkIsGenStatus
+const checkIsGenStatus = (data) => {
+  const checkStatus = data.filter(Boolean);
+  return checkStatus.length
+}
+
+
+const daysInMonth = () => {
+  const date = new Date();
+  const currentDate = date.getDate();
+  const currentMonth = date.getMonth();
+  const currentYear = date.getFullYear();
+  //const numberOfDaysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  return new Date(currentYear, currentMonth+1, 0).getDate();;
+}
+
 /*
  * Sum up values a the same index in each array found in a wrapper array
  * @param  {Array}   arrayOfArrays  an array which contains other arrays of numbers
@@ -42,16 +76,26 @@ const sumArrayOfArrays = (arrayOfArrays) =>
     return acc;
   }, []);
 
-const calculateRatio = (num_1, num_2) => {
-  for (let num = num_2; num > 1; num--) {
-    if (num_1 % num === 0 && num_2 % num === 0) {
-      num_1 = num_1 / num;
-      num_2 = num_2 / num;
-    }
+const calculateRatio = (avg, peak) => {
+  let peak_ratio =  avg/peak
+  return peak_ratio.toFixed(1);
+}
+
+const getPeakToAverageMessage = (peakRatio) => {
+  let peakMessage;
+  let peakMessageColor;
+  if (peakRatio > 0.7){
+    peakMessage = 'Quite efficient';
+    peakMessageColor = '#008000';
+  }else if (peakRatio >= 0.5){
+    peakMessage = 'Fairly efficient';
+    peakMessageColor = '#FFBF00';
+  }else{
+    peakMessage = 'Inefficient - Higher is better';
+    peakMessageColor = '#fa0303';
   }
-  const ratio = num_1 + ':' + num_2;
-  return ratio;
-};
+  return {message: peakMessage, color: peakMessageColor}
+}
 
 const calculatePercentage = (num_1, num_2) => ((num_1 / num_2) * 100).toFixed();
 // -------------------------------------------------------------------
@@ -72,8 +116,7 @@ const getAllOrganizationDevices = (data) => {
           // Prevent process from repeating several times
           if (!device.name.includes(eachBranch.name))
             device.name = eachBranch.name + ' ' + device.name;
-        });
-
+        });        
         return eachBranch.devices;
       })
       .flat()
@@ -362,9 +405,12 @@ const convertParameterDateStringsToObjects = (deviceData, parameterName) => {
 --------------------------------------------------------------------*/
 
 export {
+  daysInMonth,
+  getPeakToAverageMessage,
   toCamelCase,
   toKebabCase,
   toSnakeCase,
+  checkIsGenStatus,
   sumArrayOfArrays,
   calculateRatio,
   calculatePercentage,
@@ -392,4 +438,7 @@ export {
   formatParametersTimes,
   formatParameterTableData,
   convertParameterDateStringsToObjects,
+  removeDuplicateDatas,
+  truncateEmail,
+  mergeTheData
 };
