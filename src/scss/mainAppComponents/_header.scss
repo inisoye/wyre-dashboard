@@ -6,14 +6,14 @@
 
   @include media('>=medium') {
     align-items: center;
-    background-image: linear-gradient(
-      to right,
-      $purple,
-      $purple 300.45px,
-      $white 15%,
-      $white 100%
-    );
-    box-shadow: $grey-box-shadow;
+    // background-image: linear-gradient(
+    //   to right,
+    //   $purple,
+    //   $purple 250.45px,
+    //   $white 0%,
+    //   $white 100%
+    // );
+    // box-shadow: $grey-box-shadow;
     flex-direction: row;
     justify-content: space-between;
 
@@ -63,6 +63,23 @@
     display: block;
     width: 278.45px;
     height: 50px;
+    margin-bottom: 100px;
+  }
+
+  @include media('>=large') {
+    width: 260.45px;
+  }
+}
+
+.admin-header-logo-container {
+  height: 40px;
+
+  /* Make logo width match sidebar */
+  @include media('>=medium') {
+    display: block;
+    width: 278.45px;
+    height: 50px;
+    margin-bottom: 30px;
   }
 
   @include media('>=large') {
@@ -139,7 +156,7 @@
   @include media('>=desktop-header-break') {
     display: flex;
     align-items: center;
-    padding-left: $large-gutter;
+    padding-left: 4px;
   }
 }
 
@@ -389,4 +406,116 @@
   width: 40px;
   max-width: 40px;
   font-size: 12px;
+}
+
+
+.date-search-tag{
+  background-color: $white;
+  margin-left: 5px; 
+  margin-right: 5px;
+  margin-top: 5px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.pickday-search-tag{
+  font-size: 10px;
+  background-color: $white;
+  cursor: pointer; 
+  margin: 5px 3px !important;
+  width: '2.8%';
+}
+
+.pickday-search-tag:hover{
+  background-color: $purple;
+  color: $white;
+
+}
+
+
+.end-date{
+  .ant-picker-dropdown:nth-of-type(1){
+    padding-top: 8px;
+    left: 0px !important;
+  }
+} 
+.start-date{
+  .ant-picker-dropdown:nth-of-type(1){
+    padding-top: 8px;
+    left: 5px !important;
+  }
+} 
+
+
+.header-date-search{
+  background-color: $bluegrey;
+  .ant-picker-dropdown{
+    padding-top: 8px;
+  }
+  .ant-picker-dropdown{
+    padding-top: 8px;
+  }
+  .ant-picker-input{
+    font-size: 10px;
+  }
+  .ant-picker-time-panel{
+    height: 265px;
+  }
+  .ant-picker-footer {
+    display: none;
+  }
+  .ant-picker-panel-container{
+    box-shadow: none;
+  }
+  .ant-picker {
+    padding: 4 4;
+  }
+  .ant-tag-checkable-checked{
+    background-color: $purple !important;
+  }
+} 
+
+.end-time{
+  .ant-picker-suffix{
+    display: none !important;
+  }
+  .ant-picker-dropdown{
+    padding-top: 8px;
+    left: 0px !important;
+  }
+} 
+.start-time{
+  .ant-picker-suffix{
+    display: none !important;
+  }
+  .ant-picker-dropdown{
+    padding-top: 8px;
+    left: 0px !important;
+  }
+} 
+
+.header-date-component{
+  display: flex;
+  flex-direction: row;
+}
+
+
+.newTopbar-monitor{
+  @include media('>=medium') {
+    display: block;
+  }
+  @include media('<medium') {
+    display: none;
+  }
+}
+
+
+.old-top-bar-monitor{
+  @include media('>=medium') {
+    display: none;
+  }
+  @include media('<medium') {
+    display: block;
+  }
+  
 }

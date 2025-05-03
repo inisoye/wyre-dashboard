@@ -3,6 +3,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import { numberFormatter } from "../../helpers/numberFormatter";
+import { sortByDateTime } from '../../helpers/genericHelpers';
 
 class PowerQualityTable extends React.Component {
   state = {
@@ -94,7 +95,8 @@ class PowerQualityTable extends React.Component {
   };
 
   render() {
-    const data = this.props.powerQualityData.map((dataItem, key) => {
+    const sortedData = sortByDateTime( this.props.powerQualityData);
+    const data = sortedData.map((dataItem, key) => {
 
       const { l1, l2, l3, neutral, frequency, power_factor } = dataItem
 
@@ -103,7 +105,7 @@ class PowerQualityTable extends React.Component {
         l1: numberFormatter(l1.toFixed(2)),
         l2: numberFormatter(l2.toFixed(2)),
         l3: numberFormatter(l3.toFixed(2)),
-        neutral: numberFormatter(neutral.toFixed(2)),
+        // neutral: numberFormatter(neutral.toFixed(2)),
         frequency: numberFormatter(frequency.toFixed(2)),
         power_factor: numberFormatter(power_factor.toFixed(2))
       }
@@ -157,14 +159,14 @@ class PowerQualityTable extends React.Component {
         sorter: (a, b) => a.l3 - b.l3,
         sortDirections: ['descend', 'ascend'],
       },
-      {
-        title: `Neutral (${unit})`,
-        dataIndex: 'neutral',
-        key: 'neutral',
-        ...this.getColumnSearchProps('neutral'),
-        sorter: (a, b) => a.neutral - b.neutral,
-        sortDirections: ['descend', 'ascend'],
-      },
+      // {
+      //   title: `Neutral (${unit})`,
+      //   dataIndex: 'neutral',
+      //   key: 'neutral',
+      //   ...this.getColumnSearchProps('neutral'),
+      //   sorter: (a, b) => a.neutral - b.neutral,
+      //   sortDirections: ['descend', 'ascend'],
+      // },
       {
         title: 'Frequency (Hz)',
         dataIndex: 'frequency',

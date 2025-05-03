@@ -13,6 +13,8 @@ import ScrollToTop from '../helpers/ScrollToTop';
 
 import AdminHeader from '../components/AdminHeader';
 import TopBar from '../components/AdminTopBar';
+import AddClients from '../adminPages/AddClients';
+import ViewBranch from '../adminPages/branches/ViewBranch';
 
 function AdminPages() {
   return (
@@ -28,9 +30,11 @@ function AdminPages() {
               <Route exact path='/' component={Overview} />
               <Route path='/add-devices' component={AddDevices} />
               <Route path='/view-branches' component={ViewBranches} />
+              <Route path='/add-clients' component={AddClients} />
               <Route path='/view-devices' component={ViewDevices} />
-              <Route path='/view-organisation' component={ViewOrganisation} />
+              <Route path='/view-client' component={ViewOrganisation} />
               <Route path='/messages' component={Messages} />
+              <Route path='/view-branch' component={ViewBranch} />
 
               <Route component={Error} />
             </Switch>

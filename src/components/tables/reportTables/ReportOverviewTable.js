@@ -23,7 +23,7 @@ function ReportOverviewTable({ data }) {
       key: 'utility_naira',
     },
     {
-      title: 'IPP (KWh)',
+      title: 'IPP (kWh)',
       dataIndex: 'ipp_energy',
       key: 'ipp_energy',
     },
