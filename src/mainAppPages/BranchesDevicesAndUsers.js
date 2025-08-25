@@ -9,7 +9,6 @@ import UserBranchesTable from '../components/tables/userViewOfBranchesDevicesAnd
 import UserDevicesTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/UserDevicesTable';
 import ListOfUsersTable from '../components/tables/userViewOfBranchesDevicesAndUsersTables/ListOfUsersTable';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -47,15 +46,14 @@ function BranchesDevicesAndUsers({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <button type='button' className='table-header__left-button'>
               CSV
             </button>
@@ -80,9 +78,9 @@ function BranchesDevicesAndUsers({ match }) {
       <article className='table-with-header-container'>
         <div className='table-header'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <button type='button' className='table-header__left-button'>
               CSV
             </button>
@@ -107,9 +105,9 @@ function BranchesDevicesAndUsers({ match }) {
       <article className='table-with-header-container'>
         <div className='table-header'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <button type='button' className='table-header__left-button'>
               CSV
             </button>

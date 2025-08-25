@@ -6,7 +6,6 @@ import BreadCrumb from '../components/BreadCrumb';
 import LastReadingPageSection from '../components/parameterPagesSections/LastReadingPageSection';
 import Loader from '../components/Loader';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -43,7 +42,6 @@ function LastReading({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       {lastReadingSections}

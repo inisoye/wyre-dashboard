@@ -4,6 +4,7 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
 import { numberFormatter } from "../../helpers/numberFormatter"
+import { sortByDateTime } from '../../helpers/genericHelpers';
 
 class PowerDemandTable extends React.Component {
   state = {
@@ -95,7 +96,8 @@ class PowerDemandTable extends React.Component {
   };
 
   render() {
-    const data = this.props.powerDemandData.map((dataItem) => {
+    const sortedData = sortByDateTime(this.props.powerDemandData);
+    const data = sortedData.map((dataItem) => {
       const { min, max, avg } = dataItem
 
       return {

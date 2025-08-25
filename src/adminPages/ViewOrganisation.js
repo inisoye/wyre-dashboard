@@ -7,7 +7,6 @@ import adminHttpServices from '../services/admin';
 import BreadCrumb from '../components/BreadCrumb';
 import AdminClientsTable from '../components/tables/adminTables/AdminClientsTable';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 import ExcelIcon from '../icons/ExcelIcon';
 
@@ -37,15 +36,14 @@ function ViewOrganisation({ match }) {
     <>
       <div className='breadcrumb-and-print-buttons'>
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <article className='table-with-header-container h-no-mt'>
         <div className='table-header h-border-bottom'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <button type='button' className='table-header__left-button'>
               CSV
             </button>
@@ -71,3 +69,9 @@ function ViewOrganisation({ match }) {
 }
 
 export default ViewOrganisation;
+
+
+
+
+
+// end of script

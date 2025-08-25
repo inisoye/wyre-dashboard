@@ -12,7 +12,7 @@ import ExportToCsv from '../ExportToCsv';
 
 function LastReadingPageSections({ lrData }) {
   const formattedDate =
-    lrData && lrData.date.format('dddd, MMMM D, YYYY hh:mm:ss');
+    lrData && lrData.date.format('dddd, MMMM D, YYYY, hh:mm:a');
 
   const phaseMeasuresData = lrData && lrData.data.phase_measures;
   const totalData = lrData && lrData.data.totals;
@@ -39,9 +39,9 @@ function LastReadingPageSections({ lrData }) {
         <div className="last-reading-table-header-and-date">
           <div className="table-header">
             <div className="h-hidden-medium-down">
-              <button type="button" className="table-header__left-button">
+              {/* <button type="button" className="table-header__left-button">
                 PDF
-              </button>
+              </button> */}
               <ExportToCsv
                 filename={`${lrData && lrData.deviceName} last-reading.csv`}
                 csvHeaders={csvHeaders}
