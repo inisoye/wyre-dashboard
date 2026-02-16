@@ -1,0 +1,42 @@
+{
+"branches":[
+    {   
+        "name":"Richmond Gate",
+        "time_of_use_table":{
+            "titles":[
+                "index",
+                "date",
+                "gen1",
+                "gen2",
+                "active_gen",
+                "first_time_on",
+                "last_time_off",
+                "hours_of_use"
+            ],
+            "values":[
+                {
+                    "post_datetime": "2021-04-03T00:31:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0,
+                    "gen1_hou_cummulative": 0
+                },
+                {
+                    "post_datetime": "2021-04-03T01:05:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0.567,
+                    "gen1_hou_cummulative": 0.567
+                    },
+                {
+                    "post_datetime": "2021-04-03T01:31:00",
+                    "gen1": "ON",
+                    "gen1_hours": 0.433,
+                    "gen1_hou_cummulative": 1
+                }
+            ],
+                "sums": {
+                    "gen1": 124.47700000000003
+                    }           
+                }
+            }
+        ]
+}

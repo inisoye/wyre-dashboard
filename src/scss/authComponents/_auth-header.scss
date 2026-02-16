@@ -27,6 +27,16 @@
   }
 }
 
+.header-logo-latest-image--auth {
+  height: 40px;
+  width: 100px;
+
+  @include media('>=medium') {
+    height: 100px;
+    // width: 220px;
+  }
+}
+
 .hamburger-button--auth {
   border: 0;
   padding: 4px 10px;

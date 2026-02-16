@@ -674,6 +674,23 @@ html {
   --antd-wave-shadow-color: #6c00fa;
   --scroll-bar: 0;
 }
+
+/* Custom styles for rounded Select component */
+.rounded-select .ant-select-selector {
+  border-radius: 8px !important;
+}
+
+.rounded-select .ant-select-selection-search-input {
+  border-radius: 8px !important;
+}
+
+.rounded-select.ant-select-focused .ant-select-selector {
+  border-radius: 8px !important;
+}
+
+.rounded-select.ant-select-open .ant-select-selector {
+  border-radius: 8px !important;
+}
 [ant-click-animating-without-extra-node='true']::after,
 .ant-click-animating-node {
   position: absolute;
@@ -16341,6 +16358,7 @@ textarea.ant-mentions {
   border-radius: 2px;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   pointer-events: auto;
+  border-radius: 10px;
 }
 .ant-modal-close {
   position: absolute;

@@ -2,12 +2,13 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CompleteDataContext from '../Context';
 import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 
 import HeaderLink from '../smallComponents/HeaderLink';
 import HeaderIcon from '../smallComponents/HeaderIcon';
 import HeaderSublink from '../smallComponents/HeaderSublink';
 
-import Logo from '../icons/Logo';
+// import Logo from '../icons/Logo';
 import Hamburger from '../icons/Hamburger';
 import VerticalDots from '../icons/VerticalDots';
 import MessageIcon from '../icons/MessageIcon';
@@ -21,6 +22,8 @@ import HeaderMobileAvatarWithDropdown from './groups/HeaderMobileAvatarWithDropd
 import HeaderDesktopAvatarWithDropdown from './groups/HeaderDesktopAvatarWithDropdown';
 import HeaderGroup1AndNav from './groups/HeaderGroup1AndNav';
 import LogoutIcon from '../icons/LogoutIcon';
+import { logoutUser } from '../redux/actions/auth/actionCreators';
+import LatestLogo from '../icons/LatestLogo';
 
 function Header() {
   const {
@@ -34,6 +37,8 @@ function Header() {
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
   const [isMobileAvatarMenuOpen, setIsMobileAvatarMenuOpen] = useState(false);
   const [isDesktopAvatarMenuOpen, setIsDesktopAvatarMenuOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -66,12 +71,16 @@ function Header() {
   };
 
   const logOut = () => {
+    dispatch(logoutUser());
     window.localStorage.removeItem('loggedWyreUser');
+
 
     // Go home
     history.push('/');
+
+    window.href = '/';
     // Refresh page
-    history.go(0);
+    // history.go(0);
   };
 
   const { image: orgImage } = organization
@@ -89,9 +98,12 @@ function Header() {
             <VerticalDots className='headerMenu-button__image dotmenu-button__image' />
           </button>
 
-          <div className='header-logo-container'>
-            <Link className='header-logo' to='/'>
+          <div className='admin-header-logo-container'>
+            {/* <Link className='header-logo' to='/'>
               <Logo className='header-logo__image' />
+            </Link> */}
+            <Link className='header-logo--auth' to='/'>
+              <LatestLogo className='header-logo-latest-image--auth' />
             </Link>
           </div>
 
@@ -131,8 +143,8 @@ function Header() {
               >
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
-                  url='/view-organisation'
-                  linkText='View Organisation'
+                  url='/view-client'
+                  linkText='View Client'
                 />
                 <HeaderSublink
                   onClick={toggleNavAndDropdown}
@@ -147,11 +159,11 @@ function Header() {
               </ul>
             </HeaderLinkWithDropdown>
 
-            <HeaderLink
+            {/* <HeaderLink
               onClick={toggleNav}
               url='/messages'
               linkText='Messages'
-            />
+            /> */}
 
             <li className='header-nav-list__item h-hidden-1296-up'>
               <HeaderIcon

@@ -157,13 +157,13 @@ class ScoreCardTable extends React.Component {
                 <Table.Summary.Row>
                   <Table.Summary.Cell>Total:</Table.Summary.Cell>
                   <Table.Summary.Cell>
-                    <Text>{totalLagDuration}</Text>
+                    <Text>{totalLagDuration.toFixed(2)}</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell>
-                    <Text>{totalDieselCost}</Text>
+                    <Text>{totalDieselCost.toFixed(2)}</Text>
                   </Table.Summary.Cell>
                   <Table.Summary.Cell>
-                    <Text>{totalDieselValue}</Text>
+                    <Text>{totalDieselValue.toFixed(2)}</Text>
                   </Table.Summary.Cell>
                 </Table.Summary.Row>
               </>
