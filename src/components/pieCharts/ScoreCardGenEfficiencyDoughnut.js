@@ -1,11 +1,14 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { getGeneratorSizeMessage } from '../../helpers/genericHelpers';
 
-const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
-  const { size, usage, unit, name } = data
+const ScoreCardGenEfficiencyDoughnut = ({ data, uiSettings, peakData }) => {
+
+  const { size, usage, unit, name, gen_size } = data
     ? data
-    : { size: '', usage: '', unit: '', name: '' };
+    : { size: '', usage: '', unit: '', name: '', gen_size: 0 };
 
+  const colorAndMessage = getGeneratorSizeMessage(usage);
   const chartLabels = ['Used', 'Unused'];
   const chartData = [usage, 100 - usage];
 
@@ -14,16 +17,22 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
     datasets: [
       {
         data: chartData,
-        backgroundColor: ['#6c00fa', '#F0F0F0'],
+        backgroundColor:[uiSettings.appPrimaryColor, '#F0F0F0'],
         borderWidth: 0,
       },
     ],
   };
 
+
   const options = {
     cutoutPercentage: 60,
     legend: {
       display: false,
+    },
+    plugins: {
+      outlabels: {
+        display: false,
+      },
     },
     maintainAspectRatio: false,
     title: {
@@ -39,7 +48,23 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
         label: function (tooltipItem, data) {
           return data['datasets'][0]['data'][tooltipItem['index']] + unit;
         },
+
+        // footer: function () {
+        //   const dataTitleAndSubtitleArray = [
+        //     dataTitle + ': ',
+        //     ...dataSubtitleArray,
+        //   ];
+        //   return dataTitleAndSubtitleArray;
+        // },
       },
+      //bodyAlign: "left",
+      bodyAlign: 'left',
+      footerAlign: 'left',
+      titleAlign: 'left',
+      xPadding: 10,
+      yPadding: 10,
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
     },
   };
 
@@ -63,7 +88,7 @@ const ScoreCardGenEfficiencyDoughnut = ({ data }) => {
           {usage}
           {unit} Load
         </p>
-        <p className='h-green-text'>Good</p>
+        <p style={{ color: getGeneratorSizeMessage(usage).color }} >{getGeneratorSizeMessage(usage).message}</p>
       </div>
     </div>
   );

@@ -1,33 +1,230 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState, useMemo } from "react";
+import CompleteDataContext from "../Context";
 
-import CompleteDataContext from '../Context';
+import { fetchPowerFactor } from "../redux/actions/powerFactor/powerFactor.action";
+import {
+  fetchBaselineEnergyData,
+  fetchGeneratorFuelEfficiencyData,
+  fetchGeneratorSizeEfficiencyData,
+  fetchPAPRData,
+  fetchScorecardCarbonEmissionData,
+  fetchScorecardOperatingTimeData,
+  fetchScoreCardData,
+} from "../redux/actions/scorecard/scorecard.action";
 
-import BreadCrumb from '../components/BreadCrumb';
-import ScoreCardDoughnutChart from '../components/pieCharts/ScoreCardDoughnutChart';
-import ScoreCardTable from '../components/tables/ScoreCardTable';
-import ScoreCardBarChart from '../components/barCharts/ScoreCardBarChart';
-import ScoreCardGenEfficiencyDoughnut from '../components/pieCharts/ScoreCardGenEfficiencyDoughnut';
-import ScoreCardFuelConsumptionDoughnut from '../components/pieCharts/ScoreCardFuelConsumptionDoughnut';
-import Loader from '../components/Loader';
+import BreadCrumb from "../components/BreadCrumb";
 
-import PrintButtons from '../smallComponents/PrintButtons';
+import Loader from "../components/Loader";
 
-import UpArrowIcon from '../icons/UpArrowIcon';
-
-import { calculateRatio, calculatePercentage } from '../helpers/genericHelpers';
-import { numberFormatter } from "../helpers/numberFormatter";
+import { connect, useSelector } from "react-redux";
+import { isEmpty } from "../helpers/authHelper";
+import { devicesArray } from "../helpers/v2/organizationDataHelpers";
+import BaselineEnergy from "../components/cards/BaselineEnergy";
+import PeakToAverageRatio from "../components/cards/PeakToAverageRatio";
+import GeneratorSizeEfficiency from "../components/cards/GeneratorSizeEfficiency";
+import GeneratorFuelEfficiency from "../components/cards/GeneratorFuelEfficiency";
+import OperatingTimeDeviation from "../components/cards/OperatingTimeDeviation";
+import ScorecardCarbonEmmission from "../components/cards/ScorecardCarbonEmmission";
+// import CarbonEmmission from '../components/cards/CarbonEmmission';
+// import { SCORE_CARD_TOOLTIP_MESSAGES } from '../helpers/constants';
 
 const breadCrumbRoutes = [
-  { url: '/', name: 'Home', id: 1 },
-  { url: '#', name: 'Score Card', id: 2 },
+  { url: "/", name: "Home", id: 1 },
+  { url: "#", name: "Score Card", id: 2 },
 ];
 
-function ScoreCard({ match }) {
+function ScoreCard({
+  match,
+  fetchBaselineEnergyData,
+  fetchPAPRData,
+  fetchScorecardCarbonEmissionData,
+  fetchGeneratorSizeEfficiencyData,
+  fetchScorecardOperatingTimeData,
+  fetchGeneratorFuelEfficiencyData,
+  scorecard,
+}) {
+  
+  const scoreCardInfo = useSelector((state) => state.scorecard);
+  const [baselineEnergyBranchData, setBaselineEnergyBranchData] =
+    useState(null);
+  const [paprBranchData, setPaprBranchData] = useState(null);
+  const [
+    scorecardCarbonEmissionBranchData,
+    setScorecardCarbonEmissionBranchData,
+  ] = useState(null);
+  const [generatorEfficiencyBranchData, setGeneratorEfficiencyBranchData] =
+    useState(null);
+  const [generatorSizeEfficiencyData, setGeneratorSizeEfficiencyData] =
+    useState(null);
+  const [
+    generatorFuelEfficiencyBranchData,
+    setGeneratorFuelEfficiencyBranchData,
+  ] = useState(null);
+  const [generatorFuelEfficiencyData, setGeneratorFuelEfficiencyData] =
+    useState(null);
+  const [
+    operatingTimeDeviationBranchData,
+    setOperatingTimeDeviationBranchData,
+  ] = useState(null);
+  const [testingOperatingData, setTestingOperatingData] = useState(null);
+  const sideDetails = useSelector((state) => state.sideBar);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const {
-    refinedRenderedData,
     setCurrentUrl,
-    isAuthenticatedDataLoading,
+    uiSettings,
+    checkedBranchId,
+    checkedDevicesId,
+    userDateRange,
   } = useContext(CompleteDataContext);
+  
+
+  // Memoize data processing functions
+  const combineArrayDataMemo = useMemo(() => {
+    const combineArrayData = (arrayOfArrays) => {
+      if (!arrayOfArrays || !arrayOfArrays.length) return [];
+      return arrayOfArrays.reduce((acc, curr) => {
+        if (!curr) return acc;
+        return acc.map((value, index) => (value || 0) + (curr[index] || 0));
+      }, new Array(arrayOfArrays[0]?.length).fill(0));
+    };
+    return combineArrayData;
+  }, []);
+
+  const sumOperatingTimeValuesMemo = useMemo(() => {
+    const sumOperatingTimeValues = (devices, key) => {
+      if (!devices || !devices.length) return 0;
+      return devices.reduce((acc, curr) => {
+        if (!curr?.score_card?.operating_time?.[key]?.value) return acc;
+        return acc + curr.score_card.operating_time[key].value;
+      }, 0);
+    };
+    return sumOperatingTimeValues;
+  }, []);
+
+  useEffect(() => {
+    const handleGenSizeEficiency =
+      generatorEfficiencyBranchData &&
+      generatorEfficiencyBranchData.devices.map(
+        (data) => data.score_card.generator_size_efficiency
+      );
+    setGeneratorSizeEfficiencyData(handleGenSizeEficiency);
+  }, [generatorEfficiencyBranchData]);
+
+  useEffect(() => {
+    const handleGenFuelEficiency =
+      generatorFuelEfficiencyBranchData &&
+      generatorFuelEfficiencyBranchData.devices.map(
+        (data) => data.score_card.fuel_consumption
+      );
+    setGeneratorFuelEfficiencyData(handleGenFuelEficiency);
+  }, [generatorFuelEfficiencyBranchData]);
+
+  useEffect(() => {
+    const allGenOpTime = [];
+    if (
+      operatingTimeDeviationBranchData &&
+      operatingTimeDeviationBranchData.devices
+    ) {
+      // const devicesArrayData = devicesArray(
+      //   [operatingTimeDeviationBranchData],
+      //   checkedBranchId,
+      //   checkedDevicesId
+      // );
+      operatingTimeDeviationBranchData &&
+        operatingTimeDeviationBranchData &&
+        operatingTimeDeviationBranchData.devices.map((data) => {
+          if (data.score_card.is_generator) {
+            allGenOpTime.push(data);
+          }
+        });
+      if (allGenOpTime.length) {
+        const getOrganizationOperatingTime = () => {
+          const organizationOperatingTimeDates = allGenOpTime
+            .filter((eachDevice) => eachDevice.score_card?.is_generator)
+            .map(
+              (eachFilteredDevice) =>
+                eachFilteredDevice.score_card.operating_time.chart.dates
+            );
+
+          const allDevicesOperatingTimeValues = allGenOpTime
+            .filter((eachDevice) => eachDevice.score_card?.is_generator)
+            .map(
+              (eachFilteredDevice) =>
+                eachFilteredDevice.score_card.operating_time.chart.values
+            );
+
+          const allDevicesOperatingTimeWastedEnergy = allGenOpTime
+            .filter((eachDevice) => eachDevice.score_card?.is_generator)
+            .map(
+              (eachFilteredDevice) =>
+                eachFilteredDevice.score_card.operating_time.chart.energy_wasted
+            );
+
+          const organizationOperatingTimeValues = combineArrayDataMemo(
+            allDevicesOperatingTimeValues
+          );
+
+          const sumOrganizationOperatingTimeDates = combineArrayDataMemo(
+            organizationOperatingTimeDates
+          );
+
+          const organizationOperatingTimeWastedEnergy = combineArrayDataMemo(
+            allDevicesOperatingTimeWastedEnergy
+          );
+
+          const organizationEstimatedTimeWasted = sumOperatingTimeValuesMemo(
+            allGenOpTime,
+            "estimated_time_wasted"
+          );
+          const organizationEstimatedEnergyWasted = sumOperatingTimeValuesMemo(
+            allGenOpTime,
+            "estimated_energy_wasted"
+          );
+          const organizationEstimatedDieselWasted = sumOperatingTimeValuesMemo(
+            allGenOpTime,
+            "estimated_diesel_wasted"
+          );
+          const organizationEstimatedDieselCost = sumOperatingTimeValuesMemo(
+            allGenOpTime,
+            "estimated_cost"
+          );
+
+          return {
+            chart: {
+              dates: sumOrganizationOperatingTimeDates,
+              values: organizationOperatingTimeValues,
+              energy_wasted: organizationOperatingTimeWastedEnergy,
+            },
+            estimated_time_wasted: {
+              unit: "hours",
+              value: organizationEstimatedTimeWasted,
+            },
+            estimated_energy_wasted: {
+              unit: "kWh",
+              total: organizationEstimatedEnergyWasted,
+            },
+            estimated_diesel_wasted: {
+              unit: "litres",
+              value: organizationEstimatedDieselWasted,
+            },
+            estimated_cost: {
+              unit: "naira",
+              value: organizationEstimatedDieselCost,
+            },
+          };
+        };
+        setTestingOperatingData(getOrganizationOperatingTime());
+      }
+    }
+  }, [
+    operatingTimeDeviationBranchData,
+    checkedBranchId,
+    checkedDevicesId.length,
+    combineArrayDataMemo,
+    sumOperatingTimeValuesMemo,
+  ]);
+
+  // Just testing this out, just so i can use it to handle summing-up the Operating-Time-Deviation data
 
   useEffect(() => {
     if (match && match.url) {
@@ -35,222 +232,493 @@ function ScoreCard({ match }) {
     }
   }, [match, setCurrentUrl]);
 
-  const {
-    baseline_energy,
-    peak_to_avg_power_ratio,
-    score_card_carbon_emissions,
-    generator_size_efficiency,
-    change_over_lags,
-    operating_time,
-    fuel_consumption,
-  } = refinedRenderedData;
+  useEffect(() => {
+    if (!pageLoaded && isEmpty(scoreCardInfo.scoreCardData || {})) {
+      fetchBaselineEnergyData(userDateRange);
+      fetchPAPRData(userDateRange);
+      fetchScorecardCarbonEmissionData(userDateRange);
+      fetchGeneratorSizeEfficiencyData(userDateRange);
+      fetchGeneratorFuelEfficiencyData(userDateRange);
+      fetchScorecardOperatingTimeData(userDateRange);
+    }
 
-  const generatorSizeEffficiencyData =
-    generator_size_efficiency && generator_size_efficiency.filter(Boolean);
+    if (!isEmpty(scoreCardInfo.scoreCardData) > 0 && pageLoaded) {
+      fetchBaselineEnergyData(userDateRange);
+      fetchPAPRData(userDateRange);
+      fetchScorecardCarbonEmissionData(userDateRange);
+      fetchGeneratorSizeEfficiencyData(userDateRange);
+      fetchGeneratorFuelEfficiencyData(userDateRange);
+      fetchScorecardOperatingTimeData(userDateRange);
+    }
+    setPageLoaded(true);
+  }, [userDateRange]);
 
-  const generatorSizeEffficiencyDoughnuts =
-    generatorSizeEffficiencyData &&
-    generatorSizeEffficiencyData.map((eachGenerator) => (
-      <ScoreCardGenEfficiencyDoughnut
-        data={eachGenerator}
-        key={eachGenerator.name}
-      />
-    ));
+  useEffect(() => {
+    if (pageLoaded && scorecard.baselineEnergyData) {
+      const devicesArrayData = devicesArray(
+        scorecard.baselineEnergyData.branches,
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setBaselineEnergyBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [scorecard.baselineEnergyData, checkedBranchId, checkedDevicesId.length]);
 
-  const fuelConsumptionData =
-    fuel_consumption && fuel_consumption.filter(Boolean);
+  useEffect(() => {
+    if (pageLoaded && scorecard.paprData) {
+      const devicesArrayData = devicesArray(
+        scorecard.paprData.branches[0],
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setPaprBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [scorecard.paprData, checkedBranchId, checkedDevicesId.length]);
 
-  const fuelConsumptionDoughnuts =
-    fuelConsumptionData &&
-    fuelConsumptionData.map((eachGenerator) => (
-      <ScoreCardFuelConsumptionDoughnut
-        data={eachGenerator}
-        key={eachGenerator.name}
-      />
-    ));
-  
-   if (isAuthenticatedDataLoading) {
-     return <Loader />;
-   }
+  // THE REDUCER STATE FOR THIS ENDPOINT FAILS SOMETIMES!
+  useEffect(() => {
+    if (pageLoaded && scorecard.scorecardCarbonEmissionData) {
+      const devicesArrayData = devicesArray(
+        scorecard.scorecardCarbonEmissionData.branches[0],
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setScorecardCarbonEmissionBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [
+    scorecard.scorecardCarbonEmissionData,
+    checkedBranchId,
+    checkedDevicesId.length,
+  ]);
+
+  useEffect(() => {
+    if (pageLoaded && scorecard.generatorSizeEfficiencyData) {
+      const devicesArrayData = devicesArray(
+        scorecard.generatorSizeEfficiencyData.branches[0],
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setGeneratorEfficiencyBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [
+    scorecard.generatorSizeEfficiencyData,
+    checkedBranchId,
+    checkedDevicesId.length,
+  ]);
+
+  useEffect(() => {
+    if (pageLoaded && scorecard.generatorFuelEfficiencyData) {
+      const devicesArrayData = devicesArray(
+        scorecard.generatorFuelEfficiencyData,
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setGeneratorFuelEfficiencyBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [
+    scorecard.generatorFuelEfficiencyData,
+    checkedBranchId,
+    checkedDevicesId.length,
+  ]);
+
+  useEffect(() => {
+    if (pageLoaded && scorecard.operatingTimeDeviationData) {
+      const devicesArrayData = devicesArray(
+        scorecard.operatingTimeDeviationData,
+        checkedBranchId,
+        checkedDevicesId
+      );
+      setOperatingTimeDeviationBranchData(devicesArrayData);
+    }
+    setPageLoaded(true);
+  }, [
+    scorecard.operatingTimeDeviationData,
+    checkedBranchId,
+    checkedDevicesId.length,
+  ]);
+
+  useEffect(() => {
+    if (Object.keys(sideDetails.sideBarData).length > 0) {
+      let allDevices = [];
+      sideDetails.sideBarData.branches.forEach((branch) => {
+        branch.devices.forEach((device) => {
+          allDevices.push(device.device_id);
+        });
+      });
+      // const start_date = moment().startOf('month').format('YYYY-MM-DD');
+      // const end_date = moment().startOf('month').format('YYYY-MM-DD');
+      // fetchAllPowerFactor(allDevices, { start_date, end_date })
+    }
+  }, [sideDetails.sideBarData, userDateRange]);
+
+  // const {
+  //   peak_to_avg_power_ratio,
+  // } = refinedScoreCardData;
+  // useEffect(() => {
+  //   if (peak_to_avg_power_ratio) {
+  //     const pekToAvgData = {
+  //       unit: 'kVA',
+  //       peak: (peak_to_avg_power_ratio.peak),
+  //       avg: (peak_to_avg_power_ratio.avg),
+  //     }
+  //     setPeakToAverageKVA(pekToAvgData)
+  //   }
+  // }, [peak_to_avg_power_ratio]);
+
+  // let date, ratio, savingdInbound, savingdInboundCarbonEmmission, arrowColor, getPeakResult;
+  // let noOfTrees, message, generatorSizeEffficiencyData, generatorSizeEffficiencyDoughnuts, fuelConsumptionData;
+
+  let deviceLength = operatingTimeDeviationBranchData?.devices?.length;
+
+  // if (Object.keys(refinedRenderedData).length !== 0) {
+  //   date = new Date();
+  //   ratio = peakToAverageKVa ? calculateRatio(peakToAverageKVa.avg, peakToAverageKVa.peak) : 0;
+  //   savingdInbound = baseline_energy?.forecast - ((baseline_energy?.used / date?.getDate()) * daysInMonth());
+  //   savingdInboundCarbonEmmission = numberFormatter((score_card_carbon_emissions?.estimated_value - ((score_card_carbon_emissions?.actual_value / date?.getDate()) * daysInMonth())));
+
+  //   getPeakResult = getPeakToAverageMessage(ratio);
+  //   arrowColor = getPeakResult.color;
+
+  //   //calculate number of trees for carbon emission
+  //   noOfTrees = (savingdInboundCarbonEmmission * 6).toFixed(2);
+  //   message = "Equivalent to " + noOfTrees + " Acacia trees";
+
+  //   generatorSizeEffficiencyData =
+  //     generator_size_efficiency && generator_size_efficiency.filter(Boolean);
+  //   generatorSizeEffficiencyData = generatorSizeEffficiencyData?.filter(
+  //     eachDevice => eachDevice.is_gen === true
+  //   );
+
+  //   generatorSizeEffficiencyDoughnuts =
+  //     generatorSizeEffficiencyData &&
+  //     generatorSizeEffficiencyData.map((eachGenerator) => (
+
+  //       <ScoreCardGenEfficiencyDoughnut
+  //         data={eachGenerator}
+  //         peakData={peakToAverageKVa}
+  //         key={eachGenerator.name}
+  //         uiSettings={uiSettings}
+
+  //       />
+  //     ));
+
+  //   fuelConsumptionData =
+  //     fuel_consumption && fuel_consumption.filter(Boolean);
+
+  //   fuelConsumptionData = fuelConsumptionData?.filter(
+  //     eachDevice => eachDevice.is_gen === true
+  //   );
+
+  //   deviceLength = fuelConsumptionData?.length;
+
+  //   fuelConsumptionDoughnuts =
+  //     fuelConsumptionData &&
+  //     fuelConsumptionData.map((eachGenerator) => (
+  //       <ScoreCardFuelConsumptionDoughnut
+  //         data={eachGenerator}
+  //         key={eachGenerator.name}
+  //         uiSettings={uiSettings}
+  //       />
+  //     ));
+
+  // }
+
+  if (
+    !generatorSizeEfficiencyData ||
+    !generatorFuelEfficiencyData ||
+    !pageLoaded
+  ) {
+    return <Loader />;
+  }
 
   return (
     <>
-      <div className='breadcrumb-and-print-buttons'>
-        <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
-      </div>
-
-      <div className='score-card-row-1'>
-        <article className='score-card-row-1__item baseline-energy-container'>
-          <h2 className='score-card-heading'>Baseline Energy</h2>
-
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              dataTitle='Baseline Energy'
-              dataSubtitle='
-            Describes the desparity between peak and average(b)
-            power demand of a facility. The higher the ratio(b)
-            the better, the lower the ratio the worse it becomes.'
-              data={baseline_energy}
-            />
-
-            <p className='doughnut-centre-text'>
-              <span>
-                {baseline_energy &&
-                  calculatePercentage(
-                    baseline_energy.used,
-                    baseline_energy.forecast
-                  )}
-                %
-              </span>
-              <span> Used</span>
-            </p>
+      {" "}
+      {
+        <>
+          <div className="breadcrumb-and-print-buttons">
+            <BreadCrumb routesArray={breadCrumbRoutes} />
           </div>
 
-          <p className='score-card-bottom-text'>
-            Baseline Forecast: {baseline_energy && numberFormatter(baseline_energy.forecast)}
-            {baseline_energy && baseline_energy.unit}
-          </p>
+          <div className="score-card-row-1">
+            {/* <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Baseline Energy
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.BASE_ENERGY}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+            <div className='score-card-doughnut-container'>
+              <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={baseline_energy}
+              />
 
-          <p className='score-card-bottom-text h-mt-16'>
-            So far (Days): {baseline_energy && numberFormatter(baseline_energy.used)}
-            {baseline_energy && baseline_energy.unit}
-          </p>
+              <p className='doughnut-centre-text'>
+                <span>
+                  {baseline_energy &&
+                    (calculatePercentage(
+                      baseline_energy.used,
+                      baseline_energy.forecast
+                    ) || `-`)}{baseline_energy.used && '%'}
+                </span>
+                <span>{baseline_energy.used && baseline_energy.forecast ? `used` : ' '}</span>
+              </p>
+            </div>
 
-          <p className='score-card-bottom-text h-mt-24'>
-            Saving Inbound of{' '}
-            <span className='h-green-text'>
-              {baseline_energy &&
-                numberFormatter(baseline_energy.forecast - baseline_energy.used)}
+            <p className='score-card-bottom-text'>
+              Baseline Forecast: {baseline_energy && numberFormatter(baseline_energy.forecast)}
               {baseline_energy && baseline_energy.unit}
-            </span>
-          </p>
-        </article>
+            </p>
 
-        <article className='score-card-row-1__item'>
-          <h2 className='score-card-heading peak-to-average-container'>
-            Peak to Average Power Ratio
-          </h2>
+            <p className='score-card-bottom-text h-mt-16'>
+              So far ({new Date().getDate()} Days): {baseline_energy && numberFormatter(baseline_energy.used)}
+              {baseline_energy && baseline_energy.unit}
+            </p>
 
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              dataTitle='Peak to Average Power Ratio'
-              dataSubtitle='
-            Describes the desparity between peak and average (b)
-            power demand of a facility. The higher the ratio (b) 
-            the better, the lower the ratio the worse it becomes.'
-              data={peak_to_avg_power_ratio}
-            />
+            <p className='score-card-bottom-text h-mt-24'>
+              Savings Inbound {' '}
 
-            <p className='doughnut-centre-text'>
-              <span>
-                {peak_to_avg_power_ratio &&
-                  calculateRatio(
-                    peak_to_avg_power_ratio.peak,
-                    peak_to_avg_power_ratio.avg
-                  )}{' '}
+              {savingdInbound && <span style={{ color: getBaselineEnergyColor(savingdInbound).color }}>{
+                numberFormatter(savingdInbound)
+              }
               </span>
+              }
+
             </p>
-          </div>
-
-          <p className='score-card-bottom-text'>
-            Average Load:{' '}
-            {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.avg)}
-            {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-16'>
-            Peak Load: {peak_to_avg_power_ratio && numberFormatter(peak_to_avg_power_ratio.peak)}
-            {peak_to_avg_power_ratio && peak_to_avg_power_ratio.unit}
-          </p>
-
-          <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
-            <p className='h-red-text'>Not so efficient - Higher is better</p>
-            <UpArrowIcon />
-          </div>
-        </article>
-
-        <article className='score-card-row-1__item'>
-          <h2 className='score-card-heading carbon-emission-container'>
-            Carbon Emission
-          </h2>
-
-          <div className='score-card-doughnut-container'>
-            <ScoreCardDoughnutChart
-              dataTitle='Carbon Emission'
-              dataSubtitle='
-            Describes the desparity between peak and average (b)
-            power demand of a facility. The higher the ratio (b) 
-            the better, the lower the ratio the worse it becomes.'
-              data={score_card_carbon_emissions}
+          </article> */}
+            <BaselineEnergy
+              baselineEnergyBranchData={baselineEnergyBranchData}
+              uiSettings={uiSettings}
             />
 
-            <p className='doughnut-centre-text'>
-              <span>
-                {score_card_carbon_emissions &&
-                  calculatePercentage(
-                    score_card_carbon_emissions.actual_value,
-                    score_card_carbon_emissions.estimated_value
-                  )}
-                %
-              </span>{' '}
-              Used
+            {/* <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Peak to Average Power Ratio 
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.PEAK_RATIO}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+            <div className='score-card-doughnut-container'>
+              {peakToAverageKVa && <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={peakToAverageKVa}
+              />}
+
+              <p className='doughnut-centre-text'>
+                <span>
+                  {peakToAverageKVa && (
+                    calculateRatio(
+                      peakToAverageKVa.avg,
+                      peakToAverageKVa.peak
+                    ) || `-`)}{' '}
+                </span>
+              </p>
+            </div>
+
+            <p className='score-card-bottom-text'>
+              Average Load:{' '}
+              {peakToAverageKVa && numberFormatter(peakToAverageKVa.avg)}
+              {peakToAverageKVa && 'kVA'}
             </p>
+
+            <p className='score-card-bottom-text h-mt-16'>
+              Peak Load: {peakToAverageKVa && numberFormatter(peakToAverageKVa.peak)}
+              {peakToAverageKVa && 'kVA'}
+            </p>
+
+            <div className='score-card-bottom-text score-card-message-with-icon h-mt-24 h-flex'>
+              <p style={{ color: arrowColor }}>{getPeakResult.message}</p>
+              <UpArrowIcon className={arrowColor} />
+            </div>
+          </article> */}
+            <PeakToAverageRatio
+              paprBranchData={paprBranchData}
+              uiSettings={uiSettings}
+            />
+
+            {/* <article className='score-card-row-1__item'>
+            <div className='doughnut-card-heading'>
+              <h2 className='score-card-heading'>
+                Carbon Emission
+              </h2>
+              <div>
+                <Tooltip placement='top' style={{ textAlign: 'justify' }}
+                  overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.CARBON}>
+                  <p>
+                    <InformationIcon className="info-icon" />
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+
+            <div className='score-card-doughnut-container'>
+              <ScoreCardDoughnutChart
+                uiSettings={uiSettings}
+                data={score_card_carbon_emissions}
+              />
+
+              <p className='doughnut-centre-text'>
+                <span>
+                  {score_card_carbon_emissions &&
+                    (calculatePercentage(
+                      score_card_carbon_emissions.actual_value,
+                      score_card_carbon_emissions.estimated_value
+                    ) || `-`)}{score_card_carbon_emissions.actual_value && '%'}
+                </span>{score_card_carbon_emissions.actual_value ? `used` : ' '}
+              </p>
+            </div>
+
+            <p style={{ padding: 0 }} className='score-card-bottom-text'>
+              Estimated:{' '}
+              {score_card_carbon_emissions &&
+                numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
+              {score_card_carbon_emissions && score_card_carbon_emissions.unit}
+            </p>
+
+            <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
+              Actual Emission:{' '}
+              {score_card_carbon_emissions &&
+                numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
+              {score_card_carbon_emissions && score_card_carbon_emissions.unit}
+            </p>
+
+            <p className='score-card-bottom-text h-mt-16' style={{ padding: 0, margin: 0 }}>
+              Savings Inbound {' '}
+              {savingdInboundCarbonEmmission && <span style={{
+                color: getBaselineEnergyColor(savingdInboundCarbonEmmission).color
+              }}>{
+                  savingdInboundCarbonEmmission
+                }
+              </span>
+              }
+            </p>
+
+            <p className='score-card-bottom-text h-mt-24' style={{ padding: 0, margin: 0 }} >
+              <span>{message}</span>
+              <EcoFriendlyIcon className="ecoFriendlyIcon" />
+            </p>
+          </article> */}
+            <ScorecardCarbonEmmission
+              scorecardCarbonEmissionBranchData={
+                scorecardCarbonEmissionBranchData
+              }
+              uiSettings={uiSettings}
+            />
           </div>
-
-          <p className='score-card-bottom-text'>
-            Grid Supplied:{' '}
-            {score_card_carbon_emissions &&
-              numberFormatter(score_card_carbon_emissions.estimated_value)}{' '}
-            {score_card_carbon_emissions && score_card_carbon_emissions.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-16'>
-            Generator:{' '}
-            {score_card_carbon_emissions &&
-              numberFormatter(score_card_carbon_emissions.actual_value)}{' '}
-            {score_card_carbon_emissions && score_card_carbon_emissions.unit}
-          </p>
-
-          <p className='score-card-bottom-text h-mt-24 h-red-text'>
-            <span>Conditional Sub-text Should Go Here</span>{' '}
-            <span className='score-card-bottom-text-small'>
-              (Additional Conditional Sub-text Should Go Here)
-            </span>
-          </p>
-        </article>
-      </div>
-
-      <article className='score-card-row-2'>
-        <h2 className='changeover-lags-heading score-card-heading'>
-          Change Over Lags
-        </h2>
-        <ScoreCardTable changeOverLagsData={change_over_lags} />
-      </article>
-
-      <article className='score-card-row-3'>
-        <ScoreCardBarChart operatingTimeData={operating_time} />
-      </article>
-
-      <div className='score-card-row-4'>
-        <article className='score-card-row-4__left'>
-          <h2 className='score-card-heading'>Generator Size Efficiency</h2>
+          {/*{isGenStatus > 0 ? 'score-card-row-2' : 'hideCard'}*/}
+          {generatorSizeEfficiencyData &&
+            generatorFuelEfficiencyData &&
+            testingOperatingData && (
+              <div
+                className={deviceLength > 0 ? "score-card-row-4" : "hideCard"}
+                style={{ marginBottom: "50px" }}
+              >
+                <article className="score-card-row-4__left">
+                  {/* <article className='score-card-row-4__left'>
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading'>Generator Size Efficiency</h2>
+            <Tooltip placement='top' style={{ textAlign: 'justify' }}
+              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.SIZE_EFFICIENCY}>
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           {generatorSizeEffficiencyDoughnuts}
           <p className='gen-efficiency-footer-text'>
-            Utilization factor for facility generators
+            Utilization Factor for Facility Generators
           </p>
-        </article>
-
-        <article className='score-card-row-4__right'>
-          <h2 className='score-card-heading'>Fuel Consumption</h2>
+        </article> */}
+                  <GeneratorSizeEfficiency
+                    generatorSizeEfficiencyData={generatorSizeEfficiencyData}
+                    uiSettings={uiSettings}
+                  />
+                </article>
+                <article className="score-card-row-4__right">
+                  {/* <article className='score-card-row-4__right'>
+          <div className='doughnut-card-heading'>
+            <h2 className='score-card-heading'>Fuel Efficiency</h2>
+            <Tooltip placement='top' style={{ textAlign: 'justify' }}
+              overlayStyle={{ whiteSpace: 'pre-line' }} title={SCORE_CARD_TOOLTIP_MESSAGES.FUEL_EFFICIENCYL}>
+              <p>
+                <InformationIcon className="info-icon" />
+              </p>
+            </Tooltip>
+          </div>
           {fuelConsumptionDoughnuts}
           <p className='fuel-consumption-footer-text'>
-            Estimated Fuel Consumption for facility gens
+            Estimated Fuel Consumption for Facility Generators
           </p>
-        </article>
-      </div>
+        </article> */}
+                  <GeneratorFuelEfficiency
+                    generatorFuelEfficiencyData={generatorFuelEfficiencyData}
+                    uiSettings={uiSettings}
+                  />
+                </article>
+              </div>
+            )}
+
+          {/* <article className={deviceLength > 0 ? 'score-card-row-2' : 'hideCard'}>
+          <h2 className='changeover-lags-heading score-card-heading'>
+            Change Over Lags
+          </h2>
+          <ScoreCardTable changeOverLagsData={change_over_lags} />
+        </article> */}
+
+          {/* <article className= {deviceLength > 0 ? 'score-card-row-3' : 'hideCard'}>
+          <ScoreCardBarChart operatingTimeData={operating_time}
+            uiSettings={uiSettings}
+            dataTitle='Operating Time'
+            dataMessage={SCORE_CARD_TOOLTIP_MESSAGES.OPERATING_TIME}
+          />
+        </article> */}
+          {testingOperatingData && (
+            <OperatingTimeDeviation
+              operaringTimeDeviationData={testingOperatingData}
+              uiSettings={uiSettings}
+              deviceLength={deviceLength}
+            />
+          )}
+        </>
+      }
     </>
   );
 }
 
-export default ScoreCard;
+const mapDispatchToProps = {
+  fetchPowerFactor,
+  fetchScoreCardData,
+  fetchBaselineEnergyData,
+  fetchPAPRData,
+  fetchScorecardCarbonEmissionData,
+  fetchGeneratorSizeEfficiencyData,
+  fetchGeneratorFuelEfficiencyData,
+  fetchScorecardOperatingTimeData,
+};
+
+const mapStateToProps = (state) => ({
+  powerFactor: state.powerFactor,
+  scorecard: state.scorecard,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreCard);

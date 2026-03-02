@@ -12,6 +12,8 @@
   background-color: $white;
   height: 450px;
 
+  border-radius: $medium-border;
+
   @include media('>=medium') {
     height: 547px;
   }

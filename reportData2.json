@@ -1,0 +1,253 @@
+{
+  "reportData": {
+    "period_score": {
+      "value": 50,
+      "unit": "%",
+      "rate": 2.6
+    },
+    "total_energy_consumption": {
+      "value": 500,
+      "unit": "kWh",
+      "rate": 0.6
+    },
+    "papr": {
+      "percentage": {
+        "value": 72,
+        "unit": "%",
+        "rate": 0.6
+      },
+      "metrics": {
+        "peak": 300,
+        "average": 210,
+        "units": "kW"
+      }
+    },
+    "carbon_emmissions": {
+      "value": 23,
+      "unit": "tons",
+      "rate": 0.6
+    },
+    "baseline": {
+      "forcast": 72,
+      "consumption": 72,
+      "unit": "kWh",
+      "rate": 0.6
+    },
+    "source_consumption": {
+      "320kVA Gen": 72,
+      "120kVA Gen": 20,
+      "EKEDC": 120,
+      "unit": "kWh"
+    },
+    "load_imbalance": [
+      {
+        "max": 20,
+        "min": 5,
+        "datetime": "21, July 2021. 4:22pm"
+      },
+      {
+        "max": 30,
+        "min": 25,
+        "datetime": "31, July 2021. 4:22pm"
+      },
+      {
+        "max": 23,
+        "min": 15,
+        "datetime": "12, May 2021. 4:22pm"
+      },
+      {
+        "max": 20,
+        "min": 5,
+        "datetime": "11, July 2021. 4:22pm"
+      }
+    ],
+    "fuel_consumption": [
+      {
+        "name": "320kVA Gen",
+        "diesel_consumed": 200,
+        "hours_of_use": 340
+      },
+      {
+        "name": "120kVA Gen",
+        "diesel_consumed": 200,
+        "hours_of_use": 400
+      }
+    ],
+    "generator_efficiency": [
+      {
+        "name": "320kVA Gen",
+        "size_efficiency": 0.9,
+        "recommendation": "Overloaded, Size up to 450kva."
+      },
+      {
+        "name": "120kVA Gen",
+        "size_efficiency": 0.3,
+        "recommendation": "Underused, Downsizing might save cost."
+      }
+    ],
+    "daily_consumption": [
+      {
+        "diesel_consumed": 12,
+        "datetime": "01, July 2021"
+      },
+      {
+        "diesel_consumed": 20,
+        "datetime": "02, July 2021"
+      },
+      {
+        "diesel_consumed": 45,
+        "datetime": "03, July 2021"
+      },
+      {
+        "diesel_consumed": 54,
+        "datetime": "04, July 2021"
+      },
+      {
+        "diesel_consumed": 54,
+        "datetime": "05, July 2021"
+      },
+      {
+        "diesel_consumed": 33,
+        "datetime": "06, July 2021"
+      },
+      {
+        "diesel_consumed": 30,
+        "datetime": "07, July 2021"
+      },
+      {
+        "diesel_consumed": 21,
+        "datetime": "08, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "09, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "10, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "11, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "12, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "13, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "14, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "15, July 2021"
+      },
+      {
+        "diesel_consumed": 65,
+        "datetime": "16, July 2021"
+      }
+    ],
+    "demand_statistic": [
+      {
+        "name": "meadow",
+        "daily_avg_usage": 515,
+        "max_energy_usage": {
+          "value": 320,
+          "date": "(Wednesday 19, May 2021)",
+          "unit": "kWh"
+        },
+        "min_energy_usage": {
+          "value": 100,
+          "date": "(Wednesday 19, May 2021)",
+          "unit": "kWh"
+        },
+        "peak_avg_usage_day": {
+          "value": 450,
+          "day": "mondays",
+          "unit": "kWh"
+        },
+        "min_avg_usage_day": {
+          "value": 450,
+          "day": "mondays",
+          "unit": "kWh"
+        },
+        "max_demand_date": {
+          "value": 450,
+          "day": "(Wednesday 12, May 2021, 09:05PM.)",
+          "unit": "kW"
+        },
+        "min_demand_date": {
+          "value": 450,
+          "day": "(Wednesday 12, May 2021, 09:05PM.)",
+          "unit": "kW"
+        }
+      }
+    ],
+    "cost_implication": [
+      {
+        "branch": "Meadow Hall",
+        "device": "Main Gen",
+        "demand": 2300,
+        "cost": 212030
+      },
+      {
+        "branch": "Meadow Hall",
+        "device": "Main Gen",
+        "demand": 2300,
+        "cost": 212030
+      },
+      {
+        "branch": "Meadow Hall",
+        "device": "Main Gen",
+        "demand": 2300,
+        "cost": 212030
+      },
+      {
+        "branch": "Meadow Hall",
+        "device": "Main Gen",
+        "demand": 2300,
+        "cost": 212030
+      }
+    ],
+    "time_of_use": [
+      {
+        "device_name": "Generator 1",
+        "hours_of_use": 100,
+        "blackout": 200
+      },
+      {
+        "branch": "Meadow Hall",
+        "hours_of_use": 100,
+        "blackout": 200
+      },
+      {
+        "branch": "Meadow Hall",
+        "hours_of_use": 100,
+        "blackout": 200
+      },
+      {
+        "branch": "Meadow Hall",
+        "hours_of_use": 100,
+        "blackout": 200
+      }
+    ],
+    "power_demand": {
+      "minimum": {
+        "kw": 200,
+        "kva": 250
+      },
+      "maximum": {
+        "kw": 80,
+        "kva": 100
+      },
+      "average": {
+        "kw": 390,
+        "kva": 450
+      }
+    }
+  }
+}

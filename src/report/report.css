@@ -1,0 +1,839 @@
+.report-page .main-layer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-page .layer-1 {
+  /* height: 100vh; */
+  /* margin: 30px; */
+  max-width: 100%;
+  padding-bottom: 50px;
+  margin: 0 auto;
+  background-color: #f4f4f4;
+  font-family: "Inter", sans-serif;
+}
+
+@media (min-width: 1024px) {
+  .report-page .layer-1 {
+    max-width: 1000px;
+  }
+}
+
+.report-page .init-space {
+  margin: 30px;
+  /* border-radius: 40px; */
+}
+
+.report-page .wyre-logo {
+  justify-self: center;
+}
+
+.report-page .heading {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 22px;
+  margin-bottom: 70px;
+}
+
+.report-page .heading h1 {
+  font-size: 35px;
+  font-weight: 550;
+  margin-top: -20px;
+}
+
+.report-page .layer-1 .init-space .heading p {
+  font-style: italic;
+  color: black;
+  font-weight: 500;
+}
+
+.report-page .heading p {
+  font-style: italic !important;
+  color: black;
+  font-weight: 550;
+}
+
+.report-page .tilde {
+  margin-right: 10px;
+}
+
+.report-page .metric-container {
+  background-color: white;
+  margin-bottom: 30px;
+}
+
+.report-page .icon-and-title {
+  display: flex;
+  align-items: center;
+  /* margin-left: 30px; */
+  /* margin-top: 20px; */
+}
+
+.report-page .icon-and-title .image {
+  width: 40px;
+  margin-top: 10px;
+}
+
+.report-page .icon-title {
+  text-align: center;
+  justify-content: center;
+}
+
+.report-page .icon-title h1 {
+  font-size: 22px;
+  font-weight: light;
+  margin-left: 20px;
+}
+
+.report-page .heading {
+  /* margin-bottom: 30px; */
+}
+
+.report-page .head-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.report-page .title {
+  width: 50%;
+  height: 132px;
+  border-radius: 22px 0 0 22px;
+  justify-content: center;
+}
+
+.report-page .head-card h1 {
+  font-size: 30px;
+}
+
+@media (max-width: 7800px) {
+  .report-page .head-card h1 {
+    font-size: 27px;
+  }
+}
+
+.report-page .value {
+  width: 50%;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  border-radius: 0 22px 22px 0;
+}
+
+.report-page .top-doughnut {
+  width: 555px;
+  /* height: 253px; */
+  align-items: center;
+  justify-content: center;
+}
+
+.report-page .first-barchart {
+  width: 555px;
+  /* height: 253px; */
+}
+
+.report-page .operational-performance {
+  /* height: 357px; */
+}
+
+.report-page .generator-efficiency {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.report-page .generator-efficiency .current,
+.report-page .generator-efficiency .best-ever {
+  flex: 1;
+  padding: 14px;
+  border-radius: 16px;
+}
+
+.report-page .generator-efficiency .current {
+  height: 210px;
+  padding: 0;
+  background: #9640ff;
+  color: white;
+}
+
+.report-page .generator-efficiency .best-ever {
+  height: 210px;
+  padding: 0;
+  background: #4b8aff;
+  color: white;
+}
+
+.report-page .generator-efficiency h2 {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.report-page .efficiency-value {
+  font-size: 55px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-page .change-indicator {
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.report-page .change-indicator.positive {
+  background: rgb(224, 255, 224);
+  color: #2da44e;
+}
+
+.report-page .change-indicator.negative {
+  background: #ffdfdf;
+  color: #cf3e41;
+}
+
+.report-page .achieved-date {
+  font-size: 16px;
+  font-weight: normal;
+  margin-top: 8px;
+}
+
+.report-page .comparison-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  margin-bottom: 24px;
+  padding: 0 24px;
+}
+
+.report-page .accuracy-badge {
+  font-size: 18px;
+  font-weight: 550;
+  padding: 4px 12px;
+  background: rgba(150, 64, 255, 0.1);
+  color: #9640ff;
+  border-radius: 8px;
+}
+
+/* Update table styles */
+.report-page .metric-container .ant-table {
+  font-family: "DM Sans", sans-serif;
+  background: transparent;
+}
+
+.report-page .metric-container .ant-table-thead > tr > th {
+  background: transparent;
+  font-weight: normal;
+  /* font-size: 16px; */
+  /* padding: 16px 24px; */
+  text-align: center;
+  border-right: 1px solid #f0f0f0;
+}
+
+.report-page .metric-container .ant-table-tbody > tr > td {
+  /* font-size: 16px; */
+  /* padding: 16px 24px; */
+  text-align: center;
+  border-right: 1px solid #f0f0f0;
+}
+
+/* Remove border from last column */
+.report-page .metric-container .ant-table-thead > tr > th:last-child,
+.report-page .metric-container .ant-table-tbody > tr > td:last-child {
+  border-right: none;
+}
+
+.report-page .metric-container .ant-table-cell {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-page .metric-container .ant-table-container {
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+}
+
+.report-page .metric-container .ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.report-page .current {
+  width: 49%;
+  height: 250px;
+  border-radius: 22px;
+  background-color: rgba(150, 64, 255, 1);
+  color: white;
+  font-size: x-large;
+}
+
+.report-page .best-ever {
+  width: 49%;
+  height: 250px;
+  border-radius: 22px;
+  background-color: rgba(75, 138, 255, 1);
+  color: white;
+  font-size: x-large;
+}
+
+.report-page .current-heading {
+  margin-left: 10px;
+  font-size: xx-large;
+  font-weight: light;
+  /* padding: 30px 10px 15px 30px; */
+}
+
+.report-page .current-p {
+  margin-left: 10px;
+  /* margin-bottom: 50px; */
+  font-size: 70px;
+  margin-top: -30px;
+  font-weight: bolder;
+}
+
+.report-page .current-span {
+  background-color: #f2f2f8;
+  color: red;
+  margin-left: 20px;
+  /* padding: 5px 15px 5px 25px; */
+  padding: 10px;
+  border-radius: 14px;
+  font-weight: lighter;
+  font-size: x-large;
+}
+
+.report-page .best-heading {
+  margin-left: 10px;
+  font-size: xx-large;
+  font-weight: light;
+  /* padding: 30px 10px 15px 30px; */
+}
+
+.report-page .best-p {
+  margin-left: 10px;
+  margin-top: -30px;
+  font-size: 70px;
+  font-weight: bolder;
+}
+
+.report-page .fuel-efficiency {
+  font-size: xx-large;
+  padding: 30px 10px 15px 30px;
+}
+
+.report-page .fuel-efficiency-span {
+  background-color: #f2f2f8;
+  color: rgba(150, 64, 255, 1);
+  margin-left: 20px;
+  /* padding: 5px 15px 5px 25px; */
+  padding: 10px;
+  border-radius: 14px;
+}
+
+.report-page .bottom-doughnut {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.report-page .bottom-doughnut .band-category,
+.report-page .bottom-doughnut .data-entry {
+  flex: 1;
+  border-radius: 16px;
+  background: white;
+}
+
+.report-page .bottom-doughnut h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 32px;
+  margin-top: 0px;
+  color: #000;
+}
+
+.report-page .doughnut-container {
+  height: 280px;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-page .data-entry .doughnut-container {
+  height: 200px;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.report-page .data-entry .doughnut-container {
+  position: relative;
+}
+
+.report-page .data-entry-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #515151;
+  margin-top: 32px;
+  font-weight: 400;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Legend styles */
+.report-page .band-category .chartjs-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.report-page .band-category .chartjs-legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #515151;
+}
+
+.report-page .band-category .chartjs-legend-item::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.report-page .band-category canvas,
+.report-page .data-entry canvas {
+  cursor: pointer;
+}
+
+.report-page .energy-source-card {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.report-page .energy-source-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.report-page .energy-source-header .icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
+}
+
+.report-page .energy-source-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.report-page .energy-source-chart {
+  height: 300px;
+  position: relative;
+  max-width: 850px;
+  display: flex;
+  /* padding-left: 40px; */
+  margin-left: -40px;
+  justify-content: start;
+  align-items: start;
+}
+
+/* Style for hover tooltips */
+.report-page .energy-source-chart .chartjs-tooltip {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Style for the percentage labels inside doughnut */
+.report-page .doughnut-label {
+  position: absolute;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.report-page .top-contributors-card {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.report-page .contributors-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.report-page .contributors-header .icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
+}
+
+.report-page .header-content h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.report-page .total-energy {
+  font-size: 42px;
+  font-weight: 600;
+  color: #000;
+  line-height: 1;
+}
+
+.report-page .total-energy span {
+  font-size: 24px;
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+.report-page .chart-container {
+  height: 300px;
+  margin-top: 20px;
+  color: black;
+}
+
+/* Override chart styles */
+.report-page .chart-container canvas {
+  margin-top: 20px;
+  color: black;
+}
+
+.report-page .chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.report-page .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.report-page .legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.report-page .legend-label {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+
+.report-page .consumption-metrics {
+  margin-bottom: 30px;
+}
+
+.report-page .consumption-metrics > h1 {
+  font-size: 30px;
+  font-weight: 550;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.report-page .metric-container {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.report-page .metric-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  padding-top: 0px;
+}
+
+.report-page .metric-header .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.report-page .metric-header h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  color: #000;
+}
+
+/* Table styles */
+.report-page .ant-table {
+  font-family: "DM Sans", sans-serif;
+}
+
+.report-page .ant-table-thead > tr > th {
+  font-family: "DM Sans", sans-serif;
+  background: white !important;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-page .ant-table-tbody > tr > td {
+  font-family: "DM Sans", sans-serif;
+  padding: 16px 24px;
+  font-size: 16px;
+}
+
+.report-page .solar-consumption .ant-table-thead > tr > th:last-child,
+.report-page .solar-consumption .ant-table-tbody > tr > td:last-child {
+  text-align: right;
+  font-weight: 500;
+}
+
+.report-page .solar-consumption .ant-table-tbody > tr:last-child {
+  border-top: 1px solid #f0f0f0;
+}
+
+.report-page .ant-table-thead > tr > th {
+  background: transparent !important;
+}
+
+.report-page .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-page .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.report-page .solar-consumption {
+  .ant-table-thead > tr > th {
+    border-right: 1px solid #f0f0f0;
+    font-weight: normal;
+    color: #000;
+  }
+
+  .ant-table-tbody > tr > td {
+    /* border-right: 1px solid #f0f0f0; */
+    /* padding: 16px 24px; */
+    text-align: center;
+    color: #000;
+  }
+
+  .ant-table-tbody > tr:last-child {
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .ant-table-thead > tr > th:last-child,
+  .ant-table-tbody > tr > td:last-child {
+    border-right: none;
+    text-align: right;
+  }
+
+  .ant-table {
+    border-radius: 0;
+  }
+
+  .ant-table-container {
+    border-left: none;
+    border-right: none;
+  }
+
+  .ant-table-thead > tr > th {
+    background: white !important;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 20px 24px;
+  }
+}
+
+.report-page .metric-container {
+  .ant-table {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .ant-table-thead > tr > th {
+    font-size: 16px;
+    font-weight: 500;
+    padding-inline: 0px;
+    padding: 16px 8px;
+    text-align: center;
+  }
+
+  .ant-table-tbody > tr > td {
+    font-family: "DM Sans", sans-serif;
+    padding: 16px 24px;
+    font-size: 18px;
+    font-weight: 550;
+  }
+}
+
+.report-page .power-demand-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  padding: 20px;
+}
+
+.report-page .power-demand-card .chart-container {
+  height: 400px;
+  width: 100%;
+  position: relative;
+  color: black;
+  padding: 0 20px;
+  margin: 0;
+}
+
+.report-page .power-demand-card .chart-container canvas {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.report-page .power-demand-card .chart-container > div {
+  margin: 0;
+  padding: 0;
+}
+
+.report-page .power-demand-legend {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 40px;
+  margin-left: 70px;
+  gap: 40px;
+}
+
+.report-page .legend-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-page .legend-item {
+  display: flex;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  gap: 8px;
+}
+
+.report-page .legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.report-page .legend-label {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.report-page .band-categorization {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.report-page .band-categorization .metric-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.report-page .band-categorization .metric-header h2 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.report-page .band-categorization .icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* Table styles */
+.report-page .band-table .ant-table-thead > tr > th {
+  background: transparent;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 16px 24px;
+  border-right: 1px solid #f0f0f0;
+  color: #515151;
+}
+
+.report-page .band-table .ant-table-tbody > tr > td {
+  font-size: 14px;
+  padding: 16px 16px;
+  font-weight: 500;
+  border-right: 1px solid #f0f0f0;
+  color: #000;
+}
+
+.report-page .band-table .ant-table-thead > tr > th:last-child,
+.report-page .band-table .ant-table-tbody > tr > td:last-child {
+  border-right: none;
+}
+
+.report-page .band-table .ant-table-cell {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-page .band-table .ant-table-container {
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+}
+
+.report-page .band-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.report-page .aligh-start-table .ant-table-thead > tr > th {
+  background: transparent;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: start;
+  padding: 16px 24px;
+  border-right: 1px solid #f0f0f0;
+  color: #515151;
+}
+
+.report-page .aligh-start-table .ant-table-tbody > tr > td {
+  text-align: start;
+}
+
+.report-page .antCard .ant-card {
+  border: #d4d4fcbd 1px solid;
+}

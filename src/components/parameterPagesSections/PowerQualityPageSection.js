@@ -7,6 +7,7 @@ import {
   formatParametersDates,
   formatParametersTimes,
   formatParameterTableData,
+  convertDateStringsToObjects,
 } from '../../helpers/genericHelpers';
 
 import PowerQualityLineChart from '../lineCharts/PowerQualityLineChart';
@@ -15,17 +16,17 @@ import PowerQualityTable from '../tables/PowerQualityTable';
 import ExcelIcon from '../../icons/ExcelIcon';
 import ExportToCsv from '../ExportToCsv';
 
-function PowerQualityPageSection({ pqData }) {
+function PowerQualityPageSection({ key, pqData }) {
   // Obtain selected unit from context API
   const { powerQualityUnit } = useContext(CompleteDataContext);
   // Remove stuff in parenthesis then covert string to snake case
   const formattedPowerQualityName = toSnakeCase(
     powerQualityUnit.replace(/\s*\(.*?\)\s*/g, '')
   );
-
   // Pick out data based on selection in UI
   const plottedData = pqData && pqData[formattedPowerQualityName];
-  const plottedDates = pqData && formatParametersDatetimes(pqData.dates);
+  const dateObjects = pqData && convertDateStringsToObjects(pqData.dates);
+  const plottedDates = dateObjects && formatParametersDatetimes(dateObjects);
 
   // Clone plotted data for usage in table
   const tableData = Object.assign({}, plottedData);
@@ -34,8 +35,8 @@ function PowerQualityPageSection({ pqData }) {
     delete tableData.deviceName;
   }
 
-  const tableDates = pqData && formatParametersDates(pqData.dates);
-  const tableTimes = pqData && formatParametersTimes(pqData.dates);
+  const tableDates = dateObjects && formatParametersDates(dateObjects);
+  const tableTimes = dateObjects && formatParametersTimes(dateObjects);
 
   const { frequency } = pqData || { frequency: ['Empty'] };
   if (frequency) {
@@ -89,7 +90,7 @@ function PowerQualityPageSection({ pqData }) {
   return (
     <section className='parameter-section'>
       <h2 className='parameter-section__heading'>
-        {pqData && pqData.deviceName}
+        {pqData && pqData.name}
       </h2>
 
       <article className='power-quality-line-container'>
@@ -103,13 +104,13 @@ function PowerQualityPageSection({ pqData }) {
       <article className='power-quality-table-container'>
         <div className='table-header'>
           <div className='h-hidden-medium-down'>
-            <button type='button' className='table-header__left-button'>
+            {/* <button type='button' className='table-header__left-button'>
               PDF
-            </button>
+            </button> */}
             <ExportToCsv filename={`${pqData && pqData.deviceName} power-quality.csv`} csvHeaders={csvHeaders} csvData={formattedTableData}>
               <button type='button' className='table-header__left-button'>
                 CSV
-            </button>
+              </button>
             </ExportToCsv>
           </div>
 

@@ -3,6 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import CompleteDataContext from '../Context';
 
+import Loader from "../components/Loader";
+
 import AddBills from '../mainAppPages/AddBills';
 import AddEquipment from '../mainAppPages/AddEquipment';
 import Billing from '../mainAppPages/Billing';
@@ -28,44 +30,61 @@ import ScrollToTop from '../helpers/ScrollToTop';
 import AppHeader from '../components/AppHeader';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/AppTopBar';
+import LoadOverview from '../mainAppPages/LoadOverview';
+import RevisedAppTopBar from '../components/RevisedAppTopBar';
+import AddDieselEntry from '../mainAppPages/AddDieselEntry';
+import Breakers from '../mainAppPages/Breakers';
+import SolarOverviewPage from '../mainAppPages/SolarOverviewPage';
+import DieselOverviewPage from '../mainAppPages/DieselOverviewPage';
+// import Breakers from '../mainAppPages/Breakers';
 
 function MainAppPages() {
-  const { currentUrl } = useContext(CompleteDataContext);
+  const { currentUrl, isAuthenticatedDataLoading, deviceData } = useContext(CompleteDataContext);
 
   const isReportPageOpen = currentUrl.includes('report');
 
   return (
     <div className="app">
-      <AppHeader />
+      {/* <AppHeader /> */}
 
       <div className="sidebar-and-content">
         <Sidebar />
 
         <main
           className={
-            isReportPageOpen ? 'main-container h-full-width' : 'main-container'
+            // isReportPageOpen ? 'main-container h-full-width' : 
+            'main-container'
           }
         >
-          <TopBar />
-
+          <div className='old-top-bar-monitor'>
+            <TopBar />
+          </div>
+          <AppHeader />
+          <div className='newTopbar-monitor'>
+            {/* <AppHeader /> */}
+            <RevisedAppTopBar />
+          </div>
           <ScrollToTop>
             <div className="page-content">
+              {/* {!isAuthenticatedDataLoading ? */}
               <Switch>
                 <Route exact path="/">
                   <Redirect to="/dashboard" />
                 </Route>
                 <Route path="/dashboard" component={Dashboard} />
+                {/* <Route path="/breakers" component={Breakers} /> */}
                 <Route exact path="/log-in">
                   <Redirect to="/" />
                 </Route>
                 <Route path="/billing" component={Billing} />
                 <Route exact path="/cost-tracker" component={CostTracker} />
                 <Route path="/cost-tracker/add-bills" component={AddBills} />
+                <Route path="/cost-tracker/add-diesel-entry" component={AddDieselEntry} />
                 <Route
                   path="/cost-tracker/add-equipment"
                   component={AddEquipment}
                 />
-                <Route path="/messages" component={Messages} />
+                {/* <Route path="/messages" component={Messages} /> */}
                 <Route
                   path="/parameters/last-reading"
                   component={LastReading}
@@ -84,10 +103,15 @@ function MainAppPages() {
                   component={EnergyConsumption}
                 />
                 <Route path="/report" component={Report} />
+                {/* <Route path="/breakers" component={Breakers} /> */}
                 <Route path="/score-card" component={ScoreCard} />
+                <Route path="/solar-overview" component={SolarOverviewPage} />
                 <Route path="/client-profile" component={ClientProfile} />
+                {/* <Route path="/password" component={Dashboard} /> */}
                 <Route path="/password" component={Password} />
+                <Route path="/load-overview" component={LoadOverview} />
                 <Route path="/alerts-and-alarms" component={AlertsAndAlarms} />
+                <Route path="/diesel-overview" component={DieselOverviewPage} />
                 <Route
                   exact
                   path="/branches"
@@ -99,6 +123,7 @@ function MainAppPages() {
                 />
                 <Route component={Error} />
               </Switch>
+              {/* : <Loader />} */}
             </div>
           </ScrollToTop>
         </main>

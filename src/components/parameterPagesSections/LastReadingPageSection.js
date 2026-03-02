@@ -9,10 +9,12 @@ import TotalDemandTable from '../tables/lastReadingsTables/TotalDemandTable';
 
 import ExcelIcon from '../../icons/ExcelIcon';
 import ExportToCsv from '../ExportToCsv';
+import { convertDateStringsToObjects, flexibleDateStringsObjects } from '../../helpers/genericHelpers';
 
 function LastReadingPageSections({ lrData }) {
+  const dateObjects = flexibleDateStringsObjects(lrData.date);
   const formattedDate =
-    lrData && lrData.date.format('dddd, MMMM D, YYYY hh:mm:ss');
+    dateObjects && dateObjects.format('dddd, MMMM D, YYYY, hh:mm:a');
 
   const phaseMeasuresData = lrData && lrData.data.phase_measures;
   const totalData = lrData && lrData.data.totals;
@@ -32,18 +34,18 @@ function LastReadingPageSections({ lrData }) {
   return (
     <section className="parameter-section">
       <h2 className="parameter-section__heading">
-        {lrData && lrData.deviceName}
+        {lrData && lrData.name}
       </h2>
 
       <article className="last-reading-table-container">
         <div className="last-reading-table-header-and-date">
           <div className="table-header">
             <div className="h-hidden-medium-down">
-              <button type="button" className="table-header__left-button">
+              {/* <button type="button" className="table-header__left-button">
                 PDF
-              </button>
+              </button> */}
               <ExportToCsv
-                filename={`${lrData && lrData.deviceName} last-reading.csv`}
+                filename={`${lrData && lrData.name} last-reading.csv`}
                 csvHeaders={csvHeaders}
                 csvData={phaseMeasuresData}
               >

@@ -5,12 +5,16 @@ import {
   getNestedMaxDemandObject,
   getNestedAvgDemandObject,
   sumArrayOfArrays,
+  combineArrayData,
   sumBaselineEnergies,
   sumPeakToAveragePowerRatios,
   sumScoreCardCarbonEmissions,
   sumOperatingTimeValues,
   convertDateStringToObject,
   convertParameterDateStringsToObjects,
+  getNestedMinDemandObjectKVA,
+  getNestedMaxDemandObjectKva,
+  getNestedAvgDemandObjectKva,
 } from '../helpers/genericHelpers';
 
 /* -------------------------------------------------------------------
@@ -20,7 +24,7 @@ import {
 Obtain dashboard daily energy data for branch
 ----------------*/
 const getBranchDailyKwh = (data) => {
-  let branchDailyKwh = data.daily_kwh;
+  let branchDailyKwh = data.daily_kwh || {};
   // Add total
   const { dates, ...rest } = branchDailyKwh;
   const allDevicesDailyKwh = Object.values(rest);
@@ -46,10 +50,10 @@ Obtain dashboard monthly usage data for branch ends
 /*-----------------
 Obtain dashboard energy data for branch
 ----------------*/
-const getBranchEnergyData = (data) => {
+const getBranchEnergyData = (data, powerFactorData = null) => {
   // Place energy value names of one device and place in array
   // Ensure 'name' and 'id' are excluded form values placed in the array
-  const energyValueNames = Object.keys(data.devices[0].dashboard).filter(
+  const energyValueNames = data.devices[0].dashboard && Object.keys(data.devices[0].dashboard).filter(
     (eachName) =>
       !['name', 'id', 'avg_demand', 'min_demand', 'max_demand'].includes(
         eachName
@@ -59,7 +63,7 @@ const getBranchEnergyData = (data) => {
   //  Use the energy value names to create an object with the branch's energy data
   let branchEnergyData = {};
 
-  energyValueNames.forEach((eachName) => {
+  energyValueNames && energyValueNames.forEach((eachName) => {
     return (branchEnergyData[eachName] = sumNestedObjectValuesUp(
       data.devices,
       'dashboard',
@@ -78,6 +82,23 @@ const getBranchEnergyData = (data) => {
   branchEnergyData.avg_demand = getNestedAvgDemandObject(
     data.devices,
     'dashboard'
+  );
+
+  branchEnergyData.min_demand_with_power_factor = getNestedMinDemandObjectKVA(
+    data.devices,
+    'dashboard',
+    powerFactorData
+  );
+
+  branchEnergyData.max_demand_with_power_factor = getNestedMaxDemandObjectKva(
+    data.devices,
+    'dashboard',
+    powerFactorData
+  );
+  branchEnergyData.avg_demand_with_power_factor = getNestedAvgDemandObjectKva(
+    data.devices,
+    'dashboard',
+    powerFactorData
   );
 
   return branchEnergyData;
@@ -125,9 +146,9 @@ const getBranchGeneratorSizeEfficiencyArray = (data) => {
 
     return eachDevice.score_card.generator_size_efficiency
       ? {
-          name: modifiedDeviceName,
-          ...eachDevice.score_card.generator_size_efficiency,
-        }
+        name: modifiedDeviceName,
+        ...eachDevice.score_card.generator_size_efficiency,
+      }
       : false;
   });
 };
@@ -136,17 +157,17 @@ const getBranchGeneratorSizeEfficiencyArray = (data) => {
 const getBranchChangeOverLags = (data) => {
   // Get Units First
   const changeOverLagUnits = data.devices
-    .map((eachDevice) => eachDevice.score_card.change_over_lags.units)
+    .map((eachDevice) => eachDevice.score_card.change_over_lags?.units)
     .filter(Boolean)[0];
 
   // Get Data
   const allDevicesChangeOverLagData = data.devices
-    .map((eachDevice) => eachDevice.score_card.change_over_lags.data)
+    .map((eachDevice) => eachDevice.score_card.change_over_lags?.data)
     .filter(Boolean)
     .flat();
 
   // Group data by date
-  const groupedBranchChangeOverLags = allDevicesChangeOverLagData.reduce(
+  const groupedBranchChangeOverLags = allDevicesChangeOverLagData?.reduce(
     function (acc, curr) {
       acc[curr.date] = acc[curr.date] || [];
       acc[curr.date].push(curr);
@@ -180,20 +201,30 @@ const getBranchChangeOverLags = (data) => {
 
 // Operating Time
 const getBranchOperatingTime = (data) => {
-  const branchOperatingTimeDates = data.devices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.dates
-  )[0];
 
-  const allDevicesOperatingTimeValues = data.devices.map(
-    (eachDevice) => eachDevice.score_card.operating_time.chart.values
-  );
-  const branchOperatingTimeValues = sumArrayOfArrays(
+  const branchOperatingTimeDates = data.devices.filter(
+    (eachDevice) => eachDevice.score_card.is_generator
+  ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.dates);
+
+
+  const allDevicesOperatingTimeValues = data.devices.filter(
+    (eachDevice) => eachDevice.score_card.is_generator
+  ).map(eachFilterDevice => eachFilterDevice.score_card.operating_time.chart.values);
+
+  const branchOperatingTimeValues = combineArrayData(
     allDevicesOperatingTimeValues
+  );
+  const sumBranchOperatingTimeDates = combineArrayData(
+    branchOperatingTimeDates
   );
 
   const branchEstimatedTimeWasted = sumOperatingTimeValues(
     data.devices,
     'estimated_time_wasted'
+  );
+  const branchEstimatedEnergyWasted = sumOperatingTimeValues(
+    data.devices,
+    'estimated_energy_wasted'
   );
   const branchEstimatedDieselWasted = sumOperatingTimeValues(
     data.devices,
@@ -206,12 +237,16 @@ const getBranchOperatingTime = (data) => {
 
   return {
     chart: {
-      dates: branchOperatingTimeDates,
+      dates: sumBranchOperatingTimeDates,
       values: branchOperatingTimeValues,
     },
     estimated_time_wasted: {
       unit: 'hours',
       value: branchEstimatedTimeWasted,
+    },
+    estimated_energy_wasted: {
+      unit: 'kWh',
+      total: branchEstimatedEnergyWasted,
     },
     estimated_diesel_wasted: {
       unit: 'litres',
@@ -359,10 +394,9 @@ const getBranchEnergyConsumptionValues = (data) =>
   });
 
 const sumBranchEnergyConsumptionValues = (data, valueName) => {
-  const allDevicesValues = data.devices.map(
-    (eachDevice) => eachDevice.energy_consumption[valueName]
+  const allDevicesValues =   data.devices?.map(
+    (eachDevice) => eachDevice?.energy_consumption && eachDevice?.energy_consumption[valueName]
   );
-
   return allDevicesValues.reduce((a, b) => a + b, 0);
 };
 /* -------------------------------------------------------------------
@@ -428,7 +462,7 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
       : eachDevice.name;
 
     const { billing } = eachDevice;
-    const specifiedTotal = billing.totals[totalType];
+    const specifiedTotal = billing?.totals && billing?.totals[totalType];
 
     return {
       ...specifiedTotal,
@@ -439,66 +473,95 @@ const getBranchDevicesBillingTotal = (data, totalType) =>
 /* Branch Billing Calculations End -----------------------------------
 --------------------------------------------------------------------*/
 
-const getRefinedBranchData = (data) => {
+const getRefinedBranchData = (data, isDatshboard = false, powerFactorData = null) => {
   return {
     [data.name]: {
+      isBranch: true,
       name: data.name,
       // Dashboard Stuff
-      ...getBranchEnergyData(data),
+      ...getBranchEnergyData(data, powerFactorData),
       usage_hours: getBranchUsageHours(data),
       daily_kwh: getBranchDailyKwh(data),
+
       // Score Card Stuff
-      baseline_energy: getBranchBaselineEnergy(data),
-      peak_to_avg_power_ratio: getBranchPeakToAveragePowerRatio(data),
-      score_card_carbon_emissions: getBranchScoreCardCarbonEmissions(data),
-      generator_size_efficiency: getBranchGeneratorSizeEfficiencyArray(data),
-      change_over_lags: getBranchChangeOverLags(data),
-      operating_time: getBranchOperatingTime(data),
-      fuel_consumption: getBranchFuelConsumptionArray(data),
-      // Power Quality Stuff
-      power_quality: getBranchPowerQualityData(data),
-      // Time of Use Stuff
-      last_reading: getBranchLastReadingData(data),
-      // Power Demand Stuff
-      power_demand: getBranchPowerDemandData(data),
-      // Time of Use Stuff
-      time_of_use_chart: getBranchTimeOfUseChartData(data),
-      time_of_use_table: [
-        getModifiedBranchLevelData(data, 'time_of_use_table', data.name),
-      ],
-      // Energy Consumption Stuff
-      energy_consumption_values: getBranchEnergyConsumptionValues(data),
-      energy_consumption_previous: sumBranchEnergyConsumptionValues(
-        data,
-        'previous'
-      ),
-      energy_consumption_current: sumBranchEnergyConsumptionValues(
-        data,
-        'current'
-      ),
-      energy_consumption_usage: sumBranchEnergyConsumptionValues(data, 'usage'),
-      // Cost Tracker Stuff
-      cost_tracker_diesel_qty: [
-        getModifiedBranchLevelData(
+      ...(!isDatshboard && {
+        baseline_energy: getBranchBaselineEnergy(data),
+        peak_to_avg_power_ratio: getBranchPeakToAveragePowerRatio(data),
+        score_card_carbon_emissions: getBranchScoreCardCarbonEmissions(data),
+        generator_size_efficiency: getBranchGeneratorSizeEfficiencyArray(data),
+        change_over_lags: getBranchChangeOverLags(data),
+        operating_time: getBranchOperatingTime(data),
+        fuel_consumption: getBranchFuelConsumptionArray(data),
+        // Power Quality Stuff
+        power_quality: getBranchPowerQualityData(data),
+        // Time of Use Stuff
+        last_reading: getBranchLastReadingData(data),
+        // Power Demand Stuff
+        power_demand: getBranchPowerDemandData(data),
+        // Time of Use Stuff
+        time_of_use_chart: getBranchTimeOfUseChartData(data),
+        time_of_use_table: [
+          getModifiedBranchLevelData(data, 'time_of_use_table', data.name),
+        ],
+        // Energy Consumption Stuff
+        energy_consumption_values: getBranchEnergyConsumptionValues(data),
+        // energy_consumption_previous: sumBranchEnergyConsumptionValues(
+        //   data,
+        //   'previous'
+        // ),
+        // energy_consumption_current: sumBranchEnergyConsumptionValues(
+        //   data,
+        //   'current'
+        // ),
+        energy_consumption_usage: sumBranchEnergyConsumptionValues(data, 'usage'),
+        // Cost Tracker Stuff
+        cost_tracker_diesel_qty: [
+          getModifiedBranchLevelData(
+            data,
+            'cost_tracker_qty_of_diesel',
+            data.name
+          ),
+        ],
+        cost_tracker_monthly_cost: [
+          getModifiedBranchLevelData(
+            data,
+            'cost_tracker_monthly_cost',
+            data.name
+          ),
+        ],
+        cost_tracker_consumption: [
+          getModifiedBranchLevelData(
+            data,
+            'cost_tracker_consumption_breakdown',
+            data.name
+          ),
+        ],
+        // Billing Stuff
+        billing_consumption_kwh: getBranchBillingConsumptionKwhValues(data),
+        billing_consumption_naira: getBranchBillingConsumptionNairaValues(data),
+        overall_billing_totals: getModifiedBranchLevelData(
           data,
-          'cost_tracker_qty_of_diesel',
+          'billing_totals',
           data.name
         ),
-      ],
-      cost_tracker_monthly_cost: [
-        getModifiedBranchLevelData(
+
+        devices_previous_billing_total: getBranchDevicesBillingTotal(
           data,
-          'cost_tracker_monthly_cost',
-          data.name
+          'previous_total'
         ),
-      ],
-      cost_tracker_consumption: [
-        getModifiedBranchLevelData(
+        devices_present_billing_total: getBranchDevicesBillingTotal(
           data,
-          'cost_tracker_consumption_breakdown',
-          data.name
+          'present_total'
         ),
-      ],
+      })
+    },
+  };
+};
+const getBillingRefinedBranchData = (data, isDatshboard = false, powerFactorData = null) => {
+  return {
+    [data.name]: {
+      isBranch: true,
+      name: data.name,
       // Billing Stuff
       billing_consumption_kwh: getBranchBillingConsumptionKwhValues(data),
       billing_consumption_naira: getBranchBillingConsumptionNairaValues(data),
@@ -516,8 +579,8 @@ const getRefinedBranchData = (data) => {
         data,
         'present_total'
       ),
-    },
+    }
   };
 };
 
-export { getRefinedBranchData };
+export { getRefinedBranchData, getBillingRefinedBranchData };

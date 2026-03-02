@@ -5,13 +5,41 @@ import CompleteDataContext from '../../Context';
 import {
   getLastArrayItems,
   convertDateStringsToObjects,
-  formatParametersDatetimes,
+  formatParametersDates,
 } from '../../helpers/genericHelpers';
 
-const DashboardStackedBarChart = ({ data, organization }) => {
+
+const DashboardStackedBarChart = ({ data, uiSettings, sideBarData }) => {
   const { isMediumScreen, isLessThan1296 } = useContext(CompleteDataContext);
 
+  const newData = {}
+
+  if (data && sideBarData) {
+    const { dates: dateStrings } = data ? data : { dates: [] };
+    newData.dates = dateStrings;
+    data && data.devices.forEach((deviceData, index) => {
+      const findName = sideBarData.branches[0].devices.find((side) => deviceData.name.endsWith(side.name) && side.is_source);
+      if (findName) {
+        newData[deviceData.name] = deviceData.daily_kwh;
+      }
+    })
+  }
+
   const options = {
+    tooltips: {
+      enabled: true,
+      mode: 'index',
+      callbacks: {
+        title: function (tooltipItem, data) {
+          return data['labels'][tooltipItem[0]['index']];
+        },
+        label: function (tooltipItem, data) {
+          return Number(tooltipItem.value).toFixed(2) || 0;
+        },
+      },
+      footerFontStyle: 'normal',
+      footerMarginTop: 12,
+    },
     layout: {
       padding: {
         left: isMediumScreen ? 5 : 25,
@@ -72,7 +100,7 @@ const DashboardStackedBarChart = ({ data, organization }) => {
           scaleLabel: {
             display: true,
             labelString: 'Days of the month',
-            padding: isMediumScreen ? 10 : 25,
+            padding: isMediumScreen ? 10 : 45,
             fontSize: isMediumScreen ? 14 : 18,
             fontColor: 'black',
           },
@@ -82,20 +110,21 @@ const DashboardStackedBarChart = ({ data, organization }) => {
   };
 
   // ensure total(organization data) is removed from initial render
-  if (data) {
-    delete data[organization];
-  }
+  // if (data) {
+  //   delete data[organization];
+  // }
 
   // Destructure data conditionally
-  const { dates: dateStrings, ...values } = data ? data : { dates: [] };
+  const { dates: dateStrings, ...values } = newData ? newData : { dates: [] };
 
   const dateObjects = dateStrings && convertDateStringsToObjects(dateStrings);
-  const formattedDates = dateObjects && formatParametersDatetimes(dateObjects);
+  const formattedDates = dateObjects && formatParametersDates(dateObjects);
 
   const dataNames = Object.keys(values);
   const dataValues = Object.values(values);
+
   const colorsArray = [
-    '#6C00FA',
+    uiSettings.appPrimaryColor,
     '#00C7E6',
     '#FF3DA1',
     '#82ca9d',
@@ -123,8 +152,8 @@ const DashboardStackedBarChart = ({ data, organization }) => {
     labels: isMediumScreen
       ? getLastArrayItems(formattedDates, 7)
       : isLessThan1296
-      ? getLastArrayItems(formattedDates, 14)
-      : formattedDates,
+        ? getLastArrayItems(formattedDates, 14)
+        : formattedDates,
     datasets: plottedDataSet,
   };
 

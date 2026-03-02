@@ -4,6 +4,8 @@
   padding-top: 24px;
   padding-bottom: 8px;
 
+  border-radius: $medium-border;
+
   @include media('>=medium') {
     padding-top: 16px;
   }

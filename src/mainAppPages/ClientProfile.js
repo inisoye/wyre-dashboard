@@ -7,7 +7,6 @@ import { CaretDownFilled } from '@ant-design/icons';
 
 import BreadCrumb from '../components/BreadCrumb';
 
-import PrintButtons from '../smallComponents/PrintButtons';
 
 const breadCrumbRoutes = [
   { url: '/', name: 'Home', id: 1 },
@@ -175,7 +174,6 @@ function ClientProfile({ match }) {
     contactPerson,
     siteOperatingHours,
   }) => {
-    console.log(siteName, siteAddress, contactPerson, siteOperatingHours);
 
     openNotificationWithIcon('success', 'Site');
 
@@ -210,7 +208,6 @@ function ClientProfile({ match }) {
     <>
       <div className="breadcrumb-and-print-buttons">
         <BreadCrumb routesArray={breadCrumbRoutes} />
-        <PrintButtons />
       </div>
 
       <div className="client-info-forms-content-wrapper">

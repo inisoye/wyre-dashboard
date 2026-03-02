@@ -22,6 +22,10 @@ import OverviewIcon from '../icons/OverviewIcon';
 import PadlockIcon from '../icons/PadlockIcon';
 import SettingsIcon from '../icons/SettingsIcon';
 import LogoutIcon from '../icons/LogoutIcon';
+import { SCORE_CARD_EXCLUDE_CLIENTS, BESPOKE_ADD_LIST } from '../helpers/constants';
+import DropdownButton from 'antd/lib/dropdown/dropdown-button';
+import { Dropdown } from 'antd';
+import BranchSwitcher from './BranchSwitcher';
 
 function Header() {
   const {
@@ -32,6 +36,8 @@ function Header() {
     setUserData,
     organization,
     currentUrl,
+    userData,
+    setEmailModalData,
   } = useContext(CompleteDataContext);
 
   const [isNavLinkDropdownOpen, setIsNavLinkDropdownOpen] = useState(false);
@@ -41,6 +47,7 @@ function Header() {
   const isReportPageOpen = currentUrl.includes('report');
 
   const { image: avatarImage, name: organisationName } = organization;
+  const isOperator = userData.role_text === "OPERATOR";
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -73,14 +80,86 @@ function Header() {
   const logOut = () => {
     window.localStorage.removeItem('loggedWyreUser');
     setUserData(undefined);
+    setEmailModalData(undefined)
   };
 
-  const isOrganisationSapio =
-    organisationName && organisationName.includes('Sapio');
+  // const isOrganisationSapio =
+  //   organisationName && organisationName.includes('Sapio');
+
+  var restricted_devices = ["Sapio", "Durosinmi", "Alpha"];
+
+  const checkOrganizationHasAccess = ((organization) => {
+
+    // run the tests against every element in the array
+    if (organization) {
+      return restricted_devices.some(el => organization.includes(el));
+    }
+
+  });
+
+
+  const renderComp = () => {
+    switch (userData.client_type) {
+
+      case 'STANDARD':
+        // all except billing and load overview
+        return <>
+          <HeaderLink onClick={toggleNav} url="/score-card" linkText="Score Card" />
+          <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
+          <HeaderLink onClick={toggleNav} url="/report" linkText="Report" />
+          {/* <HeaderLink onClick={toggleNav} url="/breakers" linkText="Breakers" /> */}
+        </>
+      case 'RESELLER':
+        // only dashboard, parameters and billing
+        return <>
+          <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+          {/* <HeaderLink onClick={toggleNav} url="/breakers" linkText="Breakers" /> */}
+        </>
+      case 'BESPOKE':
+        return <>
+
+          {
+            BESPOKE_ADD_LIST.SCORE_CARD.includes(userData.client) &&
+            <HeaderLink onClick={toggleNav} url="/score-card" linkText="Score Card"
+            />
+          }
+          {
+            BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.client) &&
+            <HeaderLink onClick={toggleNav} url="/cost-tracker" linkText="Cost Tracker" />
+          }
+          {/* {
+            BESPOKE_ADD_LIST.COST_TRACKER.includes(userData.client) &&
+            <HeaderLink onClick={toggleNav} url="/breakers" linkText="Breakers" />
+          }  */}
+          {
+            BESPOKE_ADD_LIST.REPORT.includes(userData.client) &&
+            <HeaderLink onClick={toggleNav} url="/report" linkText="Report" />
+          }
+          {
+            BESPOKE_ADD_LIST.BILLING.includes(userData.client) &&
+            <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+          }
+          {
+            BESPOKE_ADD_LIST.BILLING.includes(userData.client) &&
+              <HeaderLink onClick={toggleNav} url="/alerts-and-alarms" linkText="Alerts and Alarms" />
+          }
+        </>
+      default:
+        <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+    }
+  }
+
+
+  const doesUserHaveAccess =
+    organisationName && checkOrganizationHasAccess(organisationName);
 
   return (
     <header
-      className={isReportPageOpen ? 'header report-page-header' : 'header'}
+      className={
+        // isReportPageOpen ? 'header report-page-header' : 
+        'header'
+      }
+
     >
       <HeaderGroup1AndNav className="header-group-1-and-nav">
         {' '}
@@ -93,17 +172,18 @@ function Header() {
             <VerticalDots className="headerMenu-button__image dotmenu-button__image" />
           </button>
 
-          <div className="header-logo-container">
+          {/* <div className="header-logo-container">
             <Link className="header-logo" to="/">
               <Logo
                 className={
-                  isReportPageOpen
-                    ? 'header-logo__image'
-                    : 'header-logo__image header- h-white-fill-medium-up'
+                  // isReportPageOpen
+                  //   ? 'header-logo__image'
+                  //   : 
+                  'header-logo__image header- h-white-fill-medium-up'
                 }
               />
             </Link>
-          </div>
+          </div> */}
 
           <button
             type="button"
@@ -116,107 +196,143 @@ function Header() {
         <nav
           className={isNavOpen ? 'header-nav' : 'header-nav h-hidden-1296-down'}
         >
-          <ul className="header-nav-list">
-            <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
+          <ul className="header-nav-list"
+           style={{whiteSpace: 'nowrap'}}
+          >
+            {userData.is_solar_customer === false ? (
+              <>
+                <HeaderLink onClick={toggleNav} url="/" linkText="Dashboard" />
+                <HeaderLink onClick={toggleNav} url="/diesel-overview" linkText="Diesel Overview" />
+                <HeaderLink onClick={toggleNav} url="/solar-overview" linkText="Solar Overview" />
 
-            {!isOrganisationSapio && (
-              <HeaderLink
-                onClick={toggleNav}
-                url="/score-card"
-                linkText="Score Card"
+                {/* {!doesUserHaveAccess && ( */}
+                {/* {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+          &&
+          <HeaderLink
+            onClick={toggleNav}
+            url="/score-card"
+            linkText="Score Card"
+          />
+        } */}
+                {/* )} */}
+
+                <HeaderLinkWithDropdown
+                  className="header-nav-list__item header-link-with-dropdown"
+                  setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
+                >
+                  <button
+                    type="button"
+                    className="header-link-dropdown-button"
+                    onClick={toggleNavLinkDropdown}
+                  >
+                    Parameters
+                    <ChevronDown className="header-link-dropdown-icon" />
+                  </button>
+
+                  <ul
+                    className={
+                      isNavLinkDropdownOpen
+                        ? 'header-sublinks-list'
+                        : 'header-sublinks-list h-hide'
+                    }
+                  >
+                    <HeaderSublink
+                      onClick={toggleNavAndDropdown}
+                      url="/parameters/energy-consumption"
+                      linkText="Energy Consumption"
+                    />
+                    <HeaderSublink
+                      onClick={toggleNavAndDropdown}
+                      url="/parameters/power-quality"
+                      linkText="Power Quality"
+                    />
+                    <HeaderSublink
+                      onClick={toggleNavAndDropdown}
+                      url="/parameters/power-demand"
+                      linkText="Power Demand"
+                    />
+
+                    {/* {userData.client_type !== 'RESELLER' && (
+              <HeaderSublink
+                onClick={toggleNavAndDropdown}
+                url="/parameters/time-of-use"
+                linkText="Time of Use"
               />
-            )}
+            )} */}
 
-            <HeaderLinkWithDropdown
-              className="header-nav-list__item header-link-with-dropdown"
-              setIsNavLinkDropdownOpen={setIsNavLinkDropdownOpen}
-            >
-              <button
-                type="button"
-                className="header-link-dropdown-button"
-                onClick={toggleNavLinkDropdown}
-              >
-                Parameters
-                <ChevronDown className="header-link-dropdown-icon" />
-              </button>
+                    <HeaderSublink
+                      onClick={toggleNavAndDropdown}
+                      url="/parameters/last-reading"
+                      linkText="Last Reading"
+                    />
+                  </ul>
+                </HeaderLinkWithDropdown>
 
-              <ul
-                className={
-                  isNavLinkDropdownOpen
-                    ? 'header-sublinks-list'
-                    : 'header-sublinks-list h-hide'
-                }
-              >
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/energy-consumption"
-                  linkText="Energy Consumption"
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/power-quality"
-                  linkText="Power Quality"
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/power-demand"
-                  linkText="Power Demand"
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/time-of-use"
-                  linkText="Time of Use"
-                />
-                <HeaderSublink
-                  onClick={toggleNavAndDropdown}
-                  url="/parameters/last-reading"
-                  linkText="Last Reading"
-                />
-              </ul>
-            </HeaderLinkWithDropdown>
+                {/* <HeaderLink
+          onClick={toggleNav}
+          url="/report"
+          linkText="Report"
+        /> */}
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/dashboard"
-              // url="/report"
-              linkText="Report"
-            />
+                {renderComp()}
 
-            <HeaderLink
-              onClick={toggleNav}
-              url="/cost-tracker"
-              linkText="Cost Tracker"
-            />
+                {isOperator ? (
+                  <HeaderLink
+                    onClick={toggleNav}
+                    url="/alerts-and-alarms"
+                    linkText="Alerts and Alarms"
+                  />
+                ) : (
+                  ''
+                )}
 
-            <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" />
+                {/* {!doesUserHaveAccess && ( */}
+                {/* {organization && !SCORE_CARD_EXCLUDE_CLIENTS.includes(organization.name)
+          &&
+          <HeaderLink
+            onClick={toggleNav}
+            url="/cost-tracker"
+            linkText="Cost Tracker"
+          />
+        } */}
+                {/* )} */}
 
+                {/* <HeaderLink onClick={toggleNav} url="/billing" linkText="Billing" /> */}
+
+                {/* {!doesUserHaveAccess && (
             <HeaderLink
               onClick={toggleNav}
               url="/dashboard"
               // url='/messages'
               linkText="Messages"
             />
+          )} */}
+              </>
+            ) : (
+              <>
+                <li className="header-nav-list__item h-hidden-1296-up">
+                  <HeaderIcon
+                    onClick={toggleNav}
+                    count={0}
+                    countClassName="header-icon__count"
+                  >
+                    <MessageIcon className="header-icon__image" />
+                  </HeaderIcon>
+                </li>
 
-            <li className="header-nav-list__item h-hidden-1296-up">
-              <HeaderIcon
-                onClick={toggleNav}
-                count={0}
-                countClassName="header-icon__count"
-              >
-                <MessageIcon className="header-icon__image" />
-              </HeaderIcon>
-            </li>
+                <li className="header-nav-list__item h-hidden-1296-up">
+                  <HeaderIcon
+                    onClick={toggleNav}
+                    count={0}
+                    countClassName="header-icon__count"
+                  >
+                    <NotificationIcon className="header-icon__image" />
+                  </HeaderIcon>
+                </li>
+              </>
+            )}
 
-            <li className="header-nav-list__item h-hidden-1296-up">
-              <HeaderIcon
-                onClick={toggleNav}
-                count={0}
-                countClassName="header-icon__count"
-              >
-                <NotificationIcon className="header-icon__image" />
-              </HeaderIcon>
-            </li>
-
+            {/* ===== MOBILE AVATAR DROPDOWN ===== */}
             <HeaderMobileAvatarWithDropdown
               className="header-nav-list__item header-avater-container h-hidden-1296-up"
               setIsMobileAvatarMenuOpen={setIsMobileAvatarMenuOpen}
@@ -229,12 +345,10 @@ function Header() {
                 <img
                   className="header-avatar__image"
                   src={
-                    organisationName ? `https://wyreng.xyz${avatarImage}` : ''
+                    organisationName ? `https://backend.wyreng.com${avatarImage}` : '/wyreLogo.png'
                   }
                   alt={
-                    organisationName
-                      ? `Avatar for ${organisationName}`
-                      : 'Avatar'
+                    'Avatar'
                   }
                 />
               </button>
@@ -261,7 +375,6 @@ function Header() {
                     className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
                     to="/dashboard"
-                    // to='/branches'
                   >
                     <OverviewIcon /> <span>Overview</span>
                   </Link>
@@ -272,21 +385,20 @@ function Header() {
                     className="header-sublink avatar-sublink"
                     onClick={toggleNavAndDropdown}
                     to="/dashboard"
-                    // to='/password'
                   >
                     <PadlockIcon /> <span>Password</span>
                   </Link>
                 </li>
 
-                <li className="header-sublinks-list__item avatar-sublink-item">
-                  <Link
-                    className="header-sublink avatar-sublink"
-                    onClick={toggleNavAndDropdown}
-                    to="/alerts-and-alarms"
-                  >
-                    <SettingsIcon /> <span>Alerts and Alarms</span>
-                  </Link>
-                </li>
+                {/* <li className="header-sublinks-list__item avatar-sublink-item">
+          <Link
+            className="header-sublink avatar-sublink"
+            onClick={toggleNavAndDropdown}
+            to="/alerts-and-alarms"
+          >
+            <SettingsIcon /> <span>Alerts and Alarms</span>
+          </Link>
+        </li> */}
 
                 <li className="header-sublinks-list__item avatar-sublink-item">
                   <Link
@@ -333,7 +445,7 @@ function Header() {
           >
             <img
               className="header-avatar__image"
-              src={organisationName ? `https://wyreng.xyz${avatarImage}` : ''}
+              src={organisationName ? `https://backend.wyreng.com${avatarImage}` : '/wyreLogo.png'}
               alt={
                 organisationName ? `Avatar for ${organisationName}` : 'Avatar'
               }
@@ -360,7 +472,7 @@ function Header() {
               <Link
                 className="header-sublink avatar-sublink"
                 to="/dashboard"
-                // to='/branches'
+              // to='/branches'
               >
                 <OverviewIcon /> <span>Overview</span>
               </Link>
@@ -369,21 +481,21 @@ function Header() {
             <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
                 className="header-sublink avatar-sublink"
-                to="/dashboard"
-                // to='/password'
+                to="/password"
+              // to='/password'
               >
                 <PadlockIcon /> <span>Password</span>
               </Link>
             </li>
 
-            <li className="header-sublinks-list__item avatar-sublink-item">
+            {/* <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
                 className="header-sublink avatar-sublink"
                 to="/alerts-and-alarms"
               >
                 <SettingsIcon /> <span>Alerts and Alarms</span>
               </Link>
-            </li>
+            </li> */}
 
             <li className="header-sublinks-list__item avatar-sublink-item">
               <Link
